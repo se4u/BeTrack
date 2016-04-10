@@ -5,8 +5,10 @@ import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import java.util.List;
@@ -103,17 +105,10 @@ public class TrackIntentService extends IntentService {
     private String handleCheckActivity(Intent intent) {
         String topActivity = null;
         ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        List appProcessInfoList = mActivityManager.getRunningServices(Integer.MAX_VALUE);
 
-        ActivityManager activityManager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-        for(ActivityManager.RunningAppProcessInfo appProcess : appProcesses)
-        {
-            if(appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND)
-            {
-                topActivity = appProcess.processName;
-            }
-        }
+        List<ActivityManager.RunningTaskInfo> taskInfo = mActivityManager.getRunningTasks(1);
+        ComponentName componentInfo = taskInfo.get(0).topActivity;
+        topActivity = componentInfo.getPackageName();
 
         return topActivity;
 
@@ -137,7 +132,6 @@ public class TrackIntentService extends IntentService {
             }
             if (mySortedMap != null && !mySortedMap.isEmpty()) {
                 topActivity = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
-
             }
         }
 

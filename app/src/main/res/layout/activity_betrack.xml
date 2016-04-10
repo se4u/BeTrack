@@ -19,52 +19,84 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:gravity="center"
-                android:textSize="30sp"
-                android:layout_margin="10dp" android:text="Welcome"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView2"
-                android:paddingBottom="20dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name of study:"
-                android:id="@+id/textView3" />
-
-            <EditText
+            <!-- Main Layout of Status Activity -->
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText"
-                android:layout_gravity="center_horizontal" />
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+                <!-- Title TextView-->
+                <TextView android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" android:gravity="center"
+                    android:textSize="30sp"
+                    android:layout_margin="10dp" android:text="Welcome"/>
+                <!-- Title TextView-->
+                <TextView android:layout_width="fill_parent"
+                    android:layout_marginTop="5sp"
+                    android:layout_height="wrap_content" android:gravity="left"
+                    android:text="Select which study you want to join:"/>
+                <!-- Status EditText -->
+                <!-- Update Button -->
+                <RadioGroup
+                    android:layout_marginTop="5sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Your identifier:"
-                android:id="@+id/textView" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Study one"
+                        android:id="@+id/radioButton"
+                        android:enabled="true"
+                        android:checked="true" />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/editText2"
-                android:layout_gravity="center_horizontal" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New RadioButton"
+                        android:id="@+id/radioButton3"
+                        android:visibility="gone" />
 
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Done"
-                android:id="@+id/button"
-                android:layout_gravity="center_horizontal" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New RadioButton"
+                        android:id="@+id/radioButton2"
+                        android:visibility="gone" />
+                </RadioGroup>
+
+                <!-- Title TextView-->
+                <TextView
+                    android:layout_marginTop="5sp"
+                    android:gravity="left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dscription:"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:scrollbars = "vertical"
+                    android:gravity="left"
+                    android:layout_marginTop="5sp"
+                    android:layout_height="0dp"
+                    android:layout_weight="20"
+                    android:text="@string/disclaimers"/>
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="5sp"
+                    android:layout_weight="1"
+                    android:text="OK"
+                    android:id="@+id/buttonUpdate">
+                </Button>
+            </LinearLayout>
+
+
         </LinearLayout>
+
     </FrameLayout>
 
     <FrameLayout
@@ -75,7 +107,8 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="right|top">
+            android:layout_gravity="right|top"
+            android:visibility="visible">
             <!-- Update Button -->
 
             <!-- Title TextView-->
@@ -93,19 +126,6 @@
                 android:layout_margin="0dp"
                 android:layout_marginTop="10dp" />
 
-            <Switch
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="New partner(s)"
-                android:textSize="20dp"
-                android:id="@+id/switch1"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="50dp" />
-
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:gravity="center"
-                android:textSize="30sp"
-                android:layout_margin="10dp" android:text="Days remaining"/>
             <!-- Status EditText -->
 
             <TextView android:layout_width="fill_parent"

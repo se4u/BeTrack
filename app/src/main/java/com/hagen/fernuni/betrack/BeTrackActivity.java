@@ -19,6 +19,9 @@ public class BeTrackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_betrack);
+
+        new Eula(this).show();
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             if(!hasPermission()){
                 startActivityForResult(
@@ -26,6 +29,7 @@ public class BeTrackActivity extends AppCompatActivity {
                         MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
             }
         }
+
         //Intent msgIntent = new Intent(this, TrackIntentService.class);
         //startService(msgIntent);
     }
