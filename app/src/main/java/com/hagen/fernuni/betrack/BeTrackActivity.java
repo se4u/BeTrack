@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class BeTrackActivity extends AppCompatActivity {
     public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
@@ -28,6 +30,15 @@ public class BeTrackActivity extends AppCompatActivity {
                         new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
                         MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
             }
+        }
+        try
+        {
+            new GetConfigJson().execute().get();
+            RadioButton button  = (RadioButton)findViewById(R.id.radioButton);
+            button.setText(GetConfigJson.StudyName);
+        }
+        catch (Exception e) {
+
         }
 
         //Intent msgIntent = new Intent(this, TrackIntentService.class);
