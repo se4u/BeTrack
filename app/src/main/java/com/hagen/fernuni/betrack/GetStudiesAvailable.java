@@ -3,6 +3,7 @@ package com.hagen.fernuni.betrack;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.apache.http.params.HttpConnectionParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,40 +16,64 @@ import java.net.URL;
 /**
  * Created by cevincent on 4/13/16.
  */
-public class GetConfigJson extends AsyncTask<String, Void, String> {
+public class GetStudiesAvailable extends AsyncTask<String, Void, String> {
 
-    static final String TAG = "GetConfigJson";
-    static public String StudyName;
+    static final String TAG = "GetStudiesAvailable";
+    static public String[] StudyID;
+    static public String[] StudyActive;
+    static public String[] StudyName;
+    static public String[] StudyDescription;
+    static public int NbrStudyAvailable;
+    static public final int NbrMaxStudy = 3;
 
     @Override protected String doInBackground(String... params) {
         InputStream inputStream = null;
         String result = null;
         HttpURLConnection urlConnection = null;
         java.net.URL url;
-        //ArrayList items = new ArrayList();
         try {
 
-            url = new URL("http://www.ricphoto.fr/ReadConfig.php");
+            StudyID=new String[NbrMaxStudy];
+            StudyActive=new String[NbrMaxStudy];
+            StudyName=new String[NbrMaxStudy];
+            StudyDescription=new String[NbrMaxStudy];
+
+            //Connect to the remote database to get the available studies
+            url = new URL("http://www.ricphoto.fr/BeTrackGetStudiesAvailable.php");
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
+            urlConnection.setConnectTimeout(5000);
             urlConnection.connect();
+
 
             BufferedReader bufferedReader =
                     new BufferedReader(new InputStreamReader(
                             urlConnection.getInputStream()));
 
             String next;
+            NbrStudyAvailable = 0;
             while ((next = bufferedReader.readLine()) != null) {
                 JSONArray ja = new JSONArray(next);
 
                 for (int i = 0; i < ja.length(); i++) {
                     JSONObject jo = (JSONObject) ja.get(i);
-                    //items.add(jo.getString("StudyName"));
-                    Log.d(TAG, "StudyName: " + jo.getString("StudyName"));
-                    StudyName = jo.getString("StudyName");
+                    StudyActive[i] = jo.getString("StudyActive");
+                    if (StudyActive[i].equals("1")) {
+                        StudyID[i] = jo.getString("StudyId");
+                        StudyName[i] = jo.getString("StudyName");
+                        StudyDescription[i] = jo.getString("StudyDescription");
+                        NbrStudyAvailable++;
+                        //We limit the number of study to NbrMaxStudy
+                        if (NbrStudyAvailable > NbrMaxStudy) break;
+                    }
+
                 }
 
+
             }
+            result = "OK";
+        } catch (java.net.SocketTimeoutException e) {
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

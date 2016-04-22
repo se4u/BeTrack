@@ -30,12 +30,12 @@
                 <TextView android:layout_width="fill_parent"
                     android:layout_height="wrap_content" android:gravity="center"
                     android:textSize="30sp"
-                    android:layout_margin="10dp" android:text="Welcome"/>
+                    android:text="@string/welcome_title"/>
                 <!-- Title TextView-->
                 <TextView android:layout_width="fill_parent"
                     android:layout_marginTop="5sp"
                     android:layout_height="wrap_content" android:gravity="left"
-                    android:text="Select which study you want to join:"/>
+                    android:text="@string/welcome_select"/>
                 <!-- Status EditText -->
                 <!-- Update Button -->
                 <RadioGroup
@@ -47,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Study one"
-                        android:id="@+id/radioButton"
+                        android:id="@+id/radio_studyone"
                         android:enabled="true"
                         android:checked="true" />
 
@@ -55,15 +55,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New RadioButton"
-                        android:id="@+id/radioButton3"
-                        android:visibility="gone" />
+                        android:id="@+id/radio_studytwo"
+                        android:visibility="visible" />
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New RadioButton"
-                        android:id="@+id/radioButton2"
-                        android:visibility="gone" />
+                        android:id="@+id/radio_studythree"
+                        android:visibility="visible" />
                 </RadioGroup>
 
                 <!-- Title TextView-->
@@ -72,7 +72,7 @@
                     android:gravity="left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dscription:"/>
+                    android:text="@string/welcome_title_description"/>
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -81,7 +81,8 @@
                     android:layout_marginTop="5sp"
                     android:layout_height="0dp"
                     android:layout_weight="20"
-                    android:text="@string/disclaimers"/>
+                    android:id="@+id/test_description"
+                    android:text="@string/welcome_description"/>
 
                 <Button
                     android:layout_width="fill_parent"
@@ -89,7 +90,7 @@
                     android:layout_gravity="right"
                     android:layout_marginTop="5sp"
                     android:layout_weight="1"
-                    android:text="OK"
+                    android:text="@string/welcome_ok"
                     android:id="@+id/buttonUpdate">
                 </Button>
             </LinearLayout>

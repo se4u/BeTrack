@@ -2,6 +2,13 @@
     <string name="app_name">BeTrack</string>
     <string name="title_activity_settings">Settings</string>
 
+    <!-- Study welcome screen -->
+    <string name="welcome_title">Welcome</string>
+    <string name="welcome_select">Select which study you want to join:</string>
+    <string name="welcome_title_description">Description:</string>
+    <string name="welcome_description">Blabblah</string>
+    <string name="welcome_ok">ok</string>
+
     <!-- Strings related to Settings -->
 
     <!-- General settings -->
@@ -9,6 +16,7 @@
     <string name="pref_title_enable_study">Enable study</string>
     <string name="pref_description_enable_study">Allow to be tempororarly or permarnently be out of the study
     </string>
+
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
@@ -82,6 +90,9 @@
 
     <string name="introduction">This new study is for blabha. Please read completly the disclaimer and approve f you want to participate to the study.</string>
 
-
+    <!-- Network error -->
+    <string name="network_error_title">Network connection error</string>
+    <string name="network_error_text">Please connect your phone to internet. To start a new study you need to have internet access</string>
+    <string name="network_try_again">try again</string>
 
 </resources>

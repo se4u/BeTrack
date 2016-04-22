@@ -9,17 +9,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.widget.TextView;
 
 public class BeTrackActivity extends AppCompatActivity {
     public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
     private static final String TAG = "Status";
+    private String STUDY_ONGOING = "study_ongoing";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
         setContentView(R.layout.activity_betrack);
 
         new Eula(this).show();
@@ -33,9 +38,42 @@ public class BeTrackActivity extends AppCompatActivity {
         }
         try
         {
-            new GetConfigJson().execute().get();
-            RadioButton button  = (RadioButton)findViewById(R.id.radioButton);
-            button.setText(GetConfigJson.StudyName);
+            final String StudyOnGoingKey = STUDY_ONGOING;
+            boolean StudyOnGoing = prefs.getBoolean(StudyOnGoingKey, false);
+            boolean StudyReady = false;
+            do {
+                //Check if a study is already going on
+                if (false == StudyOnGoing) {
+
+                    //Check if connection to the distant server worked
+                    if (null != new GetStudiesAvailable().execute().get()) {
+                        //No study is on yet, get the available one
+                        //Display all the study available
+                        RadioButton button[] = new RadioButton[GetStudiesAvailable.NbrMaxStudy];
+
+                        button[0] = (RadioButton) findViewById(R.id.radio_studyone);
+                        button[1] = (RadioButton) findViewById(R.id.radio_studytwo);
+                        button[2] = (RadioButton) findViewById(R.id.radio_studythree);
+
+                        for (int i = 0; i < GetStudiesAvailable.NbrStudyAvailable; i++) {
+
+                            button[i].setText(GetStudiesAvailable.StudyName[i]);
+                            button[i].setVisibility(View.VISIBLE);
+                        }
+                        StudyReady = true;
+                    }
+                    else
+                    {
+                        new NetworkError(this).show();
+                    }
+
+                }
+                else
+                {
+                    //A study if already going on
+                }
+            }while(false == StudyReady);
+
         }
         catch (Exception e) {
 
@@ -70,5 +108,28 @@ public class BeTrackActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
         }
         return true;
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+        RadioButton button[] = new RadioButton[GetStudiesAvailable.NbrMaxStudy];
+        TextView StudyDescription = new TextView(this);
+        StudyDescription = (TextView) findViewById(R.id.test_description);
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_studyone:
+                if (checked)
+                    StudyDescription.setText(GetStudiesAvailable.StudyDescription[0]);
+                    break;
+            case R.id.radio_studytwo:
+                if (checked)
+                    StudyDescription.setText(GetStudiesAvailable.StudyDescription[1]);
+                    break;
+            case R.id.radio_studythree:
+                if (checked)
+                    StudyDescription.setText(GetStudiesAvailable.StudyDescription[2]);
+                    break;
+        }
     }
 }
