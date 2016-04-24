@@ -3,7 +3,9 @@ package com.hagen.fernuni.betrack;
 import android.app.AppOpsManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -11,6 +13,7 @@ public class TrackService extends Service {
     public TrackService() {
     }
     static final String TAG = "UpdaterService";
+    public static InfoStudy mInfoStudy;
     public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
     @Override
     public IBinder onBind(Intent intent) {
@@ -24,6 +27,9 @@ public class TrackService extends Service {
 
         Log.d(TAG, "onCreated");
         Intent msgIntent = new Intent(this, TrackIntentService.class);
+        //Create a class to save the information for the study
+
+        //Start the service for monitoring app
         startService(msgIntent);
     }
 

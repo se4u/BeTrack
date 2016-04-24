@@ -1,6 +1,7 @@
 package com.hagen.fernuni.betrack;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.usage.UsageStats;
@@ -8,7 +9,9 @@ import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.List;
@@ -69,25 +72,61 @@ public class TrackIntentService extends IntentService {
 
     protected void onHandleIntent(Intent intent) {
         String topActivity = null;
+        String StudyStatusKey = SetupStudy.STUDY_STARTED;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        boolean StudyStatus;
+        boolean StartNewStudy = false;
+
         if (intent != null) {
             do {
-                try {
-                    // We get usage stats for the last minute
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                        topActivity = handleCheckActivity_FromKitkat(intent);
+                //Check if a study is going on
+                StudyStatus = prefs.getBoolean(StudyStatusKey, false);
+                if (true == StudyStatus) {
+                    //Check if it's a new study
+                    if (false == StartNewStudy) {
+                        //Since it's a study already started, we setup the study using the local preference
+                        SetupStudy lSetupStudy = new SetupStudy(prefs);
                     }
-                    else {
-                        topActivity = handleCheckActivity(intent);
+                    else
+                    {
+                        //InfoStudy was already completed when the new study was setup by the application
                     }
-                    Log.d(TAG,"Foreground App"  + topActivity);
+                    do {
+                        try {
+                            // We get usage stats for the last minute
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                                topActivity = handleCheckActivity_FromKitkat(intent);
+                            } else {
+                                topActivity = handleCheckActivity(intent);
+                            }
+                            //Check if it's activity should be monitored
 
-                    Thread.sleep(300);
+                            //This has activity is monitored
+
+                            //Save the information in the local database
+
+                            //If authorise every day let's try to transfer the data over internet
+                            Log.d(TAG, "Foreground App" + topActivity);
+
+                            Thread.sleep(300);
+                        } catch (InterruptedException e) {
+                            Log.d(TAG, "Intent action error!");
+                        }
+                    } while (true);
                 }
-                catch (InterruptedException e)
+                else
                 {
-                    Log.d(TAG, "Intent action error!");
+                    //We wait 10s and check if a study has been started
+                    try {
+                        Log.d(TAG, "Wait for a study to be started");
+                        StartNewStudy = true;
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        Log.d(TAG, "Intent action error!");
+                    }
                 }
-            }while(true);
+            } while (true);
             /*
             final String action = intent.getAction();
             if (ACTION_FOO.equals(action)) {

@@ -12,6 +12,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/Layout_Welcome"
         android:visibility="visible">
 
         <LinearLayout
@@ -40,6 +41,7 @@
                 <!-- Update Button -->
                 <RadioGroup
                     android:layout_marginTop="5sp"
+                    android:id="@+id/Group_Study"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -48,6 +50,7 @@
                         android:layout_height="wrap_content"
                         android:text="Study one"
                         android:id="@+id/radio_studyone"
+                        android:onClick="onRadioButtonClicked"
                         android:enabled="true"
                         android:checked="true" />
 
@@ -56,6 +59,7 @@
                         android:layout_height="wrap_content"
                         android:text="New RadioButton"
                         android:id="@+id/radio_studytwo"
+                        android:onClick="onRadioButtonClicked"
                         android:visibility="visible" />
 
                     <RadioButton
@@ -63,6 +67,7 @@
                         android:layout_height="wrap_content"
                         android:text="New RadioButton"
                         android:id="@+id/radio_studythree"
+                        android:onClick="onRadioButtonClicked"
                         android:visibility="visible" />
                 </RadioGroup>
 
@@ -91,6 +96,7 @@
                     android:layout_marginTop="5sp"
                     android:layout_weight="1"
                     android:text="@string/welcome_ok"
+                    android:onClick="onButtonClicked"
                     android:id="@+id/buttonUpdate">
                 </Button>
             </LinearLayout>
@@ -103,6 +109,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/Layout_Study"
         android:visibility="invisible">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

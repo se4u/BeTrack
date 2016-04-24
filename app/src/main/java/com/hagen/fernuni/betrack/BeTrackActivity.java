@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class BeTrackActivity extends AppCompatActivity {
@@ -55,10 +56,15 @@ public class BeTrackActivity extends AppCompatActivity {
                         button[1] = (RadioButton) findViewById(R.id.radio_studytwo);
                         button[2] = (RadioButton) findViewById(R.id.radio_studythree);
 
-                        for (int i = 0; i < GetStudiesAvailable.NbrStudyAvailable; i++) {
-
-                            button[i].setText(GetStudiesAvailable.StudyName[i]);
-                            button[i].setVisibility(View.VISIBLE);
+                        for (int i = 0; i < GetStudiesAvailable.NbrMaxStudy; i++) {
+                            if (i < GetStudiesAvailable.NbrStudyAvailable) {
+                                button[i].setText(GetStudiesAvailable.StudyName[i]);
+                                button[i].setVisibility(View.VISIBLE);
+                            }
+                            else
+                            {
+                                button[i].setVisibility(View.GONE);
+                            }
                         }
                         StudyReady = true;
                     }
@@ -70,7 +76,14 @@ public class BeTrackActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    //A study if already going on
+                    //A study is already going on
+                    //Read the information of the study
+
+                    //Update the study page
+
+                    //we display the page of the study
+                    findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
                 }
             }while(false == StudyReady);
 
@@ -110,6 +123,7 @@ public class BeTrackActivity extends AppCompatActivity {
         return true;
     }
 
+
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
@@ -131,5 +145,13 @@ public class BeTrackActivity extends AppCompatActivity {
                     StudyDescription.setText(GetStudiesAvailable.StudyDescription[2]);
                     break;
         }
+    }
+
+    public void onButtonClicked(View view) {
+        //Broadcast an event to start the tracking service if not yet started
+
+        //Show the study screen
+        findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
+        findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
     }
 }
