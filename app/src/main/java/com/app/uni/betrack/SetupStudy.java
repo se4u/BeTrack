@@ -1,9 +1,14 @@
-package com.hagen.fernuni.betrack;
+package com.app.uni.betrack;
 
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.RadioButton;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by cevincent on 4/22/16.
@@ -49,6 +54,45 @@ public class SetupStudy {
 
         }
     }
+    public SetupStudy(Activity context) {
+        mActivity = context;
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
+        Set<String> hs = prefs.getStringSet("AppNameToWatch", new HashSet<String>());
+        Set<String> in = new HashSet<String>(hs);
+        String StudyStatusKey = STUDY_STARTED;
+        SharedPreferences.Editor editor = prefs.edit();
+        boolean StudyStatus = prefs.getBoolean(StudyStatusKey, false);
+        if (false == StudyStatus) {
+            try
+            {
+                //Check if connection to the distant server worked
+                if (null != new GetAppToWatch().execute().get()) {
+                    //Save the applications to watch in the preference file
+                    for (int i=0; i< GetAppToWatch.ApplicationName.size(); i++) {
+                        in.add(GetAppToWatch.ApplicationName.get(i));
+                    }
+                    editor.putStringSet("AppNameToWatch", in);
+                    //Read the data of the study from InfoStudy and update the local preference settings
+                    editor.putBoolean(StudyStatusKey, true);
+                    editor.commit();
 
+                }
+                else
+                {
+                    //Connection error
+                }
+            }
+            catch (Exception e) {
+
+            }
+
+        }
+        else
+        {
+            //Read the data of the study from the local preference settings
+
+
+        }
+    }
 
 }

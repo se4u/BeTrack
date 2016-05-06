@@ -1,4 +1,4 @@
-package com.hagen.fernuni.betrack;
+package com.app.uni.betrack;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

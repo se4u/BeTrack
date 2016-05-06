@@ -1,4 +1,4 @@
-package com.hagen.fernuni.betrack;
+package com.app.uni.betrack;
 
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
@@ -13,8 +13,9 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.app.uni.betrack.R;
 
 public class BeTrackActivity extends AppCompatActivity {
     public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
@@ -153,5 +154,13 @@ public class BeTrackActivity extends AppCompatActivity {
         //Show the study screen
         findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
         findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
+
+        //We set up the study with the data from te distant database
+
+        SetupStudy lSetupStudy = new SetupStudy(this);
+
+        //We get the list of applications to watch
+
+
     }
 }

@@ -1,4 +1,4 @@
-package com.hagen.fernuni.betrack;
+package com.app.uni.betrack;
 
 import android.os.AsyncTask;
 import android.util.Log;

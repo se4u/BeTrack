@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.hagen.fernuni.betrack.BeTrackActivity">
+    tools:context="com.app.uni.betrack.BeTrackActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

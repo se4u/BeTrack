@@ -1,4 +1,4 @@
-package com.hagen.fernuni.betrack;
+package com.app.uni.betrack;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+
+import com.app.uni.betrack.R;
 
 /**
  * Created by cevincent on 4/9/16.

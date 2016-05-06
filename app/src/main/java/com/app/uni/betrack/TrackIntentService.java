@@ -1,7 +1,6 @@
-package com.hagen.fernuni.betrack;
+package com.app.uni.betrack;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.usage.UsageStats;
@@ -10,7 +9,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -73,7 +71,7 @@ public class TrackIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String topActivity = null;
         String StudyStatusKey = SetupStudy.STUDY_STARTED;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
         boolean StudyStatus;
         boolean StartNewStudy = false;
@@ -100,7 +98,7 @@ public class TrackIntentService extends IntentService {
                             } else {
                                 topActivity = handleCheckActivity(intent);
                             }
-                            //Check if it's activity should be monitored
+                            //Check if that activity should be monitored
 
                             //This has activity is monitored
 

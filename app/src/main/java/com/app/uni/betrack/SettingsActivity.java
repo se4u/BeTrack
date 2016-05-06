@@ -1,4 +1,4 @@
-package com.hagen.fernuni.betrack;
+package com.app.uni.betrack;
 
 
 import android.annotation.TargetApi;
@@ -19,6 +19,8 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
+
+import com.app.uni.betrack.R;
 
 import java.util.List;
 
