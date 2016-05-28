@@ -29,6 +29,16 @@ public class BeTrackActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         setContentView(R.layout.activity_betrack);
 
+        //Update settings with default values
+        com.app.uni.betrack.Settings.EnableDataUsage= true;
+        com.app.uni.betrack.Settings.StudyEnable=true;
+        com.app.uni.betrack.Settings.StudyNotification=true;
+        com.app.uni.betrack.Settings.StudyNotificationTime=8; // Field specific for time
+        com.app.uni.betrack.Settings.FrequencyUpdateServer=6;
+
+        //Try to get updated value of preferences from the shared preference editor
+
+
         new Eula(this).show();
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
@@ -43,12 +53,19 @@ public class BeTrackActivity extends AppCompatActivity {
             final String StudyOnGoingKey = STUDY_ONGOING;
             boolean StudyOnGoing = prefs.getBoolean(StudyOnGoingKey, false);
             boolean StudyReady = false;
+
+            findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
+            findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
+
             do {
                 //Check if a study is already going on
                 if (false == StudyOnGoing) {
 
                     //Check if connection to the distant server worked
-                    if (null != new GetStudiesAvailable().execute().get()) {
+                    //if (null != new GetStudiesAvailable().execute().get()) {
+
+                        findViewById(R.id.Layout_Welcome).setVisibility(View.VISIBLE);
+                        findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
                         //No study is on yet, get the available one
                         //Display all the study available
                         RadioButton button[] = new RadioButton[GetStudiesAvailable.NbrMaxStudy];
@@ -68,11 +85,11 @@ public class BeTrackActivity extends AppCompatActivity {
                             }
                         }
                         StudyReady = true;
-                    }
-                    else
-                    {
-                        new NetworkError(this).show();
-                    }
+                    //}
+                    //else
+                    //{
+                        //new NetworkError(this).show();
+                    //}
 
                 }
                 else

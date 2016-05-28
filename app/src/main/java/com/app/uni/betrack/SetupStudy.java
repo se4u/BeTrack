@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.RadioButton;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -68,8 +69,8 @@ public class SetupStudy {
                 //Check if connection to the distant server worked
                 if (null != new GetAppToWatch().execute().get()) {
                     //Save the applications to watch in the preference file
-                    for (int i=0; i< GetAppToWatch.ApplicationName.size(); i++) {
-                        in.add(GetAppToWatch.ApplicationName.get(i));
+                    for (int i=0; i< InfoStudy.ApplicationsToWatch.size(); i++) {
+                        in.add(InfoStudy.ApplicationsToWatch.get(i));
                     }
                     editor.putStringSet("AppNameToWatch", in);
                     //Read the data of the study from InfoStudy and update the local preference settings
@@ -89,8 +90,14 @@ public class SetupStudy {
         }
         else
         {
-            //Read the data of the study from the local preference settings
+            Iterator<String> iterator = hs.iterator();
 
+            while(iterator.hasNext()){
+
+                String AppToWatch = iterator.next();
+
+                InfoStudy.ApplicationsToWatch.add(AppToWatch);
+            }
 
         }
     }

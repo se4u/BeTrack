@@ -36,15 +36,7 @@ public class NetworkError {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(R.string.network_try_again, new Dialog.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        handler.sendMessage(handler.obtainMessage());
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
+                .setNegativeButton(android.R.string.ok, new Dialog.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class GetAppToWatch  extends AsyncTask<String, Void, String> {
     static final String TAG = "GetAppToWatch";
-    static ArrayList<String> ApplicationName = new ArrayList<String>();
+
 
     @Override protected String doInBackground(String... params) {
         InputStream inputStream = null;
@@ -48,7 +48,7 @@ public class GetAppToWatch  extends AsyncTask<String, Void, String> {
                 for (int i = 0; i < ja.length(); i++) {
 
                     JSONObject jo = (JSONObject) ja.get(i);
-                    ApplicationName.add(jo.getString("StudyActive"));
+                    InfoStudy.ApplicationsToWatch.add(jo.getString("ApplicationName"));
 
                 }
 

@@ -26,12 +26,12 @@ import java.util.TreeMap;
 public class TrackIntentService extends IntentService {
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_FOO = "com.hagen.fernuni.betrack.action.FOO";
-    private static final String ACTION_BAZ = "com.hagen.fernuni.betrack.action.BAZ";
+    private static final String ACTION_FOO = "com.app.uni.betrack.action.FOO";
+    private static final String ACTION_BAZ = "com.app.uni.betrack.action.BAZ";
 
     // TODO: Rename parameters
-    private static final String EXTRA_PARAM1 = "com.hagen.fernuni.betrack.extra.PARAM1";
-    private static final String EXTRA_PARAM2 = "com.hagen.fernuni.betrack.extra.PARAM2";
+    private static final String EXTRA_PARAM1 = "com.app.uni.betrack.extra.PARAM1";
+    private static final String EXTRA_PARAM2 = "com.app.uni.betrack.extra.PARAM2";
     static final String TAG = "UpdaterIntentService";
 
     public TrackIntentService() {
@@ -98,14 +98,27 @@ public class TrackIntentService extends IntentService {
                             } else {
                                 topActivity = handleCheckActivity(intent);
                             }
-                            //Check if that activity should be monitored
 
-                            //This has activity is monitored
+                            Log.d(TAG, "Foreground App " + topActivity);
+
+                            //Check if that activity should be monitored
+                            for(int i =0;i<InfoStudy.ApplicationsToWatch.size();i++){
+
+                                Log.d(TAG, "Application to watch " + InfoStudy.ApplicationsToWatch.get(i));
+
+                                if (InfoStudy.ApplicationsToWatch.get(i).equals(topActivity))
+                                {
+                                    //This has activity is monitored
+                                    Log.d(TAG, "Foreground App is monitored " + topActivity);
+                                }
+
+
+                            }
 
                             //Save the information in the local database
 
                             //If authorise every day let's try to transfer the data over internet
-                            Log.d(TAG, "Foreground App" + topActivity);
+
 
                             Thread.sleep(300);
                         } catch (InterruptedException e) {

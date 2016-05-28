@@ -1,5 +1,6 @@
 package com.app.uni.betrack;
 
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -25,6 +26,22 @@ public class GetStudiesAvailable extends AsyncTask<String, Void, String> {
     static public String[] StudyDescription;
     static public int NbrStudyAvailable;
     static public final int NbrMaxStudy = 3;
+
+    // you may separate this or combined to caller class.
+    public interface AsyncResponse {
+        void processFinish(String output);
+    }
+
+    public AsyncResponse delegate = null;
+
+    public GetStudiesAvailable(AsyncResponse delegate){
+        this.delegate = delegate;
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        delegate.processFinish(result);
+    }
 
     @Override protected String doInBackground(String... params) {
         InputStream inputStream = null;
@@ -71,6 +88,7 @@ public class GetStudiesAvailable extends AsyncTask<String, Void, String> {
 
 
             }
+
             result = "OK";
         } catch (java.net.SocketTimeoutException e) {
             return result;
@@ -81,10 +99,9 @@ public class GetStudiesAvailable extends AsyncTask<String, Void, String> {
                 urlConnection.disconnect();
             }
         }
+
+
         return result;
     }
-    protected void onPostExecute(String feed) {
-        // TODO: check this.exception
-        // TODO: do something with the feed
-    }
+
 }
