@@ -38,6 +38,8 @@ public class TrackIntentService extends IntentService {
         super("TrackIntentService");
     }
 
+    private         InfoStudy ContextInfoStudy = new InfoStudy();
+
     /**
      * Starts this service to perform action Foo with the given parameters. If
      * the service is already performing a task this action will be queued.
@@ -81,15 +83,9 @@ public class TrackIntentService extends IntentService {
                 //Check if a study is going on
                 StudyStatus = prefs.getBoolean(StudyStatusKey, false);
                 if (true == StudyStatus) {
-                    //Check if it's a new study
-                    if (false == StartNewStudy) {
-                        //Since it's a study already started, we setup the study using the local preference
-                        SetupStudy lSetupStudy = new SetupStudy(prefs);
-                    }
-                    else
-                    {
-                        //InfoStudy was already completed when the new study was setup by the application
-                    }
+
+                    new SetupStudy(prefs, ContextInfoStudy);
+
                     do {
                         try {
                             // We get usage stats for the last minute
@@ -102,11 +98,11 @@ public class TrackIntentService extends IntentService {
                             Log.d(TAG, "Foreground App " + topActivity);
 
                             //Check if that activity should be monitored
-                            for(int i =0;i<InfoStudy.ApplicationsToWatch.size();i++){
+                            for(int i =0;i<ContextInfoStudy.ApplicationsToWatch.size();i++){
 
-                                Log.d(TAG, "Application to watch " + InfoStudy.ApplicationsToWatch.get(i));
+                                Log.d(TAG, "Application to watch " + ContextInfoStudy.ApplicationsToWatch.get(i));
 
-                                if (InfoStudy.ApplicationsToWatch.get(i).equals(topActivity))
+                                if (ContextInfoStudy.ApplicationsToWatch.get(i).equals(topActivity))
                                 {
                                     //This has activity is monitored
                                     Log.d(TAG, "Foreground App is monitored " + topActivity);
@@ -120,7 +116,7 @@ public class TrackIntentService extends IntentService {
                             //If authorise every day let's try to transfer the data over internet
 
 
-                            Thread.sleep(300);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             Log.d(TAG, "Intent action error!");
                         }

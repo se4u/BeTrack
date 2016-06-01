@@ -37,7 +37,7 @@ public class Eula {
 
         // the eulaKey changes every time you increment the version number in the AndroidManifest.xml
         final String eulaKey = EULA_PREFIX + versionInfo.versionCode;
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
         boolean hasBeenShown = prefs.getBoolean(eulaKey, false);
         if(hasBeenShown == false){
 

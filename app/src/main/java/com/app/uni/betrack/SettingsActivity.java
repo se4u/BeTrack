@@ -2,6 +2,9 @@ package com.app.uni.betrack;
 
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -18,10 +21,14 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TimePicker;
 
 import com.app.uni.betrack.R;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -31,9 +38,9 @@ import java.util.List;
  * the list of settings.
  * <p/>
  * See <a href="http://developer.android.com/design/patterns/settings.html">
- * Android Design: Settings</a> for design guidelines and the <a
- * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
- * API Guide</a> for more information on developing a Settings UI.
+ * Android Design: SettingsBetrack</a> for design guidelines and the <a
+ * href="http://developer.android.com/guide/topics/ui/settings.html">SettingsBetrack
+ * API Guide</a> for more information on developing a SettingsBetrack UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
     /**
@@ -213,12 +220,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_data_sync);
             setHasOptionsMenu(true);
-
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference("sync_frequency"));
         }
 
         @Override
@@ -230,5 +231,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
     }
+
+
 }

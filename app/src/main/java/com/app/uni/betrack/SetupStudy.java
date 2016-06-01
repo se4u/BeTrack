@@ -25,7 +25,7 @@ public class SetupStudy {
     private String STUDY_LINKENDSTUDY = "LinkEndStudy";
     private Activity mActivity;
 
-    public SetupStudy(SharedPreferences prefs) {
+    public SetupStudy(SharedPreferences prefs, InfoStudy ContextInfoStudy) {
         //mActivity = context;
         String StudyStatusKey = STUDY_STARTED;
         final String StudyId = STUDY_ID;
@@ -36,6 +36,8 @@ public class SetupStudy {
         final String StudyContactEmail = STUDY_CONTACTEMAIL;
         final String StudyLinkEndStudy = STUDY_LINKENDSTUDY;
 
+
+
         //final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
         SharedPreferences.Editor editor = prefs.edit();
         boolean StudyStatus = prefs.getBoolean(StudyStatusKey, false);
@@ -43,19 +45,16 @@ public class SetupStudy {
         //Check if a study has been already setup
         if (false == StudyStatus) {
             //Read the data of the study from InfoStudy and update the local preference settings
-
-
             editor.putBoolean(StudyStatusKey, true);
-
         }
         else
         {
             //Read the data of the study from the local preference settings
-
-
+            ReadAppToWatch(ContextInfoStudy, prefs);
         }
     }
-    public SetupStudy(Activity context) {
+
+    public SetupStudy(Activity context, InfoStudy ContextInfoStudy) {
         mActivity = context;
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
         Set<String> hs = prefs.getStringSet("AppNameToWatch", new HashSet<String>());
@@ -66,11 +65,12 @@ public class SetupStudy {
         if (false == StudyStatus) {
             try
             {
+                GetAppToWatch.ContextInfoStudy = ContextInfoStudy;
                 //Check if connection to the distant server worked
                 if (null != new GetAppToWatch().execute().get()) {
                     //Save the applications to watch in the preference file
-                    for (int i=0; i< InfoStudy.ApplicationsToWatch.size(); i++) {
-                        in.add(InfoStudy.ApplicationsToWatch.get(i));
+                    for (int i=0; i< ContextInfoStudy.ApplicationsToWatch.size(); i++) {
+                        in.add(ContextInfoStudy.ApplicationsToWatch.get(i));
                     }
                     editor.putStringSet("AppNameToWatch", in);
                     //Read the data of the study from InfoStudy and update the local preference settings
@@ -90,16 +90,22 @@ public class SetupStudy {
         }
         else
         {
-            Iterator<String> iterator = hs.iterator();
-
-            while(iterator.hasNext()){
-
-                String AppToWatch = iterator.next();
-
-                InfoStudy.ApplicationsToWatch.add(AppToWatch);
-            }
-
+            ReadAppToWatch(ContextInfoStudy, prefs);
         }
     }
 
+    private void ReadAppToWatch(InfoStudy ContextInfoStudy, SharedPreferences prefs)
+    {
+        Set<String> hs = prefs.getStringSet("AppNameToWatch", new HashSet<String>());
+        Set<String> in = new HashSet<String>(hs);
+        Iterator<String> iterator = hs.iterator();
+
+        while(iterator.hasNext()){
+
+            String AppToWatch = iterator.next();
+
+            ContextInfoStudy.ApplicationsToWatch.add(AppToWatch);
+        }
+    }
 }
+

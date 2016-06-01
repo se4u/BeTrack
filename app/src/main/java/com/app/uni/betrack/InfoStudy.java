@@ -7,12 +7,15 @@ import java.util.ArrayList;
  */
 public class InfoStudy {
 
-    static public String StudyId;
-    static public String StudyName;
-    static public String StudyVersionApp;
-    static public String StudyDuration;
-    static public String StudyPublicKey;
-    static public String StudyContactEmail;
-    static public String StudyLinkEndStudy;
-    static ArrayList<String> ApplicationsToWatch = new ArrayList<String>();
+    public String STUDY_ONGOING = "study_ongoing";
+
+    public Boolean StudyOnGoing;
+    public String StudyId;
+    public String StudyName;
+    public String StudyVersionApp;
+    public String StudyDuration;
+    public String StudyPublicKey;
+    public String StudyContactEmail;
+    public String StudyLinkEndStudy;
+    ArrayList<String> ApplicationsToWatch = new ArrayList<String>();
 }

@@ -15,29 +15,29 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.TextView;
 
-import com.app.uni.betrack.R;
-
 public class BeTrackActivity extends AppCompatActivity {
     public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
     private static final String TAG = "Status";
-    private String STUDY_ONGOING = "study_ongoing";
+
+
+    public InfoStudy ObjInfoStudy = new InfoStudy();
+    private SettingsBetrack ObjSettingsBetrack = new SettingsBetrack();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         SharedPreferences.Editor editor = prefs.edit();
         setContentView(R.layout.activity_betrack);
 
-        //Update settings with default values
-        com.app.uni.betrack.Settings.EnableDataUsage= true;
-        com.app.uni.betrack.Settings.StudyEnable=true;
-        com.app.uni.betrack.Settings.StudyNotification=true;
-        com.app.uni.betrack.Settings.StudyNotificationTime=8; // Field specific for time
-        com.app.uni.betrack.Settings.FrequencyUpdateServer=6;
-
-        //Try to get updated value of preferences from the shared preference editor
-
+        //Update settings with value of preferences from the shared preference editor or default values
+        ObjSettingsBetrack.StudyEnable = prefs.getBoolean(SettingsBetrack.STUDY_ENABLE, true);
+        ObjSettingsBetrack.EnableDataUsage = prefs.getBoolean(SettingsBetrack.ENABLE_DATA_USAGE, true);
+        ObjSettingsBetrack.StudyNotification = prefs.getBoolean(SettingsBetrack.STUDY_NOTIFICATION, true);
+        ObjSettingsBetrack.StudyNotificationTime= prefs.getString(SettingsBetrack.STUDY_NOTIFICATION_TIME, "20:00");
+        ObjSettingsBetrack.FrequencyUpdateServer = prefs.getInt(SettingsBetrack.FREQ_UPDATE_SERVER, 6);
 
         new Eula(this).show();
 
@@ -50,68 +50,54 @@ public class BeTrackActivity extends AppCompatActivity {
         }
         try
         {
-            final String StudyOnGoingKey = STUDY_ONGOING;
-            boolean StudyOnGoing = prefs.getBoolean(StudyOnGoingKey, false);
-            boolean StudyReady = false;
+
 
             findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
             findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
 
-            do {
-                //Check if a study is already going on
-                if (false == StudyOnGoing) {
+            ObjInfoStudy.StudyOnGoing = prefs.getBoolean(ObjInfoStudy.STUDY_ONGOING, false);
 
-                    //Check if connection to the distant server worked
-                    //if (null != new GetStudiesAvailable().execute().get()) {
+            //Check if a study is already going on
+            if (false == ObjInfoStudy.StudyOnGoing) {
 
-                        findViewById(R.id.Layout_Welcome).setVisibility(View.VISIBLE);
-                        findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
-                        //No study is on yet, get the available one
-                        //Display all the study available
-                        RadioButton button[] = new RadioButton[GetStudiesAvailable.NbrMaxStudy];
+                findViewById(R.id.Layout_Welcome).setVisibility(View.VISIBLE);
+                findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
+                //No study is on yet, get the available one
+                //Display all the study available
+                RadioButton button[] = new RadioButton[GetStudiesAvailable.NbrMaxStudy];
 
-                        button[0] = (RadioButton) findViewById(R.id.radio_studyone);
-                        button[1] = (RadioButton) findViewById(R.id.radio_studytwo);
-                        button[2] = (RadioButton) findViewById(R.id.radio_studythree);
+                button[0] = (RadioButton) findViewById(R.id.radio_studyone);
+                button[1] = (RadioButton) findViewById(R.id.radio_studytwo);
+                button[2] = (RadioButton) findViewById(R.id.radio_studythree);
 
-                        for (int i = 0; i < GetStudiesAvailable.NbrMaxStudy; i++) {
-                            if (i < GetStudiesAvailable.NbrStudyAvailable) {
-                                button[i].setText(GetStudiesAvailable.StudyName[i]);
-                                button[i].setVisibility(View.VISIBLE);
-                            }
-                            else
-                            {
-                                button[i].setVisibility(View.GONE);
-                            }
-                        }
-                        StudyReady = true;
-                    //}
-                    //else
-                    //{
-                        //new NetworkError(this).show();
-                    //}
-
+                for (int i = 0; i < GetStudiesAvailable.NbrMaxStudy; i++) {
+                    if (i < GetStudiesAvailable.NbrStudyAvailable) {
+                        button[i].setText(GetStudiesAvailable.StudyName[i]);
+                        button[i].setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        button[i].setVisibility(View.GONE);
+                    }
                 }
-                else
-                {
-                    //A study is already going on
-                    //Read the information of the study
+            }
+            else
+            {
+                //A study is already going on
+                //Read the information of the study
 
-                    //Update the study page
+                //Update the study page
 
-                    //we display the page of the study
-                    findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
-                }
-            }while(false == StudyReady);
+                //we display the page of the study
+                findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
+                findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
+            }
 
         }
         catch (Exception e) {
 
         }
 
-        //Intent msgIntent = new Intent(this, TrackIntentService.class);
-        //startService(msgIntent);
     }
 
     @TargetApi(19) private boolean hasPermission() {
@@ -174,7 +160,7 @@ public class BeTrackActivity extends AppCompatActivity {
 
         //We set up the study with the data from te distant database
 
-        SetupStudy lSetupStudy = new SetupStudy(this);
+        SetupStudy lSetupStudy = new SetupStudy(this, ObjInfoStudy);
 
         //We get the list of applications to watch
 

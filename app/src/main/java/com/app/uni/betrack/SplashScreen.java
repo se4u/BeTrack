@@ -56,7 +56,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final String StudyOnGoingKey = STUDY_ONGOING;
         StudyOnGoing = prefs.getBoolean(StudyOnGoingKey, false);
 
