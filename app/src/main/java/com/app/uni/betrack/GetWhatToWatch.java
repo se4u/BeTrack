@@ -17,8 +17,8 @@ import java.util.ArrayList;
 /**
  * Created by cevincent on 5/6/16.
  */
-public class GetAppToWatch  extends AsyncTask<String, Void, String> {
-    static final String TAG = "GetAppToWatch";
+public class GetWhatToWatch extends AsyncTask<String, Void, String> {
+    static final String TAG = "GetWhatToWatch";
     static public InfoStudy ContextInfoStudy;
 
 
@@ -30,10 +30,10 @@ public class GetAppToWatch  extends AsyncTask<String, Void, String> {
         try {
 
             //Connect to the remote database to get the available studies
-            url = new URL("http://www.ricphoto.fr/BeTrackGetAppToWatch.php?table_name=TestPeriod_applications"); //TODO hardcoded has to be change
+            url = new URL(SettingsBetrack.STUDY_WEBSITE + "BeTrackGetAppToWatch.php?table_name=TestPeriod_applications");
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
-            urlConnection.setConnectTimeout(5000);
+            urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
             urlConnection.connect();
 
 
