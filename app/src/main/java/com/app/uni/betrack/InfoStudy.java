@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class InfoStudy {
 
-    public String STUDY_ONGOING = "study_ongoing";
+    public final String STUDY_ONGOING = "study_ongoing";
 
     public Boolean StudyOnGoing;
     public String StudyId;

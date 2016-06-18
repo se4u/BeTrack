@@ -3,21 +3,26 @@ package com.app.uni.betrack;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Intent;
-import android.provider.Settings;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 public class BeTrackActivity extends AppCompatActivity {
-    public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
+
     private static final String TAG = "Status";
+
+    private Menu SaveMenuRef = null;
+
 
 
     public InfoStudy ObjInfoStudy = new InfoStudy();
@@ -28,8 +33,9 @@ public class BeTrackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
         SharedPreferences.Editor editor = prefs.edit();
+
+
         setContentView(R.layout.activity_betrack);
 
         //Update settings with value of preferences from the shared preference editor or default values
@@ -41,13 +47,6 @@ public class BeTrackActivity extends AppCompatActivity {
 
         new Eula(this).show();
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            if(!hasPermission()){
-                startActivityForResult(
-                        new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
-                        MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
-            }
-        }
         try
         {
 
@@ -73,6 +72,7 @@ public class BeTrackActivity extends AppCompatActivity {
                 for (int i = 0; i < GetStudiesAvailable.NbrMaxStudy; i++) {
                     if (i < GetStudiesAvailable.NbrStudyAvailable) {
                         button[i].setText(GetStudiesAvailable.StudyName[i]);
+                        button[i].setEnabled(true);
                         button[i].setVisibility(View.VISIBLE);
                     }
                     else
@@ -100,19 +100,16 @@ public class BeTrackActivity extends AppCompatActivity {
 
     }
 
-    @TargetApi(19) private boolean hasPermission() {
-        AppOpsManager appOps = (AppOpsManager)
-                getSystemService(APP_OPS_SERVICE);
-        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
-                android.os.Process.myUid(), getPackageName());
-        return mode == AppOpsManager.MODE_ALLOWED;
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
+
         inflater.inflate(R.menu.settingsmenu, menu);
+        SaveMenuRef = menu;
+
         return true;
     }
 
@@ -152,17 +149,46 @@ public class BeTrackActivity extends AppCompatActivity {
     }
 
     public void onButtonClicked(View view) {
-        //Broadcast an event to start the tracking service if not yet started
 
-        //Show the study screen
-        findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
-        findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
+        switch(view.getId()) {
+            case R.id.buttonUpdate:
+                //Disable the radio button
+                RadioButton button[] = new RadioButton[GetStudiesAvailable.NbrMaxStudy];
 
-        //We set up the study with the data from te distant database
+                button[0] = (RadioButton) findViewById(R.id.radio_studyone);
+                button[1] = (RadioButton) findViewById(R.id.radio_studytwo);
+                button[2] = (RadioButton) findViewById(R.id.radio_studythree);
 
-        SetupStudy lSetupStudy = new SetupStudy(this, ObjInfoStudy);
+                for (int i = 0; i < GetStudiesAvailable.NbrMaxStudy; i++) {
+                    if (i < GetStudiesAvailable.NbrStudyAvailable) {
+                        button[i].setEnabled(false);
+                    }
+                }
 
-        //We get the list of applications to watch
+                //Disable the setting menu
+                SaveMenuRef.clear();
+
+                //Hide the start button
+                Button StartButton;
+                StartButton = (Button) findViewById(R.id.buttonUpdate);
+                StartButton.setVisibility(View.GONE);
+
+                //Display the progress bar
+                ProgressBar WaitData;
+                WaitData = (ProgressBar) findViewById(R.id.ProgressBarWaitData);
+                WaitData.setVisibility(View.VISIBLE);
+                TextView LoadingText;
+                LoadingText = (TextView) findViewById(R.id.WelcomeLoading);
+                LoadingText.setVisibility(View.VISIBLE);
+                //We set up the study
+                new SetupStudy(this, ObjInfoStudy);
+
+                break;
+            case R.id.ButtonNetwork:
+                //We set up the study
+                new SetupStudy(this, ObjInfoStudy);
+                break;
+        }
 
 
     }

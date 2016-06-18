@@ -2,10 +2,11 @@ package com.app.uni.betrack;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.RadioButton;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,7 +24,59 @@ public class SetupStudy {
     private String STUDY_PUBLICKEY = "PublicKey";
     private String STUDY_CONTACTEMAIL = "ContactEmail";
     private String STUDY_LINKENDSTUDY = "LinkEndStudy";
-    private Activity mActivity;
+    private static int TIME_OUT = 1000;
+    private Activity mActivity = null;
+
+    GetWhatToWatch gwtw = new GetWhatToWatch(new GetWhatToWatch.AsyncResponse(){
+
+        @Override
+        public void processFinish(final String output) {
+
+            new Handler().postDelayed(new Runnable() {
+
+
+                @Override
+                public void run() {
+
+                    if (null != output) {
+                        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
+                        SharedPreferences.Editor editor = prefs.edit();
+                        Set<String> hs = prefs.getStringSet("AppNameToWatch", new HashSet<String>());
+                        Set<String> in = new HashSet<String>(hs);
+                        String StudyStatusKey = STUDY_STARTED;
+
+                        //Broadcast an event to start the tracking service if not yet started
+
+                        //Show the study screen
+                        mActivity.findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
+                        mActivity.findViewById(R.id.Layout_NetworkError).setVisibility(View.INVISIBLE);
+                        mActivity.findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
+
+                        //Display the settignthe menu
+                        mActivity.invalidateOptionsMenu();
+
+                        //Save the applications to watch in the preference file
+                        for (int i=0; i< GetWhatToWatch.ContextInfoStudy.ApplicationsToWatch.size(); i++) {
+                            in.add(GetWhatToWatch.ContextInfoStudy.ApplicationsToWatch.get(i));
+                        }
+                        editor.putStringSet("AppNameToWatch", in);
+                        //Read the data of the study from InfoStudy and update the local preference settings
+                        //editor.putBoolean(StudyStatusKey, true);
+                        //editor.commit();
+
+                        //We save in the preference that a study has been started
+                        //editor.putBoolean(InfoStudy.STUDY_ONGOING, true);
+                        //editor.commit();
+                    } else {
+                        mActivity.findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
+                        mActivity.findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
+                        mActivity.findViewById(R.id.Layout_NetworkError).setVisibility(View.VISIBLE);
+                    }
+
+                }
+            }, TIME_OUT);
+        }}
+    );
 
     public SetupStudy(SharedPreferences prefs, InfoStudy ContextInfoStudy) {
         //mActivity = context;
@@ -57,31 +110,19 @@ public class SetupStudy {
     public SetupStudy(Activity context, InfoStudy ContextInfoStudy) {
         mActivity = context;
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
-        Set<String> hs = prefs.getStringSet("AppNameToWatch", new HashSet<String>());
-        Set<String> in = new HashSet<String>(hs);
-        String StudyStatusKey = STUDY_STARTED;
         SharedPreferences.Editor editor = prefs.edit();
+
+        String StudyStatusKey = STUDY_STARTED;
+
         boolean StudyStatus = prefs.getBoolean(StudyStatusKey, false);
         if (false == StudyStatus) {
             try
             {
-                GetAppToWatch.ContextInfoStudy = ContextInfoStudy;
-                //Check if connection to the distant server worked
-                if (null != new GetAppToWatch().execute().get()) {
-                    //Save the applications to watch in the preference file
-                    for (int i=0; i< ContextInfoStudy.ApplicationsToWatch.size(); i++) {
-                        in.add(ContextInfoStudy.ApplicationsToWatch.get(i));
-                    }
-                    editor.putStringSet("AppNameToWatch", in);
-                    //Read the data of the study from InfoStudy and update the local preference settings
-                    editor.putBoolean(StudyStatusKey, true);
-                    editor.commit();
+                GetWhatToWatch.ContextInfoStudy = ContextInfoStudy;
 
-                }
-                else
-                {
-                    //Connection error
-                }
+                //Read what to watch from the distant server
+                gwtw.execute();
+
             }
             catch (Exception e) {
 

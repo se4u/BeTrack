@@ -78,7 +78,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/welcome_title_description"/>
-
                 <TextView
                     android:layout_width="fill_parent"
                     android:scrollbars = "vertical"
@@ -95,10 +94,30 @@
                     android:layout_gravity="right"
                     android:layout_marginTop="5sp"
                     android:layout_weight="1"
-                    android:text="@string/welcome_ok"
+                    android:text="@string/welcome_start"
                     android:onClick="onButtonClicked"
                     android:id="@+id/buttonUpdate">
                 </Button>
+                <TextView
+                    android:scrollbars = "vertical"
+                    android:layout_marginTop="5sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/WelcomeLoading"
+                    android:text="@string/welcome_loading"/>
+                <ProgressBar
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_weight="1"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/ProgressBarWaitData"/>
             </LinearLayout>
 
 
@@ -142,6 +161,51 @@
                 android:layout_margin="10dp" android:text="29 Days"
                 android:gravity="center_vertical|center_horizontal"/>
 
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/Layout_NetworkError"
+        android:visibility="invisible">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical" android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|top"
+            android:visibility="visible">
+            <!-- Update Button -->
+
+            <!-- Title TextView-->
+            <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:gravity="center"
+                android:textSize="30sp"
+                android:layout_margin="10dp" android:text="@string/network_error_title"/>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:scrollbars = "vertical"
+                android:gravity="left"
+                android:layout_marginTop="5sp"
+                android:layout_height="0dp"
+                android:layout_weight="20"
+                android:id="@+id/network_error_text"
+                android:text="@string/network_error_text"/>
+
+            <!-- Status EditText -->
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="5sp"
+                android:layout_weight="1"
+                android:text="@string/network_retry"
+                android:onClick="onButtonClicked"
+                android:id="@+id/ButtonNetwork">
+            </Button>
 
         </LinearLayout>
     </FrameLayout>

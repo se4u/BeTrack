@@ -21,6 +21,21 @@ public class GetWhatToWatch extends AsyncTask<String, Void, String> {
     static final String TAG = "GetWhatToWatch";
     static public InfoStudy ContextInfoStudy;
 
+    // you may separate this or combined to caller class.
+    public interface AsyncResponse {
+        void processFinish(String output);
+    }
+
+    public AsyncResponse delegate = null;
+
+    public GetWhatToWatch(AsyncResponse delegate){
+        this.delegate = delegate;
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        delegate.processFinish(result);
+    }
 
     @Override protected String doInBackground(String... params) {
         InputStream inputStream = null;
@@ -67,8 +82,5 @@ public class GetWhatToWatch extends AsyncTask<String, Void, String> {
         }
         return result;
     }
-    protected void onPostExecute(String feed) {
-        // TODO: check this.exception
-        // TODO: do something with the feed
-    }
+
 }

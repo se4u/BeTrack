@@ -2,9 +2,7 @@ package com.app.uni.betrack;
 
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import org.apache.http.params.HttpConnectionParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -56,10 +54,10 @@ public class GetStudiesAvailable extends AsyncTask<String, Void, String> {
             StudyDescription=new String[NbrMaxStudy];
 
             //Connect to the remote database to get the available studies
-            url = new URL("http://www.ricphoto.fr/BeTrackGetStudiesAvailable.php");
+            url = new URL(SettingsBetrack.STUDY_WEBSITE + "BeTrackGetStudiesAvailable.php");
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
-            urlConnection.setConnectTimeout(5000);
+            urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
             urlConnection.connect();
 
 

@@ -7,7 +7,8 @@
     <string name="welcome_select">Select which study you want to join:</string>
     <string name="welcome_title_description">Description:</string>
     <string name="welcome_description">Blabblah</string>
-    <string name="welcome_ok">ok</string>
+    <string name="welcome_start">Start !</string>
+    <string name="welcome_loading">Loading</string>
 
     <!-- Strings related to SettingsBetrack -->
 
@@ -50,6 +51,9 @@
     <string name="pref_notification_time">Time of the notification</string>
 
     <!-- Disclaimer to accept to participate the study -->
+
+    <string name="disclaimers_title">BeTrack</string>
+
     <string name="disclaimers">Utque aegrum corpus quassari etiam levibus solet offensis, ita animus eius angustus et tener, quicquid increpuisset, ad salutis suae dispendium existimans factum aut cogitatum, insontium caedibus fecit victoriam luctuosam.
         Pandente itaque viam fatorum sorte tristissima, qua praestitutum erat eum vita et imperio spoliari, itineribus interiectis permutatione iumentorum emensis venit Petobionem oppidum Noricorum, ubi reseratae sunt insidiarum latebrae omnes, et Barbatio repente apparuit comes, qui sub eo domesticis praefuit, cum Apodemio agente in rebus milites ducens, quos beneficiis suis oppigneratos elegerat imperator certus nec praemiis nec miseratione ulla posse deflecti.
         Rogatus ad ultimum admissusque in consistorium ambage nulla praegressa inconsiderate et leviter proficiscere inquit ut praeceptum est, Caesar sciens quod si cessaveris, et tuas et palatii tui auferri iubebo prope diem annonas. hocque solo contumaciter dicto subiratus abscessit nec in conspectum eius postea venit saepius arcessitus.
@@ -67,5 +71,10 @@
     <!-- Network error -->
     <string name="network_error_title">Network connection error</string>
     <string name="network_error_text">Please connect your phone to internet and restart the BeTrack. It is mandatory to have an internet connection to register for a new study</string>
+    <string name="network_retry">Retry</string>
+
+    <!-- UsageStat enable -->
+    <string name="UsageStat_enable_title">Enable BeTrack</string>
+    <string name="UsageStat_enable_text">To be a part of a study we need specific right on your phone. When you will click on the OK button of that window, the setting menu of your phone will be open. In that menu please allow BeTrack to access the statistics of your phone. When you are done get back to BeTrack and you\'ll be able to start the study.</string>
 
 </resources>

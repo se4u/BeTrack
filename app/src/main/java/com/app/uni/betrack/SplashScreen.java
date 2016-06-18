@@ -1,6 +1,8 @@
 package com.app.uni.betrack;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AppOpsManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -18,7 +20,6 @@ import android.view.View;
 public class SplashScreen extends AppCompatActivity {
     // Splash screen timer
     private static int TIME_OUT = 1000;
-    private static int NBR_TRY_CONNECT = 5;
     private static boolean StudyOnGoing = false;
     private String STUDY_ONGOING = "study_ongoing";
     Activity mActivity = this;
@@ -27,9 +28,6 @@ public class SplashScreen extends AppCompatActivity {
 
         @Override
         public void processFinish(final String output) {
-
-
-
 
             new Handler().postDelayed(new Runnable() {
 
@@ -69,6 +67,25 @@ public class SplashScreen extends AppCompatActivity {
         try
         {
 
+           // StudyOnGoing = true; // TODO to be remove for debug without internet
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                while(true)
+                {
+                    if(!hasPermission()) {
+                    //if(true) {
+                        //Explain what's going on to the user of the study before to display the setting menu
+                        Thread.sleep(100);
+                        new EnableUsageStat(this).show();
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
+            }
+
             //Check if a study is already going on
             if (false == StudyOnGoing) {
 
@@ -91,5 +108,11 @@ public class SplashScreen extends AppCompatActivity {
         }
 
     }
-
+    @TargetApi(19) private boolean hasPermission() {
+        AppOpsManager appOps = (AppOpsManager)
+                getSystemService(APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(), getPackageName());
+        return mode == AppOpsManager.MODE_ALLOWED;
+    }
 }

@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-tools:context="com.app.uni.betrack.BeTrackActivity">
+tools:context="com.app.uni.betrack.BeTrackActivity"
+    android:id="@+id/top_menu_settings">
     <item
         android:id="@+id/settings_menu"
         android:title="Settings"

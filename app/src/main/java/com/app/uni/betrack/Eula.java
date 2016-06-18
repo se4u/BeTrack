@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 
 import com.app.uni.betrack.R;
@@ -42,7 +43,7 @@ public class Eula {
         if(hasBeenShown == false){
 
             // Show the Eula
-            String title = mActivity.getString(R.string.app_name) + " v" + versionInfo.versionName;
+            String title = mActivity.getString(R.string.disclaimers_title) + " v" + versionInfo.versionName;
 
             //Includes the updates as well so users know what changed.
             String message =  mActivity.getString(R.string.disclaimers);
@@ -71,6 +72,7 @@ public class Eula {
 
                     });
             builder.create().show();
+
         }
     }
 }
