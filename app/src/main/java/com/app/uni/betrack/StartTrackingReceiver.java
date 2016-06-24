@@ -1,15 +1,17 @@
 package com.app.uni.betrack;
+
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
 /**
- * Created by cevincent on 4/3/16.
+ * Created by cevincent on 6/24/16.
  */
-public class BootReceiver extends BroadcastReceiver { //
-    static final String TAG = "BootReceiver";
+public class StartTrackingReceiver extends BroadcastReceiver {
+    static final String TAG = "StartTrackingReceiver";
     @Override
     public void onReceive(Context context, Intent intent) { //
 
