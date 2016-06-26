@@ -7,9 +7,11 @@ import java.util.ArrayList;
  */
 public class InfoStudy {
 
-    public final String STUDY_ONGOING = "study_ongoing";
+    static public final String STUDY_STARTED = "study_started";
 
-    public Boolean StudyOnGoing;
+
+    public Boolean StudyStarted; //A study is started
+
     public String StudyId;
     public String StudyName;
     public String StudyVersionApp;

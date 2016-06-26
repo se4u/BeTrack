@@ -5,14 +5,11 @@ import android.app.Activity;
 import android.app.AppOpsManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 
 /**
  * Created by cevincent on 5/27/16.
@@ -21,7 +18,6 @@ public class SplashScreen extends AppCompatActivity {
     // Splash screen timer
     private static int TIME_OUT = 1000;
     private static boolean StudyOnGoing = false;
-    private String STUDY_ONGOING = "study_ongoing";
     Activity mActivity = this;
 
     GetStudiesAvailable gsa = new GetStudiesAvailable(new GetStudiesAvailable.AsyncResponse(){
@@ -55,7 +51,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final String StudyOnGoingKey = STUDY_ONGOING;
+        final String StudyOnGoingKey = InfoStudy.STUDY_STARTED;
         StudyOnGoing = prefs.getBoolean(StudyOnGoingKey, false);
 
 
@@ -67,13 +63,10 @@ public class SplashScreen extends AppCompatActivity {
         try
         {
 
-           // StudyOnGoing = true; // TODO to be remove for debug without internet
-
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                 while(true)
                 {
                     if(!hasPermission()) {
-                    //if(true) {
                         //Explain what's going on to the user of the study before to display the setting menu
                         Thread.sleep(100);
                         new EnableUsageStat(this).show();

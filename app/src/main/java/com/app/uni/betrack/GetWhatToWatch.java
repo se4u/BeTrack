@@ -45,7 +45,7 @@ public class GetWhatToWatch extends AsyncTask<String, Void, String> {
         try {
 
             //Connect to the remote database to get the available studies
-            url = new URL(SettingsBetrack.STUDY_WEBSITE + "BeTrackGetAppToWatch.php?table_name=TestPeriod_applications");
+            url = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_GETAPPTOWATCH);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);

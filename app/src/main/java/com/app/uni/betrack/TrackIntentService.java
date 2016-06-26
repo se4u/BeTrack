@@ -5,19 +5,25 @@ import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -36,6 +42,13 @@ public class TrackIntentService extends IntentService {
     private static final String EXTRA_PARAM1 = "com.app.uni.betrack.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.app.uni.betrack.extra.PARAM2";
     static final String TAG = "UpdaterIntentService";
+
+    private LocalDataBase localdatabase = new LocalDataBase(this);;
+
+    public LocalDataBase AccesLocalDB()
+    {
+        return localdatabase;
+    }
 
     public TrackIntentService() {
         super("TrackIntentService");
@@ -76,33 +89,26 @@ public class TrackIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String topActivity = null;
         String ActivityOnGoing = null;
-        String ActivityDate = null;
+        String ActivityStartDate = null;
         String ActvityStartTime=null;
+        String ActivityStopDate = null;
         String ActivityStopTime=null;
-        String StudyStatusKey = SetupStudy.STUDY_STARTED;
+        String StudyOnGoingKey = InfoStudy.STUDY_STARTED;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
-        boolean StudyStatus;
-        boolean StartNewStudy = false;
-        SQLiteDatabase db;
-        LocalDataBase LocalDb = null;
+        boolean StudyOnGoing;
+
+        PostDataAvailable.localdatabase = this.AccesLocalDB();
+
         ContentValues values = new ContentValues();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+        SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
 
         if (intent != null) {
             do {
                 //Check if a study is going on
-                StudyStatus = prefs.getBoolean(StudyStatusKey, false);
-                if (true == StudyStatus) {
-
-                    //Check if the database for the study already exist
-                    if (null == LocalDb)
-                    {
-                        //No so we open the local database
-
-                    }
-
-                    // Open the database for writing
-                    db = LocalDb.getWritableDatabase();
+                StudyOnGoing = prefs.getBoolean(StudyOnGoingKey, false);
+                if (true == StudyOnGoing) {
 
                     new SetupStudy(prefs, ContextInfoStudy);
 
@@ -115,51 +121,86 @@ public class TrackIntentService extends IntentService {
                                 topActivity = handleCheckActivity(intent);
                             }
 
-                            Log.d(TAG, "Foreground App " + topActivity);
+                            //Log.d(TAG, "Foreground App " + topActivity);
 
 
                             //Check if that activity should be monitored
                             for(int i =0;i<ContextInfoStudy.ApplicationsToWatch.size();i++){
 
-                                Log.d(TAG, "Application to watch " + ContextInfoStudy.ApplicationsToWatch.get(i));
+                                //Log.d(TAG, "Application to watch " + ContextInfoStudy.ApplicationsToWatch.get(i));
 
-                                //An activity was watched and should not be watched anymore
-                                if ((null != ActivityOnGoing) && (!ActivityOnGoing.equals(topActivity)))
+                                if (null != ActivityOnGoing)
                                 {
-                                    //Save the end time
-                                    //TODO how to get the time ActivityStopTime = System.currentTimeMillis(); ?
-                                    //Encrypt the data before to save them in the databse
+                                    //An activity was watched and should not be watched anymore
+                                    ScreenReceiver.SemUpdateStopDateTime.acquire();
+                                    if ((null != topActivity) && (!ActivityOnGoing.equals(topActivity))||(ScreenReceiver.wasScreenOff))
+                                    {
 
-                                    //We save in the database the informations about the study
-                                    values.clear();
+                                        if (false == ScreenReceiver.wasScreenOff)
+                                        {
+                                            //Save the stop date
+                                            ActivityStopDate = sdf.format(new Date());
+                                            //Save the stop time
+                                            ActivityStopTime = shf.format(new Date());
+                                        }
+                                        else
+                                        {
+                                            //Use the date and time that was save just before the screen was off
+                                            //Save the stop date
+                                            ActivityStopDate = ScreenReceiver.ActivityStopDate;
+                                            //Save the stop time
+                                            ActivityStopTime = ScreenReceiver.ActivityStopTime;
 
-                                    //Automatic ID ??? -> values.put(LocalDataBase.C_ID, status.id);
-                                    values.put(LocalDataBase.C_APPLICATION, topActivity);
-                                    values.put(LocalDataBase.C_DATE, ActivityDate);
-                                    values.put(LocalDataBase.C_TIMESTART, ActvityStartTime);
-                                    values.put(LocalDataBase.C_TIMESTOP, ActivityStopTime);
-                                    db.insertOrThrow(LocalDataBase.TABLE, null, values);
 
-                                    //Reinitialize activity watched infos
-                                    ActivityOnGoing = null;
-                                    ActivityDate = null;
-                                    ActvityStartTime = null;
-                                    ActivityStopTime = null;
+                                            //Reset the flag screen off
+                                            ScreenReceiver.wasScreenOff = false;
+                                        }
+                                        Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
 
+                                        //Encrypt the data before to save them in the database
+
+                                        //We save in the local database the informations about the study
+                                        values.clear();
+
+                                        values.put(LocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
+                                        values.put(LocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
+                                        values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                                        values.put(LocalDataBase.C_APPWATCH_TIMESTART, ActvityStartTime);
+                                        values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                                        this.AccesLocalDB().insertOrIgnore(values,LocalDataBase.TABLE_APPWATCH);
+
+                                        //Reinitialize activity watched infos
+                                        ActivityOnGoing = null;
+                                        ActivityStartDate = null;
+                                        ActvityStartTime = null;
+                                        ActivityStopDate = null;
+                                        ActivityStopTime = null;
+
+                                    }
+                                    ScreenReceiver.SemUpdateStopDateTime.release();
                                 }
+                                else
+                                {
+                                    ScreenReceiver.SemUpdateStopDateTime.acquire();
+                                    ScreenReceiver.wasScreenOff = false;
+                                    ScreenReceiver.SemUpdateStopDateTime.release();
+                                }
+
 
                                 if (ContextInfoStudy.ApplicationsToWatch.get(i).equals(topActivity))
                                 {
-                                    //This has activity is monitored
-                                    Log.d(TAG, "Foreground App is monitored " + topActivity);
 
-                                    //A new actity to be watch
+                                    //A new activity to be watch
                                     if (null == ActivityOnGoing)
                                     {
                                         ActivityOnGoing = topActivity;
-                                        //Save the date
 
+                                        //Save the date
+                                        ActivityStartDate = sdf.format(new Date());
                                         //Save the start time
+                                        ActvityStartTime = shf.format(new Date());
+
+                                        Log.d(TAG, "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActvityStartTime);
 
                                     }
 
@@ -174,10 +215,19 @@ public class TrackIntentService extends IntentService {
                             //No WIFI can we use other ways to transfer data
                             //if ()
                             {
-                                //Read a line from the database
 
-                                //Transfer it
-                                //new PostDataAvailable().execute().get(); //TODO how to pass the arguments to the method ?
+                                //Check if we are not already transferring the data
+
+                                if (PostDataAvailable.SemUpdateServer.tryAcquire()) {
+                                    ExecutorService es = Executors.newFixedThreadPool(1);
+                                    es.execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //Transfer all the data available to the distant server
+                                            PostDataAvailable.Start();
+                                        }
+                                    });
+                                }
                             }
 
                             Thread.sleep(SettingsBetrack.SAMPLING_RATE);
@@ -188,11 +238,9 @@ public class TrackIntentService extends IntentService {
                 }
                 else
                 {
-                    //We wait 10s and check if a study has been started
+                    //We wait and check if a study has been started
                     try {
                         Log.d(TAG, "Wait for a study to be started");
-                        StartNewStudy = true;
-                        LocalDb = new LocalDataBase(this);
                         Thread.sleep(SettingsBetrack.DELTA_BTW_RECHECK_STUDY_STARTED);
                     } catch (InterruptedException e) {
                         Log.d(TAG, "Intent action error!");

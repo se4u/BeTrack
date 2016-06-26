@@ -1,7 +1,6 @@
 package com.app.uni.betrack;
 
-import android.annotation.TargetApi;
-import android.app.AppOpsManager;
+import android.app.ActivityManager;
 import android.content.Intent;
 
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +23,15 @@ public class BeTrackActivity extends AppCompatActivity {
     private Menu SaveMenuRef = null;
 
 
+    private boolean isMyServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (SettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public InfoStudy ObjInfoStudy = new InfoStudy();
     private SettingsBetrack ObjSettingsBetrack = new SettingsBetrack();
@@ -54,10 +62,10 @@ public class BeTrackActivity extends AppCompatActivity {
             findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
             findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
 
-            ObjInfoStudy.StudyOnGoing = prefs.getBoolean(ObjInfoStudy.STUDY_ONGOING, false);
+            ObjInfoStudy.StudyStarted = prefs.getBoolean(ObjInfoStudy.STUDY_STARTED, false);
 
             //Check if a study is already going on
-            if (false == ObjInfoStudy.StudyOnGoing) {
+            if (false == ObjInfoStudy.StudyStarted) {
 
                 findViewById(R.id.Layout_Welcome).setVisibility(View.VISIBLE);
                 findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
@@ -83,14 +91,23 @@ public class BeTrackActivity extends AppCompatActivity {
             }
             else
             {
-                //A study is already going on
-                //Read the information of the study
+
+                //Read from the preference the information of the study
+                new SetupStudy(this, ObjInfoStudy);
 
                 //Update the study page
 
                 //we display the page of the study
                 findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
                 findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
+
+                //Broadcast an event to start the tracking service if not yet started
+                if (!isMyServiceRunning()) {
+                    Intent intent = new Intent();
+                    intent.setAction(SettingsBetrack.BROADCAST_START_TRACKING_NAME);
+                    sendBroadcast(intent);
+                }
+
             }
 
         }
@@ -99,7 +116,6 @@ public class BeTrackActivity extends AppCompatActivity {
         }
 
     }
-
 
 
     @Override

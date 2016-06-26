@@ -2,6 +2,7 @@ package com.app.uni.betrack;
 
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -16,7 +17,7 @@ import java.util.Set;
  * Created by cevincent on 4/22/16.
  */
 public class SetupStudy {
-    static public String STUDY_STARTED = "study_started";
+
     private String STUDY_ID = "StudyId";
     private String STUDY_NAME = "StudyName";
     private String STUDY_VERSIONAPP = "VersionApp";
@@ -26,6 +27,16 @@ public class SetupStudy {
     private String STUDY_LINKENDSTUDY = "LinkEndStudy";
     private static int TIME_OUT = 1000;
     private Activity mActivity = null;
+
+    private boolean isMyServiceRunning() {
+        ActivityManager manager = (ActivityManager) mActivity.getSystemService(mActivity.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (SettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     GetWhatToWatch gwtw = new GetWhatToWatch(new GetWhatToWatch.AsyncResponse(){
 
@@ -43,9 +54,13 @@ public class SetupStudy {
                         SharedPreferences.Editor editor = prefs.edit();
                         Set<String> hs = prefs.getStringSet("AppNameToWatch", new HashSet<String>());
                         Set<String> in = new HashSet<String>(hs);
-                        String StudyStatusKey = STUDY_STARTED;
 
                         //Broadcast an event to start the tracking service if not yet started
+                        if (!isMyServiceRunning()) {
+                            Intent intent = new Intent();
+                            intent.setAction(SettingsBetrack.BROADCAST_START_TRACKING_NAME);
+                            mActivity.sendBroadcast(intent);
+                        }
 
                         //Show the study screen
                         mActivity.findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
@@ -60,13 +75,10 @@ public class SetupStudy {
                             in.add(GetWhatToWatch.ContextInfoStudy.ApplicationsToWatch.get(i));
                         }
                         editor.putStringSet("AppNameToWatch", in);
-                        //Read the data of the study from InfoStudy and update the local preference settings
-                        //editor.putBoolean(StudyStatusKey, true);
-                        //editor.commit();
 
-                        //We save in the preference that a study has been started
-                        //editor.putBoolean(InfoStudy.STUDY_ONGOING, true);
-                        //editor.commit();
+                        //We save in the preference that a study has been started and is ongoing
+                        editor.putBoolean(InfoStudy.STUDY_STARTED, true);
+                        editor.commit();
                     } else {
                         mActivity.findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
                         mActivity.findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
@@ -79,32 +91,13 @@ public class SetupStudy {
     );
 
     public SetupStudy(SharedPreferences prefs, InfoStudy ContextInfoStudy) {
-        //mActivity = context;
-        String StudyStatusKey = STUDY_STARTED;
-        final String StudyId = STUDY_ID;
-        final String StudyName = STUDY_NAME;
-        final String StudyVersionApp = STUDY_VERSIONAPP;
-        final String StudyDuration = STUDY_DURATION;
-        final String StudyPublicKey = STUDY_PUBLICKEY;
-        final String StudyContactEmail = STUDY_CONTACTEMAIL;
-        final String StudyLinkEndStudy = STUDY_LINKENDSTUDY;
-
-
 
         //final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
         SharedPreferences.Editor editor = prefs.edit();
-        boolean StudyStatus = prefs.getBoolean(StudyStatusKey, false);
 
-        //Check if a study has been already setup
-        if (false == StudyStatus) {
-            //Read the data of the study from InfoStudy and update the local preference settings
-            editor.putBoolean(StudyStatusKey, true);
-        }
-        else
-        {
-            //Read the data of the study from the local preference settings
-            ReadAppToWatch(ContextInfoStudy, prefs);
-        }
+        //Read the data of the study from the local preference settings
+        ReadAppToWatch(ContextInfoStudy, prefs);
+
     }
 
     public SetupStudy(Activity context, InfoStudy ContextInfoStudy) {
@@ -112,10 +105,7 @@ public class SetupStudy {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
 
-        String StudyStatusKey = STUDY_STARTED;
-
-        boolean StudyStatus = prefs.getBoolean(StudyStatusKey, false);
-        if (false == StudyStatus) {
+        if (false == ContextInfoStudy.StudyStarted) {
             try
             {
                 GetWhatToWatch.ContextInfoStudy = ContextInfoStudy;
@@ -135,7 +125,7 @@ public class SetupStudy {
         }
     }
 
-    private void ReadAppToWatch(InfoStudy ContextInfoStudy, SharedPreferences prefs)
+    public void ReadAppToWatch(InfoStudy ContextInfoStudy, SharedPreferences prefs)
     {
         Set<String> hs = prefs.getStringSet("AppNameToWatch", new HashSet<String>());
         Set<String> in = new HashSet<String>(hs);
