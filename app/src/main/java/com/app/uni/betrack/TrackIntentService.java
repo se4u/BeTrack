@@ -5,15 +5,11 @@ import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.content.Context;
-import android.content.IntentFilter;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -186,8 +182,7 @@ public class TrackIntentService extends IntentService {
                                     ScreenReceiver.SemUpdateStopDateTime.release();
                                 }
 
-
-                                if (ContextInfoStudy.ApplicationsToWatch.get(i).equals(topActivity))
+                                if (topActivity.toLowerCase().contains(ContextInfoStudy.ApplicationsToWatch.get(i).toLowerCase()))
                                 {
 
                                     //A new activity to be watch
