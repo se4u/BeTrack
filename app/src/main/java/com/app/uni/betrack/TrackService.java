@@ -13,6 +13,8 @@ public class TrackService extends Service {
     static final String TAG = "UpdaterService";
     public static InfoStudy mInfoStudy;
     public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
+
+
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
@@ -22,14 +24,13 @@ public class TrackService extends Service {
     @Override
     public void onCreate() { //
         super.onCreate();
-
+        Intent msgIntent = new Intent(this, TrackIntentService.class);
         Log.d(TAG, "onCreated");
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         BroadcastReceiver mReceiver = new ScreenReceiver();
         registerReceiver(mReceiver, filter);
-        Intent msgIntent = new Intent(this, TrackIntentService.class);
 
         //Start the service for monitoring app
         startService(msgIntent);
@@ -45,6 +46,7 @@ public class TrackService extends Service {
     @Override
     public void onDestroy() { //
         super.onDestroy();
+
         Log.d(TAG, "onDestroyed");
     }
 }

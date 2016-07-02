@@ -39,6 +39,10 @@ public class TrackIntentService extends IntentService {
     private static final String EXTRA_PARAM2 = "com.app.uni.betrack.extra.PARAM2";
     static final String TAG = "UpdaterIntentService";
 
+    static public String ActivityOnGoing = null;
+    static public String ActivityStartDate = null;
+    static public String ActivityStartTime = null;
+
     private LocalDataBase localdatabase = new LocalDataBase(this);;
 
     public LocalDataBase AccesLocalDB()
@@ -84,9 +88,6 @@ public class TrackIntentService extends IntentService {
 
     protected void onHandleIntent(Intent intent) {
         String topActivity = null;
-        String ActivityOnGoing = null;
-        String ActivityStartDate = null;
-        String ActvityStartTime=null;
         String ActivityStopDate = null;
         String ActivityStopTime=null;
         String StudyOnGoingKey = InfoStudy.STUDY_STARTED;
@@ -95,6 +96,7 @@ public class TrackIntentService extends IntentService {
         boolean StudyOnGoing;
 
         PostDataAvailable.localdatabase = this.AccesLocalDB();
+        ScreenReceiver.localdatabase = this.AccesLocalDB();
 
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
@@ -121,88 +123,75 @@ public class TrackIntentService extends IntentService {
 
 
                             //Check if that activity should be monitored
-                            for(int i =0;i<ContextInfoStudy.ApplicationsToWatch.size();i++){
+                            for(int i =0;i<ContextInfoStudy.ApplicationsToWatch.size();i++) {
 
                                 //Log.d(TAG, "Application to watch " + ContextInfoStudy.ApplicationsToWatch.get(i));
 
-                                if (null != ActivityOnGoing)
-                                {
+                                if (null != ActivityOnGoing) {
                                     //An activity was watched and should not be watched anymore
                                     ScreenReceiver.SemUpdateStopDateTime.acquire();
-                                    if ((null != topActivity) && (!ActivityOnGoing.equals(topActivity))||(ScreenReceiver.wasScreenOff))
-                                    {
+                                    if ((null != topActivity) && (!ActivityOnGoing.equals(topActivity)) || (ScreenReceiver.wasScreenOff)) {
 
-                                        if (false == ScreenReceiver.wasScreenOff)
-                                        {
+                                        if (false == ScreenReceiver.wasScreenOff) {
                                             //Save the stop date
                                             ActivityStopDate = sdf.format(new Date());
                                             //Save the stop time
                                             ActivityStopTime = shf.format(new Date());
-                                        }
-                                        else
-                                        {
-                                            //Use the date and time that was save just before the screen was off
-                                            //Save the stop date
-                                            ActivityStopDate = ScreenReceiver.ActivityStopDate;
-                                            //Save the stop time
-                                            ActivityStopTime = ScreenReceiver.ActivityStopTime;
+
+                                            //Encrypt the data before to save them in the database
+
+                                            //We save in the local database the informations about the study
+                                            values.clear();
+
+                                            values.put(LocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
+                                            values.put(LocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
+                                            values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                                            values.put(LocalDataBase.C_APPWATCH_TIMESTART, ActivityStartTime);
+                                            values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                                            this.AccesLocalDB().insertOrIgnore(values, LocalDataBase.TABLE_APPWATCH);
+                                            Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
 
 
+                                        } else {
                                             //Reset the flag screen off
                                             ScreenReceiver.wasScreenOff = false;
                                         }
-                                        Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
-
-                                        //Encrypt the data before to save them in the database
-
-                                        //We save in the local database the informations about the study
-                                        values.clear();
-
-                                        values.put(LocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
-                                        values.put(LocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
-                                        values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
-                                        values.put(LocalDataBase.C_APPWATCH_TIMESTART, ActvityStartTime);
-                                        values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
-                                        this.AccesLocalDB().insertOrIgnore(values,LocalDataBase.TABLE_APPWATCH);
 
                                         //Reinitialize activity watched infos
                                         ActivityOnGoing = null;
                                         ActivityStartDate = null;
-                                        ActvityStartTime = null;
+                                        ActivityStartTime = null;
                                         ActivityStopDate = null;
                                         ActivityStopTime = null;
 
                                     }
                                     ScreenReceiver.SemUpdateStopDateTime.release();
-                                }
-                                else
-                                {
+                                } else {
                                     ScreenReceiver.SemUpdateStopDateTime.acquire();
                                     ScreenReceiver.wasScreenOff = false;
                                     ScreenReceiver.SemUpdateStopDateTime.release();
                                 }
 
-                                if (topActivity.toLowerCase().contains(ContextInfoStudy.ApplicationsToWatch.get(i).toLowerCase()))
-                                {
+                                if ((null != topActivity) && (null != ContextInfoStudy.ApplicationsToWatch.get(i))) {
+                                    if (topActivity.toLowerCase().contains(ContextInfoStudy.ApplicationsToWatch.get(i).toLowerCase())) {
 
-                                    //A new activity to be watch
-                                    if (null == ActivityOnGoing)
-                                    {
-                                        ActivityOnGoing = topActivity;
+                                        //A new activity to be watch
+                                        if (null == ActivityOnGoing) {
+                                            ActivityOnGoing = topActivity;
 
-                                        //Save the date
-                                        ActivityStartDate = sdf.format(new Date());
-                                        //Save the start time
-                                        ActvityStartTime = shf.format(new Date());
+                                            //Save the date
+                                            ActivityStartDate = sdf.format(new Date());
+                                            //Save the start time
+                                            ActivityStartTime = shf.format(new Date());
 
-                                        Log.d(TAG, "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActvityStartTime);
+                                            Log.d(TAG, "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
+
+                                        }
 
                                     }
 
                                 }
-
                             }
-
                             //Check if the delta between 2 updates of the server was long enough that we can start a new
 
                             //Check if there is a WIFI connection

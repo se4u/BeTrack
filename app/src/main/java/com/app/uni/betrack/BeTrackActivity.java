@@ -1,8 +1,10 @@
 package com.app.uni.betrack;
 
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +21,9 @@ import android.widget.TextView;
 public class BeTrackActivity extends AppCompatActivity {
 
     private static final String TAG = "Status";
+
+    public static ProgressDialog dialog;
+    public static ActionBar actionBar;
 
     private Menu SaveMenuRef = null;
 
@@ -43,7 +48,12 @@ public class BeTrackActivity extends AppCompatActivity {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
 
+        actionBar = getSupportActionBar();
+        actionBar.hide();
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_girl_1_padding);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_betrack);
 
         //Update settings with value of preferences from the shared preference editor or default values
@@ -53,6 +63,7 @@ public class BeTrackActivity extends AppCompatActivity {
         ObjSettingsBetrack.StudyNotificationTime= prefs.getString(SettingsBetrack.STUDY_NOTIFICATION_TIME, "20:00");
         ObjSettingsBetrack.FrequencyUpdateServer = prefs.getInt(SettingsBetrack.FREQ_UPDATE_SERVER, 6);
 
+        //Display an Eula if needed
         new Eula(this).show();
 
         try
@@ -69,14 +80,8 @@ public class BeTrackActivity extends AppCompatActivity {
 
                 findViewById(R.id.Layout_Welcome).setVisibility(View.VISIBLE);
                 findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
-                //No study is on yet, get the available one
-                //Display all the study available
-                RadioButton button[] = new RadioButton[GetStudiesAvailable.NbrMaxStudy];
 
-                button[0] = (RadioButton) findViewById(R.id.radio_studyone);
-                button[1] = (RadioButton) findViewById(R.id.radio_studytwo);
-                button[2] = (RadioButton) findViewById(R.id.radio_studythree);
-
+                /* That was done in case we'll have multiple study, I keep it for now maybe I will reuse for multiple language
                 for (int i = 0; i < GetStudiesAvailable.NbrMaxStudy; i++) {
                     if (i < GetStudiesAvailable.NbrStudyAvailable) {
                         button[i].setText(GetStudiesAvailable.StudyName[i]);
@@ -88,9 +93,22 @@ public class BeTrackActivity extends AppCompatActivity {
                         button[i].setVisibility(View.GONE);
                     }
                 }
+                */
+                TextView StudyTitle = new TextView(this);
+                StudyTitle = (TextView) findViewById(R.id.study_title);
+                StudyTitle.setText(GetStudiesAvailable.StudyName[0]);
+
+                TextView StudyDescription = new TextView(this);
+                StudyDescription = (TextView) findViewById(R.id.study_description);
+                StudyDescription.setText(GetStudiesAvailable.StudyDescription[0]);
+
             }
             else
             {
+                //Get the unique ID of that user
+                InfoStudy.IdUser = prefs.getString(InfoStudy.ID_USER, "No user ID !");
+                //Get the description of the study
+                InfoStudy.StudyDescription = prefs.getString(InfoStudy.STUDY_DESCRIPTION, "No study description !");
 
                 //Read from the preference the information of the study
                 new SetupStudy(this, ObjInfoStudy);
@@ -98,6 +116,7 @@ public class BeTrackActivity extends AppCompatActivity {
                 //Update the study page
 
                 //we display the page of the study
+                actionBar.show();
                 findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
                 findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
 
@@ -140,67 +159,37 @@ public class BeTrackActivity extends AppCompatActivity {
         return true;
     }
 
-
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-        RadioButton button[] = new RadioButton[GetStudiesAvailable.NbrMaxStudy];
-        TextView StudyDescription = new TextView(this);
-        StudyDescription = (TextView) findViewById(R.id.test_description);
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radio_studyone:
-                if (checked)
-                    StudyDescription.setText(GetStudiesAvailable.StudyDescription[0]);
-                    break;
-            case R.id.radio_studytwo:
-                if (checked)
-                    StudyDescription.setText(GetStudiesAvailable.StudyDescription[1]);
-                    break;
-            case R.id.radio_studythree:
-                if (checked)
-                    StudyDescription.setText(GetStudiesAvailable.StudyDescription[2]);
-                    break;
-        }
-    }
-
     public void onButtonClicked(View view) {
+
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
 
         switch(view.getId()) {
             case R.id.buttonUpdate:
-                //Disable the radio button
-                RadioButton button[] = new RadioButton[GetStudiesAvailable.NbrMaxStudy];
-
-                button[0] = (RadioButton) findViewById(R.id.radio_studyone);
-                button[1] = (RadioButton) findViewById(R.id.radio_studytwo);
-                button[2] = (RadioButton) findViewById(R.id.radio_studythree);
-
-                for (int i = 0; i < GetStudiesAvailable.NbrMaxStudy; i++) {
-                    if (i < GetStudiesAvailable.NbrStudyAvailable) {
-                        button[i].setEnabled(false);
-                    }
+                TextView StudyDescription = new TextView(this);
+                //Get the unique ID of that user
+                if (null == Eula.IdUser) {
+                    InfoStudy.IdUser = prefs.getString(InfoStudy.ID_USER, "No user ID !");
                 }
 
-                //Disable the setting menu
-                SaveMenuRef.clear();
+                //Save the study description
+                StudyDescription = (TextView) findViewById(R.id.study_description);
+                editor.putString(InfoStudy.STUDY_DESCRIPTION, StudyDescription.getText().toString());
+                //Get the description of the study
+                InfoStudy.StudyDescription = StudyDescription.getText().toString();
+                editor.commit();
 
-                //Hide the start button
-                Button StartButton;
-                StartButton = (Button) findViewById(R.id.buttonUpdate);
-                StartButton.setVisibility(View.GONE);
+                dialog = ProgressDialog.show(this, this.getString(R.string.welcome_loading),
+                        this.getString(R.string.welcome_wait), true);
 
-                //Display the progress bar
-                ProgressBar WaitData;
-                WaitData = (ProgressBar) findViewById(R.id.ProgressBarWaitData);
-                WaitData.setVisibility(View.VISIBLE);
-                TextView LoadingText;
-                LoadingText = (TextView) findViewById(R.id.WelcomeLoading);
-                LoadingText.setVisibility(View.VISIBLE);
                 //We set up the study
                 new SetupStudy(this, ObjInfoStudy);
 
                 break;
             case R.id.ButtonNetwork:
+
+                dialog = ProgressDialog.show(this, this.getString(R.string.welcome_loading),
+                        this.getString(R.string.welcome_wait), true);
                 //We set up the study
                 new SetupStudy(this, ObjInfoStudy);
                 break;

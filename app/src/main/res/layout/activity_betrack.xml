@@ -3,121 +3,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.app.uni.betrack.BeTrackActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/Layout_Welcome"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" android:layout_weight="3">
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_girl_1"/>
+
+                    <TextView android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:shadowColor="#000000"
+                        android:shadowDx="0.0"
+                        android:shadowDy="0.0"
+                        android:shadowRadius="5.0"
+                        android:gravity="center"
+                        android:textSize="60sp"
+                        android:textColor="#FFF"
+                        android:textStyle="bold"
+                        android:background="@drawable/seasons"
+                        android:text="@string/welcome_title"/>
+                </FrameLayout>
+
             <!-- Main Layout of Status Activity -->
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
-                <!-- Title TextView-->
-                <TextView android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" android:gravity="center"
-                    android:textSize="30sp"
-                    android:text="@string/welcome_title"/>
-                <!-- Title TextView-->
-                <TextView android:layout_width="fill_parent"
-                    android:layout_marginTop="5sp"
-                    android:layout_height="wrap_content" android:gravity="left"
-                    android:text="@string/welcome_select"/>
-                <!-- Status EditText -->
-                <!-- Update Button -->
-                <RadioGroup
-                    android:layout_marginTop="5sp"
-                    android:id="@+id/Group_Study"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Study one"
-                        android:id="@+id/radio_studyone"
-                        android:onClick="onRadioButtonClicked"
-                        android:enabled="true"
-                        android:checked="true" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="New RadioButton"
-                        android:id="@+id/radio_studytwo"
-                        android:onClick="onRadioButtonClicked"
-                        android:visibility="visible" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="New RadioButton"
-                        android:id="@+id/radio_studythree"
-                        android:onClick="onRadioButtonClicked"
-                        android:visibility="visible" />
-                </RadioGroup>
-
-                <!-- Title TextView-->
-                <TextView
-                    android:layout_marginTop="5sp"
-                    android:gravity="left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/welcome_title_description"/>
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:layout_weight="1">
                 <TextView
                     android:layout_width="fill_parent"
                     android:scrollbars = "vertical"
-                    android:gravity="left"
-                    android:layout_marginTop="5sp"
-                    android:layout_height="0dp"
-                    android:layout_weight="20"
-                    android:id="@+id/test_description"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:layout_height="fill_parent" android:layout_weight="4"
+                    android:id="@+id/study_title"
+
                     android:text="@string/welcome_description"/>
+
+                <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" android:layout_weight="1"
+                    android:fillViewport="true"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:scrollbars = "vertical"
+                    android:scrollbarStyle="insideInset"
+                    >
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:gravity="left"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/study_description"
+                        android:text="@string/welcome_description"/>
+
+                </ScrollView>
+
 
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:layout_marginTop="5sp"
-                    android:layout_weight="1"
                     android:text="@string/welcome_start"
+                    android:textColor="#FFF"
                     android:onClick="onButtonClicked"
+                    android:background="@drawable/button_custom"
+                    android:textStyle="bold"
                     android:id="@+id/buttonUpdate">
                 </Button>
-                <TextView
-                    android:scrollbars = "vertical"
-                    android:layout_marginTop="5sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_gravity="center_horizontal"
-                    android:id="@+id/WelcomeLoading"
-                    android:text="@string/welcome_loading"/>
-                <ProgressBar
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5sp"
-                    android:layout_weight="1"
-                    android:indeterminate="true"
-                    android:visibility="gone"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_gravity="center_horizontal"
-                    android:id="@+id/ProgressBarWaitData"/>
+
             </LinearLayout>
 
 
@@ -128,8 +101,12 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:id="@+id/Layout_Study"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical" android:layout_width="fill_parent"
@@ -143,6 +120,8 @@
                 android:layout_height="wrap_content" android:gravity="center"
                 android:textSize="30sp"
                 android:layout_margin="10dp" android:text="You"/>
+
+
 
             <Switch
                 android:layout_width="match_parent"
@@ -169,6 +148,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/Layout_NetworkError"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:visibility="invisible">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -202,8 +185,11 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="5sp"
                 android:layout_weight="1"
+                android:textColor="#FFF"
                 android:text="@string/network_retry"
                 android:onClick="onButtonClicked"
+                android:background="@drawable/button_custom"
+                android:textStyle="bold"
                 android:id="@+id/ButtonNetwork">
             </Button>
 

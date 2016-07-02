@@ -8,7 +8,12 @@ import java.util.ArrayList;
 public class InfoStudy {
 
     static public final String STUDY_STARTED = "study_started";
+    static public final String APP_NAME_TO_WATCH = "AppNameToWatch";
+    static public final String ID_USER = "IdUser";
+    static public final String STUDY_DESCRIPTION = "StudyDescription";
 
+    static public String IdUser; //Unique ID for this user
+    static public String StudyDescription; //Description of the study going on
 
     public Boolean StudyStarted; //A study is started
 

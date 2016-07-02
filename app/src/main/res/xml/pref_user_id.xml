@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="pref_user_id"
+        android:selectable="false"
+        android:summary="No user ID found"
+        android:title="@string/pref_header_your_id" />
+
+</PreferenceScreen>

@@ -20,6 +20,7 @@
         <receiver android:name="com.app.uni.betrack.StartTrackingReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="com.app.uni.betrack.START_TRACKING" />
             </intent-filter>
         </receiver>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 
 import java.util.HashSet;
@@ -49,10 +50,13 @@ public class SetupStudy {
                 @Override
                 public void run() {
 
+                    BeTrackActivity.dialog.dismiss();
+                    BeTrackActivity.actionBar.show();
+
                     if (null != output) {
                         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
                         SharedPreferences.Editor editor = prefs.edit();
-                        Set<String> hs = prefs.getStringSet("AppNameToWatch", new HashSet<String>());
+                        Set<String> hs = prefs.getStringSet(InfoStudy.APP_NAME_TO_WATCH, new HashSet<String>());
                         Set<String> in = new HashSet<String>(hs);
 
                         //Broadcast an event to start the tracking service if not yet started
@@ -67,14 +71,11 @@ public class SetupStudy {
                         mActivity.findViewById(R.id.Layout_NetworkError).setVisibility(View.INVISIBLE);
                         mActivity.findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
 
-                        //Display the settignthe menu
-                        mActivity.invalidateOptionsMenu();
-
                         //Save the applications to watch in the preference file
                         for (int i=0; i< GetWhatToWatch.ContextInfoStudy.ApplicationsToWatch.size(); i++) {
                             in.add(GetWhatToWatch.ContextInfoStudy.ApplicationsToWatch.get(i));
                         }
-                        editor.putStringSet("AppNameToWatch", in);
+                        editor.putStringSet(InfoStudy.APP_NAME_TO_WATCH, in);
 
                         //We save in the preference that a study has been started and is ongoing
                         editor.putBoolean(InfoStudy.STUDY_STARTED, true);
@@ -127,7 +128,7 @@ public class SetupStudy {
 
     public void ReadAppToWatch(InfoStudy ContextInfoStudy, SharedPreferences prefs)
     {
-        Set<String> hs = prefs.getStringSet("AppNameToWatch", new HashSet<String>());
+        Set<String> hs = prefs.getStringSet(InfoStudy.APP_NAME_TO_WATCH, new HashSet<String>());
         Set<String> in = new HashSet<String>(hs);
         Iterator<String> iterator = hs.iterator();
 

@@ -3,20 +3,24 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-- Study welcome screen -->
-    <string name="welcome_title">Welcome</string>
+    <string name="welcome_title">BeTrack</string>
     <string name="welcome_select">Select which study you want to join:</string>
     <string name="welcome_title_description">Description:</string>
     <string name="welcome_description">Blabblah</string>
-    <string name="welcome_start">Start !</string>
+    <string name="welcome_start">START</string>
     <string name="welcome_loading">Loading</string>
+    <string name="welcome_wait">Please wait...</string>
 
     <!-- Strings related to SettingsBetrack -->
 
     <!-- General settings -->
+    <string name="pref_header_info">Informations about the study </string>
+    <string name="pref_header_your_id">Your personnal ID </string>
     <string name="pref_header_general">General</string>
     <string name="pref_title_enable_study">Enable study</string>
-    <string name="pref_description_enable_study">Allow to be tempororarly or permarnently be out of the study
+    <string name="pref_description_enable_study">Allow to be temporarily or permanently be out of the study
     </string>
+
 
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>

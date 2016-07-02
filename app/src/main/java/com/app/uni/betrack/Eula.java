@@ -19,6 +19,8 @@ public class Eula {
     private String EULA_PREFIX = "eula_";
     private Activity mActivity;
 
+    static public String IdUser = null;
+
     public Eula(Activity context) {
         mActivity = context;
     }
@@ -40,6 +42,8 @@ public class Eula {
         final String eulaKey = EULA_PREFIX + versionInfo.versionCode;
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
         boolean hasBeenShown = prefs.getBoolean(eulaKey, false);
+
+
         if(hasBeenShown == false){
 
             // Show the Eula
@@ -55,10 +59,18 @@ public class Eula {
 
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+
                             // Mark this version as read.
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putBoolean(eulaKey, true);
                             editor.commit();
+                            // Create/Use an unique identifier for the phone
+                            IdUser = DeviceIdGenerator.readDeviceId(mActivity);
+                            editor.putString(InfoStudy.ID_USER, IdUser);
+                            editor.commit();
+
+                            InfoStudy.IdUser = IdUser;
+
                             dialogInterface.dismiss();
                         }
                     })

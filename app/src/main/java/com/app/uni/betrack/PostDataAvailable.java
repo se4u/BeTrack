@@ -67,7 +67,7 @@ public class PostDataAvailable  {
                 urlConnection.setDoOutput(true);
                 urlConnection.setDoInput(true);
                 urlConnection.setReadTimeout(SettingsBetrack.SERVER_TIMEOUT);
-                urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
+                urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT); //TODO we don't seem to wait, shall we connect to get the timeout synchronously ???
 
                 IdSql = values.getAsLong(LocalDataBase.C_APPWATCH_ID);
                 AppName = values.get(LocalDataBase.C_APPWATCH_APPLICATION).toString();
