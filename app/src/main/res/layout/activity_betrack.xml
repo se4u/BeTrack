@@ -108,40 +108,471 @@
         android:id="@+id/Layout_Study"
         android:visibility="visible">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical" android:layout_width="fill_parent"
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="right|top"
-            android:visibility="visible">
-            <!-- Update Button -->
+            android:fillViewport="true"
+            android:scrollbars="none"
+            android:scrollbarStyle="insideInset"
+            >
 
-            <!-- Title TextView-->
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:gravity="center"
-                android:textSize="30sp"
-                android:layout_margin="10dp" android:text="You"/>
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical" android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right|top"
+                android:visibility="visible">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="horizontal" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/LinearLayout_Period_Top"
+                    android:layout_gravity="right|top"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/border_custom"
+                    android:visibility="visible">
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="3">
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/button_round_custom_red"
+                            android:onClick="onButtonPeriodClicked"
+                            android:textStyle="bold"
+                            android:id="@+id/ButtonPeriod">
+                        </Button>
+                        <ImageView
+                            android:id="@+id/imageViewPeriod"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#FFCDD2"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/blood_drop" />
+                    </FrameLayout>
+
+                    <TextView android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:textColor="#FFF"
+                        android:paddingTop="10dp"
+                        android:layout_margin="10dp" android:text="Do you have your period today ?"
+                        android:gravity="center_vertical"/>
+
+                </LinearLayout>
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/LinearLayout_Period_Bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/border_custom"
+                    android:visibility="visible">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:textColor="#FFF"
+                        android:text="Yes"
+                        android:onClick="onButtonPeriodClicked"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:id="@+id/ButtonPeriodYes">
+                    </Button>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:textColor="#FFF"
+                        android:text="No"
+                        android:onClick="onButtonPeriodClicked"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:id="@+id/ButtonPeriodNo">
+                    </Button>
+
+                </LinearLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="horizontal" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|top"
+                    android:paddingTop="10dp"
+                    android:id="@+id/LinearLayout_Libido_Top"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/border_custom"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible">
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="3">
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/button_round_custom_neutral"
+                            android:onClick="onButtonBehaviourClicked"
+                            android:textStyle="bold"
+                            android:id="@+id/ButtonLibido">
+                        </Button>
+                        <ImageView
+                            android:id="@+id/imageViewLibido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#C8E6C9"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_wink" />
+                    </FrameLayout>
+
+                    <TextView android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:textColor="#FFF"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_margin="10dp" android:text="How is your libido today?"
+                        android:gravity="center_vertical"/>
+
+                </LinearLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/LinearLayout_Libido_Bottom"
+                    android:orientation="horizontal"  android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:background="@drawable/border_custom"
+                    android:visibility="gone">
+
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1">
+                        <Button
+                            android:layout_width="fill_parent" android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:onClick="onButtonBehaviourClicked"
+                            android:background="@drawable/rect_white"
+                            android:id="@+id/ButtonLibidoMax">
+                        </Button>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_happiness" />
+                    </FrameLayout>
+
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1">
+                        <Button
+                            android:layout_width="fill_parent" android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:onClick="onButtonBehaviourClicked"
+                            android:background="@drawable/rect_white"
+                            android:id="@+id/ButtonLibidoAvg">
+                        </Button>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_indifferent" />
+                    </FrameLayout>
+
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1">
+                        <Button
+                            android:layout_width="fill_parent" android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:onClick="onButtonBehaviourClicked"
+                            android:background="@drawable/rect_white"
+                            android:id="@+id/ButtonLibidoMin">
+                        </Button>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_dead" />
+                    </FrameLayout>
 
 
+                </LinearLayout>
 
-            <Switch
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Period "
-                android:textSize="20dp"
-                android:id="@+id/switch2"
-                android:layout_margin="0dp"
-                android:layout_marginTop="10dp" />
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="horizontal" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|top"
+                    android:id="@+id/LinearLayout_Social_Top"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/border_custom"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible">
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
 
-            <!-- Status EditText -->
+                        android:layout_height="fill_parent" android:layout_weight="3">
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/button_round_custom_neutral"
+                            android:onClick="onButtonSocialClicked"
+                            android:textStyle="bold"
+                            android:id="@+id/ButtonSocial">
+                        </Button>
+                        <ImageView
+                            android:id="@+id/imageViewSocial"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#C8E6C9"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_sunglasses" />
+                    </FrameLayout>
 
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="fill_parent" android:layout_weight="1"
-                android:textSize="80sp"
-                android:layout_margin="10dp" android:text="29 Days"
-                android:gravity="center_vertical|center_horizontal"/>
+                    <TextView android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="#FFF"
+                        android:layout_margin="10dp" android:text="How is your social life today?"
+                        android:gravity="center_vertical"/>
+
+                </LinearLayout>
 
 
-        </LinearLayout>
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/LinearLayout_Social_Bottom"
+                    android:orientation="horizontal"  android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:background="@drawable/border_custom"
+                    android:visibility="gone">
+
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1">
+                        <Button
+                            android:layout_width="fill_parent" android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:onClick="onButtonBehaviourClicked"
+                            android:background="@drawable/rect_white"
+                            android:id="@+id/ButtonSocialMax">
+                        </Button>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_happiness" />
+                    </FrameLayout>
+
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1">
+                        <Button
+                            android:layout_width="fill_parent" android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:onClick="onButtonBehaviourClicked"
+                            android:background="@drawable/rect_white"
+                            android:id="@+id/ButtonSocialAvg">
+                        </Button>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_indifferent" />
+                    </FrameLayout>
+
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1">
+                        <Button
+                            android:layout_width="fill_parent" android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:onClick="onButtonBehaviourClicked"
+                            android:background="@drawable/rect_white"
+                            android:id="@+id/ButtonSocialMin">
+                        </Button>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_dead" />
+                    </FrameLayout>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="horizontal" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|top"
+                    android:id="@+id/LinearLayout_Sexual_Top"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/border_custom"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible">
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+
+                        android:layout_height="fill_parent" android:layout_weight="3">
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/button_round_custom_neutral"
+                            android:onClick="onButtonSocialClicked"
+                            android:textStyle="bold"
+                            android:id="@+id/ButtonSexual">
+                        </Button>
+                        <ImageView
+                            android:id="@+id/imageViewSexual"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#C8E6C9"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_kiss" />
+                    </FrameLayout>
+
+                    <TextView android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:textColor="#FFF"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_margin="10dp" android:text="How is your sexual life today?"
+                        android:gravity="center_vertical"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/LinearLayout_Sexual_Bottom"
+                    android:orientation="horizontal"  android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:background="@drawable/border_custom"
+                    android:visibility="gone">
+
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1">
+                        <Button
+                            android:layout_width="fill_parent" android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:onClick="onButtonBehaviourClicked"
+                            android:background="@drawable/rect_white"
+                            android:id="@+id/ButtonSexualMax">
+                        </Button>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_happiness" />
+                    </FrameLayout>
+
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1">
+                        <Button
+                            android:layout_width="fill_parent" android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:onClick="onButtonBehaviourClicked"
+                            android:background="@drawable/rect_white"
+                            android:id="@+id/ButtonSexualAvg">
+                        </Button>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_indifferent" />
+                    </FrameLayout>
+
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1">
+                        <Button
+                            android:layout_width="fill_parent" android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:onClick="onButtonBehaviourClicked"
+                            android:background="@drawable/rect_white"
+                            android:id="@+id/ButtonSexualMin">
+                        </Button>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_dead" />
+                    </FrameLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="horizontal" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|top"
+                    android:id="@+id/LinearLayout_Study_Top"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/border_custom"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible">
+
+                    <TextView android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="#FFF"
+                        android:layout_margin="10dp" android:text="Remaining days of the study"
+                        android:gravity="center_vertical"/>
+
+                    <TextView android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" android:layout_weight="3"
+                        android:textSize="25sp"
+                        android:textColor="#FFF"
+                        android:background="@drawable/round_white"
+                        android:layout_margin="10dp" android:text="28"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
     </FrameLayout>
 
     <FrameLayout
