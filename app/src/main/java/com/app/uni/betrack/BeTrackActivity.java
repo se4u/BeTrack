@@ -13,6 +13,7 @@ import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,10 +23,12 @@ import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
@@ -62,6 +65,18 @@ public class BeTrackActivity extends AppCompatActivity {
     public InfoStudy ObjInfoStudy = new InfoStudy();
     private SettingsBetrack ObjSettingsBetrack = new SettingsBetrack();
 
+    static int id = 1;
+
+    // Returns a valid id that isn't in use
+    public int findId(){
+        View v = findViewById(id);
+        while (v != null){
+            v = findViewById(++id);
+        }
+        return id++;
+    }
+
+    private int id_period;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +166,16 @@ public class BeTrackActivity extends AppCompatActivity {
 
         }
 
+
+        LinearLayout item = (LinearLayout)findViewById(R.id.LinearLayout_Layout_List);
+        View child = getLayoutInflater().inflate(R.layout.window_text, null);
+        id_period = findId();
+        child.setId(id_period);
+
+
+
+        item.addView(child);
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -220,7 +245,9 @@ public class BeTrackActivity extends AppCompatActivity {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
 
-        View viewPeriod = findViewById(R.id.LinearLayout_Period_Bottom);
+        View Period1 = findViewById(id_period);
+
+        View viewPeriod[] = {Period1.findViewById(R.id.LinearLayout_Period_Bottom), Period1.findViewById(R.id.LinearLayout_Period_Top)};
 
         View[] viewLibido = {findViewById(R.id.LinearLayout_Libido_Top),
                              findViewById(R.id.LinearLayout_Libido_Bottom)};
@@ -239,10 +266,12 @@ public class BeTrackActivity extends AppCompatActivity {
                 findViewById(R.id.LinearLayout_Social_Top),
                 findViewById(R.id.LinearLayout_Social_Bottom)};
 
+        Log.d(TAG, "View selected" + view.getParent().getParent().getParent().getParent().toString());
+
         switch (view.getId()) {
 
             case R.id.ButtonPeriod:
-                if (View.VISIBLE == viewPeriod.getVisibility()) {
+                if (View.VISIBLE == viewPeriod[0].getVisibility()) {
                     animFirst(viewPeriod, null,  viewOther, null, false);
                 }
                 else
@@ -254,7 +283,7 @@ public class BeTrackActivity extends AppCompatActivity {
             case R.id.ButtonPeriodNo:
             case R.id.ButtonPeriodYes:
 
-                if (View.VISIBLE == viewPeriod.getVisibility()) {
+                if (View.VISIBLE == viewPeriod[0].getVisibility()) {
                     animFirst(viewPeriod, viewLibido, viewOther, viewNext, false);
                 }
                 else
@@ -266,13 +295,13 @@ public class BeTrackActivity extends AppCompatActivity {
 
     }
 
-    private void animFirst(final View viewPeriod, final View NextView[], final View listView[], final View listnextView[], boolean Visible) {
+    private void animFirst(final View viewPeriod[], final View NextView[], final View listView[], final View listnextView[], boolean Visible) {
 
         float AlphaStart = 0;
         float AlphaEnd = 0;
         final int translation_y;
         final int DURATION = 500;
-        final int TRANSLATION_Y = viewPeriod.getHeight();
+        final int TRANSLATION_Y = viewPeriod[0].getHeight();
 
         if (true == Visible) {
             AlphaStart = 0;
@@ -286,8 +315,16 @@ public class BeTrackActivity extends AppCompatActivity {
             translation_y = -TRANSLATION_Y;
         }
 
-        viewPeriod.setAlpha(AlphaStart);
+        //viewPeriod[0].setAlpha(AlphaStart);
 
+        viewPeriod[0].bringToFront();
+        viewPeriod[1].bringToFront();
+/*
+        for (int i = 0; i < listView.length; i++) {
+           listView[i].bringToFront();
+
+        }
+*/
         if (true == Visible) {
 
             for (int i = 0; i < listView.length; i++) {
@@ -300,9 +337,9 @@ public class BeTrackActivity extends AppCompatActivity {
 
             }
 
-            viewPeriod.setVisibility(View.VISIBLE);
+            viewPeriod[0].setVisibility(View.VISIBLE);
 
-            viewPeriod.animate()
+            viewPeriod[0].animate()
                     .alpha(AlphaEnd)
                     .setDuration(DURATION)
                     .setStartDelay(DURATION)
@@ -318,8 +355,9 @@ public class BeTrackActivity extends AppCompatActivity {
         }
         else
         {
-            viewPeriod.animate()
-                    .alpha(AlphaEnd)
+            viewPeriod[0].animate()
+                    //.alpha(AlphaEnd)
+                    .translationYBy(translation_y)
                     .setDuration(DURATION)
                     .setStartDelay(0)
                     .setListener(new AnimatorListenerAdapter() {
@@ -327,12 +365,12 @@ public class BeTrackActivity extends AppCompatActivity {
                         @Override
                         public void onAnimationEnd(final Animator animation) {
 
-                            if (View.VISIBLE == viewPeriod.getVisibility()) {
-                                viewPeriod.setVisibility(View.INVISIBLE);
+                            if (View.VISIBLE == viewPeriod[0].getVisibility()) {
+                                viewPeriod[0].setVisibility(View.INVISIBLE);
                             }
                             else
                             {
-                                viewPeriod.setVisibility(View.VISIBLE);
+                                viewPeriod[0].setVisibility(View.VISIBLE);
                             }
 
                             if (null == NextView) {

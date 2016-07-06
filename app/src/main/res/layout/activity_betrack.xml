@@ -119,87 +119,13 @@
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical" android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:id="@+id/LinearLayout_Layout_List"
                 android:layout_gravity="right|top"
                 android:visibility="visible">
 
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:orientation="horizontal" android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/LinearLayout_Period_Top"
-                    android:layout_gravity="right|top"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:background="@drawable/border_custom"
-                    android:visibility="visible">
-                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" android:layout_weight="3">
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="fill_parent"
-                            android:layout_gravity="center"
-                            android:background="@drawable/button_round_custom_red"
-                            android:onClick="onButtonPeriodClicked"
-                            android:textStyle="bold"
-                            android:id="@+id/ButtonPeriod">
-                        </Button>
-                        <ImageView
-                            android:id="@+id/imageViewPeriod"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="#FFCDD2"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentLeft="true"
-                            android:src="@drawable/blood_drop" />
-                    </FrameLayout>
+                <include android:id="@+id/cell0" layout="@layout/window_text"/>
 
-                    <TextView android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" android:layout_weight="1"
-                        android:textSize="20sp"
-                        android:textColor="#FFF"
-                        android:paddingTop="10dp"
-                        android:layout_margin="10dp" android:text="Do you have your period today ?"
-                        android:gravity="center_vertical"/>
-
-                </LinearLayout>
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/LinearLayout_Period_Bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/border_custom"
-                    android:visibility="visible">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:textColor="#FFF"
-                        android:text="Yes"
-                        android:onClick="onButtonPeriodClicked"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:id="@+id/ButtonPeriodYes">
-                    </Button>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:textColor="#FFF"
-                        android:text="No"
-                        android:onClick="onButtonPeriodClicked"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:id="@+id/ButtonPeriodNo">
-                    </Button>
-
-                </LinearLayout>
+                <include android:id="@+id/cell1" layout="@layout/window_text"/>
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:orientation="horizontal" android:layout_width="fill_parent"
