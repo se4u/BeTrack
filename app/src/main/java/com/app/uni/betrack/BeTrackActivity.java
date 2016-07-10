@@ -2,14 +2,11 @@ package com.app.uni.betrack;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.LayoutTransition;
-import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 
-import android.net.Uri;
-import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,22 +15,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 public class BeTrackActivity extends AppCompatActivity {
 
@@ -42,15 +29,11 @@ public class BeTrackActivity extends AppCompatActivity {
     public static ProgressDialog dialog;
     public static ActionBar actionBar;
 
+    private Context mContext;
+
     private Menu SaveMenuRef = null;
 
     private Animation animTranslate;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-
 
     private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
@@ -65,17 +48,6 @@ public class BeTrackActivity extends AppCompatActivity {
     public InfoStudy ObjInfoStudy = new InfoStudy();
     private SettingsBetrack ObjSettingsBetrack = new SettingsBetrack();
 
-    static int id = 1;
-
-    // Returns a valid id that isn't in use
-    public int findId(){
-        View v = findViewById(id);
-        while (v != null){
-            v = findViewById(++id);
-        }
-        return id++;
-    }
-
     private int id_period;
 
     @Override
@@ -83,12 +55,13 @@ public class BeTrackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
+        mContext = this;
 
         actionBar = getSupportActionBar();
         actionBar.hide();
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_girl_1_padding);
+        getSupportActionBar().setLogo(R.drawable.ic_logo_padding);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_betrack);
 
@@ -168,17 +141,15 @@ public class BeTrackActivity extends AppCompatActivity {
 
 
         LinearLayout item = (LinearLayout)findViewById(R.id.LinearLayout_Layout_List);
-        View child = getLayoutInflater().inflate(R.layout.window_text, null);
-        id_period = findId();
-        child.setId(id_period);
+
+        int[] imgs = {R.drawable.ic_girl_1, R.drawable.blood_drop};
+        View child1 = new CardBetrack(mContext,"Do you have your period today ?","Yes","No",imgs);
+        View child2 = new CardBetrack(mContext,"Do you have your period today ?",imgs);
 
 
+        item.addView(child1);
+        item.addView(child2);
 
-        item.addView(child);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -236,312 +207,5 @@ public class BeTrackActivity extends AppCompatActivity {
                 new SetupStudy(this, ObjInfoStudy);
                 break;
         }
-    }
-
-    //private ViewGroup viewGroup;
-
-    public void onButtonPeriodClicked(View view) {
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
-
-        View Period1 = findViewById(id_period);
-
-        View viewPeriod[] = {Period1.findViewById(R.id.LinearLayout_Period_Bottom), Period1.findViewById(R.id.LinearLayout_Period_Top)};
-
-        View[] viewLibido = {findViewById(R.id.LinearLayout_Libido_Top),
-                             findViewById(R.id.LinearLayout_Libido_Bottom)};
-
-        View[] viewOther = {findViewById(R.id.LinearLayout_Study_Top),
-                findViewById(R.id.LinearLayout_Sexual_Top),
-                findViewById(R.id.LinearLayout_Sexual_Bottom),
-                findViewById(R.id.LinearLayout_Social_Top),
-                findViewById(R.id.LinearLayout_Social_Bottom),
-                findViewById(R.id.LinearLayout_Libido_Top),
-                findViewById(R.id.LinearLayout_Libido_Bottom)};
-
-        View[] viewNext = {findViewById(R.id.LinearLayout_Study_Top),
-                findViewById(R.id.LinearLayout_Sexual_Top),
-                findViewById(R.id.LinearLayout_Sexual_Bottom),
-                findViewById(R.id.LinearLayout_Social_Top),
-                findViewById(R.id.LinearLayout_Social_Bottom)};
-
-        Log.d(TAG, "View selected" + view.getParent().getParent().getParent().getParent().toString());
-
-        switch (view.getId()) {
-
-            case R.id.ButtonPeriod:
-                if (View.VISIBLE == viewPeriod[0].getVisibility()) {
-                    animFirst(viewPeriod, null,  viewOther, null, false);
-                }
-                else
-                {
-                    animFirst(viewPeriod, null, viewOther, null, true);
-                }
-                break;
-
-            case R.id.ButtonPeriodNo:
-            case R.id.ButtonPeriodYes:
-
-                if (View.VISIBLE == viewPeriod[0].getVisibility()) {
-                    animFirst(viewPeriod, viewLibido, viewOther, viewNext, false);
-                }
-                else
-                {
-                    animFirst(viewPeriod, null, viewOther, null, true);
-                }
-                break;
-        }
-
-    }
-
-    private void animFirst(final View viewPeriod[], final View NextView[], final View listView[], final View listnextView[], boolean Visible) {
-
-        float AlphaStart = 0;
-        float AlphaEnd = 0;
-        final int translation_y;
-        final int DURATION = 500;
-        final int TRANSLATION_Y = viewPeriod[0].getHeight();
-
-        if (true == Visible) {
-            AlphaStart = 0;
-            AlphaEnd = 1;
-            translation_y = TRANSLATION_Y;
-        }
-        else
-        {
-            AlphaStart = 1;
-            AlphaEnd = 0;
-            translation_y = -TRANSLATION_Y;
-        }
-
-        //viewPeriod[0].setAlpha(AlphaStart);
-
-        viewPeriod[0].bringToFront();
-        viewPeriod[1].bringToFront();
-/*
-        for (int i = 0; i < listView.length; i++) {
-           listView[i].bringToFront();
-
-        }
-*/
-        if (true == Visible) {
-
-            for (int i = 0; i < listView.length; i++) {
-                if (View.VISIBLE == listView[i].getVisibility())
-                    listView[i].animate()
-                            .translationYBy(translation_y)
-                            .setDuration(DURATION)
-                            .setStartDelay(0)
-                            .start();
-
-            }
-
-            viewPeriod[0].setVisibility(View.VISIBLE);
-
-            viewPeriod[0].animate()
-                    .alpha(AlphaEnd)
-                    .setDuration(DURATION)
-                    .setStartDelay(DURATION)
-                    .setListener(new AnimatorListenerAdapter() {
-
-                        @Override
-                        public void onAnimationEnd(final Animator animation) {
-
-                        }
-                    })
-                    .start();
-
-        }
-        else
-        {
-            viewPeriod[0].animate()
-                    //.alpha(AlphaEnd)
-                    .translationYBy(translation_y)
-                    .setDuration(DURATION)
-                    .setStartDelay(0)
-                    .setListener(new AnimatorListenerAdapter() {
-
-                        @Override
-                        public void onAnimationEnd(final Animator animation) {
-
-                            if (View.VISIBLE == viewPeriod[0].getVisibility()) {
-                                viewPeriod[0].setVisibility(View.INVISIBLE);
-                            }
-                            else
-                            {
-                                viewPeriod[0].setVisibility(View.VISIBLE);
-                            }
-
-                            if (null == NextView) {
-                                for (int i = 0; i < listView.length; i++) {
-                                    if (View.VISIBLE == listView[i].getVisibility())
-                                        listView[i].animate()
-                                                .translationYBy(translation_y)
-                                                .setDuration(DURATION)
-                                                .setStartDelay(0)
-                                                .setListener(new AnimatorListenerAdapter() {
-
-                                                    @Override
-                                                    public void onAnimationStart(final Animator animation) {
-
-
-                                                    }
-                                                })
-                                                .start();
-                                }
-                            }
-                            else {
-                                NextView[1].animate()
-                                        .translationYBy(translation_y)
-                                        .setDuration(DURATION)
-                                        .setStartDelay(0)
-                                        .start();
-                                NextView[0].animate()
-                                        .translationYBy(translation_y)
-                                        .setDuration(DURATION)
-                                        .setStartDelay(0)
-                                        .setListener(new AnimatorListenerAdapter() {
-
-                                            @Override
-                                            public void onAnimationEnd(final Animator animation) {
-
-                                                NextView[1].setAlpha(0);
-                                                NextView[1].setVisibility(View.VISIBLE);
-                                                NextView[1].animate()
-                                                        .alpha(1)
-                                                        .setDuration(DURATION)
-                                                        .setStartDelay(0)
-                                                        .setListener(new AnimatorListenerAdapter() {
-
-                                                            @Override
-                                                            public void onAnimationEnd(final Animator animation) {
-                                                                final int NEXTVIEW_TRANSLATION_Y = NextView[1].getHeight();
-                                                                for (int i = 0; i < listnextView.length; i++) {
-                                                                    if (View.VISIBLE == listnextView[i].getVisibility())
-                                                                        listnextView[i].animate()
-                                                                                .translationYBy(-NEXTVIEW_TRANSLATION_Y)
-                                                                                .setDuration(DURATION)
-                                                                                .setStartDelay(0)
-                                                                                .start();
-                                                                }
-                                                            }
-                                                        })
-                                                        .start();
-
-                                            }
-                                        })
-                                        .start();
-
-                            }
-
-                        }
-                    })
-                    .start();
-        }
-
-    }
-
-
-
-    public void onButtonBehaviourClicked(View view) {
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
-
-        View[] viewLibido = {findViewById(R.id.LinearLayout_Libido_Top),
-                findViewById(R.id.LinearLayout_Libido_Bottom)};
-
-        View[] viewNext = {findViewById(R.id.LinearLayout_Study_Top),
-                findViewById(R.id.LinearLayout_Sexual_Top),
-                findViewById(R.id.LinearLayout_Sexual_Bottom),
-                findViewById(R.id.LinearLayout_Social_Top),
-                findViewById(R.id.LinearLayout_Social_Bottom)};
-
-        switch (view.getId()) {
-
-            case R.id.ButtonLibido:
-
-                break;
-
-            case R.id.ButtonLibidoMax:
-            case R.id.ButtonLibidoAvg:
-            case R.id.ButtonLibidoMin:
-                RemoveMood(viewLibido, viewNext);
-                break;
-        }
-
-    }
-
-    private void RemoveMood(final View viewToRemove[], final View listView[]) {
-
-        final int DURATION = 500;
-        final int NEXTVIEW_TRANSLATION_X = viewToRemove[0].getWidth();
-        viewToRemove[1].animate()
-                .alpha(0)
-                .setDuration(DURATION)
-                .setStartDelay(DURATION)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationStart(final Animator animation) {
-                        viewToRemove[0].animate()
-                                .translationXBy(NEXTVIEW_TRANSLATION_X)
-                                .setDuration(DURATION)
-                                .setStartDelay(0)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(final Animator animation) {
-                                        viewToRemove[1].setVisibility(View.GONE);
-                                    }
-                                })
-                                .start();
-                    }
-                    @Override
-                    public void onAnimationEnd(final Animator animation) {
-                        viewToRemove[0].setVisibility(View.GONE);
-                    }
-                })
-                .start();
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "BeTrack Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.app.uni.betrack/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "BeTrack Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.app.uni.betrack/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
     }
 }

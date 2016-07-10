@@ -1,17 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/RelativeLayout_Period_Top"
+        android:id="@+id/CardBetrackRelativeLayout_Top"
         >
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right|top"
-            android:id="@+id/LinearLayout_Period_Top"
+            android:id="@+id/CardBetrackLinearLayout_Top"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:background="@drawable/border_custom"
@@ -24,71 +21,58 @@
                     android:layout_height="fill_parent"
                     android:layout_gravity="center"
                     android:background="@drawable/button_round_custom_red"
-                    android:onClick="onButtonPeriodClicked"
-                    android:textStyle="bold"
-                    android:id="@+id/ButtonPeriod">
+                    android:id="@+id/CardBetrackButton">
                 </Button>
-                <ImageView
-                    android:id="@+id/imageViewPeriod"
+                <ImageSwitcher android:id="@+id/CardBetrackSwitcher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="#FFCDD2"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
-                    android:src="@drawable/blood_drop" />
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    />
             </FrameLayout>
 
             <TextView android:layout_width="fill_parent"
+                android:id="@+id/CardBetrackQuestion"
                 android:layout_height="fill_parent" android:layout_weight="1"
                 android:textSize="20sp"
                 android:textColor="#FFF"
-                android:paddingTop="10dp"
-                android:layout_margin="10dp" android:text="Do you have your period today ?"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:layout_margin="10dp" android:text="Blah blah"
                 android:gravity="center_vertical"/>
 
         </LinearLayout>
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_below="@+id/RelativeLayout_Period_Top"
+        android:id="@+id/CardBetrackLine"
+        android:layout_below="@+id/CardBetrackRelativeLayout_Top"
         android:layout_height="wrap_content">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/CardBetrackLine"
+        android:layout_height="wrap_content">
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/LinearLayout_Period_Bottom"
+            android:orientation="horizontal"
+            android:id="@+id/CardBetrackLinearLayout_Bottom"
             android:layout_gravity="right"
             android:background="@drawable/border_custom"
             android:visibility="visible">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:textColor="#FFF"
-                android:text="Yes"
-                android:onClick="onButtonPeriodClicked"
-                android:background="?android:attr/selectableItemBackground"
-                android:id="@+id/ButtonPeriodYes">
-            </Button>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:textColor="#FFF"
-                android:text="No"
-                android:onClick="onButtonPeriodClicked"
-                android:background="?android:attr/selectableItemBackground"
-                android:id="@+id/ButtonPeriodNo">
-            </Button>
-
         </LinearLayout>
     </RelativeLayout>
-</RelativeLayout>
+</merge>

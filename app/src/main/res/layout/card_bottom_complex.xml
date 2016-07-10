@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:layout_weight="1">
+        <Button
+            android:layout_width="fill_parent" android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:onClick="onButtonBehaviourClicked"
+            android:background="@drawable/round_white"
+            android:id="@+id/ButtonLibidoMax">
+        </Button>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_happiness" />
+    </FrameLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:layout_weight="1">
+        <Button
+            android:layout_width="fill_parent" android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            android:onClick="onButtonBehaviourClicked"
+            android:background="@drawable/round_white"
+            android:id="@+id/ButtonLibidoAvg">
+        </Button>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_indifferent" />
+    </FrameLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:layout_weight="1">
+        <Button
+            android:layout_width="fill_parent" android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            android:onClick="onButtonBehaviourClicked"
+            android:background="@drawable/round_white"
+            android:id="@+id/ButtonLibidoMin">
+        </Button>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_dead" />
+    </FrameLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:layout_weight="1">
+        <Button
+            android:layout_width="fill_parent" android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            android:onClick="onButtonBehaviourClicked"
+            android:background="@drawable/round_white"
+            android:id="@+id/ButtonLibidoAvg2">
+        </Button>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_indifferent" />
+    </FrameLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:layout_weight="1">
+        <Button
+            android:layout_width="fill_parent" android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            android:onClick="onButtonBehaviourClicked"
+            android:background="@drawable/round_white"
+            android:id="@+id/ButtonLibidoAvg3">
+        </Button>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_indifferent" />
+    </FrameLayout>
+</merge>

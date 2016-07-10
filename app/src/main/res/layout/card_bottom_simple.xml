@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <TextView android:layout_width="fill_parent"
+        android:id="@+id/CardBetrackConfirm"
+        android:visibility="gone"
+        android:layout_height="fill_parent" android:layout_weight="1"
+        android:textSize="20sp"
+        android:textColor="#FFF"
+        android:paddingTop="10dp"
+        android:layout_margin="10dp" android:text="Blah blah"
+        android:gravity="center_vertical"/>
+
+    <Button
+        android:id="@+id/CardBetrackButtonNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:textColor="#FFF"
+        android:text="No"
+        android:background="?android:attr/selectableItemBackground">
+    </Button>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:textColor="#FFF"
+        android:text="Yes"
+        android:background="?android:attr/selectableItemBackground"
+        android:id="@+id/CardBetrackButtonYes">
+    </Button>
+
+</merge>
