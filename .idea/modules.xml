@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AppBetrack/AppBetrack.iml" filepath="$PROJECT_DIR$/AppBetrack/AppBetrack.iml" />
       <module fileurl="file://$PROJECT_DIR$/BeTrack.iml" filepath="$PROJECT_DIR$/BeTrack.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AppBetrack/app.iml" filepath="$PROJECT_DIR$/AppBetrack/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lib/material-stepper/material-stepper-form/material-stepper-form.iml" filepath="$PROJECT_DIR$/Lib/material-stepper/material-stepper-form/material-stepper-form.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lib/vertical-stepper-form/vertical-stepper-form.iml" filepath="$PROJECT_DIR$/Lib/vertical-stepper-form/vertical-stepper-form.iml" />
     </modules>
   </component>
 </project>

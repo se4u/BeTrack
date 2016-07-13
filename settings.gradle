@@ -1,1 +1,3 @@
-include ':app'
+include ':AppBetrack', ':vertical-stepper-form', ':material-stepper-form'
+project(':vertical-stepper-form').projectDir = new File('Lib/vertical-stepper-form')
+project(':material-stepper-form').projectDir = new File('Lib/material-stepper/material-stepper-form')
