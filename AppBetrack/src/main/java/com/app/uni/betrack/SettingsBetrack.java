@@ -13,6 +13,7 @@ public class SettingsBetrack {
     static public String STUDY_GETSTUDIESAVAILABLE = "BeTrackGetStudiesAvailable.php";
     static public String STUDY_GETAPPTOWATCH = "BeTrackGetAppToWatch.php?table_name=TestPeriod_applications";
     static public String STUDY_POSTAPPWATCHED = "BeTrackPostAppWatch.php";
+    static public String STUDY_POSTDAILYSTATUS = "BeTrackPostDailyStatus.php";
 
     static public String STUDY_ENABLE = "study_enable";
     static public String STUDY_NOTIFICATION = "study_notification";
@@ -23,6 +24,8 @@ public class SettingsBetrack {
     static public int SERVER_TIMEOUT = 20000;
     static public int DELTA_BTW_RECHECK_STUDY_STARTED = 120000;
     static public int SAMPLING_RATE = 1000;
+
+    static public int NOTIFICATION_ID = 1;
 
     public Boolean StudyEnable;
     public Boolean StudyNotification;

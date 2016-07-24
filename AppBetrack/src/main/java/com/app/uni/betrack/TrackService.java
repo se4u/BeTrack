@@ -27,8 +27,9 @@ public class TrackService extends Service {
         Intent msgIntent = new Intent(this, TrackIntentService.class);
         Log.d(TAG, "onCreated");
 
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        IntentFilter filter = new IntentFilter(Intent.ACTION_USER_PRESENT);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_SHUTDOWN);
         BroadcastReceiver mReceiver = new ScreenReceiver();
         registerReceiver(mReceiver, filter);
 

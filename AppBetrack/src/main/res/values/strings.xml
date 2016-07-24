@@ -81,4 +81,9 @@
     <string name="UsageStat_enable_title">Enable BeTrack</string>
     <string name="UsageStat_enable_text">To be a part of a study we need specific right on your phone. When you will click on the OK button of that window, the setting menu of your phone will be open. In that menu please allow BeTrack to access the statistics of your phone. When you are done get back to BeTrack and you\'ll be able to start the study.</string>
 
+    <!-- notification -->
+    <string name="notification_title">BeTrack</string>
+    <string name="notification_desc">Please fill up our little daily survey</string>
+
+
 </resources>

@@ -31,7 +31,7 @@ public class SplashScreen extends AppCompatActivity implements ViewSwitcher.View
     // The Handler used for manage the Runnable that switch the images
     private Handler m_Handler = new Handler();
 
-    private static final int[] imgs = {
+    private static final int[] imgs = {R.mipmap.ic_launcher,
             R.drawable.ic_girl_2, R.drawable.ic_boy_1, R.drawable.ic_girl_1};
 
     Activity mActivity = this;
@@ -87,9 +87,9 @@ public class SplashScreen extends AppCompatActivity implements ViewSwitcher.View
         mSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this,
                 android.R.anim.fade_out));
 
-        mSwitcher.setImageResource(imgs[imgs.length-1]);
-
-        m_Handler.post(m_AnimatedSplashScreen);
+        //mSwitcher.setImageResource(imgs[imgs.length-1]);
+        mSwitcher.setImageResource(imgs[0]);
+        //m_Handler.post(m_AnimatedSplashScreen);
 
         try
         {

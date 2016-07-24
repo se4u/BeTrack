@@ -15,14 +15,15 @@ import java.util.concurrent.Semaphore;
  */
 public class ScreenReceiver extends BroadcastReceiver {
 
-    public static boolean wasScreenOff = false;
+    public static boolean ScreenOff = false;
+
     public static LocalDataBase localdatabase;
 
     public LocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
-    public static final Semaphore SemUpdateStopDateTime = new Semaphore(1, true);
+
     static final String TAG = "ScreenReceiver";
 
     @Override
@@ -31,40 +32,37 @@ public class ScreenReceiver extends BroadcastReceiver {
         String ActivityStopTime = "";
         ContentValues values = new ContentValues();
 
-        if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            //Save the end time
+        if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
+            Log.d(TAG, "ACTION_USER_PRESENT");
+            ScreenOff = false;
 
+        }
+        if ((intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) ||
+                (intent.getAction().equals(Intent.ACTION_SHUTDOWN))){
+
+            Log.d(TAG, "ACTION_SCREEN_OFF or ACTION_SHUTDOWN");
+            ScreenOff = true;
+            //Save the end time
             SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
             SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
 
-            try {
-                SemUpdateStopDateTime.acquire();
-                //Save the stop date
-                ActivityStopDate = sdf.format(new Date());
-                //Save the stop time
-                ActivityStopTime = shf.format(new Date());
+            //Save the stop date
+            ActivityStopDate = sdf.format(new Date());
+            //Save the stop time
+            ActivityStopTime = shf.format(new Date());
 
-                if (null != this.AccesLocalDB()) {
-                    //We save in the local database the informations about the study
-                    values.clear();
-                    values.put(LocalDataBase.C_APPWATCH_APPLICATION, TrackIntentService.ActivityOnGoing);
-                    values.put(LocalDataBase.C_APPWATCH_DATESTART, TrackIntentService.ActivityStartDate);
-                    values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
-                    values.put(LocalDataBase.C_APPWATCH_TIMESTART, TrackIntentService.ActivityStartTime);
-                    values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
-
-                    wasScreenOff = true;
-
-
-                    this.AccesLocalDB().insertOrIgnore(values, LocalDataBase.TABLE_APPWATCH);
-                    Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
-                }
-
-                SemUpdateStopDateTime.release();
-            } catch (InterruptedException e) {
-                Log.d(TAG, "Broadcast action error!");
+            if ((null != this.AccesLocalDB()) && (null != TrackIntentService.ActivityOnGoing)) {
+                //We save in the local database the informations about the study
+                values.clear();
+                values.put(LocalDataBase.C_APPWATCH_USERID, InfoStudy.IdUser);
+                values.put(LocalDataBase.C_APPWATCH_APPLICATION, TrackIntentService.ActivityOnGoing);
+                values.put(LocalDataBase.C_APPWATCH_DATESTART, TrackIntentService.ActivityStartDate);
+                values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                values.put(LocalDataBase.C_APPWATCH_TIMESTART, TrackIntentService.ActivityStartTime);
+                values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                this.AccesLocalDB().insertOrIgnore(values, LocalDataBase.TABLE_APPWATCH);
+                Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
             }
-
         }
     }
 

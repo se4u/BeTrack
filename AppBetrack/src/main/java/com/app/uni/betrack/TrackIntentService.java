@@ -3,6 +3,9 @@ package com.app.uni.betrack;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
@@ -10,6 +13,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -43,7 +47,9 @@ public class TrackIntentService extends IntentService {
     static public String ActivityStartDate = null;
     static public String ActivityStartTime = null;
 
-    private LocalDataBase localdatabase = new LocalDataBase(this);;
+    private String TimeTriggerAlarm = "14:21:00";
+
+    private LocalDataBase localdatabase = new LocalDataBase(this);
 
     public LocalDataBase AccesLocalDB()
     {
@@ -56,6 +62,7 @@ public class TrackIntentService extends IntentService {
 
     private         InfoStudy ContextInfoStudy = new InfoStudy();
 
+    private ExecutorService es = Executors.newFixedThreadPool(1);
     /**
      * Starts this service to perform action Foo with the given parameters. If
      * the service is already performing a task this action will be queued.
@@ -86,9 +93,34 @@ public class TrackIntentService extends IntentService {
         context.startService(intent);
     }
 
+    private final void createNotification(){
+        final NotificationManager mNotification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        final Intent launchNotificationIntent = new Intent(this, BeTrackActivity.class);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                1, launchNotificationIntent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Notification.Builder builder = new Notification.Builder(this)
+                .setWhen(System.currentTimeMillis())
+                .setTicker(getResources().getString(R.string.notification_title))
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setContentTitle(getResources().getString(R.string.notification_title))
+                .setContentText(getResources().getString(R.string.notification_desc))
+                .setContentIntent(pendingIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mNotification.notify(SettingsBetrack.NOTIFICATION_ID, builder.build());
+        } else {
+            mNotification.notify(SettingsBetrack.NOTIFICATION_ID, builder.getNotification());
+        }
+
+    }
+
     protected void onHandleIntent(Intent intent) {
         String topActivity = null;
         String ActivityStopDate = null;
+        String ActualTime = null;
         String ActivityStopTime=null;
         String StudyOnGoingKey = InfoStudy.STUDY_STARTED;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -101,6 +133,9 @@ public class TrackIntentService extends IntentService {
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+
+        //Read the user ID
+        String UserId = prefs.getString(InfoStudy.ID_USER, "NOID ?????");
 
         if (intent != null) {
             do {
@@ -121,6 +156,15 @@ public class TrackIntentService extends IntentService {
 
                             //Log.d(TAG, "Foreground App " + topActivity);
 
+                            //Check if we should fire a notification
+                            ActualTime = shf.format(new Date());
+                            Log.d(TAG, "Actual time:" + ActualTime + " time when to trigger the notification:" + TimeTriggerAlarm);
+                            if (TimeTriggerAlarm.equals(ActualTime))
+                            {
+                                Log.d(TAG, "Notification triggered");
+                                createNotification();
+                            }
+
 
                             //Check if that activity should be monitored
                             for(int i =0;i<ContextInfoStudy.ApplicationsToWatch.size();i++) {
@@ -129,10 +173,9 @@ public class TrackIntentService extends IntentService {
 
                                 if (null != ActivityOnGoing) {
                                     //An activity was watched and should not be watched anymore
-                                    ScreenReceiver.SemUpdateStopDateTime.acquire();
-                                    if ((null != topActivity) && (!ActivityOnGoing.equals(topActivity)) || (ScreenReceiver.wasScreenOff)) {
+                                    if ((null != topActivity) && (!ActivityOnGoing.equals(topActivity)) || (ScreenReceiver.ScreenOff)) {
 
-                                        if (false == ScreenReceiver.wasScreenOff) {
+                                        if (false == ScreenReceiver.ScreenOff) {
                                             //Save the stop date
                                             ActivityStopDate = sdf.format(new Date());
                                             //Save the stop time
@@ -142,7 +185,7 @@ public class TrackIntentService extends IntentService {
 
                                             //We save in the local database the informations about the study
                                             values.clear();
-
+                                            values.put(LocalDataBase.C_APPWATCH_USERID,  UserId);
                                             values.put(LocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
                                             values.put(LocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
                                             values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
@@ -152,9 +195,6 @@ public class TrackIntentService extends IntentService {
                                             Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
 
 
-                                        } else {
-                                            //Reset the flag screen off
-                                            ScreenReceiver.wasScreenOff = false;
                                         }
 
                                         //Reinitialize activity watched infos
@@ -165,26 +205,26 @@ public class TrackIntentService extends IntentService {
                                         ActivityStopTime = null;
 
                                     }
-                                    ScreenReceiver.SemUpdateStopDateTime.release();
-                                } else {
-                                    ScreenReceiver.SemUpdateStopDateTime.acquire();
-                                    ScreenReceiver.wasScreenOff = false;
-                                    ScreenReceiver.SemUpdateStopDateTime.release();
                                 }
+
+                                //Log.d(TAG, "Check app foreground: " + topActivity + "app to monitor: " + ContextInfoStudy.ApplicationsToWatch.get(i) + " ScreenOff: " + ScreenReceiver.ScreenOff);
 
                                 if ((null != topActivity) && (null != ContextInfoStudy.ApplicationsToWatch.get(i))) {
                                     if (topActivity.toLowerCase().contains(ContextInfoStudy.ApplicationsToWatch.get(i).toLowerCase())) {
 
                                         //A new activity to be watch
                                         if (null == ActivityOnGoing) {
-                                            ActivityOnGoing = topActivity;
 
-                                            //Save the date
-                                            ActivityStartDate = sdf.format(new Date());
-                                            //Save the start time
-                                            ActivityStartTime = shf.format(new Date());
+                                            if (false == ScreenReceiver.ScreenOff) {
+                                                ActivityOnGoing = topActivity;
 
-                                            Log.d(TAG, "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
+                                                //Save the date
+                                                ActivityStartDate = sdf.format(new Date());
+                                                //Save the start time
+                                                ActivityStartTime = shf.format(new Date());
+
+                                                Log.d(TAG, "IdUser: " + UserId + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
+                                            }
 
                                         }
 
@@ -201,9 +241,7 @@ public class TrackIntentService extends IntentService {
                             {
 
                                 //Check if we are not already transferring the data
-
                                 if (PostDataAvailable.SemUpdateServer.tryAcquire()) {
-                                    ExecutorService es = Executors.newFixedThreadPool(1);
                                     es.execute(new Runnable() {
                                         @Override
                                         public void run() {
@@ -211,6 +249,10 @@ public class TrackIntentService extends IntentService {
                                             PostDataAvailable.Start();
                                         }
                                     });
+                                }
+                                else
+                                {
+                                    Log.d(TAG, "tryacquire SemUpdateServer failed");
                                 }
                             }
 

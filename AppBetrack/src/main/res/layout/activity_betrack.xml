@@ -20,27 +20,29 @@
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" android:layout_weight="3">
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_girl_1"/>
+            <!--
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_girl_1"/>
+                -->
 
-                    <TextView android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:shadowColor="#000000"
-                        android:shadowDx="0.0"
-                        android:shadowDy="0.0"
-                        android:shadowRadius="5.0"
-                        android:gravity="center"
-                        android:textSize="60sp"
-                        android:textColor="#FFF"
-                        android:textStyle="bold"
-                        android:background="@drawable/seasons"
-                        android:text="@string/welcome_title"/>
-                </FrameLayout>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:shadowColor="#000000"
+                    android:shadowDx="0.0"
+                    android:shadowDy="0.0"
+                    android:shadowRadius="5.0"
+                    android:gravity="center"
+                    android:textSize="60sp"
+                    android:textColor="#FFF"
+                    android:textStyle="bold"
+                    android:text="@string/welcome_title"/>
+        </FrameLayout>
 
-            <!-- Main Layout of Status Activity -->
+    <!-- Main Layout of Status Activity -->
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/activity_vertical_margin"
@@ -98,7 +100,8 @@
 
     </FrameLayout>
 
-    <FrameLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/activity_vertical_margin"
@@ -112,6 +115,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:fillViewport="true"
+            android:layout_weight="1"
             android:scrollbars="none"
             android:scrollbarStyle="insideInset"
             >
@@ -122,6 +126,7 @@
                 android:id="@+id/LinearLayout_Layout_List"
                 android:layout_gravity="right|top"
                 android:visibility="visible">
+                <!--
                 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent" android:layout_height="match_parent"
@@ -134,40 +139,43 @@
                         android:layout_alignParentTop="true"/>
 
                 </RelativeLayout>
+                -->
 
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:orientation="horizontal" android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|top"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/LinearLayout_Study_Top"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:background="@drawable/border_custom"
-                    android:layout_marginTop="10dp"
-                    android:visibility="visible">
 
-                    <TextView android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" android:layout_weight="1"
-                        android:textSize="20sp"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"
-                        android:textColor="#FFF"
-                        android:layout_margin="10dp" android:text="Remaining days"
-                        android:gravity="center_vertical"/>
-
-                    <TextView android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" android:layout_weight="3"
-                        android:textSize="25sp"
-                        android:textColor="#FFF"
-                        android:background="@drawable/round_white"
-                        android:layout_margin="10dp" android:text="28"
-                        android:gravity="center"/>
-
-                </LinearLayout>
             </LinearLayout>
+
         </ScrollView>
-    </FrameLayout>
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/LinearLayout_Study_Top"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/border_custom"
+            android:layout_marginTop="10dp"
+
+            android:visibility="visible">
+
+            <TextView android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:layout_weight="1"
+                android:textSize="20sp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:textColor="#FFF"
+                android:layout_margin="10dp" android:text="Remaining days"
+                android:gravity="center_vertical"/>
+
+            <TextView android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:layout_weight="3"
+                android:textSize="25sp"
+                android:textColor="#FFF"
+                android:layout_margin="10dp" android:text="28"
+                android:gravity="center"/>
+
+        </LinearLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

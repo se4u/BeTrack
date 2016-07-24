@@ -8,6 +8,7 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
 
@@ -45,6 +46,10 @@
 
         <activity
             android:name="com.app.uni.betrack.BeTrackActivity">
+        </activity>
+
+        <activity
+            android:name="com.app.uni.betrack.SettingsActivity">
         </activity>
 
     </application>

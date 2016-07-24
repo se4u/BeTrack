@@ -40,7 +40,7 @@ public class CardBetrack extends RelativeLayout implements ViewSwitcher.ViewFact
     private LinearLayout mBottomCard;
     private LinearLayout mTopCard;
 
-    private void InternalSetBackground(Drawable Background, Button button)
+    public static void InternalSetBackground(Drawable Background, Button button)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             button.setBackground(Background);
@@ -139,6 +139,7 @@ public class CardBetrack extends RelativeLayout implements ViewSwitcher.ViewFact
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BackgroundRed = (Drawable)getResources().getDrawable(R.drawable.button_round_custom_red, mContext.getTheme());
             BackgroundGreen = (Drawable)getResources().getDrawable(R.drawable.button_round_custom_neutral, mContext.getTheme());
+
         } else {
             BackgroundRed = (Drawable)getResources().getDrawable(R.drawable.button_round_custom_red);
             BackgroundGreen = (Drawable)getResources().getDrawable(R.drawable.button_round_custom_neutral);
@@ -208,7 +209,7 @@ public class CardBetrack extends RelativeLayout implements ViewSwitcher.ViewFact
                 public void onClick(View v) {
                     mSwitcher.setImageResource(mImgs[0]);
                     InternalSetBackground(BackgroundGreen, mIcon);
-                    animateUpDown(mBottomCard);
+                    //animateUpDown(mBottomCard);
                 }
             });
             mAnswerYes.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +217,7 @@ public class CardBetrack extends RelativeLayout implements ViewSwitcher.ViewFact
                 public void onClick(View v) {
                     mSwitcher.setImageResource(mImgs[1]);
                     InternalSetBackground(BackgroundRed, mIcon);
-                    animateUpDown(mBottomCard);
+                    //animateUpDown(mBottomCard);
                 }
             });
         }
