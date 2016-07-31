@@ -1,21 +1,12 @@
 package com.app.uni.betrack;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Semaphore;
@@ -84,11 +75,20 @@ public class PostDataAvailable  {
 
                     IdSql = values.getAsLong(LocalDataBase.C_APPWATCH_ID);
 
-                    UserId = values.get(LocalDataBase.C_APPWATCH_USERID).toString();
+                    if (null != InfoStudy.IdUser) {
+                        UserId = InfoStudy.IdUser;
+                    }
+                    else
+                    {
+                        TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
+                        Log.d(TAG, "User ID for table appwatch not accessible yet we'll try later");
+                        break;
+                    }
+
                     AppName = values.get(LocalDataBase.C_APPWATCH_APPLICATION).toString();
                     StartDate = values.get(LocalDataBase.C_APPWATCH_DATESTART).toString();
-                    StopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
                     StartTime = values.get(LocalDataBase.C_APPWATCH_TIMESTART).toString();
+                    StopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
                     StopTime = values.get(LocalDataBase.C_APPWATCH_TIMESTOP).toString();
 
                     Log.d(TAG, "PHP request: " + SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTAPPWATCHED + "?" +
@@ -110,6 +110,8 @@ public class PostDataAvailable  {
                     writer.flush();
                     writer.close();
 
+
+
                     if (HttpsURLConnection.HTTP_OK == urlConnection.getResponseCode()) {
                         AccesLocalDB().deleteELement(LocalDataBase.TABLE_APPWATCH, IdSql);
                     }
@@ -118,7 +120,7 @@ public class PostDataAvailable  {
                     Log.d(TAG, "Unable to access to server... ");
                     break;
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //Log.d(TAG, "Last request not completed we don't transfer the data ");
                     break;
                 } finally {
                     if (urlConnection != null) {
@@ -129,7 +131,7 @@ public class PostDataAvailable  {
             else
             {
                 TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
-                Log.d(TAG, "TABLE_APPWATCH has been transfered to the remote server, we can stop");
+                //Log.d(TAG, "TABLE_APPWATCH has been transfered to the remote server, we can stop");
             }
 
             values.clear();
@@ -149,7 +151,16 @@ public class PostDataAvailable  {
 
                     IdSql = values.getAsLong(LocalDataBase.C_USER_ID);
 
-                    UserId = values.get(LocalDataBase.C_USER_USERID).toString();
+                    if (null != InfoStudy.IdUser) {
+                        UserId = InfoStudy.IdUser;
+                    }
+                    else
+                    {
+                        TaskDone &= ~TABLE_USER_TRANSFERED;
+                        Log.d(TAG, "User ID for table user not accessible yet we'll try later");
+                        break;
+                    }
+
                     PeriodStatus = values.get(LocalDataBase.C_USER_PERIOD).toString();
                     Date = values.get(LocalDataBase.C_USER_DATE).toString();
 
@@ -177,7 +188,7 @@ public class PostDataAvailable  {
                     Log.d(TAG, "Unable to access to server... ");
                     break;
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //Log.d(TAG, "Last request not completed we don't transfer the data ");
                     break;
                 } finally {
                     if (urlConnection != null) {
@@ -188,7 +199,7 @@ public class PostDataAvailable  {
             else
             {
                 TaskDone &= ~TABLE_USER_TRANSFERED;
-                Log.d(TAG, "TABLE_USER has been transfered to the remote server, we can stop");
+                //Log.d(TAG, "TABLE_USER has been transfered to the remote server, we can stop");
             }
         }
 

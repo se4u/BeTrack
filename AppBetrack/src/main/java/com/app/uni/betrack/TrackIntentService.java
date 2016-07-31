@@ -43,11 +43,11 @@ public class TrackIntentService extends IntentService {
     private static final String EXTRA_PARAM2 = "com.app.uni.betrack.extra.PARAM2";
     static final String TAG = "UpdaterIntentService";
 
-    static public String ActivityOnGoing = null;
-    static public String ActivityStartDate = null;
-    static public String ActivityStartTime = null;
+    public static String ActivityOnGoing = null;
+    public static String ActivityStartDate = null;
+    public static String ActivityStartTime = null;
 
-    private String TimeTriggerAlarm = "14:21:00";
+    private String TimeTriggerAlarm = "20:00:00";
 
     private LocalDataBase localdatabase = new LocalDataBase(this);
 
@@ -144,6 +144,7 @@ public class TrackIntentService extends IntentService {
                 if (true == StudyOnGoing) {
 
                     new SetupStudy(prefs, ContextInfoStudy);
+                    Intent intentCheckScreenStatus = new Intent();
 
                     do {
                         try {
@@ -155,75 +156,144 @@ public class TrackIntentService extends IntentService {
                             }
 
                             //Log.d(TAG, "Foreground App " + topActivity);
-
+                            if (ScreenReceiver.StateScreen.UNKNOWN == ScreenReceiver.ScreenState) {
+                                intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
+                                this.sendBroadcast(intentCheckScreenStatus);
+                            }
                             //Check if we should fire a notification
                             ActualTime = shf.format(new Date());
-                            Log.d(TAG, "Actual time:" + ActualTime + " time when to trigger the notification:" + TimeTriggerAlarm);
+                            //Log.d(TAG, "Actual time:" + ActualTime + " time when to trigger the notification:" + TimeTriggerAlarm);
                             if (TimeTriggerAlarm.equals(ActualTime))
                             {
-                                Log.d(TAG, "Notification triggered");
+                                //Log.d(TAG, "Notification triggered");
                                 createNotification();
                             }
 
 
+
+                            //Check the status of the screen
                             //Check if that activity should be monitored
                             for(int i =0;i<ContextInfoStudy.ApplicationsToWatch.size();i++) {
 
                                 //Log.d(TAG, "Application to watch " + ContextInfoStudy.ApplicationsToWatch.get(i));
+                                //Log.d(TAG, "ActivityOnGoing " + ActivityOnGoing);
+                                //Log.d(TAG, "topActivity " + topActivity);
 
                                 if (null != ActivityOnGoing) {
                                     //An activity was watched and should not be watched anymore
-                                    if ((null != topActivity) && (!ActivityOnGoing.equals(topActivity)) || (ScreenReceiver.ScreenOff)) {
+                                    if ((null != topActivity) && (!ActivityOnGoing.equals(topActivity))) {
 
-                                        if (false == ScreenReceiver.ScreenOff) {
+                                        if (ScreenReceiver.StateScreen.ON == ScreenReceiver.ScreenState) {
+                                            //We save in the local database the informations about the study
+                                            values.clear();
+                                            values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
+                                            try {
+                                                ActivityStopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
+                                                Log.d(TAG, "End monitoring date: Should never happen the last entry is already filled up ???");
+                                            } catch (Exception e) {
+                                                //Save the stop date
+                                                ActivityStopDate = sdf.format(new Date());
+                                                //Save the stop time
+                                                ActivityStopTime = shf.format(new Date());
+
+                                                values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                                                values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+
+                                                this.AccesLocalDB().Update(values, values.getAsLong(LocalDataBase.C_APPWATCH_ID), LocalDataBase.TABLE_APPWATCH);
+
+                                                //Reinitialize activity watched infos
+                                                ActivityOnGoing = null;
+                                                ActivityStartDate = null;
+                                                ActivityStartTime = null;
+                                                ActivityStopDate = null;
+                                                ActivityStopTime = null;
+
+                                                Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
+                                            }
+                                        }
+                                    }
+                                }
+                                else {
+                                    values.clear();
+                                    values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
+                                    if (0 != values.size()) {
+                                        try {
+                                            ActivityStopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
+                                            Log.d(TAG, "Check in case some monitoring was started but never stopped");
+                                        } catch (Exception e) {
                                             //Save the stop date
                                             ActivityStopDate = sdf.format(new Date());
                                             //Save the stop time
                                             ActivityStopTime = shf.format(new Date());
 
-                                            //Encrypt the data before to save them in the database
-
-                                            //We save in the local database the informations about the study
-                                            values.clear();
-                                            values.put(LocalDataBase.C_APPWATCH_USERID,  UserId);
-                                            values.put(LocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
-                                            values.put(LocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
                                             values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
-                                            values.put(LocalDataBase.C_APPWATCH_TIMESTART, ActivityStartTime);
                                             values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
-                                            this.AccesLocalDB().insertOrIgnore(values, LocalDataBase.TABLE_APPWATCH);
-                                            Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
 
+                                            this.AccesLocalDB().Update(values, values.getAsLong(LocalDataBase.C_APPWATCH_ID), LocalDataBase.TABLE_APPWATCH);
 
+                                            //Reinitialize activity watched infos
+                                            ActivityOnGoing = null;
+                                            ActivityStartDate = null;
+                                            ActivityStartTime = null;
+                                            ActivityStopDate = null;
+                                            ActivityStopTime = null;
+
+                                            Log.d(TAG, "Finish last entry end monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
                                         }
-
-                                        //Reinitialize activity watched infos
-                                        ActivityOnGoing = null;
-                                        ActivityStartDate = null;
-                                        ActivityStartTime = null;
-                                        ActivityStopDate = null;
-                                        ActivityStopTime = null;
-
                                     }
                                 }
 
-                                //Log.d(TAG, "Check app foreground: " + topActivity + "app to monitor: " + ContextInfoStudy.ApplicationsToWatch.get(i) + " ScreenOff: " + ScreenReceiver.ScreenOff);
+                                //Log.d(TAG, "Check app foreground: " + topActivity + "app to monitor: " + ContextInfoStudy.ApplicationsToWatch.get(i) + " Screen state: " + ScreenReceiver.ScreenState);
 
                                 if ((null != topActivity) && (null != ContextInfoStudy.ApplicationsToWatch.get(i))) {
                                     if (topActivity.toLowerCase().contains(ContextInfoStudy.ApplicationsToWatch.get(i).toLowerCase())) {
 
+                                        //Log.d(TAG, "Status ActivityOnGoing: " + ActivityOnGoing);
+
                                         //A new activity to be watch
                                         if (null == ActivityOnGoing) {
 
-                                            if (false == ScreenReceiver.ScreenOff) {
-                                                ActivityOnGoing = topActivity;
+                                            //Check the status of the screen
+                                            if (ScreenReceiver.StateScreen.ON == ScreenReceiver.ScreenState) {
 
-                                                //Save the date
-                                                ActivityStartDate = sdf.format(new Date());
-                                                //Save the start time
-                                                ActivityStartTime = shf.format(new Date());
+                                                values.clear();
+                                                values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
+                                                try {
+                                                    if (0 != values.size()) {
+                                                        ActivityStopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
+                                                        Log.d(TAG, "Last entry is not null we can start a new monitoring");
+                                                    }
+                                                    else {
+                                                        Log.d(TAG, "New monitoring started");
+                                                    }
+                                                    ActivityOnGoing = topActivity;
 
-                                                Log.d(TAG, "IdUser: " + UserId + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
+                                                    //Save the date
+                                                    ActivityStartDate = sdf.format(new Date());
+                                                    //Save the start time
+                                                    ActivityStartTime = shf.format(new Date());
+
+                                                    ActivityStopDate = null;
+                                                    ActivityStopTime = null;
+
+                                                    values.clear();
+                                                    values.put(LocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
+                                                    values.put(LocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
+                                                    values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                                                    values.put(LocalDataBase.C_APPWATCH_TIMESTART, ActivityStartTime);
+                                                    values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                                                    this.AccesLocalDB().insertOrIgnore(values, LocalDataBase.TABLE_APPWATCH);
+
+                                                    Log.d(TAG, "IdUser: " + UserId + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
+
+                                                } catch (Exception e) {
+
+                                                    ActivityOnGoing = values.get(LocalDataBase.C_APPWATCH_APPLICATION).toString();
+                                                    ActivityStartDate = values.get(LocalDataBase.C_APPWATCH_DATESTART).toString();
+                                                    ActivityStartTime = values.get(LocalDataBase.C_APPWATCH_TIMESTART).toString();
+                                                    Log.d(TAG, "Last entry is null we should not start a new monitoring");
+                                                }
+
                                             }
 
                                         }
@@ -239,7 +309,14 @@ public class TrackIntentService extends IntentService {
                             //No WIFI can we use other ways to transfer data
                             //if ()
                             {
-
+                                if (null == InfoStudy.IdUser ) {
+                                    InfoStudy.IdUser = prefs.getString(InfoStudy.ID_USER, "No user ID !");
+                                    //Log.d(TAG, "IdUser not available we read it from the database: " + InfoStudy.IdUser);
+                                }
+                                else
+                                {
+                                    //Log.d(TAG, "IdUser available: " + InfoStudy.IdUser);
+                                }
                                 //Check if we are not already transferring the data
                                 if (PostDataAvailable.SemUpdateServer.tryAcquire()) {
                                     es.execute(new Runnable() {

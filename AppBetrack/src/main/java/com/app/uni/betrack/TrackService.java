@@ -15,6 +15,13 @@ public class TrackService extends Service {
     public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
 
 
+    public static LocalDataBase localdatabase;
+
+    public LocalDataBase AccesLocalDB()
+    {
+        return localdatabase;
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
@@ -30,6 +37,8 @@ public class TrackService extends Service {
         IntentFilter filter = new IntentFilter(Intent.ACTION_USER_PRESENT);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SHUTDOWN);
+        filter.addAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
+
         BroadcastReceiver mReceiver = new ScreenReceiver();
         registerReceiver(mReceiver, filter);
 
@@ -49,5 +58,6 @@ public class TrackService extends Service {
         super.onDestroy();
 
         Log.d(TAG, "onDestroyed");
+
     }
 }

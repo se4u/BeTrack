@@ -14,6 +14,7 @@ import java.util.concurrent.Semaphore;
  * Created by cevincent on 6/3/16.
  */
 public class LocalDataBase {
+    public static final String KEY_ID = "_id";
 
     static final String TAG = "SQLLocalTable";
     static final String DB_NAME = "StudyDataBase.db";
@@ -22,7 +23,6 @@ public class LocalDataBase {
     //Table for application(s) watching
     static final String TABLE_APPWATCH = "AppWatch";
     static final String C_APPWATCH_ID = BaseColumns._ID;
-    static final String C_APPWATCH_USERID = "UserID";
     static final String C_APPWATCH_APPLICATION = "Application";
     static final String C_APPWATCH_DATESTART = "DateStart";
     static final String C_APPWATCH_DATESTOP = "DateStop";
@@ -31,7 +31,6 @@ public class LocalDataBase {
 
     private static final String[] DB_APPWATCH = {
             C_APPWATCH_ID,
-            C_APPWATCH_USERID,
             C_APPWATCH_APPLICATION,
             C_APPWATCH_DATESTART,
             C_APPWATCH_DATESTOP,
@@ -41,7 +40,6 @@ public class LocalDataBase {
     //Table for period, libido... follow up
     static final String TABLE_USER = "User";
     static final String C_USER_ID = BaseColumns._ID;
-    static final String C_USER_USERID = "UserID";
     static final String C_USER_PERIOD = "Period";
     static final String C_USER_LIBIDO = "Libido";
     static final String C_USER_SOCIAL_LIFE = "SocialLife";
@@ -51,7 +49,6 @@ public class LocalDataBase {
 
     private static final String[] DB_DAILYSTATUS = {
             C_USER_ID,
-            C_USER_USERID,
             C_USER_PERIOD,
             C_USER_DATE,};
 
@@ -105,12 +102,12 @@ public class LocalDataBase {
         @Override
         public void onCreate(SQLiteDatabase db) {
             String sql = "create table " + TABLE_APPWATCH + " (" + C_USER_ID + " integer primary key autoincrement, "
-                    + C_APPWATCH_USERID + " text, " + C_APPWATCH_APPLICATION + " text, " + C_APPWATCH_DATESTART + " text, " + C_APPWATCH_DATESTOP + " text, " + C_APPWATCH_TIMESTART + " text, " + C_APPWATCH_TIMESTOP + " text)"; //
+                    + C_APPWATCH_APPLICATION + " text, " + C_APPWATCH_DATESTART + " text, " + C_APPWATCH_DATESTOP + " text, " + C_APPWATCH_TIMESTART + " text, " + C_APPWATCH_TIMESTOP + " text)"; //
             db.execSQL(sql);
             Log.d(TAG, "onCreated sql: " + sql);
 
             String sql2 = "create table " + TABLE_USER + " (" + C_APPWATCH_ID + " integer primary key autoincrement, "
-                    + C_USER_USERID + " text, " + C_USER_PERIOD + " text, " + C_USER_DATE + " text)"; //
+                    + C_USER_PERIOD + " text, " + C_USER_DATE + " text)"; //
             db.execSQL(sql2);
             Log.d(TAG, "onCreated sql: " + sql2);
         }
@@ -148,6 +145,24 @@ public class LocalDataBase {
             db = this.dbHelper.getWritableDatabase();
             db.insertWithOnConflict(Table, null, values,
                     SQLiteDatabase.CONFLICT_IGNORE); //
+        } catch (InterruptedException e) {
+            Log.d(TAG, "Database action error!");
+            SemUpdateDb.release();
+        } finally {
+            db.close(); //
+            SemUpdateDb.release();
+        }
+
+    }
+
+    public void Update(ContentValues values, long id, String Table) { //
+        Log.d(TAG, "insertOrIgnore on " + values);
+        SQLiteDatabase db = null;
+
+        try {
+            SemUpdateDb.acquire();
+            db = this.dbHelper.getWritableDatabase();
+            db.update(Table, values, KEY_ID+"="+id, null);
         } catch (InterruptedException e) {
             Log.d(TAG, "Database action error!");
             SemUpdateDb.release();

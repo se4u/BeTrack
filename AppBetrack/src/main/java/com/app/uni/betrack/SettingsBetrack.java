@@ -7,6 +7,7 @@ public class SettingsBetrack {
 
     static public String SERVICE_TRACKING_NAME = "com.app.uni.betrack.TrackIntentService";
     static public String BROADCAST_START_TRACKING_NAME = "com.app.uni.betrack.START_TRACKING";
+    static public String BROADCAST_CHECK_SCREEN_STATUS = "com.app.uni.betrack.CHECK_SCREEN_STATUS";
 
     static public String STUDY_WEBSITE = "http://www.ricphoto.fr/";
 

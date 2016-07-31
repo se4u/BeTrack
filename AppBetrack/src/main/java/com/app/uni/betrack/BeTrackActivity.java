@@ -1,31 +1,26 @@
 package com.app.uni.betrack;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -196,7 +191,6 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
                 CardBetrack.InternalSetBackground((Drawable)getResources().getDrawable(R.drawable.button_round_custom_neutral), Icon);
 
                 values.clear();
-                values.put(LocalDataBase.C_USER_USERID,  InfoStudy.IdUser);
                 values.put(LocalDataBase.C_USER_PERIOD, "1");
                 DatePeriod = sdf.format(new Date());
                 values.put(LocalDataBase.C_USER_DATE, DatePeriod);
@@ -214,7 +208,6 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
                 CardBetrack.InternalSetBackground((Drawable)getResources().getDrawable(R.drawable.button_round_custom_red), Icon);
 
                 values.clear();
-                values.put(LocalDataBase.C_USER_USERID,  InfoStudy.IdUser);
                 values.put(LocalDataBase.C_USER_PERIOD, "0");
                 DatePeriod = sdf.format(new Date());
                 values.put(LocalDataBase.C_USER_DATE, DatePeriod);
