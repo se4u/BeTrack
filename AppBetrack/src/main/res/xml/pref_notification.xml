@@ -4,11 +4,11 @@
          when checked/unchecked. -->
     <SwitchPreference
         android:defaultValue="true"
-        android:key="notifications_new_message"
+        android:key="@string/pref_key_study_notification"
         android:title="@string/pref_title_new_message_notifications" />
 
     <com.app.uni.betrack.TimePreference
-        android:key="SettingsBetrack.STUDY_NOTIFICATION_TIME"
+        android:key="@string/pref_key_study_notification_time"
         android:title="@string/pref_notification_time"
         android:onClick="showTimePickerDialog"/>
 

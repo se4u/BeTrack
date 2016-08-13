@@ -94,21 +94,25 @@ public class ScreenReceiver extends BroadcastReceiver {
                 ActivityStopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
                 Log.d(TAG, "End monitoring date: nothing to save");
             } catch (Exception e) {
-                //Save the stop date
-                ActivityStopDate = sdf.format(new Date());
-                //Save the stop time
-                ActivityStopTime = shf.format(new Date());
+                if (null != values) {
+                    //Save the stop date
+                    ActivityStopDate = sdf.format(new Date());
+                    //Save the stop time
+                    ActivityStopTime = shf.format(new Date());
 
-                values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
-                values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                    values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                    values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                    try {
+                    this.AccesLocalDB().Update(values, values.getAsLong(LocalDataBase.C_APPWATCH_ID), LocalDataBase.TABLE_APPWATCH);
+                    } catch (Exception f) {
+                        Log.d(TAG, "Nothing to update in the database");
+                    }
+                    TrackIntentService.ActivityOnGoing = null;
+                    TrackIntentService.ActivityStartDate = null;
+                    TrackIntentService.ActivityStartTime = null;
 
-                this.AccesLocalDB().Update(values, values.getAsLong(LocalDataBase.C_APPWATCH_ID), LocalDataBase.TABLE_APPWATCH);
-
-                TrackIntentService.ActivityOnGoing = null;
-                TrackIntentService.ActivityStartDate = null;
-                TrackIntentService.ActivityStartTime = null;
-
-                Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
+                    Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
+                }
             }
         }
 

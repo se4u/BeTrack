@@ -5,14 +5,20 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,11 +26,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
 import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
@@ -64,7 +75,7 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
     }
 
     public InfoStudy ObjInfoStudy = new InfoStudy();
-    private SettingsBetrack ObjSettingsBetrack = new SettingsBetrack();
+    private SettingsBetrack ObjSettingsBetrack;
 
     private int id_period;
     private VerticalStepperFormLayout verticalStepperForm;
@@ -76,6 +87,7 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
         SharedPreferences.Editor editor = prefs.edit();
         mContext = this;
 
+        ObjSettingsBetrack = new SettingsBetrack(prefs, this);
         actionBar = getSupportActionBar();
         actionBar.hide();
 
@@ -85,15 +97,11 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
         setContentView(R.layout.activity_betrack);
 
         final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        //la suppression de la notification se fait grâce a son ID
-        notificationManager.cancel(SettingsBetrack.NOTIFICATION_ID);
 
-        //Update settings with value of preferences from the shared preference editor or default values
-        ObjSettingsBetrack.StudyEnable = prefs.getBoolean(SettingsBetrack.STUDY_ENABLE, true);
-        ObjSettingsBetrack.EnableDataUsage = prefs.getBoolean(SettingsBetrack.ENABLE_DATA_USAGE, true);
-        ObjSettingsBetrack.StudyNotification = prefs.getBoolean(SettingsBetrack.STUDY_NOTIFICATION, true);
-        ObjSettingsBetrack.StudyNotificationTime = prefs.getString(SettingsBetrack.STUDY_NOTIFICATION_TIME, "20:00");
-        ObjSettingsBetrack.FrequencyUpdateServer = prefs.getInt(SettingsBetrack.FREQ_UPDATE_SERVER, 6);
+        //In case it's an Huawei phone we ask the user to put our app in the protected list
+        ifHuaweiAlert();
+
+        notificationManager.cancel(SettingsBetrack.NOTIFICATION_ID);
 
         //Display an Eula if needed
         new Eula(this).show();
@@ -331,5 +339,85 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
                 new SetupStudy(this, ObjInfoStudy);
                 break;
         }
+    }
+
+    private void ifHuaweiAlert() {
+        final SharedPreferences settings = getSharedPreferences("ProtectedApps", MODE_PRIVATE);
+        final String saveIfSkip = "skipProtectedAppsMessage";
+        boolean skipMessage = settings.getBoolean(saveIfSkip, false);
+        if (!skipMessage) {
+            String title =  this.getString(R.string.huawei_title);
+            String message =  this.getString(R.string.huawei_desc);
+            String check =  this.getString(R.string.huawei_check);
+            String buttonpositive =  this.getString(R.string.huawei_positive_button);
+
+            final SharedPreferences.Editor editor = settings.edit();
+            Intent intent = new Intent();
+            intent.setClassName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity");
+            if (isCallable(intent)) {
+                final AppCompatCheckBox dontShowAgain = new AppCompatCheckBox(this);
+                dontShowAgain.setText(check);
+                dontShowAgain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        editor.putBoolean(saveIfSkip, isChecked);
+                        editor.apply();
+                    }
+                });
+
+
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(title)
+                        .setMessage(String.format("%s " + message + ".%n", getString(R.string.app_name)))
+                        .setView(dontShowAgain)
+                        .setPositiveButton(buttonpositive, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                huaweiProtectedApps();
+                            }
+                        })
+                        .show();
+            } else {
+                editor.putBoolean(saveIfSkip, true);
+                editor.apply();
+            }
+        }
+    }
+
+    private boolean isCallable(Intent intent) {
+        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
+
+    private void huaweiProtectedApps() {
+        try {
+            String cmd = "am start -n com.huawei.systemmanager/.optimize.process.ProtectActivity";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                cmd += " --user " + getUserSerial();
+            }
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException ignored) {
+        }
+    }
+
+    private String getUserSerial() {
+        //noinspection ResourceType
+        Object userManager = getSystemService("user");
+        if (null == userManager) return "";
+
+        try {
+            Method myUserHandleMethod = android.os.Process.class.getMethod("myUserHandle", (Class<?>[]) null);
+            Object myUserHandle = myUserHandleMethod.invoke(android.os.Process.class, (Object[]) null);
+            Method getSerialNumberForUser = userManager.getClass().getMethod("getSerialNumberForUser", myUserHandle.getClass());
+            Long userSerial = (Long) getSerialNumberForUser.invoke(userManager, myUserHandle);
+            if (userSerial != null) {
+                return String.valueOf(userSerial);
+            } else {
+                return "";
+            }
+        } catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ignored) {
+        }
+        return "";
     }
 }

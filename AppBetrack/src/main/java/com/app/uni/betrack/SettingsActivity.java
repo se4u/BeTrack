@@ -116,6 +116,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             case android.R.id.home:
                 Intent homeIntent = new Intent(this, BeTrackActivity.class);
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                try{
+                    SettingsBetrack.SemPreferenceUpdated.acquire();
+                    SettingsBetrack.PreferenceUpdated = true;
+                    SettingsBetrack.SemPreferenceUpdated.release();
+                }catch (Exception e) {}
                 startActivity(homeIntent);
         }
         return (super.onOptionsItemSelected(menuItem));

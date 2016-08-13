@@ -1,6 +1,7 @@
 package com.app.uni.betrack;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.Notification;
@@ -13,9 +14,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +29,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -38,6 +44,12 @@ public class TrackIntentService extends IntentService {
     private static final String ACTION_FOO = "com.app.uni.betrack.action.FOO";
     private static final String ACTION_BAZ = "com.app.uni.betrack.action.BAZ";
 
+    private enum ConnectionState {
+        NONE,
+        WIFI,
+        LTE,
+        };
+
     // TODO: Rename parameters
     private static final String EXTRA_PARAM1 = "com.app.uni.betrack.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.app.uni.betrack.extra.PARAM2";
@@ -47,7 +59,8 @@ public class TrackIntentService extends IntentService {
     public static String ActivityStartDate = null;
     public static String ActivityStartTime = null;
 
-    private String TimeTriggerAlarm = "20:00:00";
+
+    private SettingsBetrack ObjSettingsBetrack;
 
     private LocalDataBase localdatabase = new LocalDataBase(this);
 
@@ -126,6 +139,7 @@ public class TrackIntentService extends IntentService {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
         boolean StudyOnGoing;
+        ConnectionState NetworkState;
 
         PostDataAvailable.localdatabase = this.AccesLocalDB();
         ScreenReceiver.localdatabase = this.AccesLocalDB();
@@ -133,6 +147,9 @@ public class TrackIntentService extends IntentService {
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+
+        //Read the preferences
+        ObjSettingsBetrack = new SettingsBetrack(prefs, this);
 
         //Read the user ID
         String UserId = prefs.getString(InfoStudy.ID_USER, "NOID ?????");
@@ -147,7 +164,25 @@ public class TrackIntentService extends IntentService {
                     Intent intentCheckScreenStatus = new Intent();
 
                     do {
+
                         try {
+
+                            //Check if preferences have been updated
+                            SettingsBetrack.SemPreferenceUpdated.acquire();
+                            if (SettingsBetrack.PreferenceUpdated)
+                            {
+                                ObjSettingsBetrack.UpdateSettingsBetrack(prefs, this);
+                            }
+                            SettingsBetrack.SemPreferenceUpdated.release();
+
+                            //Check if the participant still want to be a part of the study
+                            if (!ObjSettingsBetrack.StudyEnable)
+                            {
+                                //We are out of the study
+                                Thread.sleep(SettingsBetrack.UPDATE_STATUS_STUDY_TIME);
+                                continue;
+                            }
+
                             // We get usage stats for the last minute
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                                 topActivity = handleCheckActivity_FromKitkat(intent);
@@ -155,21 +190,20 @@ public class TrackIntentService extends IntentService {
                                 topActivity = handleCheckActivity(intent);
                             }
 
-                            //Log.d(TAG, "Foreground App " + topActivity);
+                            Log.d(TAG, "Foreground App " + topActivity);
                             if (ScreenReceiver.StateScreen.UNKNOWN == ScreenReceiver.ScreenState) {
                                 intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
                                 this.sendBroadcast(intentCheckScreenStatus);
                             }
                             //Check if we should fire a notification
                             ActualTime = shf.format(new Date());
-                            //Log.d(TAG, "Actual time:" + ActualTime + " time when to trigger the notification:" + TimeTriggerAlarm);
-                            if (TimeTriggerAlarm.equals(ActualTime))
+                            //Log.d(TAG, "Actual time:" + ActualTime + " time when to trigger the notification:" + ObjSettingsBetrack.StudyNotificationTime);
+                            if (ObjSettingsBetrack.StudyNotificationTime.equals(ActualTime) &&
+                                    ObjSettingsBetrack.StudyNotification)
                             {
                                 //Log.d(TAG, "Notification triggered");
                                 createNotification();
                             }
-
-
 
                             //Check the status of the screen
                             //Check if that activity should be monitored
@@ -304,10 +338,13 @@ public class TrackIntentService extends IntentService {
                             }
                             //Check if the delta between 2 updates of the server was long enough that we can start a new
 
-                            //Check if there is a WIFI connection
+                            //Check if there is a data connection
+                            NetworkState = haveNetworkConnection();
 
-                            //No WIFI can we use other ways to transfer data
-                            //if ()
+                            // To transfer the data either we have access to a WIFI network or
+                            // we have are allowed to use the 3G/LTE
+                            if ((ConnectionState.WIFI == NetworkState) ||
+                                    ((ConnectionState.LTE == NetworkState) && (ObjSettingsBetrack.EnableDataUsage)))
                             {
                                 if (null == InfoStudy.IdUser ) {
                                     InfoStudy.IdUser = prefs.getString(InfoStudy.ID_USER, "No user ID !");
@@ -390,6 +427,49 @@ public class TrackIntentService extends IntentService {
         return topActivity;
     }
 
+    private ConnectionState haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+        ConnectionState NetworkState = ConnectionState.NONE;
+
+        try {
+
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                    // connected to wifi
+                    Log.d(TAG, "haveNetworkConnection: WIFI");
+                    NetworkState = ConnectionState.WIFI;
+                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                    // connected to the mobile provider's data plan
+                    Log.d(TAG, "haveNetworkConnection: LTE/3G");
+                    NetworkState = ConnectionState.LTE;
+                }
+            }else {
+                NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+                for (NetworkInfo ni : netInfo) {
+                    if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                        if (ni.isConnected()){
+                            Log.d(TAG, "haveNetworkConnection: WIFI");
+                            NetworkState = ConnectionState.WIFI;
+                        }
+
+                    if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                        if (ni.isConnected()) {
+                            Log.d(TAG, "haveNetworkConnection: LTE/3G");
+                            NetworkState = ConnectionState.LTE;
+                        }
+                }
+            }
+        }
+        finally {
+            if (ConnectionState.NONE == NetworkState) {
+                Log.d(TAG, "haveNetworkConnection: nope");
+            }
+            return NetworkState;
+        }
+    }
     /**
      * Handle action Foo in the provided background thread with the provided
      * parameters.

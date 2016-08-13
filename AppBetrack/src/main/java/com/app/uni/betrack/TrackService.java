@@ -1,10 +1,13 @@
 package com.app.uni.betrack;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class TrackService extends Service {
@@ -14,6 +17,9 @@ public class TrackService extends Service {
     public static InfoStudy mInfoStudy;
     public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
 
+    static TrackService instance;
+
+    private NotificationManager mNotificationManager;
 
     public static LocalDataBase localdatabase;
 
@@ -31,7 +37,7 @@ public class TrackService extends Service {
     @Override
     public void onCreate() { //
         super.onCreate();
-        Intent msgIntent = new Intent(this, TrackIntentService.class);
+
         Log.d(TAG, "onCreated");
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_USER_PRESENT);
@@ -41,23 +47,31 @@ public class TrackService extends Service {
 
         BroadcastReceiver mReceiver = new ScreenReceiver();
         registerReceiver(mReceiver, filter);
+        instance = this;
+        if (startService(new Intent(this, ForegroundEnablingService.class)) == null)
+            throw new RuntimeException("Couldn't find " + ForegroundEnablingService.class.getSimpleName());
 
-        //Start the service for monitoring app
-        startService(msgIntent);
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) { //
         super.onStartCommand(intent, flags, startId);
+        Intent msgIntent = new Intent(this, TrackIntentService.class);
         Log.d(TAG, "onStarted");
+
+        //Start the service for monitoring app
+        startService(msgIntent);
 
         return START_STICKY;
     }
     @Override
     public void onDestroy() { //
         super.onDestroy();
-
+        instance = null;
+        //stopForeground(true);
         Log.d(TAG, "onDestroyed");
 
     }
+
 }

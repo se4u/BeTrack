@@ -1,9 +1,18 @@
 package com.app.uni.betrack;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
+import java.util.concurrent.Semaphore;
+
 /**
  * Created by cevincent on 5/26/16.
  */
 public class SettingsBetrack {
+
+    static private final String TAG = "SettingsBetrack";
 
     static public String SERVICE_TRACKING_NAME = "com.app.uni.betrack.TrackIntentService";
     static public String BROADCAST_START_TRACKING_NAME = "com.app.uni.betrack.START_TRACKING";
@@ -16,21 +25,38 @@ public class SettingsBetrack {
     static public String STUDY_POSTAPPWATCHED = "BeTrackPostAppWatch.php";
     static public String STUDY_POSTDAILYSTATUS = "BeTrackPostDailyStatus.php";
 
-    static public String STUDY_ENABLE = "study_enable";
-    static public String STUDY_NOTIFICATION = "study_notification";
-    static public String STUDY_NOTIFICATION_TIME = "study_notification_time";
-    static public String ENABLE_DATA_USAGE = "enable_data_usage";
-    static public String FREQ_UPDATE_SERVER = "frequency_update_server";
-
     static public int SERVER_TIMEOUT = 20000;
-    static public int DELTA_BTW_RECHECK_STUDY_STARTED = 120000;
+    static public int DELTA_BTW_RECHECK_STUDY_STARTED = 10000;
     static public int SAMPLING_RATE = 1000;
+    static public int UPDATE_STATUS_STUDY_TIME = 60000;
 
     static public int NOTIFICATION_ID = 1;
+
+    public static final Semaphore SemPreferenceUpdated = new Semaphore(1, true);
+    public static boolean PreferenceUpdated = false;
+
 
     public Boolean StudyEnable;
     public Boolean StudyNotification;
     public String StudyNotificationTime;
     public Boolean EnableDataUsage;
-    public int FrequencyUpdateServer;
+    public SettingsBetrack(SharedPreferences prefs, Context mActivity) {
+        BuildPref(prefs, mActivity);
+    }
+
+    public void UpdateSettingsBetrack(SharedPreferences prefs, Context mActivity) {
+        BuildPref(prefs, mActivity);
+    }
+
+    private void BuildPref(SharedPreferences prefs, Context mActivity) {
+
+        //Update settings with value of preferences from the shared preference editor or default values
+        StudyEnable = prefs.getBoolean(mActivity.getString(R.string.pref_key_study_enable), true);
+        EnableDataUsage = prefs.getBoolean(mActivity.getString(R.string.pref_key_data_sync_enable_usage_3g), true);
+        StudyNotification = prefs.getBoolean(mActivity.getString(R.string.pref_key_study_notification), true);
+        StudyNotificationTime = prefs.getString(mActivity.getString(R.string.pref_key_study_notification_time), "20:00") + ":00";
+        Log.d(TAG, "StudyEnable: " + StudyEnable + " EnableDataUsage: " + EnableDataUsage + " StudyNotification: " + StudyNotification + " StudyNotificationTime: " + StudyNotificationTime);
+        PreferenceUpdated = false;
+    }
+
 }

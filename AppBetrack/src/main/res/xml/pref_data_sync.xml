@@ -5,18 +5,8 @@
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <SwitchPreference
         android:defaultValue="true"
-        android:key="example_switch"
+        android:key="@string/pref_key_data_sync_enable_usage_3g"
         android:summary="@string/pref_description_enable_usage_3g"
         android:title="@string/pref_title_enable_usage_3g" />
-
-    <ListPreference
-        android:defaultValue="6"
-        android:entries="@array/pref_sync_frequency_titles"
-        android:entryValues="@array/pref_sync_frequency_values"
-        android:key="sync_frequency"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
-        android:title="@string/pref_title_sync_frequency" />
-
 
 </PreferenceScreen>

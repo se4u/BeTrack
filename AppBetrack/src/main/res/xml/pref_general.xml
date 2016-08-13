@@ -2,7 +2,7 @@
 
     <SwitchPreference
         android:defaultValue="true"
-        android:key="example_switch"
+        android:key="@string/pref_key_study_enable"
         android:summary="@string/pref_description_enable_study"
         android:title="@string/pref_title_enable_study" />
 

@@ -46,7 +46,11 @@ public class TimePreference extends DialogPreference {
     @Override
     protected void onBindDialogView(View v) {
         super.onBindDialogView(v);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "20:00");
 
+        lastHour=getHour(time);
+        lastMinute=getMinute(time);
         if (Build.VERSION.SDK_INT >= 23 )
             picker.setHour(lastHour);
         else
@@ -66,7 +70,7 @@ public class TimePreference extends DialogPreference {
         if (positiveResult) {
 
             if (Build.VERSION.SDK_INT >= 23 )
-                lastMinute=picker.getHour();
+                lastHour=picker.getHour();
             else
                 lastHour=picker.getCurrentHour();
 
@@ -79,7 +83,7 @@ public class TimePreference extends DialogPreference {
 
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(SettingsBetrack.STUDY_NOTIFICATION_TIME, time);
+            editor.putString(getContext().getString(R.string.pref_key_study_notification_time), time);
             editor.commit();
         }
     }
@@ -91,10 +95,6 @@ public class TimePreference extends DialogPreference {
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String time=prefs.getString(SettingsBetrack.STUDY_NOTIFICATION_TIME, "20:00");
 
-        lastHour=getHour(time);
-        lastMinute=getMinute(time);
     }
 }

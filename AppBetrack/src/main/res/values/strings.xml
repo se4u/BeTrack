@@ -11,48 +11,32 @@
     <string name="welcome_loading">Loading</string>
     <string name="welcome_wait">Please wait...</string>
 
-    <!-- Strings related to SettingsBetrack -->
+    <!-- Your personnal ID-->
+    <string name="pref_header_your_id">Your personnal ID </string>
 
     <!-- General settings -->
-    <string name="pref_header_info">Informations about the study </string>
-    <string name="pref_header_your_id">Your personnal ID </string>
     <string name="pref_header_general">General</string>
+    <string name="pref_key_study_enable"> Betrack.Settings.StudyEnable </string>
     <string name="pref_title_enable_study">Enable study</string>
     <string name="pref_description_enable_study">Allow to be temporarily or permanently be out of the study
     </string>
 
-
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
-
+    <string name="pref_key_data_sync_enable_usage_3g"> Betrack.Settings.EnableDataUsage </string>
     <string name="pref_title_enable_usage_3g">Enable usage of 3G/LTE to transfer study data</string>
     <string name="pref_description_enable_usage_3g">Allow to use the 3G/LTE connection to transfer data of the study to our server
     </string>
 
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-
-    <string-array name="pref_sync_frequency_titles">
-        <item>6 hours</item>
-        <item>12 hours</item>
-        <item>24 hours</item>
-        <item>48 hours</item>
-    </string-array>
-
-    <string-array name="pref_sync_frequency_values">
-        <item>6</item>
-        <item>12</item>
-        <item>24</item>
-        <item>48</item>
-    </string-array>
-
-
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
-
+    <string name="pref_key_study_notification"> Betrack.Settings.StudyNotification </string>
+    <string name="pref_key_study_notification_time"> Betrack.Settings.StudyNotificationTime </string>
     <string name="pref_title_new_message_notifications">Study notifications</string>
-
-
     <string name="pref_notification_time">Time of the notification</string>
+
+    <!-- Informations about the study-->
+    <string name="pref_header_info">Informations about the study </string>
 
     <!-- Disclaimer to accept to participate the study -->
 
@@ -84,6 +68,13 @@
     <!-- notification -->
     <string name="notification_title">BeTrack</string>
     <string name="notification_desc">Please fill up our little daily survey</string>
+    <string name="notification_running">Betrack is running</string>
+    <!-- Huawei protected app -->
+    <string name="huawei_title">Huawei Protected Apps</string>
+    <string name="huawei_desc">requires to be enabled in Protected Apps to function properly.</string>
+    <string name="huawei_positive_button">Protected Apps</string>
+    <string name="huawei_check">Do not show again</string>
+
 
 
 </resources>
