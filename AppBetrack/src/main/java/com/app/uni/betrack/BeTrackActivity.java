@@ -176,14 +176,14 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
         int colorPrimaryDark = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
 
         // Finding the view
-        //verticalStepperForm = (VerticalStepperFormLayout) findViewById(R.id.vertical_stepper_form);
+      //verticalStepperForm = (VerticalStepperFormLayout) findViewById(R.id.vertical_stepper_form);
 
         // Setting up and initializing the form
-        /*VerticalStepperFormLayout.Builder.newInstance(verticalStepperForm, mySteps, this, this)
+      /*VerticalStepperFormLayout.Builder.newInstance(verticalStepperForm, mySteps, this, this)
                 .primaryColor(colorPrimary)
                 .primaryDarkColor(colorPrimaryDark)
                 .displayBottomNavigation(false) // It is true by default, so in this case this line is not necessary
-                .init();*/
+                n/*it();*/
 
         LinearLayout item = (LinearLayout)findViewById(R.id.LinearLayout_Layout_List);
 

@@ -54,6 +54,9 @@
             android:name="com.app.uni.betrack.SettingsActivity">
         </activity>
 
+        <activity
+            android:name="com.app.uni.betrack.SurveyActivity">
+        </activity>
     </application>
 
 </manifest>

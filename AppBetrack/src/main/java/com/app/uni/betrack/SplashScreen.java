@@ -124,7 +124,8 @@ public class SplashScreen extends AppCompatActivity implements ViewSwitcher.View
                     public void run() {
                             Intent i = new Intent(SplashScreen.this, BeTrackActivity.class);
                             startActivity(i);
-
+                            //Intent i = new Intent(SplashScreen.this, SurveyActivity.class);
+                            //startActivityForResult(i, 1);
                             // close this activity
                             finish();
                     }
