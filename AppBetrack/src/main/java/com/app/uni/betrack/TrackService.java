@@ -1,13 +1,11 @@
 package com.app.uni.betrack;
 
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class TrackService extends Service {
@@ -40,7 +38,7 @@ public class TrackService extends Service {
 
         Log.d(TAG, "onCreated");
 
-        IntentFilter filter = new IntentFilter(Intent.ACTION_USER_PRESENT);
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SHUTDOWN);
         filter.addAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);

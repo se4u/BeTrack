@@ -1,5 +1,6 @@
 package com.app.uni.betrack;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -32,12 +33,25 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     static final String TAG = "ScreenReceiver";
 
+    private boolean isMyServiceRunning(Context mActivity) {
+        ActivityManager manager = (ActivityManager) mActivity.getSystemService(mActivity.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (SettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
+                Log.d(TAG, "Betrack service is runnning");
+                return true;
+            }
+        }
+        Log.d(TAG, "Betrack sevirce is not runnning");
+        return false;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String ActivityStopDate = "";
         String ActivityStopTime = "";
         ContentValues values = new ContentValues();
 
+        Log.d(TAG, "Check screen state");
         if (intent.getAction().equals(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS)) {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
                 DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
@@ -68,8 +82,8 @@ public class ScreenReceiver extends BroadcastReceiver {
                 }
             }
         }
-        if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
-            Log.d(TAG, "ACTION_USER_PRESENT");
+        if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+            Log.d(TAG, "ACTION_SCREEN_ON");
             ScreenState = StateScreen.ON;
 
         }
@@ -115,6 +129,8 @@ public class ScreenReceiver extends BroadcastReceiver {
                 }
             }
         }
+        //Here we should rather kill the service when screen is off and restart it when screen is on
+        if (!isMyServiceRunning(context)) context.startService(new Intent(context, TrackService.class));
 
     }
 

@@ -12,10 +12,15 @@ import android.util.Log;
  */
 public class StartTrackingReceiver extends BroadcastReceiver {
     static final String TAG = "StartTrackingReceiver";
+
+
     @Override
     public void onReceive(Context context, Intent intent) { //
 
         Log.d(TAG, "onReceived");
+
+        ScreenReceiver.ScreenState = ScreenReceiver.StateScreen.ON;
+
         context.startService(new Intent(context, TrackService.class)); //
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {

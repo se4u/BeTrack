@@ -1,9 +1,9 @@
 package com.app.uni.betrack;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.IntentService;
+import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,12 +15,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +27,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -167,6 +164,11 @@ public class TrackIntentService extends IntentService {
 
                         try {
 
+                            //Dummy read to make sure that we stay alive
+                            //Log.d(TAG, "Dummy read to stay alive ");
+                            //values.clear();
+                            //values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
+
                             //Check if preferences have been updated
                             SettingsBetrack.SemPreferenceUpdated.acquire();
                             if (SettingsBetrack.PreferenceUpdated)
@@ -218,6 +220,7 @@ public class TrackIntentService extends IntentService {
                                     if ((null != topActivity) && (!ActivityOnGoing.equals(topActivity))) {
 
                                         if (ScreenReceiver.StateScreen.ON == ScreenReceiver.ScreenState) {
+
                                             //We save in the local database the informations about the study
                                             values.clear();
                                             values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
@@ -289,43 +292,51 @@ public class TrackIntentService extends IntentService {
 
                                             //Check the status of the screen
                                             if (ScreenReceiver.StateScreen.ON == ScreenReceiver.ScreenState) {
+                                                KeyguardManager km = (KeyguardManager) getBaseContext().getSystemService(Context.KEYGUARD_SERVICE);
+                                                boolean locked = km.inKeyguardRestrictedInputMode();
 
-                                                values.clear();
-                                                values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
-                                                try {
-                                                    if (0 != values.size()) {
-                                                        ActivityStopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
-                                                        Log.d(TAG, "Last entry is not null we can start a new monitoring");
-                                                    }
-                                                    else {
-                                                        Log.d(TAG, "New monitoring started");
-                                                    }
-                                                    ActivityOnGoing = topActivity;
-
-                                                    //Save the date
-                                                    ActivityStartDate = sdf.format(new Date());
-                                                    //Save the start time
-                                                    ActivityStartTime = shf.format(new Date());
-
-                                                    ActivityStopDate = null;
-                                                    ActivityStopTime = null;
-
+                                                if (!locked) {
                                                     values.clear();
-                                                    values.put(LocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
-                                                    values.put(LocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
-                                                    values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
-                                                    values.put(LocalDataBase.C_APPWATCH_TIMESTART, ActivityStartTime);
-                                                    values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
-                                                    this.AccesLocalDB().insertOrIgnore(values, LocalDataBase.TABLE_APPWATCH);
+                                                    values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
+                                                    try {
+                                                        if (0 != values.size()) {
+                                                            ActivityStopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
+                                                            Log.d(TAG, "Last entry is not null we can start a new monitoring");
+                                                        }
+                                                        else {
+                                                            Log.d(TAG, "New monitoring started");
+                                                        }
+                                                        ActivityOnGoing = topActivity;
 
-                                                    Log.d(TAG, "IdUser: " + UserId + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
+                                                        //Save the date
+                                                        ActivityStartDate = sdf.format(new Date());
+                                                        //Save the start time
+                                                        ActivityStartTime = shf.format(new Date());
 
-                                                } catch (Exception e) {
+                                                        ActivityStopDate = null;
+                                                        ActivityStopTime = null;
 
-                                                    ActivityOnGoing = values.get(LocalDataBase.C_APPWATCH_APPLICATION).toString();
-                                                    ActivityStartDate = values.get(LocalDataBase.C_APPWATCH_DATESTART).toString();
-                                                    ActivityStartTime = values.get(LocalDataBase.C_APPWATCH_TIMESTART).toString();
-                                                    Log.d(TAG, "Last entry is null we should not start a new monitoring");
+                                                        values.clear();
+                                                        values.put(LocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
+                                                        values.put(LocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
+                                                        values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                                                        values.put(LocalDataBase.C_APPWATCH_TIMESTART, ActivityStartTime);
+                                                        values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                                                        this.AccesLocalDB().insertOrIgnore(values, LocalDataBase.TABLE_APPWATCH);
+
+                                                        Log.d(TAG, "IdUser: " + UserId + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
+
+                                                    } catch (Exception e) {
+
+                                                        ActivityOnGoing = values.get(LocalDataBase.C_APPWATCH_APPLICATION).toString();
+                                                        ActivityStartDate = values.get(LocalDataBase.C_APPWATCH_DATESTART).toString();
+                                                        ActivityStartTime = values.get(LocalDataBase.C_APPWATCH_TIMESTART).toString();
+                                                        Log.d(TAG, "Last entry is null we should not start a new monitoring");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    Log.d(TAG, "Screen is still locked we don't start a new monitoring yet");
                                                 }
 
                                             }
