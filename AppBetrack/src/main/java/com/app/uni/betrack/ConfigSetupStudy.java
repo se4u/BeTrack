@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
 import android.view.View;
 
 import java.util.HashSet;
@@ -17,7 +16,7 @@ import java.util.Set;
 /**
  * Created by cevincent on 4/22/16.
  */
-public class SetupStudy {
+public class ConfigSetupStudy {
 
     private String STUDY_ID = "StudyId";
     private String STUDY_NAME = "StudyName";
@@ -32,14 +31,14 @@ public class SetupStudy {
     private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) mActivity.getSystemService(mActivity.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (SettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
+            if (ConfigSettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
                 return true;
             }
         }
         return false;
     }
 
-    GetWhatToWatch gwtw = new GetWhatToWatch(new GetWhatToWatch.AsyncResponse(){
+    NetworkGetWhatToWatch gwtw = new NetworkGetWhatToWatch(new NetworkGetWhatToWatch.AsyncResponse(){
 
         @Override
         public void processFinish(final String output) {
@@ -50,19 +49,19 @@ public class SetupStudy {
                 @Override
                 public void run() {
 
-                    BeTrackActivity.dialog.dismiss();
-                    BeTrackActivity.actionBar.show();
+                    ActivityBeTrack.dialog.dismiss();
+                    ActivityBeTrack.actionBar.show();
 
                     if (null != output) {
                         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
                         SharedPreferences.Editor editor = prefs.edit();
-                        Set<String> hs = prefs.getStringSet(InfoStudy.APP_NAME_TO_WATCH, new HashSet<String>());
+                        Set<String> hs = prefs.getStringSet(ConfigInfoStudy.APP_NAME_TO_WATCH, new HashSet<String>());
                         Set<String> in = new HashSet<String>(hs);
 
                         //Broadcast an event to start the tracking service if not yet started
                         if (!isMyServiceRunning()) {
                             Intent intent = new Intent();
-                            intent.setAction(SettingsBetrack.BROADCAST_START_TRACKING_NAME);
+                            intent.setAction(ConfigSettingsBetrack.BROADCAST_START_TRACKING_NAME);
                             mActivity.sendBroadcast(intent);
                         }
 
@@ -72,13 +71,13 @@ public class SetupStudy {
                         mActivity.findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
 
                         //Save the applications to watch in the preference file
-                        for (int i=0; i< GetWhatToWatch.ContextInfoStudy.ApplicationsToWatch.size(); i++) {
-                            in.add(GetWhatToWatch.ContextInfoStudy.ApplicationsToWatch.get(i));
+                        for (int i=0; i< NetworkGetWhatToWatch.ContextInfoStudy.ApplicationsToWatch.size(); i++) {
+                            in.add(NetworkGetWhatToWatch.ContextInfoStudy.ApplicationsToWatch.get(i));
                         }
-                        editor.putStringSet(InfoStudy.APP_NAME_TO_WATCH, in);
+                        editor.putStringSet(ConfigInfoStudy.APP_NAME_TO_WATCH, in);
 
                         //We save in the preference that a study has been started and is ongoing
-                        editor.putBoolean(InfoStudy.STUDY_STARTED, true);
+                        editor.putBoolean(ConfigInfoStudy.STUDY_STARTED, true);
                         editor.commit();
                     } else {
                         mActivity.findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
@@ -91,7 +90,7 @@ public class SetupStudy {
         }}
     );
 
-    public SetupStudy(SharedPreferences prefs, InfoStudy ContextInfoStudy) {
+    public ConfigSetupStudy(SharedPreferences prefs, ConfigInfoStudy ContextInfoStudy) {
 
         //final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
         SharedPreferences.Editor editor = prefs.edit();
@@ -101,7 +100,7 @@ public class SetupStudy {
 
     }
 
-    public SetupStudy(Activity context, InfoStudy ContextInfoStudy) {
+    public ConfigSetupStudy(Activity context, ConfigInfoStudy ContextInfoStudy) {
         mActivity = context;
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
@@ -109,7 +108,7 @@ public class SetupStudy {
         if (false == ContextInfoStudy.StudyStarted) {
             try
             {
-                GetWhatToWatch.ContextInfoStudy = ContextInfoStudy;
+                NetworkGetWhatToWatch.ContextInfoStudy = ContextInfoStudy;
 
                 //Read what to watch from the distant server
                 gwtw.execute();
@@ -126,9 +125,9 @@ public class SetupStudy {
         }
     }
 
-    public void ReadAppToWatch(InfoStudy ContextInfoStudy, SharedPreferences prefs)
+    public void ReadAppToWatch(ConfigInfoStudy ContextInfoStudy, SharedPreferences prefs)
     {
-        Set<String> hs = prefs.getStringSet(InfoStudy.APP_NAME_TO_WATCH, new HashSet<String>());
+        Set<String> hs = prefs.getStringSet(ConfigInfoStudy.APP_NAME_TO_WATCH, new HashSet<String>());
         Set<String> in = new HashSet<String>(hs);
         Iterator<String> iterator = hs.iterator();
 

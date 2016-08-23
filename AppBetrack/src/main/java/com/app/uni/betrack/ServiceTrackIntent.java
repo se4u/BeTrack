@@ -4,9 +4,6 @@ import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.KeyguardManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
@@ -35,7 +32,7 @@ import java.util.concurrent.Executors;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class TrackIntentService extends IntentService {
+public class ServiceTrackIntent extends IntentService {
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_FOO = "com.app.uni.betrack.action.FOO";
@@ -57,20 +54,20 @@ public class TrackIntentService extends IntentService {
     public static String ActivityStartTime = null;
 
 
-    private SettingsBetrack ObjSettingsBetrack;
+    private ConfigSettingsBetrack ObjSettingsBetrack;
 
-    private LocalDataBase localdatabase = new LocalDataBase(this);
+    private UtilsLocalDataBase localdatabase = new UtilsLocalDataBase(this);
 
-    public LocalDataBase AccesLocalDB()
+    public UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
 
-    public TrackIntentService() {
-        super("TrackIntentService");
+    public ServiceTrackIntent() {
+        super("ServiceTrackIntent");
     }
 
-    private         InfoStudy ContextInfoStudy = new InfoStudy();
+    private ConfigInfoStudy ContextInfoStudy = new ConfigInfoStudy();
 
     private ExecutorService es = Executors.newFixedThreadPool(1);
     /**
@@ -81,7 +78,7 @@ public class TrackIntentService extends IntentService {
      */
     // TODO: Customize helper method
     public static void startActionFoo(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, TrackIntentService.class);
+        Intent intent = new Intent(context, ServiceTrackIntent.class);
         intent.setAction(ACTION_FOO);
         intent.putExtra(EXTRA_PARAM1, param1);
         intent.putExtra(EXTRA_PARAM2, param2);
@@ -96,60 +93,39 @@ public class TrackIntentService extends IntentService {
      */
     // TODO: Customize helper method
     public static void startActionBaz(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, TrackIntentService.class);
+        Intent intent = new Intent(context, ServiceTrackIntent.class);
         intent.setAction(ACTION_BAZ);
         intent.putExtra(EXTRA_PARAM1, param1);
         intent.putExtra(EXTRA_PARAM2, param2);
         context.startService(intent);
     }
 
-    private final void createNotification(){
-        final NotificationManager mNotification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        final Intent launchNotificationIntent = new Intent(this, BeTrackActivity.class);
-        final PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                1, launchNotificationIntent,
-                PendingIntent.FLAG_ONE_SHOT);
 
-        Notification.Builder builder = new Notification.Builder(this)
-                .setWhen(System.currentTimeMillis())
-                .setTicker(getResources().getString(R.string.notification_title))
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setContentTitle(getResources().getString(R.string.notification_title))
-                .setContentText(getResources().getString(R.string.notification_desc))
-                .setContentIntent(pendingIntent);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mNotification.notify(SettingsBetrack.NOTIFICATION_ID, builder.build());
-        } else {
-            mNotification.notify(SettingsBetrack.NOTIFICATION_ID, builder.getNotification());
-        }
-
-    }
 
     protected void onHandleIntent(Intent intent) {
         String topActivity = null;
         String ActivityStopDate = null;
         String ActualTime = null;
         String ActivityStopTime=null;
-        String StudyOnGoingKey = InfoStudy.STUDY_STARTED;
+        String StudyOnGoingKey = ConfigInfoStudy.STUDY_STARTED;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
         boolean StudyOnGoing;
         ConnectionState NetworkState;
 
-        PostDataAvailable.localdatabase = this.AccesLocalDB();
-        ScreenReceiver.localdatabase = this.AccesLocalDB();
+        NetworkPostDataAvailable.localdatabase = this.AccesLocalDB();
+        ReceiverScreen.localdatabase = this.AccesLocalDB();
 
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
 
         //Read the preferences
-        ObjSettingsBetrack = new SettingsBetrack(prefs, this);
+        ObjSettingsBetrack = ConfigSettingsBetrack.getInstance();
+        ObjSettingsBetrack.UpdateSettingsBetrack(prefs, this);
 
         //Read the user ID
-        String UserId = prefs.getString(InfoStudy.ID_USER, "NOID ?????");
+        String UserId = prefs.getString(ConfigInfoStudy.ID_USER, "NOID ?????");
 
         if (intent != null) {
             do {
@@ -157,31 +133,26 @@ public class TrackIntentService extends IntentService {
                 StudyOnGoing = prefs.getBoolean(StudyOnGoingKey, false);
                 if (true == StudyOnGoing) {
 
-                    new SetupStudy(prefs, ContextInfoStudy);
+                    new ConfigSetupStudy(prefs, ContextInfoStudy);
                     Intent intentCheckScreenStatus = new Intent();
 
                     do {
 
                         try {
 
-                            //Dummy read to make sure that we stay alive
-                            //Log.d(TAG, "Dummy read to stay alive ");
-                            //values.clear();
-                            //values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
-
                             //Check if preferences have been updated
-                            SettingsBetrack.SemPreferenceUpdated.acquire();
-                            if (SettingsBetrack.PreferenceUpdated)
+                            ConfigSettingsBetrack.SemPreferenceUpdated.acquire();
+                            if (ConfigSettingsBetrack.PreferenceUpdated)
                             {
                                 ObjSettingsBetrack.UpdateSettingsBetrack(prefs, this);
                             }
-                            SettingsBetrack.SemPreferenceUpdated.release();
+                            ConfigSettingsBetrack.SemPreferenceUpdated.release();
 
                             //Check if the participant still want to be a part of the study
                             if (!ObjSettingsBetrack.StudyEnable)
                             {
                                 //We are out of the study
-                                Thread.sleep(SettingsBetrack.UPDATE_STATUS_STUDY_TIME);
+                                Thread.sleep(ConfigSettingsBetrack.UPDATE_STATUS_STUDY_TIME);
                                 continue;
                             }
 
@@ -192,9 +163,9 @@ public class TrackIntentService extends IntentService {
                                 topActivity = handleCheckActivity(intent);
                             }
 
-                            Log.d(TAG, "Foreground App " + topActivity);
-                            if (ScreenReceiver.StateScreen.UNKNOWN == ScreenReceiver.ScreenState) {
-                                intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
+                            //Log.d(TAG, "Foreground App " + topActivity);
+                            if (ReceiverScreen.StateScreen.UNKNOWN == ReceiverScreen.ScreenState) {
+                                intentCheckScreenStatus.setAction(ConfigSettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
                                 this.sendBroadcast(intentCheckScreenStatus);
                             }
                             //Check if we should fire a notification
@@ -204,7 +175,7 @@ public class TrackIntentService extends IntentService {
                                     ObjSettingsBetrack.StudyNotification)
                             {
                                 //Log.d(TAG, "Notification triggered");
-                                createNotification();
+                                //createNotification();
                             }
 
                             //Check the status of the screen
@@ -219,13 +190,13 @@ public class TrackIntentService extends IntentService {
                                     //An activity was watched and should not be watched anymore
                                     if ((null != topActivity) && (!ActivityOnGoing.equals(topActivity))) {
 
-                                        if (ScreenReceiver.StateScreen.ON == ScreenReceiver.ScreenState) {
+                                        if (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState) {
 
                                             //We save in the local database the informations about the study
                                             values.clear();
-                                            values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
+                                            values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
                                             try {
-                                                ActivityStopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
+                                                ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
                                                 Log.d(TAG, "End monitoring date: Should never happen the last entry is already filled up ???");
                                             } catch (Exception e) {
                                                 //Save the stop date
@@ -233,10 +204,10 @@ public class TrackIntentService extends IntentService {
                                                 //Save the stop time
                                                 ActivityStopTime = shf.format(new Date());
 
-                                                values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
-                                                values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                                                values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                                                values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
 
-                                                this.AccesLocalDB().Update(values, values.getAsLong(LocalDataBase.C_APPWATCH_ID), LocalDataBase.TABLE_APPWATCH);
+                                                this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
 
                                                 //Reinitialize activity watched infos
                                                 ActivityOnGoing = null;
@@ -252,10 +223,10 @@ public class TrackIntentService extends IntentService {
                                 }
                                 else {
                                     values.clear();
-                                    values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
+                                    values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
                                     if (0 != values.size()) {
                                         try {
-                                            ActivityStopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
+                                            ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
                                             Log.d(TAG, "Check in case some monitoring was started but never stopped");
                                         } catch (Exception e) {
                                             //Save the stop date
@@ -263,10 +234,10 @@ public class TrackIntentService extends IntentService {
                                             //Save the stop time
                                             ActivityStopTime = shf.format(new Date());
 
-                                            values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
-                                            values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                                            values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                                            values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
 
-                                            this.AccesLocalDB().Update(values, values.getAsLong(LocalDataBase.C_APPWATCH_ID), LocalDataBase.TABLE_APPWATCH);
+                                            this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
 
                                             //Reinitialize activity watched infos
                                             ActivityOnGoing = null;
@@ -280,7 +251,7 @@ public class TrackIntentService extends IntentService {
                                     }
                                 }
 
-                                //Log.d(TAG, "Check app foreground: " + topActivity + "app to monitor: " + ContextInfoStudy.ApplicationsToWatch.get(i) + " Screen state: " + ScreenReceiver.ScreenState);
+                                //Log.d(TAG, "Check app foreground: " + topActivity + "app to monitor: " + ContextInfoStudy.ApplicationsToWatch.get(i) + " Screen state: " + ReceiverScreen.ScreenState);
 
                                 if ((null != topActivity) && (null != ContextInfoStudy.ApplicationsToWatch.get(i))) {
                                     if (topActivity.toLowerCase().contains(ContextInfoStudy.ApplicationsToWatch.get(i).toLowerCase())) {
@@ -291,16 +262,16 @@ public class TrackIntentService extends IntentService {
                                         if (null == ActivityOnGoing) {
 
                                             //Check the status of the screen
-                                            if (ScreenReceiver.StateScreen.ON == ScreenReceiver.ScreenState) {
+                                            if (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState) {
                                                 KeyguardManager km = (KeyguardManager) getBaseContext().getSystemService(Context.KEYGUARD_SERVICE);
                                                 boolean locked = km.inKeyguardRestrictedInputMode();
 
                                                 if (!locked) {
                                                     values.clear();
-                                                    values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
+                                                    values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
                                                     try {
                                                         if (0 != values.size()) {
-                                                            ActivityStopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
+                                                            ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
                                                             Log.d(TAG, "Last entry is not null we can start a new monitoring");
                                                         }
                                                         else {
@@ -317,20 +288,20 @@ public class TrackIntentService extends IntentService {
                                                         ActivityStopTime = null;
 
                                                         values.clear();
-                                                        values.put(LocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
-                                                        values.put(LocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
-                                                        values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
-                                                        values.put(LocalDataBase.C_APPWATCH_TIMESTART, ActivityStartTime);
-                                                        values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
-                                                        this.AccesLocalDB().insertOrIgnore(values, LocalDataBase.TABLE_APPWATCH);
+                                                        values.put(UtilsLocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
+                                                        values.put(UtilsLocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
+                                                        values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                                                        values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTART, ActivityStartTime);
+                                                        values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                                                        this.AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_APPWATCH);
 
                                                         Log.d(TAG, "IdUser: " + UserId + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
 
                                                     } catch (Exception e) {
 
-                                                        ActivityOnGoing = values.get(LocalDataBase.C_APPWATCH_APPLICATION).toString();
-                                                        ActivityStartDate = values.get(LocalDataBase.C_APPWATCH_DATESTART).toString();
-                                                        ActivityStartTime = values.get(LocalDataBase.C_APPWATCH_TIMESTART).toString();
+                                                        ActivityOnGoing = values.get(UtilsLocalDataBase.C_APPWATCH_APPLICATION).toString();
+                                                        ActivityStartDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTART).toString();
+                                                        ActivityStartTime = values.get(UtilsLocalDataBase.C_APPWATCH_TIMESTART).toString();
                                                         Log.d(TAG, "Last entry is null we should not start a new monitoring");
                                                     }
                                                 }
@@ -357,21 +328,21 @@ public class TrackIntentService extends IntentService {
                             if ((ConnectionState.WIFI == NetworkState) ||
                                     ((ConnectionState.LTE == NetworkState) && (ObjSettingsBetrack.EnableDataUsage)))
                             {
-                                if (null == InfoStudy.IdUser ) {
-                                    InfoStudy.IdUser = prefs.getString(InfoStudy.ID_USER, "No user ID !");
-                                    //Log.d(TAG, "IdUser not available we read it from the database: " + InfoStudy.IdUser);
+                                if (null == ConfigInfoStudy.IdUser ) {
+                                    ConfigInfoStudy.IdUser = prefs.getString(ConfigInfoStudy.ID_USER, "No user ID !");
+                                    //Log.d(TAG, "IdUser not available we read it from the database: " + ConfigInfoStudy.IdUser);
                                 }
                                 else
                                 {
-                                    //Log.d(TAG, "IdUser available: " + InfoStudy.IdUser);
+                                    //Log.d(TAG, "IdUser available: " + ConfigInfoStudy.IdUser);
                                 }
                                 //Check if we are not already transferring the data
-                                if (PostDataAvailable.SemUpdateServer.tryAcquire()) {
+                                if (NetworkPostDataAvailable.SemUpdateServer.tryAcquire()) {
                                     es.execute(new Runnable() {
                                         @Override
                                         public void run() {
                                             //Transfer all the data available to the distant server
-                                            PostDataAvailable.Start();
+                                            NetworkPostDataAvailable.Start();
                                         }
                                     });
                                 }
@@ -381,7 +352,7 @@ public class TrackIntentService extends IntentService {
                                 }
                             }
 
-                            Thread.sleep(SettingsBetrack.SAMPLING_RATE);
+                            Thread.sleep(ConfigSettingsBetrack.SAMPLING_RATE);
                         } catch (InterruptedException e) {
                             Log.d(TAG, "Intent action error!");
                         }
@@ -392,7 +363,7 @@ public class TrackIntentService extends IntentService {
                     //We wait and check if a study has been started
                     try {
                         Log.d(TAG, "Wait for a study to be started");
-                        Thread.sleep(SettingsBetrack.DELTA_BTW_RECHECK_STUDY_STARTED);
+                        Thread.sleep(ConfigSettingsBetrack.DELTA_BTW_RECHECK_STUDY_STARTED);
                     } catch (InterruptedException e) {
                         Log.d(TAG, "Intent action error!");
                     }
@@ -419,7 +390,7 @@ public class TrackIntentService extends IntentService {
         // result
         String topActivity = null;
         long endTime = System.currentTimeMillis();
-        long beginTime = endTime - SettingsBetrack.SAMPLING_RATE * 60;
+        long beginTime = endTime - ConfigSettingsBetrack.SAMPLING_RATE * 60;
 
         UsageStatsManager mUsageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
         List<UsageStats> stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, beginTime, endTime);
@@ -450,11 +421,11 @@ public class TrackIntentService extends IntentService {
                 NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
                 if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                     // connected to wifi
-                    Log.d(TAG, "haveNetworkConnection: WIFI");
+                    //Log.d(TAG, "haveNetworkConnection: WIFI");
                     NetworkState = ConnectionState.WIFI;
                 } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                     // connected to the mobile provider's data plan
-                    Log.d(TAG, "haveNetworkConnection: LTE/3G");
+                    //Log.d(TAG, "haveNetworkConnection: LTE/3G");
                     NetworkState = ConnectionState.LTE;
                 }
             }else {
@@ -462,13 +433,13 @@ public class TrackIntentService extends IntentService {
                 for (NetworkInfo ni : netInfo) {
                     if (ni.getTypeName().equalsIgnoreCase("WIFI"))
                         if (ni.isConnected()){
-                            Log.d(TAG, "haveNetworkConnection: WIFI");
+                            //Log.d(TAG, "haveNetworkConnection: WIFI");
                             NetworkState = ConnectionState.WIFI;
                         }
 
                     if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
                         if (ni.isConnected()) {
-                            Log.d(TAG, "haveNetworkConnection: LTE/3G");
+                            //Log.d(TAG, "haveNetworkConnection: LTE/3G");
                             NetworkState = ConnectionState.LTE;
                         }
                 }

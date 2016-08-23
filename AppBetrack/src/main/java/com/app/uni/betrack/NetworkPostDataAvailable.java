@@ -16,13 +16,13 @@ import javax.net.ssl.HttpsURLConnection;
 /**
  * Created by cevincent on 6/3/16.
  */
-public class PostDataAvailable  {
-    static final String TAG = "PostDataAvailable";
+public class NetworkPostDataAvailable {
+    static final String TAG = "NetworkPostDataAvailable";
 
     public static final Semaphore SemUpdateServer = new Semaphore(1, true);
-    public static LocalDataBase localdatabase;
+    public static UtilsLocalDataBase localdatabase;
 
-    public static LocalDataBase AccesLocalDB()
+    public static UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
@@ -58,25 +58,25 @@ public class PostDataAvailable  {
         while(TaskDone != 0)
         {
             values.clear();
-            values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
+            values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
             if (0 != values.size()) {
 
                 try {
 
-                    urlPostAppwatched = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTAPPWATCHED +"?");
+                    urlPostAppwatched = new URL(ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_POSTAPPWATCHED +"?");
                     urlConnection = (HttpURLConnection) urlPostAppwatched.openConnection();
                     urlConnection.setRequestMethod("POST");
                     urlConnection.setRequestProperty("Content-Type",
                             "application/x-www-form-urlencoded");
                     urlConnection.setDoOutput(true);
                     urlConnection.setDoInput(true);
-                    urlConnection.setReadTimeout(SettingsBetrack.SERVER_TIMEOUT);
-                    urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
+                    urlConnection.setReadTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
+                    urlConnection.setConnectTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
 
-                    IdSql = values.getAsLong(LocalDataBase.C_APPWATCH_ID);
+                    IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
 
-                    if (null != InfoStudy.IdUser) {
-                        UserId = InfoStudy.IdUser;
+                    if (null != ConfigInfoStudy.IdUser) {
+                        UserId = ConfigInfoStudy.IdUser;
                     }
                     else
                     {
@@ -85,13 +85,13 @@ public class PostDataAvailable  {
                         break;
                     }
 
-                    AppName = values.get(LocalDataBase.C_APPWATCH_APPLICATION).toString();
-                    StartDate = values.get(LocalDataBase.C_APPWATCH_DATESTART).toString();
-                    StartTime = values.get(LocalDataBase.C_APPWATCH_TIMESTART).toString();
-                    StopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
-                    StopTime = values.get(LocalDataBase.C_APPWATCH_TIMESTOP).toString();
+                    AppName = values.get(UtilsLocalDataBase.C_APPWATCH_APPLICATION).toString();
+                    StartDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTART).toString();
+                    StartTime = values.get(UtilsLocalDataBase.C_APPWATCH_TIMESTART).toString();
+                    StopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
+                    StopTime = values.get(UtilsLocalDataBase.C_APPWATCH_TIMESTOP).toString();
 
-                    Log.d(TAG, "PHP request: " + SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTAPPWATCHED + "?" +
+                    Log.d(TAG, "PHP request: " + ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_POSTAPPWATCHED + "?" +
                             "userid=" + UserId + "&application=" + AppName + "&datestart=" + StartDate + "&datestop=" + StopDate + "&timestart=" + StartTime + "&timestop=" + StopTime);
 
                     Uri.Builder builder = new Uri.Builder()
@@ -113,7 +113,7 @@ public class PostDataAvailable  {
 
 
                     if (HttpsURLConnection.HTTP_OK == urlConnection.getResponseCode()) {
-                        AccesLocalDB().deleteELement(LocalDataBase.TABLE_APPWATCH, IdSql);
+                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
                     }
 
                 } catch (java.net.SocketTimeoutException e) {
@@ -135,24 +135,24 @@ public class PostDataAvailable  {
             }
 
             values.clear();
-            values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_USER);
+            values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_USER);
             if (0 != values.size()) {
                 try {
                     //Connect to the remote database to get the available studies
-                    urlPostDailyStatus = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTDAILYSTATUS +"?");
+                    urlPostDailyStatus = new URL(ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_POSTDAILYSTATUS +"?");
                     urlConnection = (HttpURLConnection) urlPostDailyStatus.openConnection();
                     urlConnection.setRequestMethod("POST");
                     urlConnection.setRequestProperty("Content-Type",
                             "application/x-www-form-urlencoded");
                     urlConnection.setDoOutput(true);
                     urlConnection.setDoInput(true);
-                    urlConnection.setReadTimeout(SettingsBetrack.SERVER_TIMEOUT);
-                    urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
+                    urlConnection.setReadTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
+                    urlConnection.setConnectTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
 
-                    IdSql = values.getAsLong(LocalDataBase.C_USER_ID);
+                    IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
 
-                    if (null != InfoStudy.IdUser) {
-                        UserId = InfoStudy.IdUser;
+                    if (null != ConfigInfoStudy.IdUser) {
+                        UserId = ConfigInfoStudy.IdUser;
                     }
                     else
                     {
@@ -161,10 +161,10 @@ public class PostDataAvailable  {
                         break;
                     }
 
-                    PeriodStatus = values.get(LocalDataBase.C_USER_PERIOD).toString();
-                    Date = values.get(LocalDataBase.C_USER_DATE).toString();
+                    PeriodStatus = values.get(UtilsLocalDataBase.C_USER_PERIOD).toString();
+                    Date = values.get(UtilsLocalDataBase.C_USER_DATE).toString();
 
-                    Log.d(TAG, "PHP request: " + SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTDAILYSTATUS + "?" +
+                    Log.d(TAG, "PHP request: " + ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_POSTDAILYSTATUS + "?" +
                             "userid=" + UserId + "&periodstatus=" + PeriodStatus + "&date=" + Date);
 
                     Uri.Builder builder = new Uri.Builder()
@@ -181,7 +181,7 @@ public class PostDataAvailable  {
                     writer.close();
 
                     if (HttpsURLConnection.HTTP_OK == urlConnection.getResponseCode()) {
-                        AccesLocalDB().deleteELement(LocalDataBase.TABLE_USER, IdSql);
+                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
                     }
 
                 } catch (java.net.SocketTimeoutException e) {

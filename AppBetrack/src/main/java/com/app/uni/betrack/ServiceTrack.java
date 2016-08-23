@@ -8,20 +8,20 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
 
-public class TrackService extends Service {
-    public TrackService() {
+public class ServiceTrack extends Service {
+    public ServiceTrack() {
     }
     static final String TAG = "UpdaterService";
-    public static InfoStudy mInfoStudy;
+    public static ConfigInfoStudy mInfoStudy;
     public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
 
-    static TrackService instance;
+    static ServiceTrack instance;
 
     private NotificationManager mNotificationManager;
 
-    public static LocalDataBase localdatabase;
+    public static UtilsLocalDataBase localdatabase;
 
-    public LocalDataBase AccesLocalDB()
+    public UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
@@ -41,13 +41,13 @@ public class TrackService extends Service {
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SHUTDOWN);
-        filter.addAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
+        filter.addAction(ConfigSettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
 
-        BroadcastReceiver mReceiver = new ScreenReceiver();
+        BroadcastReceiver mReceiver = new ReceiverScreen();
         registerReceiver(mReceiver, filter);
         instance = this;
-        if (startService(new Intent(this, ForegroundEnablingService.class)) == null)
-            throw new RuntimeException("Couldn't find " + ForegroundEnablingService.class.getSimpleName());
+        if (startService(new Intent(this, UtilsForegroundEnablingService.class)) == null)
+            throw new RuntimeException("Couldn't find " + UtilsForegroundEnablingService.class.getSimpleName());
 
 
     }
@@ -55,7 +55,7 @@ public class TrackService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) { //
         super.onStartCommand(intent, flags, startId);
-        Intent msgIntent = new Intent(this, TrackIntentService.class);
+        Intent msgIntent = new Intent(this, ServiceTrackIntent.class);
         Log.d(TAG, "onStarted");
 
         //Start the service for monitoring app
@@ -67,7 +67,7 @@ public class TrackService extends Service {
     public void onDestroy() { //
         super.onDestroy();
         instance = null;
-        //stopForeground(true);
+        stopForeground(true);
         Log.d(TAG, "onDestroyed");
 
     }

@@ -41,7 +41,7 @@ import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
 import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
 
 
-public class BeTrackActivity extends AppCompatActivity  implements VerticalStepperForm {
+public class ActivityBeTrack extends AppCompatActivity  implements VerticalStepperForm {
 
     private static final String TAG = "Status";
 
@@ -49,8 +49,8 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
     public static ActionBar actionBar;
 
     private Context mContext;
-    private LocalDataBase localdatabase = new LocalDataBase(this);
-    public LocalDataBase AccesLocalDB()
+    private UtilsLocalDataBase localdatabase = new UtilsLocalDataBase(this);
+    public UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
@@ -67,15 +67,15 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
     private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (SettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
+            if (ConfigSettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
                 return true;
             }
         }
         return false;
     }
 
-    public InfoStudy ObjInfoStudy = new InfoStudy();
-    private SettingsBetrack ObjSettingsBetrack;
+    public ConfigInfoStudy ObjInfoStudy = new ConfigInfoStudy();
+    private ConfigSettingsBetrack ObjSettingsBetrack;
 
     private int id_period;
     private VerticalStepperFormLayout verticalStepperForm;
@@ -87,7 +87,6 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
         SharedPreferences.Editor editor = prefs.edit();
         mContext = this;
 
-        ObjSettingsBetrack = new SettingsBetrack(prefs, this);
         actionBar = getSupportActionBar();
         actionBar.hide();
 
@@ -101,10 +100,10 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
         //In case it's an Huawei phone we ask the user to put our app in the protected list
         ifHuaweiAlert();
 
-        notificationManager.cancel(SettingsBetrack.NOTIFICATION_ID);
+        notificationManager.cancel(ConfigSettingsBetrack.NOTIFICATION_ID);
 
-        //Display an Eula if needed
-        new Eula(this).show();
+        //Display an ConfigEula if needed
+        new ConfigEula(this).show();
 
         try {
 
@@ -121,9 +120,9 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
                 findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
 
                 /* That was done in case we'll have multiple study, I keep it for now maybe I will reuse for multiple language
-                for (int i = 0; i < GetStudiesAvailable.NbrMaxStudy; i++) {
-                    if (i < GetStudiesAvailable.NbrStudyAvailable) {
-                        button[i].setText(GetStudiesAvailable.StudyName[i]);
+                for (int i = 0; i < NetworkGetStudiesAvailable.NbrMaxStudy; i++) {
+                    if (i < NetworkGetStudiesAvailable.NbrStudyAvailable) {
+                        button[i].setText(NetworkGetStudiesAvailable.StudyName[i]);
                         button[i].setEnabled(true);
                         button[i].setVisibility(View.VISIBLE);
                     }
@@ -135,20 +134,20 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
                 */
                 TextView StudyTitle = new TextView(this);
                 StudyTitle = (TextView) findViewById(R.id.study_title);
-                StudyTitle.setText(GetStudiesAvailable.StudyName[0]);
+                StudyTitle.setText(NetworkGetStudiesAvailable.StudyName[0]);
 
                 TextView StudyDescription = new TextView(this);
                 StudyDescription = (TextView) findViewById(R.id.study_description);
-                StudyDescription.setText(GetStudiesAvailable.StudyDescription[0]);
+                StudyDescription.setText(NetworkGetStudiesAvailable.StudyDescription[0]);
 
             } else {
                 //Get the unique ID of that user
-                InfoStudy.IdUser = prefs.getString(InfoStudy.ID_USER, "No user ID !");
+                ConfigInfoStudy.IdUser = prefs.getString(ConfigInfoStudy.ID_USER, "No user ID !");
                 //Get the description of the study
-                InfoStudy.StudyDescription = prefs.getString(InfoStudy.STUDY_DESCRIPTION, "No study description !");
+                ConfigInfoStudy.StudyDescription = prefs.getString(ConfigInfoStudy.STUDY_DESCRIPTION, "No study description !");
 
                 //Read from the preference the information of the study
-                new SetupStudy(this, ObjInfoStudy);
+                new ConfigSetupStudy(this, ObjInfoStudy);
 
                 //Update the study page
 
@@ -160,7 +159,7 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
                 //Broadcast an event to start the tracking service if not yet started
                 if (!isMyServiceRunning()) {
                     Intent intent = new Intent();
-                    intent.setAction(SettingsBetrack.BROADCAST_START_TRACKING_NAME);
+                    intent.setAction(ConfigSettingsBetrack.BROADCAST_START_TRACKING_NAME);
                     sendBroadcast(intent);
                 }
 
@@ -188,7 +187,7 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
         LinearLayout item = (LinearLayout)findViewById(R.id.LinearLayout_Layout_List);
 
         int[] imgs = {R.drawable.blood_drop, R.drawable.blood_drop};
-        final View child1 = new CardBetrack(mContext,"Do you have your period today ?","Yes","No",imgs);
+        final View child1 = new ActivityCardBetrack(mContext,"Do you have your period today ?","Yes","No",imgs);
 
         Button mAnswerYes;
         mAnswerYes = (Button) child1.findViewById(R.id.CardBetrackButtonYes);
@@ -196,15 +195,15 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
             @Override
             public void onClick(View v) {
                 Button Icon = (Button) child1.findViewById(R.id.CardBetrackButton);
-                CardBetrack.InternalSetBackground((Drawable)getResources().getDrawable(R.drawable.button_round_custom_neutral), Icon);
+                ActivityCardBetrack.InternalSetBackground((Drawable)getResources().getDrawable(R.drawable.button_round_custom_neutral), Icon);
 
                 values.clear();
-                values.put(LocalDataBase.C_USER_PERIOD, "1");
+                values.put(UtilsLocalDataBase.C_USER_PERIOD, "1");
                 DatePeriod = sdf.format(new Date());
-                values.put(LocalDataBase.C_USER_DATE, DatePeriod);
+                values.put(UtilsLocalDataBase.C_USER_DATE, DatePeriod);
 
-                AccesLocalDB().insertOrIgnore(values, LocalDataBase.TABLE_USER);
-                Log.d(TAG, "idUser: " + InfoStudy.IdUser + "Period status: " + 1 + " date: " + DatePeriod);
+                AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_USER);
+                Log.d(TAG, "idUser: " + ConfigInfoStudy.IdUser + "Period status: " + 1 + " date: " + DatePeriod);
             }
         });
         Button mAnswerNo;
@@ -213,15 +212,15 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
             @Override
             public void onClick(View v) {
                 Button Icon = (Button) child1.findViewById(R.id.CardBetrackButton);
-                CardBetrack.InternalSetBackground((Drawable)getResources().getDrawable(R.drawable.button_round_custom_red), Icon);
+                ActivityCardBetrack.InternalSetBackground((Drawable)getResources().getDrawable(R.drawable.button_round_custom_red), Icon);
 
                 values.clear();
-                values.put(LocalDataBase.C_USER_PERIOD, "0");
+                values.put(UtilsLocalDataBase.C_USER_PERIOD, "0");
                 DatePeriod = sdf.format(new Date());
-                values.put(LocalDataBase.C_USER_DATE, DatePeriod);
+                values.put(UtilsLocalDataBase.C_USER_DATE, DatePeriod);
 
-                AccesLocalDB().insertOrIgnore(values, LocalDataBase.TABLE_USER);
-                Log.d(TAG, "idUser: " + InfoStudy.IdUser + "Period status: " + 0 + " date: " + DatePeriod);
+                AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_USER);
+                Log.d(TAG, "idUser: " + ConfigInfoStudy.IdUser + "Period status: " + 0 + " date: " + DatePeriod);
             }
         });
 
@@ -247,19 +246,19 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
 
     private View createNameStep() {
         int[] imgs = {R.drawable.ic_girl_1, R.drawable.blood_drop};
-        return new CardBetrack(mContext,"Do you have your period today ?","Yes","No",imgs);
+        return new ActivityCardBetrack(mContext,"Do you have your period today ?","Yes","No",imgs);
     }
 
     private View createEmailStep() {
         // In this case we generate the view by inflating a XML file
         int[] imgs = {R.drawable.ic_girl_1, R.drawable.blood_drop};
-        return  new CardBetrack(mContext,"Do you have your period today ?",imgs);
+        return  new ActivityCardBetrack(mContext,"Do you have your period today ?",imgs);
     }
 
     private View createPhoneNumberStep() {
         // In this case we generate the view by inflating a XML file
         int[] imgs = {R.drawable.ic_girl_1, R.drawable.blood_drop};
-        return  new CardBetrack(mContext,"Do you have your period today ?",imgs);
+        return  new ActivityCardBetrack(mContext,"Do you have your period today ?",imgs);
     }
 
     @Override
@@ -299,7 +298,7 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, ActivitySettings.class));
         }
         return true;
     }
@@ -313,22 +312,22 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
             case R.id.buttonUpdate:
                 TextView StudyDescription = new TextView(this);
                 //Get the unique ID of that user
-                if (null == Eula.IdUser) {
-                    InfoStudy.IdUser = prefs.getString(InfoStudy.ID_USER, "No user ID !");
+                if (null == ConfigEula.IdUser) {
+                    ConfigInfoStudy.IdUser = prefs.getString(ConfigInfoStudy.ID_USER, "No user ID !");
                 }
 
                 //Save the study description
                 StudyDescription = (TextView) findViewById(R.id.study_description);
-                editor.putString(InfoStudy.STUDY_DESCRIPTION, StudyDescription.getText().toString());
+                editor.putString(ConfigInfoStudy.STUDY_DESCRIPTION, StudyDescription.getText().toString());
                 //Get the description of the study
-                InfoStudy.StudyDescription = StudyDescription.getText().toString();
+                ConfigInfoStudy.StudyDescription = StudyDescription.getText().toString();
                 editor.commit();
 
                 dialog = ProgressDialog.show(this, this.getString(R.string.welcome_loading),
                         this.getString(R.string.welcome_wait), true);
 
                 //We set up the study
-                new SetupStudy(this, ObjInfoStudy);
+                new ConfigSetupStudy(this, ObjInfoStudy);
 
                 break;
             case R.id.ButtonNetwork:
@@ -336,7 +335,7 @@ public class BeTrackActivity extends AppCompatActivity  implements VerticalStepp
                 dialog = ProgressDialog.show(this, this.getString(R.string.welcome_loading),
                         this.getString(R.string.welcome_wait), true);
                 //We set up the study
-                new SetupStudy(this, ObjInfoStudy);
+                new ConfigSetupStudy(this, ObjInfoStudy);
                 break;
         }
     }

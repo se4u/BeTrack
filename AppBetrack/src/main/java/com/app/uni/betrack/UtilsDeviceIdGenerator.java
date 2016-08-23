@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 /**
  * Generates unique device id
  */
-public class DeviceIdGenerator {
+public class UtilsDeviceIdGenerator {
 
     private static final String EMULATOR_ANDROID_ID = "9774d56d682e549c";
     private static final String[] BAD_SERIAL_PATTERNS = {"1234567", "abcdef", "dead00beef"};

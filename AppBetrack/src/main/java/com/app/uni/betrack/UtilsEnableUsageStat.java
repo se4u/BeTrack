@@ -13,10 +13,10 @@ import android.provider.Settings;
 /**
  * Created by cevincent on 6/10/16.
  */
-public class EnableUsageStat {
+public class UtilsEnableUsageStat {
     private Activity mActivity;
     public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
-    public EnableUsageStat(Activity context) {
+    public UtilsEnableUsageStat(Activity context) {
         mActivity = context;
     }
 

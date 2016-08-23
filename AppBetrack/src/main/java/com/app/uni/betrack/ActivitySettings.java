@@ -2,33 +2,20 @@ package com.app.uni.betrack;
 
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
-import android.text.format.DateFormat;
+import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TimePicker;
 
-import com.app.uni.betrack.R;
-
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -38,15 +25,18 @@ import java.util.List;
  * the list of settings.
  * <p/>
  * See <a href="http://developer.android.com/design/patterns/settings.html">
- * Android Design: SettingsBetrack</a> for design guidelines and the <a
- * href="http://developer.android.com/guide/topics/ui/settings.html">SettingsBetrack
- * API Guide</a> for more information on developing a SettingsBetrack UI.
+ * Android Design: ConfigSettingsBetrack</a> for design guidelines and the <a
+ * href="http://developer.android.com/guide/topics/ui/settings.html">ConfigSettingsBetrack
+ * API Guide</a> for more information on developing a ConfigSettingsBetrack UI.
  */
-public class SettingsActivity extends AppCompatPreferenceActivity {
+public class ActivitySettings extends ActivityAppCompatPreference {
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
+
+    private static ConfigSettingsBetrack ObjSettingsBetrack;
+
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -108,19 +98,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+        if (ObjSettingsBetrack == null)  {
+            ObjSettingsBetrack = ConfigSettingsBetrack.getInstance();
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-                Intent homeIntent = new Intent(this, BeTrackActivity.class);
+                Intent homeIntent = new Intent(this, ActivityBeTrack.class);
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                try{
-                    SettingsBetrack.SemPreferenceUpdated.acquire();
-                    SettingsBetrack.PreferenceUpdated = true;
-                    SettingsBetrack.SemPreferenceUpdated.release();
-                }catch (Exception e) {}
                 startActivity(homeIntent);
         }
         return (super.onOptionsItemSelected(menuItem));
@@ -178,14 +166,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_info);
             setHasOptionsMenu(true);
             Preference etp = findPreference("pref_info");
-            etp.setSummary(InfoStudy.StudyDescription);
+            etp.setSummary(ConfigInfoStudy.StudyDescription);
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                startActivity(new Intent(getActivity(), ActivitySettings.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -195,18 +183,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
+
+        SharedPreferences prefs;
+        SharedPreferences.OnSharedPreferenceChangeListener listener;
+        private static Context mContext;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
+            mContext = this.getActivity();
+            prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+            registerPreferenceListener();
+            setHasOptionsMenu(true);
+        }
+
+        private void registerPreferenceListener()
+        {
+            listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+                public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                    ObjSettingsBetrack.UpdateSettingsBetrack(prefs, mContext);
+                }
+            };
+            prefs.registerOnSharedPreferenceChangeListener(listener);
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                startActivity(new Intent(getActivity(), ActivitySettings.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -221,14 +228,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_user_id);
             setHasOptionsMenu(true);
             Preference etp = findPreference("pref_user_id");
-            etp.setSummary(InfoStudy.IdUser);
+            etp.setSummary(ConfigInfoStudy.IdUser);
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                startActivity(new Intent(getActivity(), ActivitySettings.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -238,19 +245,39 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class NotificationPreferenceFragment extends PreferenceFragment {
+        SharedPreferences prefs;
+        SharedPreferences.OnSharedPreferenceChangeListener listener;
+        private static Context mContext;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_notification);
+            mContext = this.getActivity();
+            prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+            registerPreferenceListener();
             setHasOptionsMenu(true);
 
+        }
+
+        private void registerPreferenceListener()
+        {
+            listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+                public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                    ObjSettingsBetrack.UpdateSettingsBetrack(prefs, mContext);
+                    ReceiverAlarmNotification.CreateAlarm(mContext,
+                                                            ObjSettingsBetrack.StudyNotification,
+                                                                ObjSettingsBetrack.StudyNotificationTime);
+                }
+            };
+            prefs.registerOnSharedPreferenceChangeListener(listener);
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                startActivity(new Intent(getActivity(), ActivitySettings.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -259,18 +286,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class DataSyncPreferenceFragment extends PreferenceFragment {
+
+        SharedPreferences prefs;
+        SharedPreferences.OnSharedPreferenceChangeListener listener;
+        private static Context mContext;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_data_sync);
             setHasOptionsMenu(true);
+            mContext = this.getActivity();
+            prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+            registerPreferenceListener();
+            setHasOptionsMenu(true);
+        }
+
+        private void registerPreferenceListener()
+        {
+            listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+                public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                    ObjSettingsBetrack.UpdateSettingsBetrack(prefs, mContext);
+                }
+            };
+            prefs.registerOnSharedPreferenceChangeListener(listener);
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                startActivity(new Intent(getActivity(), ActivitySettings.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);

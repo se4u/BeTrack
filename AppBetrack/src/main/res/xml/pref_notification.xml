@@ -7,7 +7,7 @@
         android:key="@string/pref_key_study_notification"
         android:title="@string/pref_title_new_message_notifications" />
 
-    <com.app.uni.betrack.TimePreference
+    <com.app.uni.betrack.UtilsTimePreference
         android:key="@string/pref_key_study_notification_time"
         android:title="@string/pref_notification_time"
         android:onClick="showTimePickerDialog"/>

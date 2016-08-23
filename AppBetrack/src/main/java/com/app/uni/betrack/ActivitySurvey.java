@@ -13,7 +13,7 @@ import com.github.fcannizzaro.materialstepper.style.DotStepper;
 /**
  * Created by cevincent on 13/07/2016.
  */
-public class SurveyActivity extends DotStepper {
+public class ActivitySurvey extends DotStepper {
 
     private int i = 1;
 

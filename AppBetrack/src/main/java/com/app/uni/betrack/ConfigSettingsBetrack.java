@@ -1,6 +1,5 @@
 package com.app.uni.betrack;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -10,11 +9,11 @@ import java.util.concurrent.Semaphore;
 /**
  * Created by cevincent on 5/26/16.
  */
-public class SettingsBetrack {
+public class ConfigSettingsBetrack {
 
-    static private final String TAG = "SettingsBetrack";
+    static private final String TAG = "ConfigSettingsBetrack";
 
-    static public String SERVICE_TRACKING_NAME = "com.app.uni.betrack.TrackIntentService";
+    static public String SERVICE_TRACKING_NAME = "com.app.uni.betrack.ServiceTrackIntent";
     static public String BROADCAST_START_TRACKING_NAME = "com.app.uni.betrack.START_TRACKING";
     static public String BROADCAST_CHECK_SCREEN_STATUS = "com.app.uni.betrack.CHECK_SCREEN_STATUS";
 
@@ -40,8 +39,18 @@ public class SettingsBetrack {
     public Boolean StudyNotification;
     public String StudyNotificationTime;
     public Boolean EnableDataUsage;
-    public SettingsBetrack(SharedPreferences prefs, Context mActivity) {
-        BuildPref(prefs, mActivity);
+
+    private ConfigSettingsBetrack()
+    {}
+
+    private static class ConfigSettingsBetrackHolder
+    {
+        private final static ConfigSettingsBetrack instance = new ConfigSettingsBetrack();
+    }
+
+    public static ConfigSettingsBetrack getInstance()
+    {
+        return ConfigSettingsBetrackHolder.instance;
     }
 
     public void UpdateSettingsBetrack(SharedPreferences prefs, Context mActivity) {

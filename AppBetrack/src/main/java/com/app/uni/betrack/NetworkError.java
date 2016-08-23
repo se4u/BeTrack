@@ -5,13 +5,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-
-import com.app.uni.betrack.R;
 
 /**
  * Created by cevincent on 4/22/16.
@@ -19,7 +15,7 @@ import com.app.uni.betrack.R;
 public class NetworkError {
     private static int TIME_OUT = 1000;
     private Activity mActivity;
-    GetStudiesAvailable gsa = new GetStudiesAvailable(new GetStudiesAvailable.AsyncResponse(){
+    NetworkGetStudiesAvailable gsa = new NetworkGetStudiesAvailable(new NetworkGetStudiesAvailable.AsyncResponse(){
 
         @Override
         public void processFinish(final String output) {
@@ -32,7 +28,7 @@ public class NetworkError {
 
 
                     if (null != output) {
-                        Intent i = new Intent(mActivity, BeTrackActivity.class);
+                        Intent i = new Intent(mActivity, ActivityBeTrack.class);
                         mActivity.startActivity(i);
                         mActivity.finish();
 

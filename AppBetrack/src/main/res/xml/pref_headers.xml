@@ -1,28 +1,28 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
 
     <header
-        android:fragment="com.app.uni.betrack.SettingsActivity$YourIdPreferenceFragment"
+        android:fragment="com.app.uni.betrack.ActivitySettings$YourIdPreferenceFragment"
         android:selectable="false"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="@string/pref_header_your_id" />
 
     <header
-        android:fragment="com.app.uni.betrack.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="com.app.uni.betrack.ActivitySettings$GeneralPreferenceFragment"
         android:icon="@drawable/ic_build_black_24dp"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="com.app.uni.betrack.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="com.app.uni.betrack.ActivitySettings$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications" />
 
     <header
-        android:fragment="com.app.uni.betrack.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="com.app.uni.betrack.ActivitySettings$DataSyncPreferenceFragment"
         android:icon="@drawable/ic_sync_black_24dp"
         android:title="@string/pref_header_data_sync" />
 
     <header
-        android:fragment="com.app.uni.betrack.SettingsActivity$InfoPreferenceFragment"
+        android:fragment="com.app.uni.betrack.ActivitySettings$InfoPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_info" />
 

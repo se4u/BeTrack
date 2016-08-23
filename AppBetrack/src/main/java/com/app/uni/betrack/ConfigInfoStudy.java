@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by cevincent on 4/24/16.
  */
-public class InfoStudy {
+public class ConfigInfoStudy {
 
     static public final String STUDY_STARTED = "study_started";
     static public final String APP_NAME_TO_WATCH = "AppNameToWatch";

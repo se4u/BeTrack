@@ -12,7 +12,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageSwitcher;
@@ -23,7 +22,7 @@ import android.widget.ViewSwitcher;
 /**
  * Created by cevincent on 5/27/16.
  */
-public class SplashScreen extends AppCompatActivity implements ViewSwitcher.ViewFactory{
+public class ActivitySplashScreen extends AppCompatActivity implements ViewSwitcher.ViewFactory{
     // Splash screen timer
     private static int TIME_OUT = 2000;
     private static boolean StudyOnGoing = false;
@@ -36,7 +35,7 @@ public class SplashScreen extends AppCompatActivity implements ViewSwitcher.View
 
     Activity mActivity = this;
 
-    GetStudiesAvailable gsa = new GetStudiesAvailable(new GetStudiesAvailable.AsyncResponse(){
+    NetworkGetStudiesAvailable gsa = new NetworkGetStudiesAvailable(new NetworkGetStudiesAvailable.AsyncResponse(){
 
         @Override
         public void processFinish(final String output) {
@@ -48,7 +47,7 @@ public class SplashScreen extends AppCompatActivity implements ViewSwitcher.View
                 public void run() {
 
                     if (null != output) {
-                        Intent i = new Intent(SplashScreen.this, BeTrackActivity.class);
+                        Intent i = new Intent(ActivitySplashScreen.this, ActivityBeTrack.class);
                         startActivity(i);
 
                         // close this activity
@@ -67,7 +66,7 @@ public class SplashScreen extends AppCompatActivity implements ViewSwitcher.View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final String StudyOnGoingKey = InfoStudy.STUDY_STARTED;
+        final String StudyOnGoingKey = ConfigInfoStudy.STUDY_STARTED;
 
 
         StudyOnGoing = prefs.getBoolean(StudyOnGoingKey, false);
@@ -100,7 +99,7 @@ public class SplashScreen extends AppCompatActivity implements ViewSwitcher.View
                     if(!hasPermission()) {
                         //Explain what's going on to the user of the study before to display the setting menu
                         Thread.sleep(100);
-                        new EnableUsageStat(this).show();
+                        new UtilsEnableUsageStat(this).show();
                     }
                     else
                     {
@@ -122,9 +121,9 @@ public class SplashScreen extends AppCompatActivity implements ViewSwitcher.View
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                            Intent i = new Intent(SplashScreen.this, BeTrackActivity.class);
+                            Intent i = new Intent(ActivitySplashScreen.this, ActivityBeTrack.class);
                             startActivity(i);
-                            //Intent i = new Intent(SplashScreen.this, SurveyActivity.class);
+                            //Intent i = new Intent(ActivitySplashScreen.this, ActivitySurvey.class);
                             //startActivityForResult(i, 1);
                             // close this activity
                             finish();

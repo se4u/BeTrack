@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
 
-public class TimePreference extends DialogPreference {
+public class UtilsTimePreference extends DialogPreference {
     private int lastHour=0;
     private int lastMinute=0;
     private TimePicker picker=null;
@@ -27,7 +27,7 @@ public class TimePreference extends DialogPreference {
         return(Integer.parseInt(pieces[1]));
     }
 
-    public TimePreference(Context ctxt, AttributeSet attrs) {
+    public UtilsTimePreference(Context ctxt, AttributeSet attrs) {
         super(ctxt, attrs);
 
         setPositiveButtonText("Set");

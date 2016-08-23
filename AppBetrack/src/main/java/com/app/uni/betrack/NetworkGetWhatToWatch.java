@@ -1,6 +1,5 @@
 package com.app.uni.betrack;
 
-
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
@@ -13,17 +12,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by cevincent on 4/13/16.
+ * Created by cevincent on 5/6/16.
  */
-public class GetStudiesAvailable extends AsyncTask<String, Void, String> {
-
-    static final String TAG = "GetStudiesAvailable";
-    static public String[] StudyID;
-    static public String[] StudyActive;
-    static public String[] StudyName;
-    static public String[] StudyDescription;
-    static public int NbrStudyAvailable;
-    static public final int NbrMaxStudy = 3;
+public class NetworkGetWhatToWatch extends AsyncTask<String, Void, String> {
+    static final String TAG = "NetworkGetWhatToWatch";
+    static public ConfigInfoStudy ContextInfoStudy;
 
     // you may separate this or combined to caller class.
     public interface AsyncResponse {
@@ -32,7 +25,7 @@ public class GetStudiesAvailable extends AsyncTask<String, Void, String> {
 
     public AsyncResponse delegate = null;
 
-    public GetStudiesAvailable(AsyncResponse delegate){
+    public NetworkGetWhatToWatch(AsyncResponse delegate){
         this.delegate = delegate;
     }
 
@@ -48,16 +41,11 @@ public class GetStudiesAvailable extends AsyncTask<String, Void, String> {
         java.net.URL url;
         try {
 
-            StudyID=new String[NbrMaxStudy];
-            StudyActive=new String[NbrMaxStudy];
-            StudyName=new String[NbrMaxStudy];
-            StudyDescription=new String[NbrMaxStudy];
-
             //Connect to the remote database to get the available studies
-            url = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_GETSTUDIESAVAILABLE);
+            url = new URL(ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_GETAPPTOWATCH);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
-            urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
+            urlConnection.setConnectTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
             urlConnection.connect();
 
 
@@ -66,27 +54,19 @@ public class GetStudiesAvailable extends AsyncTask<String, Void, String> {
                             urlConnection.getInputStream()));
 
             String next;
-            NbrStudyAvailable = 0;
+
             while ((next = bufferedReader.readLine()) != null) {
                 JSONArray ja = new JSONArray(next);
 
                 for (int i = 0; i < ja.length(); i++) {
+
                     JSONObject jo = (JSONObject) ja.get(i);
-                    StudyActive[i] = jo.getString("StudyActive");
-                    if (StudyActive[i].equals("1")) {
-                        StudyID[i] = jo.getString("StudyId");
-                        StudyName[i] = jo.getString("StudyName");
-                        StudyDescription[i] = jo.getString("StudyDescription");
-                        NbrStudyAvailable++;
-                        //We limit the number of study to NbrMaxStudy
-                        if (NbrStudyAvailable > NbrMaxStudy) break;
-                    }
+                    ContextInfoStudy.ApplicationsToWatch.add(jo.getString("ApplicationName"));
 
                 }
 
 
             }
-
             result = "OK";
         } catch (java.net.SocketTimeoutException e) {
             return result;
@@ -97,8 +77,6 @@ public class GetStudiesAvailable extends AsyncTask<String, Void, String> {
                 urlConnection.disconnect();
             }
         }
-
-
         return result;
     }
 

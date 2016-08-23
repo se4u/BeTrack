@@ -13,7 +13,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Created by cevincent on 6/3/16.
  */
-public class LocalDataBase {
+public class UtilsLocalDataBase {
     public static final String KEY_ID = "_id";
 
     static final String TAG = "SQLLocalTable";
@@ -127,7 +127,7 @@ public class LocalDataBase {
 
     private final DbHelper dbHelper; //
 
-    public LocalDataBase(Context context) { //
+    public UtilsLocalDataBase(Context context) { //
         this.dbHelper = new DbHelper(context);
         Log.i(TAG, "Initialized data");
     }

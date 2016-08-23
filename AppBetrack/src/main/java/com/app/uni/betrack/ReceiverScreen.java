@@ -17,26 +17,26 @@ import java.util.Date;
 /**
  * Created by cevincent on 6/24/16.
  */
-public class ScreenReceiver extends BroadcastReceiver {
+public class ReceiverScreen extends BroadcastReceiver {
 
     public enum StateScreen {
         UNKNOWN, OFF, ON
     }
     public static StateScreen ScreenState = StateScreen.UNKNOWN;
 
-    public static LocalDataBase localdatabase;
+    public static UtilsLocalDataBase localdatabase;
 
-    public LocalDataBase AccesLocalDB()
+    public UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
 
-    static final String TAG = "ScreenReceiver";
+    static final String TAG = "ReceiverScreen";
 
     private boolean isMyServiceRunning(Context mActivity) {
         ActivityManager manager = (ActivityManager) mActivity.getSystemService(mActivity.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (SettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
+            if (ConfigSettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
                 Log.d(TAG, "Betrack service is runnning");
                 return true;
             }
@@ -52,7 +52,7 @@ public class ScreenReceiver extends BroadcastReceiver {
         ContentValues values = new ContentValues();
 
         Log.d(TAG, "Check screen state");
-        if (intent.getAction().equals(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS)) {
+        if (intent.getAction().equals(ConfigSettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS)) {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
                 DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
                 for (Display display : dm.getDisplays()) {
@@ -103,9 +103,9 @@ public class ScreenReceiver extends BroadcastReceiver {
             SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
 
             values.clear();
-            values = AccesLocalDB().getOldestElementDb(LocalDataBase.TABLE_APPWATCH);
+            values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
             try {
-                ActivityStopDate = values.get(LocalDataBase.C_APPWATCH_DATESTOP).toString();
+                ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
                 Log.d(TAG, "End monitoring date: nothing to save");
             } catch (Exception e) {
                 if (null != values) {
@@ -114,23 +114,23 @@ public class ScreenReceiver extends BroadcastReceiver {
                     //Save the stop time
                     ActivityStopTime = shf.format(new Date());
 
-                    values.put(LocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
-                    values.put(LocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                    values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                    values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
                     try {
-                    this.AccesLocalDB().Update(values, values.getAsLong(LocalDataBase.C_APPWATCH_ID), LocalDataBase.TABLE_APPWATCH);
+                    this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
                     } catch (Exception f) {
                         Log.d(TAG, "Nothing to update in the database");
                     }
-                    TrackIntentService.ActivityOnGoing = null;
-                    TrackIntentService.ActivityStartDate = null;
-                    TrackIntentService.ActivityStartTime = null;
+                    ServiceTrackIntent.ActivityOnGoing = null;
+                    ServiceTrackIntent.ActivityStartDate = null;
+                    ServiceTrackIntent.ActivityStartTime = null;
 
                     Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
                 }
             }
         }
         //Here we should rather kill the service when screen is off and restart it when screen is on
-        if (!isMyServiceRunning(context)) context.startService(new Intent(context, TrackService.class));
+        if (!isMyServiceRunning(context)) context.startService(new Intent(context, ServiceTrack.class));
 
     }
 

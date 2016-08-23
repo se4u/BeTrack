@@ -21,7 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-public class CardBetrack extends RelativeLayout implements ViewSwitcher.ViewFactory{
+public class ActivityCardBetrack extends RelativeLayout implements ViewSwitcher.ViewFactory{
 
     //Top part
     private ImageSwitcher mSwitcher;
@@ -51,11 +51,11 @@ public class CardBetrack extends RelativeLayout implements ViewSwitcher.ViewFact
         }
     }
 
-    public CardBetrack(Context context,
-                       String question,
-                       String answersYes,
-                       String answersNo,
-                       int [] imgs)  {
+    public ActivityCardBetrack(Context context,
+                               String question,
+                               String answersYes,
+                               String answersNo,
+                               int[] imgs)  {
         super(context);
         mContext = context;
         mImgs = imgs;
@@ -64,9 +64,9 @@ public class CardBetrack extends RelativeLayout implements ViewSwitcher.ViewFact
 
     }
 
-    public CardBetrack(Context context,
-                       String question,
-                       int [] imgs) {
+    public ActivityCardBetrack(Context context,
+                               String question,
+                               int[] imgs) {
         super(context);
         mContext = context;
         mImgs = imgs;

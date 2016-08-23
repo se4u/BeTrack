@@ -6,15 +6,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 
-public class ForegroundEnablingService extends Service {
+public class UtilsForegroundEnablingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (TrackService.instance == null)
-            throw new RuntimeException(TrackService.class.getSimpleName() + " not running");
+        if (ServiceTrack.instance == null)
+            throw new RuntimeException(ServiceTrack.class.getSimpleName() + " not running");
 
         //Set both services to foreground using the same notification id, resulting in just one notification
-        startForeground(TrackService.instance);
+        startForeground(ServiceTrack.instance);
         startForeground(this);
 
         //Cancel this service's notification, resulting in zero notifications

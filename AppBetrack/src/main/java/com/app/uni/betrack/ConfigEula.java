@@ -7,21 +7,18 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Looper;
 import android.preference.PreferenceManager;
-
-import com.app.uni.betrack.R;
 
 /**
  * Created by cevincent on 4/9/16.
  */
-public class Eula {
+public class ConfigEula {
     private String EULA_PREFIX = "eula_";
     private Activity mActivity;
 
     static public String IdUser = null;
 
-    public Eula(Activity context) {
+    public ConfigEula(Activity context) {
         mActivity = context;
     }
 
@@ -46,7 +43,7 @@ public class Eula {
 
         if(hasBeenShown == false){
 
-            // Show the Eula
+            // Show the ConfigEula
             String title = mActivity.getString(R.string.disclaimers_title) + " v" + versionInfo.versionName;
 
             //Includes the updates as well so users know what changed.
@@ -65,11 +62,11 @@ public class Eula {
                             editor.putBoolean(eulaKey, true);
                             editor.commit();
                             // Create/Use an unique identifier for the phone
-                            IdUser = DeviceIdGenerator.readDeviceId(mActivity);
-                            editor.putString(InfoStudy.ID_USER, IdUser);
+                            IdUser = UtilsDeviceIdGenerator.readDeviceId(mActivity);
+                            editor.putString(ConfigInfoStudy.ID_USER, IdUser);
                             editor.commit();
 
-                            InfoStudy.IdUser = IdUser;
+                            ConfigInfoStudy.IdUser = IdUser;
 
                             dialogInterface.dismiss();
                         }
