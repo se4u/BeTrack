@@ -265,9 +265,9 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                     ObjSettingsBetrack.UpdateSettingsBetrack(prefs, mContext);
-                    ReceiverAlarmNotification.CreateAlarm(mContext,
-                                                            ObjSettingsBetrack.StudyNotification,
-                                                                ObjSettingsBetrack.StudyNotificationTime);
+                    CreateNotification.CreateAlarm(mContext,
+                                                            ObjSettingsBetrack.GetStudyNotification(),
+                                                                ObjSettingsBetrack.GetStudyNotificationTime());
                 }
             };
             prefs.registerOnSharedPreferenceChangeListener(listener);

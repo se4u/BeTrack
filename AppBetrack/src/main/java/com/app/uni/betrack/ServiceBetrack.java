@@ -1,6 +1,5 @@
 package com.app.uni.betrack;
 
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -8,23 +7,11 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
 
-public class ServiceTrack extends Service {
-    public ServiceTrack() {
+public class ServiceBetrack extends Service {
+    public ServiceBetrack() {
     }
     static final String TAG = "UpdaterService";
-    public static ConfigInfoStudy mInfoStudy;
-    public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
-
-    static ServiceTrack instance;
-
-    private NotificationManager mNotificationManager;
-
-    public static UtilsLocalDataBase localdatabase;
-
-    public UtilsLocalDataBase AccesLocalDB()
-    {
-        return localdatabase;
-    }
+    static ServiceBetrack instance;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -55,12 +42,7 @@ public class ServiceTrack extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) { //
         super.onStartCommand(intent, flags, startId);
-        Intent msgIntent = new Intent(this, ServiceTrackIntent.class);
         Log.d(TAG, "onStarted");
-
-        //Start the service for monitoring app
-        startService(msgIntent);
-
         return START_STICKY;
     }
     @Override

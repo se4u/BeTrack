@@ -28,13 +28,26 @@
         </receiver>
 
         <receiver android:name=".ReceiverAlarmNotification"></receiver>
+        <receiver android:name=".ReceiverAlarmPostData"></receiver>
+        <receiver android:name=".ReceiverAlarmTrackApp"></receiver>
+
+        <service android:name=".JobSchedulerTrackApp"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service android:name=".JobSchedulerPostData"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service android:name=".UtilsForegroundEnablingService" />
         <service
-            android:name=".ServiceTrackIntent"
+            android:name=".IntentServiceTrackApp"
             android:exported="false" />
+
         <service
-            android:name=".ServiceTrack"
+            android:name=".IntentServicePostData"
+            android:exported="false" />
+
+        <service
+            android:name=".ServiceBetrack"
             android:enabled="true"
             android:exported="true" />
 

@@ -10,11 +10,11 @@ public class UtilsForegroundEnablingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (ServiceTrack.instance == null)
-            throw new RuntimeException(ServiceTrack.class.getSimpleName() + " not running");
+        if (ServiceBetrack.instance == null)
+            throw new RuntimeException(ServiceBetrack.class.getSimpleName() + " not running");
 
         //Set both services to foreground using the same notification id, resulting in just one notification
-        startForeground(ServiceTrack.instance);
+        startForeground(ServiceBetrack.instance);
         startForeground(this);
 
         //Cancel this service's notification, resulting in zero notifications

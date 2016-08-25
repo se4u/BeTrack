@@ -1,9 +1,7 @@
 package com.app.uni.betrack;
 
 import android.annotation.TargetApi;
-import android.app.AlarmManager;
 import android.app.AppOpsManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,8 +16,6 @@ public class ReceiverStartTracking extends BroadcastReceiver {
     static final String TAG = "ReceiverStartTracking";
 
     private ConfigSettingsBetrack ObjSettingsBetrack;
-    private static AlarmManager alarmMgr;
-    private static PendingIntent alarmIntent;
 
     @Override
     public void onReceive(Context context, Intent intent) { //
@@ -34,13 +30,15 @@ public class ReceiverStartTracking extends BroadcastReceiver {
         ObjSettingsBetrack = ConfigSettingsBetrack.getInstance();
         ObjSettingsBetrack.UpdateSettingsBetrack(prefs, context);
 
+        context.startService(new Intent(context, ServiceBetrack.class));
 
-        ReceiverAlarmNotification.CreateAlarm(context,
-                                                ObjSettingsBetrack.StudyNotification,
-                                                    ObjSettingsBetrack.StudyNotificationTime);
+        CreateNotification.CreateAlarm(context,
+                ObjSettingsBetrack.GetStudyNotification(),
+                ObjSettingsBetrack.GetStudyNotificationTime());
 
+        CreatePostData.CreateAlarm(context, false);
 
-        context.startService(new Intent(context, ServiceTrack.class)); //
+        CreateTrackApp.CreateAlarm(context, ConfigSettingsBetrack.SAMPLING_RATE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             if(!hasPermission(context)){

@@ -24,7 +24,7 @@ public class ReceiverScreen extends BroadcastReceiver {
     }
     public static StateScreen ScreenState = StateScreen.UNKNOWN;
 
-    public static UtilsLocalDataBase localdatabase;
+    public static UtilsLocalDataBase localdatabase =  null;
 
     public UtilsLocalDataBase AccesLocalDB()
     {
@@ -50,6 +50,10 @@ public class ReceiverScreen extends BroadcastReceiver {
         String ActivityStopDate = "";
         String ActivityStopTime = "";
         ContentValues values = new ContentValues();
+
+        if (null == localdatabase) {
+            localdatabase =  new UtilsLocalDataBase(context);
+        }
 
         Log.d(TAG, "Check screen state");
         if (intent.getAction().equals(ConfigSettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS)) {
@@ -102,6 +106,8 @@ public class ReceiverScreen extends BroadcastReceiver {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
             SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
 
+            CreateTrackApp.StopAlarm(context);
+
             values.clear();
             values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
             try {
@@ -121,17 +127,17 @@ public class ReceiverScreen extends BroadcastReceiver {
                     } catch (Exception f) {
                         Log.d(TAG, "Nothing to update in the database");
                     }
-                    ServiceTrackIntent.ActivityOnGoing = null;
-                    ServiceTrackIntent.ActivityStartDate = null;
-                    ServiceTrackIntent.ActivityStartTime = null;
+                    IntentServiceTrackApp.ActivityOnGoing = null;
+                    IntentServiceTrackApp.ActivityStartDate = null;
+                    IntentServiceTrackApp.ActivityStartTime = null;
 
                     Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
                 }
             }
         }
-        //Here we should rather kill the service when screen is off and restart it when screen is on
-        if (!isMyServiceRunning(context)) context.startService(new Intent(context, ServiceTrack.class));
-
+        else
+        {
+            CreateTrackApp.CreateAlarm(context, ConfigSettingsBetrack.SAMPLING_RATE);
+        }
     }
-
 }
