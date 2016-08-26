@@ -14,25 +14,42 @@ public class ReceiverAlarmPostData extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        //Make sure that the service is just running one time
-        if (CreatePostData.SemUpdateServer.tryAcquire()) {
+        try {
+            //Make sure that the service is just running one time
+            CreatePostData.SemUpdateServer.acquire();
+        } catch (Exception e) {
+
+        } finally {
             Intent msgIntent = new Intent(context, IntentServicePostData.class);
 
             //Start the service for sending the data to the remote server
             context.startService(msgIntent);
 
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
-            {
-                if (false == CreatePostData.InternalFastCheck) {
+            if (false == CreatePostData.InternalFastCheck) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
+                {
                     CreatePostData.alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
                             ConfigSettingsBetrack.POSTDATA_SENDING_DELTA, CreatePostData.alarmIntent);
                 }
-                else {
+                else
+                {
+                    CreatePostData.alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
+                            ConfigSettingsBetrack.POSTDATA_SENDING_DELTA, CreatePostData.alarmIntent);
+                }
+            } else {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
+                {
                     CreatePostData.alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
+                            ConfigSettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK, CreatePostData.alarmIntent);
+                }
+                else
+                {
+                    CreatePostData.alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
                             ConfigSettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK, CreatePostData.alarmIntent);
                 }
             }
         }
+
     }
 
 }

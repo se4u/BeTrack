@@ -28,9 +28,11 @@ import android.os.Message;
 
         @Override
         public boolean handleMessage( Message msg ) {
-            Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
-            //Start the service for monitoring app
-            startService(msgIntent);
+            if (CreatePostData.SemUpdateServer.tryAcquire()) {
+                Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
+                //Start the service for monitoring app
+                startService(msgIntent);
+            }
             jobFinished( (JobParameters) msg.obj, false );
             return true;
         }

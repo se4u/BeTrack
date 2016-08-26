@@ -57,15 +57,16 @@ public class CreateTrackApp {
             alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
             try {
+                ReceiverAlarmTrackApp.internalSamplingRate = SamplingRate;
+
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                 {
                     alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
                             SamplingRate, alarmIntent);
-                    ReceiverAlarmTrackApp.internalSamplingRate = SamplingRate;
                 }
                 else
                 {
-                    alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                    alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
                             SamplingRate, alarmIntent);
                 }
 

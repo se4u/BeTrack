@@ -98,7 +98,7 @@ public class IntentServiceTrackApp extends IntentService {
                         topActivity = handleCheckActivity(intent);
                     }
 
-                    //Log.d(TAG, "Foreground App " + topActivity);
+                    Log.d(TAG, "Foreground App " + topActivity);
                     if (ReceiverScreen.StateScreen.UNKNOWN == ReceiverScreen.ScreenState) {
                         intentCheckScreenStatus.setAction(ConfigSettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
                         this.sendBroadcast(intentCheckScreenStatus);
@@ -123,7 +123,7 @@ public class IntentServiceTrackApp extends IntentService {
                                     values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
                                     try {
                                         ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
-                                        Log.d(TAG, "End monitoring date: Should never happen the last entry is already filled up ???");
+                                        //Log.d(TAG, "Data ready to be transfer to the remote database ");
                                     } catch (Exception e) {
                                         //Save the stop date
                                         ActivityStopDate = sdf.format(new Date());
@@ -153,8 +153,9 @@ public class IntentServiceTrackApp extends IntentService {
                             if (0 != values.size()) {
                                 try {
                                     ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
-                                    Log.d(TAG, "Check in case some monitoring was started but never stopped");
+                                    //Log.d(TAG, "Data ready to be transfer to the remote database ");
                                 } catch (Exception e) {
+                                    Log.d(TAG, "Check in case some monitoring was started but never stopped");
                                     //Save the stop date
                                     ActivityStopDate = sdf.format(new Date());
                                     //Save the stop time
@@ -165,14 +166,15 @@ public class IntentServiceTrackApp extends IntentService {
 
                                     this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
 
+                                    Log.d(TAG, "Finish last entry end monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
+                                }
+                                finally {
                                     //Reinitialize activity watched infos
                                     ActivityOnGoing = null;
                                     ActivityStartDate = null;
                                     ActivityStartTime = null;
                                     ActivityStopDate = null;
                                     ActivityStopTime = null;
-
-                                    Log.d(TAG, "Finish last entry end monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
                                 }
                             }
                         }

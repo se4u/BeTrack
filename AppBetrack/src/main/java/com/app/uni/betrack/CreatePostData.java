@@ -69,7 +69,7 @@ public class CreatePostData {
                     }
                     else
                     {
-                        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                        alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
                                 ConfigSettingsBetrack.POSTDATA_SENDING_DELTA, alarmIntent);
                     }
                 } else {
@@ -80,7 +80,7 @@ public class CreatePostData {
                     }
                     else
                     {
-                        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                        alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
                                 ConfigSettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK, alarmIntent);
                     }
                 }

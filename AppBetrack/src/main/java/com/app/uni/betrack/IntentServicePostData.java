@@ -45,8 +45,6 @@ public class IntentServicePostData extends IntentService {
     private static final char TABLE_APPWATCH_TRANSFERED = 1;
     private static final char TABLE_USER_TRANSFERED = 2;
 
-    private boolean FastCheckDataConnection = false;
-
     Handler mHandler;
 
     public IntentServicePostData()  {
@@ -93,17 +91,13 @@ public class IntentServicePostData extends IntentService {
             localdatabase = new UtilsLocalDataBase(this);
         }
 
-        //Log.d(TAG, "onHandleIntent");
+        Log.d(TAG, "onHandleIntent");
 
         // To transfer the data either we have access to a WIFI network or
         // we have are allowed to use the 3G/LTE
         if ((ConnectionState.WIFI == NetworkState) ||
                 ((ConnectionState.LTE == NetworkState) && (ObjSettingsBetrack.GetEnableDataUsage())))
         {
-            if (true == FastCheckDataConnection)  {
-                FastCheck(false);
-            }
-
             while(TaskDone != 0)
             {
                 values.clear();
@@ -124,15 +118,18 @@ public class IntentServicePostData extends IntentService {
 
                         IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
 
-                        if (null != ConfigInfoStudy.IdUser) {
+                        if (null == ConfigInfoStudy.IdUser) {
                             UserId = prefs.getString(ConfigInfoStudy.ID_USER, "NOID ?????");
                             ConfigInfoStudy.IdUser = UserId;
+                            if (null == ConfigInfoStudy.IdUser) {
+                                TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
+                                Log.d(TAG, "User ID for table appwatch not accessible yet we'll try later");
+                                break;
+                            }
                         }
                         else
                         {
-                            TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
-                            Log.d(TAG, "User ID for table appwatch not accessible yet we'll try later");
-                            break;
+                            UserId = ConfigInfoStudy.IdUser;
                         }
 
                         AppName = values.get(UtilsLocalDataBase.C_APPWATCH_APPLICATION).toString();
@@ -164,6 +161,7 @@ public class IntentServicePostData extends IntentService {
 
                         if (HttpsURLConnection.HTTP_OK == urlConnection.getResponseCode()) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
+                            FastCheck(false);
                         }
                         else {
                             Log.d(TAG, "Unable to access to server... ");
@@ -208,15 +206,18 @@ public class IntentServicePostData extends IntentService {
 
                         IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
 
-                        if (null != ConfigInfoStudy.IdUser) {
+                        if (null == ConfigInfoStudy.IdUser) {
                             UserId = prefs.getString(ConfigInfoStudy.ID_USER, "NOID ?????");
                             ConfigInfoStudy.IdUser = UserId;
+                            if (null == ConfigInfoStudy.IdUser) {
+                                TaskDone &= ~TABLE_USER_TRANSFERED;
+                                Log.d(TAG, "User ID for table user not accessible yet we'll try later");
+                                break;
+                            }
                         }
                         else
                         {
-                            TaskDone &= ~TABLE_USER_TRANSFERED;
-                            Log.d(TAG, "User ID for table user not accessible yet we'll try later");
-                            break;
+                            UserId = ConfigInfoStudy.IdUser;
                         }
 
                         PeriodStatus = values.get(UtilsLocalDataBase.C_USER_PERIOD).toString();
@@ -242,6 +243,7 @@ public class IntentServicePostData extends IntentService {
 
                         if (HttpsURLConnection.HTTP_OK == urlConnection.getResponseCode()) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
+                            FastCheck(false);
                         }
                         else {
                             Log.d(TAG, "Unable to access to server... ");
@@ -281,7 +283,6 @@ public class IntentServicePostData extends IntentService {
     }
 
     private void FastCheck(boolean Enable) {
-        FastCheckDataConnection = Enable;
         CreatePostData.CreateAlarm(getApplicationContext(), Enable);
     }
 
