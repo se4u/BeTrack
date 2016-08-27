@@ -215,7 +215,7 @@ public class UtilsLocalDataBase {
                 values.clear();
 
                 if (cursor.getCount()>0) {
-                    cursor.moveToFirst();
+                    cursor.moveToLast();
 
                     String[] columns = cursor.getColumnNames();
                     int length = columns.length;
