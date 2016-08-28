@@ -12,13 +12,13 @@ import android.preference.PreferenceManager;
 /**
  * Created by cevincent on 4/9/16.
  */
-public class ConfigEula {
+public class UtilsEula {
     private String EULA_PREFIX = "eula_";
     private Activity mActivity;
 
     static public String IdUser = null;
 
-    public ConfigEula(Activity context) {
+    public UtilsEula(Activity context) {
         mActivity = context;
     }
 
@@ -63,10 +63,10 @@ public class ConfigEula {
                             editor.commit();
                             // Create/Use an unique identifier for the phone
                             IdUser = UtilsDeviceIdGenerator.readDeviceId(mActivity);
-                            editor.putString(ConfigInfoStudy.ID_USER, IdUser);
+                            editor.putString(SettingsStudy.ID_USER, IdUser);
                             editor.commit();
 
-                            ConfigInfoStudy.IdUser = IdUser;
+                            SettingsStudy.IdUser = IdUser;
 
                             dialogInterface.dismiss();
                         }

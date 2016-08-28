@@ -15,7 +15,7 @@ import android.util.Log;
 public class ReceiverStartTracking extends BroadcastReceiver {
     static final String TAG = "ReceiverStartTracking";
 
-    private ConfigSettingsBetrack ObjSettingsBetrack;
+    private SettingsBetrack ObjSettingsBetrack;
 
     @Override
     public void onReceive(Context context, Intent intent) { //
@@ -27,7 +27,7 @@ public class ReceiverStartTracking extends BroadcastReceiver {
         ReceiverScreen.ScreenState = ReceiverScreen.StateScreen.ON;
 
         //Read the preferences
-        ObjSettingsBetrack = ConfigSettingsBetrack.getInstance();
+        ObjSettingsBetrack = SettingsBetrack.getInstance();
         ObjSettingsBetrack.UpdateSettingsBetrack(prefs, context);
 
         context.startService(new Intent(context, ServiceBetrack.class));
@@ -38,7 +38,9 @@ public class ReceiverStartTracking extends BroadcastReceiver {
 
         CreatePostData.CreateAlarm(context, false);
 
-        CreateTrackApp.CreateAlarm(context, ConfigSettingsBetrack.SAMPLING_RATE);
+        CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
+
+        CreateTrackGPS.CreateAlarm(context);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             if(!hasPermission(context)){

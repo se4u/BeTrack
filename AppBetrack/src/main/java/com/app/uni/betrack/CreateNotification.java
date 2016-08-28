@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -23,8 +22,6 @@ public class CreateNotification {
     private static AlarmManager alarmMgr;
     private static PendingIntent alarmIntent;
     private static final String TAG = "AlarmNotification";
-    private static JobScheduler mJobScheduler;
-
 
     public final static void Create(Context context){
         final NotificationManager mNotification = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -43,9 +40,9 @@ public class CreateNotification {
                 .setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mNotification.notify(ConfigSettingsBetrack.NOTIFICATION_ID, builder.build());
+            mNotification.notify(SettingsBetrack.NOTIFICATION_ID, builder.build());
         } else {
-            mNotification.notify(ConfigSettingsBetrack.NOTIFICATION_ID, builder.getNotification());
+            mNotification.notify(SettingsBetrack.NOTIFICATION_ID, builder.getNotification());
         }
 
     }

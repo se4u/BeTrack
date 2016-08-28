@@ -9,7 +9,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Created by cevincent on 5/26/16.
  */
-public class ConfigSettingsBetrack {
+public class SettingsBetrack {
 
     static private final String TAG = "ConfigSettingsBetrack";
 
@@ -31,6 +31,8 @@ public class ConfigSettingsBetrack {
     static public int POSTDATA_SENDING_DELTA = 10000; //In ms
     static public int POSTDATA_SENDING_DELTA_FASTCHECK = 1000; //In ms
 
+    static public int TRACKGPS_DELTA = 10000; //In ms
+
     static public int UPDATE_STATUS_STUDY_TIME = 60000;
 
     static public int NOTIFICATION_ID = 1;
@@ -40,22 +42,22 @@ public class ConfigSettingsBetrack {
     static public int JOBID_TRACKGPS = 3;
     static public int JOBID_NOTIFICATION = 4;
 
-    public static final Semaphore SemPreferenceUpdated = new Semaphore(1, true);
+    public static final Semaphore SemSettingsBetrack = new Semaphore(1, true);
 
     private Boolean StudyEnable;
     private Boolean StudyNotification;
     private String StudyNotificationTime;
     private Boolean EnableDataUsage;
 
-    private ConfigSettingsBetrack()
+    private SettingsBetrack()
     {}
 
     private static class ConfigSettingsBetrackHolder
     {
-        private final static ConfigSettingsBetrack instance = new ConfigSettingsBetrack();
+        private final static SettingsBetrack instance = new SettingsBetrack();
     }
 
-    public static ConfigSettingsBetrack getInstance()
+    public static SettingsBetrack getInstance()
     {
         return ConfigSettingsBetrackHolder.instance;
     }
@@ -68,9 +70,9 @@ public class ConfigSettingsBetrack {
     {
         Boolean ReturnStudyEnable = false;
         try {
-            SemPreferenceUpdated.acquire();
+            SemSettingsBetrack.acquire();
             ReturnStudyEnable = StudyEnable;
-            SemPreferenceUpdated.release();
+            SemSettingsBetrack.release();
         } catch (Exception e) {
             ReturnStudyEnable = false;
         } finally {
@@ -82,9 +84,9 @@ public class ConfigSettingsBetrack {
     {
         Boolean ReturnStudyNotification = false;
         try {
-            SemPreferenceUpdated.acquire();
+            SemSettingsBetrack.acquire();
             ReturnStudyNotification = StudyNotification;
-            SemPreferenceUpdated.release();
+            SemSettingsBetrack.release();
         } catch (Exception e) {
             ReturnStudyNotification = false;
         } finally {
@@ -96,9 +98,9 @@ public class ConfigSettingsBetrack {
     {
         String ReturnStudyNotificationTime = null;
         try {
-            SemPreferenceUpdated.acquire();
+            SemSettingsBetrack.acquire();
             ReturnStudyNotificationTime = StudyNotificationTime;
-            SemPreferenceUpdated.release();
+            SemSettingsBetrack.release();
         } catch (Exception e) {
             ReturnStudyNotificationTime = null;
         } finally {
@@ -110,9 +112,9 @@ public class ConfigSettingsBetrack {
     {
         Boolean ReturnEnableDataUsage = false;
         try {
-            SemPreferenceUpdated.acquire();
+            SemSettingsBetrack.acquire();
             ReturnEnableDataUsage = EnableDataUsage;
-            SemPreferenceUpdated.release();
+            SemSettingsBetrack.release();
         } catch (Exception e) {
             ReturnEnableDataUsage = false;
         } finally {
@@ -122,14 +124,14 @@ public class ConfigSettingsBetrack {
 
     private void BuildPref(SharedPreferences prefs, Context mActivity) {
         try {
-            SemPreferenceUpdated.acquire();
+            SemSettingsBetrack.acquire();
             //Update settings with value of preferences from the shared preference editor or default values
             StudyEnable = prefs.getBoolean(mActivity.getString(R.string.pref_key_study_enable), true);
             EnableDataUsage = prefs.getBoolean(mActivity.getString(R.string.pref_key_data_sync_enable_usage_3g), true);
             StudyNotification = prefs.getBoolean(mActivity.getString(R.string.pref_key_study_notification), true);
             StudyNotificationTime = prefs.getString(mActivity.getString(R.string.pref_key_study_notification_time), "20:00") + ":00";
             Log.d(TAG, "StudyEnable: " + StudyEnable + " EnableDataUsage: " + EnableDataUsage + " StudyNotification: " + StudyNotification + " StudyNotificationTime: " + StudyNotificationTime);
-            SemPreferenceUpdated.release();
+            SemSettingsBetrack.release();
         } catch (Exception e) {
 
         }

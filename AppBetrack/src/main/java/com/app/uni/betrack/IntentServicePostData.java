@@ -27,7 +27,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class IntentServicePostData extends IntentService {
     static final String TAG = "IntentServicePostData";
 
-    private static ConfigSettingsBetrack ObjSettingsBetrack = null;
+    private static SettingsBetrack ObjSettingsBetrack = null;
+    private static SettingsStudy ObjSettingsStudy = null;
 
     private static UtilsLocalDataBase localdatabase  = null;
 
@@ -50,6 +51,7 @@ public class IntentServicePostData extends IntentService {
     public IntentServicePostData()  {
         super("IntentServicePostData");
         mHandler = new Handler();
+
     }
 
 
@@ -69,7 +71,6 @@ public class IntentServicePostData extends IntentService {
         String PeriodStatus;
         String Date;
         //COMMON TO ALL TABLES
-        String UserId;
         Long IdSql;
         ConnectionState NetworkState;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -84,9 +85,15 @@ public class IntentServicePostData extends IntentService {
 
         if (null == ObjSettingsBetrack) {
             //Read the preferences
-            ObjSettingsBetrack = ConfigSettingsBetrack.getInstance();
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
             ObjSettingsBetrack.UpdateSettingsBetrack(prefs, this);
         }
+
+        if (null == ObjSettingsStudy)  {
+            ObjSettingsStudy = SettingsStudy.getInstance();
+            ObjSettingsStudy.Update(this);
+        }
+
         if (null == localdatabase) {
             localdatabase = new UtilsLocalDataBase(this);
         }
@@ -106,31 +113,17 @@ public class IntentServicePostData extends IntentService {
 
                     try {
 
-                        urlPostAppwatched = new URL(ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_POSTAPPWATCHED +"?");
+                        urlPostAppwatched = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTAPPWATCHED +"?");
                         urlConnection = (HttpURLConnection) urlPostAppwatched.openConnection();
                         urlConnection.setRequestMethod("POST");
                         urlConnection.setRequestProperty("Content-Type",
                                 "application/x-www-form-urlencoded");
                         urlConnection.setDoOutput(true);
                         urlConnection.setDoInput(true);
-                        urlConnection.setReadTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
-                        urlConnection.setConnectTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
+                        urlConnection.setReadTimeout(SettingsBetrack.SERVER_TIMEOUT);
+                        urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
 
                         IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
-
-                        if (null == ConfigInfoStudy.IdUser) {
-                            UserId = prefs.getString(ConfigInfoStudy.ID_USER, "NOID ?????");
-                            ConfigInfoStudy.IdUser = UserId;
-                            if (null == ConfigInfoStudy.IdUser) {
-                                TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
-                                Log.d(TAG, "User ID for table appwatch not accessible yet we'll try later");
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            UserId = ConfigInfoStudy.IdUser;
-                        }
 
                         AppName = values.get(UtilsLocalDataBase.C_APPWATCH_APPLICATION).toString();
                         StartDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTART).toString();
@@ -140,11 +133,11 @@ public class IntentServicePostData extends IntentService {
 
                         mHandler.post(new UtilsDisplayToast(this, "Betrack: Post app watched: " + AppName));
 
-                        Log.d(TAG, "PHP request: " + ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_POSTAPPWATCHED + "?" +
-                                "userid=" + UserId + "&application=" + AppName + "&datestart=" + StartDate + "&datestop=" + StopDate + "&timestart=" + StartTime + "&timestop=" + StopTime);
+                        Log.d(TAG, "PHP request: " + SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTAPPWATCHED + "?" +
+                                "userid=" + ObjSettingsStudy.getIdUser() + "&application=" + AppName + "&datestart=" + StartDate + "&datestop=" + StopDate + "&timestart=" + StartTime + "&timestop=" + StopTime);
 
                         Uri.Builder builder = new Uri.Builder()
-                                .appendQueryParameter("userid", UserId)
+                                .appendQueryParameter("userid", ObjSettingsStudy.getIdUser())
                                 .appendQueryParameter("application", AppName)
                                 .appendQueryParameter("datestart", StartDate)
                                 .appendQueryParameter("datestop", StopDate)
@@ -194,42 +187,28 @@ public class IntentServicePostData extends IntentService {
                 if (0 != values.size()) {
                     try {
                         //Connect to the remote database to get the available studies
-                        urlPostDailyStatus = new URL(ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_POSTDAILYSTATUS +"?");
+                        urlPostDailyStatus = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTDAILYSTATUS +"?");
                         urlConnection = (HttpURLConnection) urlPostDailyStatus.openConnection();
                         urlConnection.setRequestMethod("POST");
                         urlConnection.setRequestProperty("Content-Type",
                                 "application/x-www-form-urlencoded");
                         urlConnection.setDoOutput(true);
                         urlConnection.setDoInput(true);
-                        urlConnection.setReadTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
-                        urlConnection.setConnectTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
+                        urlConnection.setReadTimeout(SettingsBetrack.SERVER_TIMEOUT);
+                        urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
 
                         IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
-
-                        if (null == ConfigInfoStudy.IdUser) {
-                            UserId = prefs.getString(ConfigInfoStudy.ID_USER, "NOID ?????");
-                            ConfigInfoStudy.IdUser = UserId;
-                            if (null == ConfigInfoStudy.IdUser) {
-                                TaskDone &= ~TABLE_USER_TRANSFERED;
-                                Log.d(TAG, "User ID for table user not accessible yet we'll try later");
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            UserId = ConfigInfoStudy.IdUser;
-                        }
 
                         PeriodStatus = values.get(UtilsLocalDataBase.C_USER_PERIOD).toString();
                         Date = values.get(UtilsLocalDataBase.C_USER_DATE).toString();
 
                         mHandler.post(new UtilsDisplayToast(this, "Betrack: Post survey status: " + PeriodStatus));
 
-                        Log.d(TAG, "PHP request: " + ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_POSTDAILYSTATUS + "?" +
-                                "userid=" + UserId + "&periodstatus=" + PeriodStatus + "&date=" + Date);
+                        Log.d(TAG, "PHP request: " + SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTDAILYSTATUS + "?" +
+                                "userid=" + ObjSettingsStudy.getIdUser() + "&periodstatus=" + PeriodStatus + "&date=" + Date);
 
                         Uri.Builder builder = new Uri.Builder()
-                                .appendQueryParameter("userid", UserId)
+                                .appendQueryParameter("userid", ObjSettingsStudy.getIdUser())
                                 .appendQueryParameter("periodstatus", PeriodStatus)
                                 .appendQueryParameter("date", Date)
                                 ;

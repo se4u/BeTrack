@@ -16,7 +16,7 @@ import java.net.URL;
  */
 public class NetworkGetWhatToWatch extends AsyncTask<String, Void, String> {
     static final String TAG = "NetworkGetWhatToWatch";
-    static public ConfigInfoStudy ContextInfoStudy;
+    static public SettingsStudy ContextInfoStudy;
 
     // you may separate this or combined to caller class.
     public interface AsyncResponse {
@@ -42,10 +42,10 @@ public class NetworkGetWhatToWatch extends AsyncTask<String, Void, String> {
         try {
 
             //Connect to the remote database to get the available studies
-            url = new URL(ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_GETAPPTOWATCH);
+            url = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_GETAPPTOWATCH);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
-            urlConnection.setConnectTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
+            urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
             urlConnection.connect();
 
 

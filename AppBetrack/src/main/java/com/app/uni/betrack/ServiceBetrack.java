@@ -28,7 +28,7 @@ public class ServiceBetrack extends Service {
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SHUTDOWN);
-        filter.addAction(ConfigSettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
+        filter.addAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
 
         BroadcastReceiver mReceiver = new ReceiverScreen();
         registerReceiver(mReceiver, filter);

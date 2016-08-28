@@ -35,7 +35,8 @@ public class ActivitySettings extends ActivityAppCompatPreference {
      * to reflect its new value.
      */
 
-    private static ConfigSettingsBetrack ObjSettingsBetrack;
+    private static SettingsBetrack ObjSettingsBetrack;
+    private static SettingsStudy ObjSettingsStudy;
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -99,7 +100,11 @@ public class ActivitySettings extends ActivityAppCompatPreference {
         super.onCreate(savedInstanceState);
         setupActionBar();
         if (ObjSettingsBetrack == null)  {
-            ObjSettingsBetrack = ConfigSettingsBetrack.getInstance();
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+        }
+        if (ObjSettingsStudy == null) {
+            ObjSettingsStudy = SettingsStudy.getInstance();
+            ObjSettingsStudy.Update(this);
         }
     }
 
@@ -166,7 +171,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             addPreferencesFromResource(R.xml.pref_info);
             setHasOptionsMenu(true);
             Preference etp = findPreference("pref_info");
-            etp.setSummary(ConfigInfoStudy.StudyDescription);
+            etp.setSummary(ObjSettingsStudy.getStudyDescription());
         }
 
         @Override
@@ -228,7 +233,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             addPreferencesFromResource(R.xml.pref_user_id);
             setHasOptionsMenu(true);
             Preference etp = findPreference("pref_user_id");
-            etp.setSummary(ConfigInfoStudy.IdUser);
+            etp.setSummary(ObjSettingsStudy.getIdUser());
         }
 
         @Override

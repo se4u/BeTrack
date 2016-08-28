@@ -14,7 +14,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,11 +36,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
-import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
 
-
-public class ActivityBeTrack extends AppCompatActivity  implements VerticalStepperForm {
+public class ActivityBeTrack extends AppCompatActivity {
 
     private static final String TAG = "Status";
 
@@ -67,18 +63,14 @@ public class ActivityBeTrack extends AppCompatActivity  implements VerticalStepp
     private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (ConfigSettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
+            if (SettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
                 return true;
             }
         }
         return false;
     }
 
-    public ConfigInfoStudy ObjInfoStudy = new ConfigInfoStudy();
-    private ConfigSettingsBetrack ObjSettingsBetrack;
-
-    private int id_period;
-    private VerticalStepperFormLayout verticalStepperForm;
+    private SettingsStudy ObjSettingsStudy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +78,8 @@ public class ActivityBeTrack extends AppCompatActivity  implements VerticalStepp
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
         mContext = this;
+
+        ObjSettingsStudy = SettingsStudy.getInstance();
 
         actionBar = getSupportActionBar();
         actionBar.hide();
@@ -100,90 +94,43 @@ public class ActivityBeTrack extends AppCompatActivity  implements VerticalStepp
         //In case it's an Huawei phone we ask the user to put our app in the protected list
         ifHuaweiAlert();
 
-        notificationManager.cancel(ConfigSettingsBetrack.NOTIFICATION_ID);
+        notificationManager.cancel(SettingsBetrack.NOTIFICATION_ID);
 
         //Display an ConfigEula if needed
-        new ConfigEula(this).show();
+        new UtilsEula(this).show();
 
-        try {
-
-
-            findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
-            findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
-
-            ObjInfoStudy.StudyStarted = prefs.getBoolean(ObjInfoStudy.STUDY_STARTED, false);
-
-            //Check if a study is already going on
-            if (false == ObjInfoStudy.StudyStarted) {
-
-                findViewById(R.id.Layout_Welcome).setVisibility(View.VISIBLE);
-                findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
-
-                /* That was done in case we'll have multiple study, I keep it for now maybe I will reuse for multiple language
-                for (int i = 0; i < NetworkGetStudiesAvailable.NbrMaxStudy; i++) {
-                    if (i < NetworkGetStudiesAvailable.NbrStudyAvailable) {
-                        button[i].setText(NetworkGetStudiesAvailable.StudyName[i]);
-                        button[i].setEnabled(true);
-                        button[i].setVisibility(View.VISIBLE);
-                    }
-                    else
-                    {
-                        button[i].setVisibility(View.GONE);
-                    }
-                }
-                */
-                TextView StudyTitle = new TextView(this);
-                StudyTitle = (TextView) findViewById(R.id.study_title);
-                StudyTitle.setText(NetworkGetStudiesAvailable.StudyName[0]);
-
-                TextView StudyDescription = new TextView(this);
-                StudyDescription = (TextView) findViewById(R.id.study_description);
-                StudyDescription.setText(NetworkGetStudiesAvailable.StudyDescription[0]);
-
-            } else {
-                //Get the unique ID of that user
-                ConfigInfoStudy.IdUser = prefs.getString(ConfigInfoStudy.ID_USER, "No user ID !");
-                //Get the description of the study
-                ConfigInfoStudy.StudyDescription = prefs.getString(ConfigInfoStudy.STUDY_DESCRIPTION, "No study description !");
-
-                //Read from the preference the information of the study
-                new ConfigSetupStudy(this, ObjInfoStudy);
-
-                //Update the study page
-
-                //we display the page of the study
-                actionBar.show();
-                findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
-                findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
-
-                //Broadcast an event to start the tracking service if not yet started
-                if (!isMyServiceRunning()) {
-                    Intent intent = new Intent();
-                    intent.setAction(ConfigSettingsBetrack.BROADCAST_START_TRACKING_NAME);
-                    sendBroadcast(intent);
-                }
-
-            }
-
-        } catch (Exception e) {
-
+        if (SettingsStudy.returnCode.NETWORKERROR == ObjSettingsStudy.Update(this)) {
+            NetworkError();
+        } else {
+            StartStudy();
         }
+    }
+
+    private void NetworkError()  {
+        findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
+        findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
+        findViewById(R.id.Layout_NetworkError).setVisibility(View.VISIBLE);
+    }
+
+    private void StartStudy()  {
 
 
-        String[] mySteps = {"Name", "Email", "Phone Number"};
-        int colorPrimary = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
-        int colorPrimaryDark = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
+        findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
+        findViewById(R.id.Layout_NetworkError).setVisibility(View.INVISIBLE);
+        findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
 
-        // Finding the view
-      //verticalStepperForm = (VerticalStepperFormLayout) findViewById(R.id.vertical_stepper_form);
+        TextView StudyTitle = new TextView(this);
+        StudyTitle = (TextView) findViewById(R.id.study_title);
+        StudyTitle.setText(NetworkGetStudiesAvailable.StudyName[0]);
 
-        // Setting up and initializing the form
-      /*VerticalStepperFormLayout.Builder.newInstance(verticalStepperForm, mySteps, this, this)
-                .primaryColor(colorPrimary)
-                .primaryDarkColor(colorPrimaryDark)
-                .displayBottomNavigation(false) // It is true by default, so in this case this line is not necessary
-                n/*it();*/
+        TextView StudyDescription = new TextView(this);
+        StudyDescription = (TextView) findViewById(R.id.study_description);
+        StudyDescription.setText(NetworkGetStudiesAvailable.StudyDescription[0]);
 
+        //we display the page of the study
+        actionBar.show();
+
+        //Set up the main screen of the study
         LinearLayout item = (LinearLayout)findViewById(R.id.LinearLayout_Layout_List);
 
         int[] imgs = {R.drawable.blood_drop, R.drawable.blood_drop};
@@ -195,7 +142,7 @@ public class ActivityBeTrack extends AppCompatActivity  implements VerticalStepp
             @Override
             public void onClick(View v) {
                 Button Icon = (Button) child1.findViewById(R.id.CardBetrackButton);
-                ActivityCardBetrack.InternalSetBackground((Drawable)getResources().getDrawable(R.drawable.button_round_custom_neutral), Icon);
+                ActivityCardBetrack.InternalSetBackground((Drawable) getResources().getDrawable(R.drawable.button_round_custom_neutral), Icon);
 
                 values.clear();
                 values.put(UtilsLocalDataBase.C_USER_PERIOD, "1");
@@ -203,7 +150,7 @@ public class ActivityBeTrack extends AppCompatActivity  implements VerticalStepp
                 values.put(UtilsLocalDataBase.C_USER_DATE, DatePeriod);
 
                 AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_USER);
-                Log.d(TAG, "idUser: " + ConfigInfoStudy.IdUser + "Period status: " + 1 + " date: " + DatePeriod);
+                Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Period status: " + 1 + " date: " + DatePeriod);
             }
         });
         Button mAnswerNo;
@@ -212,7 +159,7 @@ public class ActivityBeTrack extends AppCompatActivity  implements VerticalStepp
             @Override
             public void onClick(View v) {
                 Button Icon = (Button) child1.findViewById(R.id.CardBetrackButton);
-                ActivityCardBetrack.InternalSetBackground((Drawable)getResources().getDrawable(R.drawable.button_round_custom_red), Icon);
+                ActivityCardBetrack.InternalSetBackground((Drawable) getResources().getDrawable(R.drawable.button_round_custom_red), Icon);
 
                 values.clear();
                 values.put(UtilsLocalDataBase.C_USER_PERIOD, "0");
@@ -220,70 +167,21 @@ public class ActivityBeTrack extends AppCompatActivity  implements VerticalStepp
                 values.put(UtilsLocalDataBase.C_USER_DATE, DatePeriod);
 
                 AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_USER);
-                Log.d(TAG, "idUser: " + ConfigInfoStudy.IdUser + "Period status: " + 0 + " date: " + DatePeriod);
+                Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Period status: " + 0 + " date: " + DatePeriod);
             }
         });
 
         item.addView(child1);
-    }
 
-    @Override
-    public View createStepContentView(int stepNumber) {
-        View view = null;
-        switch (stepNumber) {
-            case 0:
-                view = createNameStep();
-                break;
-            case 1:
-                view = createEmailStep();
-                break;
-            case 2:
-                view = createPhoneNumberStep();
-                break;
+        //Broadcast an event to start the tracking service if not yet started
+        if (!isMyServiceRunning()) {
+            Intent intent = new Intent();
+            intent.setAction(SettingsBetrack.BROADCAST_START_TRACKING_NAME);
+            sendBroadcast(intent);
         }
-        return view;
-    }
-
-    private View createNameStep() {
-        int[] imgs = {R.drawable.ic_girl_1, R.drawable.blood_drop};
-        return new ActivityCardBetrack(mContext,"Do you have your period today ?","Yes","No",imgs);
-    }
-
-    private View createEmailStep() {
-        // In this case we generate the view by inflating a XML file
-        int[] imgs = {R.drawable.ic_girl_1, R.drawable.blood_drop};
-        return  new ActivityCardBetrack(mContext,"Do you have your period today ?",imgs);
-    }
-
-    private View createPhoneNumberStep() {
-        // In this case we generate the view by inflating a XML file
-        int[] imgs = {R.drawable.ic_girl_1, R.drawable.blood_drop};
-        return  new ActivityCardBetrack(mContext,"Do you have your period today ?",imgs);
-    }
-
-    @Override
-    public void onStepOpening(int stepNumber) {
-        switch (stepNumber) {
-            case 0:
-                verticalStepperForm.setStepAsCompleted(0);
-                break;
-            case 1:
-                verticalStepperForm.setStepAsCompleted(1);
-                break;
-            case 2:
-                // As soon as the phone number step is open, we mark it as completed in order to show the "Continue"
-                // button (We do it because this field is optional, so the user can skip it without giving any info)
-                verticalStepperForm.setStepAsCompleted(2);
-                // In this case, the instruction above is equivalent to:
-                // verticalStepperForm.setActiveStepAsCompleted();
-                break;
-        }
-    }
-
-    @Override
-    public void sendData() {
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -311,34 +209,36 @@ public class ActivityBeTrack extends AppCompatActivity  implements VerticalStepp
         switch (view.getId()) {
             case R.id.buttonUpdate:
                 TextView StudyDescription = new TextView(this);
-                //Get the unique ID of that user
-                if (null == ConfigEula.IdUser) {
-                    ConfigInfoStudy.IdUser = prefs.getString(ConfigInfoStudy.ID_USER, "No user ID !");
-                }
+
 
                 //Save the study description
                 StudyDescription = (TextView) findViewById(R.id.study_description);
-                editor.putString(ConfigInfoStudy.STUDY_DESCRIPTION, StudyDescription.getText().toString());
+                //editor.putString(SettingsStudy.STUDY_DESCRIPTION, StudyDescription.getText().toString());
                 //Get the description of the study
-                ConfigInfoStudy.StudyDescription = StudyDescription.getText().toString();
+                //SettingsStudy.StudyDescription = StudyDescription.getText().toString();
                 editor.commit();
 
                 dialog = ProgressDialog.show(this, this.getString(R.string.welcome_loading),
                         this.getString(R.string.welcome_wait), true);
 
                 //We set up the study
-                new ConfigSetupStudy(this, ObjInfoStudy);
+                //new UtilsSetupStudy(this, ObjInfoStudy);
 
                 break;
             case R.id.ButtonNetwork:
-
                 dialog = ProgressDialog.show(this, this.getString(R.string.welcome_loading),
                         this.getString(R.string.welcome_wait), true);
-                //We set up the study
-                new ConfigSetupStudy(this, ObjInfoStudy);
                 break;
         }
+
+        //We set up the study
+        if (SettingsStudy.returnCode.NETWORKERROR == ObjSettingsStudy.Update(this)) {
+            NetworkError();
+        } else {
+            StartStudy();
+        }
     }
+
 
     private void ifHuaweiAlert() {
         final SharedPreferences settings = getSharedPreferences("ProtectedApps", MODE_PRIVATE);

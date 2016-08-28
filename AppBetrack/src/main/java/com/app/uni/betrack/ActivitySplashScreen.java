@@ -4,34 +4,20 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AppOpsManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageSwitcher;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ViewSwitcher;
 
 /**
  * Created by cevincent on 5/27/16.
  */
-public class ActivitySplashScreen extends AppCompatActivity implements ViewSwitcher.ViewFactory{
+public class ActivitySplashScreen extends AppCompatActivity {
+
     // Splash screen timer
     private static int TIME_OUT = 2000;
-    private static boolean StudyOnGoing = false;
-    private ImageSwitcher mSwitcher;
-    // The Handler used for manage the Runnable that switch the images
-    private Handler m_Handler = new Handler();
 
-    private static final int[] imgs = {R.mipmap.ic_launcher,
-            R.drawable.ic_girl_2, R.drawable.ic_boy_1, R.drawable.ic_girl_1};
+    private static SettingsStudy ObjSettingsStudy;
 
     Activity mActivity = this;
 
@@ -65,30 +51,13 @@ public class ActivitySplashScreen extends AppCompatActivity implements ViewSwitc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final String StudyOnGoingKey = ConfigInfoStudy.STUDY_STARTED;
 
-
-        StudyOnGoing = prefs.getBoolean(StudyOnGoingKey, false);
-
-
-        SharedPreferences.Editor editor = prefs.edit();
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         setContentView(R.layout.activity_splash);
 
-
-        mSwitcher = (ImageSwitcher) findViewById(R.id.switcher);
-        mSwitcher.setFactory(this);
-
-        mSwitcher.setInAnimation(AnimationUtils.loadAnimation(this,
-                android.R.anim.fade_in));
-        mSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this,
-                android.R.anim.fade_out));
-
-        //mSwitcher.setImageResource(imgs[imgs.length-1]);
-        mSwitcher.setImageResource(imgs[0]);
-        //m_Handler.post(m_AnimatedSplashScreen);
+        ObjSettingsStudy = SettingsStudy.getInstance();
+        ObjSettingsStudy.Update(this);
 
         try
         {
@@ -110,7 +79,7 @@ public class ActivitySplashScreen extends AppCompatActivity implements ViewSwitc
             }
 
             //Check if a study is already going on
-            if (false == StudyOnGoing) {
+            if (false == ObjSettingsStudy.getStudyStarted()) {
 
                 //Try to read studies available from the distant server
                 gsa.execute();
@@ -121,10 +90,8 @@ public class ActivitySplashScreen extends AppCompatActivity implements ViewSwitc
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                            Intent i = new Intent(ActivitySplashScreen.this, ActivityBeTrack.class);
-                            startActivity(i);
-                            //Intent i = new Intent(ActivitySplashScreen.this, ActivitySurvey.class);
-                            //startActivityForResult(i, 1);
+                            Intent i = new Intent(ActivitySplashScreen.this, ActivitySurvey.class);
+                            startActivityForResult(i, 1);
                             // close this activity
                             finish();
                     }
@@ -143,33 +110,5 @@ public class ActivitySplashScreen extends AppCompatActivity implements ViewSwitc
                 android.os.Process.myUid(), getPackageName());
         return mode == AppOpsManager.MODE_ALLOWED;
     }
-
-    public View makeView() {
-        ImageView i = new ImageView(this);
-        i.setBackgroundColor(Color.TRANSPARENT);
-        i.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        i.setLayoutParams(new ImageSwitcher.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));
-        return i;
-    }
-
-    Runnable m_AnimatedSplashScreen = new Runnable() {
-        private int CounterImg = 0;
-        public void run() {
-            int NumImage  = imgs.length - 1;
-
-            mSwitcher.setImageResource(imgs[CounterImg]);
-
-            if (CounterImg < NumImage) {
-                CounterImg++;
-
-            }
-            else {
-                CounterImg=0;
-            }
-
-            m_Handler.postDelayed(this, (1000));
-        }
-    };
 
 }

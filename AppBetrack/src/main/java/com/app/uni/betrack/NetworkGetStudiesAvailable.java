@@ -54,10 +54,10 @@ public class NetworkGetStudiesAvailable extends AsyncTask<String, Void, String> 
             StudyDescription=new String[NbrMaxStudy];
 
             //Connect to the remote database to get the available studies
-            url = new URL(ConfigSettingsBetrack.STUDY_WEBSITE + ConfigSettingsBetrack.STUDY_GETSTUDIESAVAILABLE);
+            url = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_GETSTUDIESAVAILABLE);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
-            urlConnection.setConnectTimeout(ConfigSettingsBetrack.SERVER_TIMEOUT);
+            urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
             urlConnection.connect();
 
 

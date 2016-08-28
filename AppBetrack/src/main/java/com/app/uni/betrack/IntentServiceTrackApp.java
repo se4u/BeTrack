@@ -26,14 +26,15 @@ import java.util.TreeMap;
 public class IntentServiceTrackApp extends IntentService {
 
 
-    static final String TAG = "UpdaterIntentService";
+    static final String TAG = "IntentServiceTrackApp";
 
     public static String ActivityOnGoing = null;
     public static String ActivityStartDate = null;
     public static String ActivityStartTime = null;
 
 
-    private static ConfigSettingsBetrack ObjSettingsBetrack = null;
+    private static SettingsBetrack ObjSettingsBetrack = null;
+    private static SettingsStudy ObjSettingsStudy = null;
 
     private static UtilsLocalDataBase localdatabase = null;
 
@@ -50,14 +51,11 @@ public class IntentServiceTrackApp extends IntentService {
         mHandler = new Handler();
     }
 
-    private ConfigInfoStudy ContextInfoStudy = new ConfigInfoStudy();
-
     protected void onHandleIntent(Intent intent) {
         String topActivity = null;
         String ActivityStopDate = null;
         String ActualTime = null;
         String ActivityStopTime=null;
-        String StudyOnGoingKey = ConfigInfoStudy.STUDY_STARTED;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
         boolean StudyOnGoing;
@@ -68,12 +66,14 @@ public class IntentServiceTrackApp extends IntentService {
 
         if (null == ObjSettingsBetrack) {
             //Read the preferences
-            ObjSettingsBetrack = ConfigSettingsBetrack.getInstance();
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
             ObjSettingsBetrack.UpdateSettingsBetrack(prefs, this);
         }
 
-        //Read the user ID
-        String UserId = prefs.getString(ConfigInfoStudy.ID_USER, "NOID ?????");
+        if (null == ObjSettingsStudy)  {
+            ObjSettingsStudy = SettingsStudy.getInstance();
+            ObjSettingsStudy.Update(this);
+        }
 
         if (null == localdatabase) {
             localdatabase = new UtilsLocalDataBase(this);
@@ -82,10 +82,9 @@ public class IntentServiceTrackApp extends IntentService {
         if (intent != null) {
 
             //Check if a study is going on
-            StudyOnGoing = prefs.getBoolean(StudyOnGoingKey, false);
+            StudyOnGoing = ObjSettingsBetrack.GetStudyEnable();
             if (true == StudyOnGoing) {
 
-                new ConfigSetupStudy(prefs, ContextInfoStudy);
                 Intent intentCheckScreenStatus = new Intent();
 
                 if (ObjSettingsBetrack.GetStudyEnable())
@@ -100,13 +99,13 @@ public class IntentServiceTrackApp extends IntentService {
 
                     Log.d(TAG, "Foreground App " + topActivity);
                     if (ReceiverScreen.StateScreen.UNKNOWN == ReceiverScreen.ScreenState) {
-                        intentCheckScreenStatus.setAction(ConfigSettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
+                        intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
                         this.sendBroadcast(intentCheckScreenStatus);
                     }
 
                     //Check the status of the screen
                     //Check if that activity should be monitored
-                    for(int i =0;i<ContextInfoStudy.ApplicationsToWatch.size();i++) {
+                    for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
 
                         //Log.d(TAG, "Application to watch " + ContextInfoStudy.ApplicationsToWatch.get(i));
                         //Log.d(TAG, "ActivityOnGoing " + ActivityOnGoing);
@@ -181,8 +180,8 @@ public class IntentServiceTrackApp extends IntentService {
 
                         //Log.d(TAG, "Check app foreground: " + topActivity + "app to monitor: " + ContextInfoStudy.ApplicationsToWatch.get(i) + " Screen state: " + ReceiverScreen.ScreenState);
 
-                        if ((null != topActivity) && (null != ContextInfoStudy.ApplicationsToWatch.get(i))) {
-                            if (topActivity.toLowerCase().contains(ContextInfoStudy.ApplicationsToWatch.get(i).toLowerCase())) {
+                        if ((null != topActivity) && (null != ObjSettingsStudy.getApplicationsToWatch().get(i))) {
+                            if (topActivity.toLowerCase().contains(ObjSettingsStudy.getApplicationsToWatch().get(i).toLowerCase())) {
 
                                 //Log.d(TAG, "Status ActivityOnGoing: " + ActivityOnGoing);
 
@@ -226,7 +225,7 @@ public class IntentServiceTrackApp extends IntentService {
                                                 values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
                                                 this.AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_APPWATCH);
 
-                                                Log.d(TAG, "IdUser: " + UserId + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
+                                                Log.d(TAG, "IdUser: " + ObjSettingsStudy.getIdUser() + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
 
                                             } catch (Exception e) {
 
@@ -253,7 +252,7 @@ public class IntentServiceTrackApp extends IntentService {
             }
             else
             {
-                CreateTrackApp.CreateAlarm(this, ConfigSettingsBetrack.DELTA_BTW_RECHECK_STUDY_STARTED);
+                CreateTrackApp.CreateAlarm(this, SettingsBetrack.DELTA_BTW_RECHECK_STUDY_STARTED);
             }
         }
         CreateTrackApp.SemTrackApp.release();
@@ -277,7 +276,7 @@ public class IntentServiceTrackApp extends IntentService {
         // result
         String topActivity = null;
         long endTime = System.currentTimeMillis();
-        long beginTime = endTime - ConfigSettingsBetrack.SAMPLING_RATE * 60;
+        long beginTime = endTime - SettingsBetrack.SAMPLING_RATE * 60;
 
         UsageStatsManager mUsageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
         List<UsageStats> stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, beginTime, endTime);

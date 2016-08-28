@@ -29,13 +29,13 @@ public class CreateTrackApp {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             if (null != mJobScheduler) {
-                mJobScheduler.cancel(ConfigSettingsBetrack.JOBID_TRACKAPP);
+                mJobScheduler.cancel(SettingsBetrack.JOBID_TRACKAPP);
             }
 
             mJobScheduler = (JobScheduler)
                     context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
-            JobInfo.Builder builder = new JobInfo.Builder( ConfigSettingsBetrack.JOBID_TRACKAPP,
+            JobInfo.Builder builder = new JobInfo.Builder( SettingsBetrack.JOBID_TRACKAPP,
                     new ComponentName( context.getPackageName(),
                             JobSchedulerTrackApp.class.getName() ) );
 
@@ -81,7 +81,7 @@ public class CreateTrackApp {
     {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (null != mJobScheduler) {
-                mJobScheduler.cancel(ConfigSettingsBetrack.JOBID_TRACKAPP);
+                mJobScheduler.cancel(SettingsBetrack.JOBID_TRACKAPP);
             }
         } else {
             if (alarmMgr != null) {

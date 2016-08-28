@@ -36,7 +36,7 @@ public class ReceiverScreen extends BroadcastReceiver {
     private boolean isMyServiceRunning(Context mActivity) {
         ActivityManager manager = (ActivityManager) mActivity.getSystemService(mActivity.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (ConfigSettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
+            if (SettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
                 Log.d(TAG, "Betrack service is runnning");
                 return true;
             }
@@ -56,7 +56,7 @@ public class ReceiverScreen extends BroadcastReceiver {
         }
 
         Log.d(TAG, "Check screen state");
-        if (intent.getAction().equals(ConfigSettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS)) {
+        if (intent.getAction().equals(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS)) {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
                 DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
                 for (Display display : dm.getDisplays()) {
@@ -137,7 +137,7 @@ public class ReceiverScreen extends BroadcastReceiver {
         }
         else
         {
-            CreateTrackApp.CreateAlarm(context, ConfigSettingsBetrack.SAMPLING_RATE);
+            CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
         }
     }
 }

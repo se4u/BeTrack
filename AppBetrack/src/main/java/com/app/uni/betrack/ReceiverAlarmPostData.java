@@ -29,23 +29,23 @@ public class ReceiverAlarmPostData extends BroadcastReceiver {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                 {
                     CreatePostData.alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
-                            ConfigSettingsBetrack.POSTDATA_SENDING_DELTA, CreatePostData.alarmIntent);
+                            SettingsBetrack.POSTDATA_SENDING_DELTA, CreatePostData.alarmIntent);
                 }
                 else
                 {
                     CreatePostData.alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
-                            ConfigSettingsBetrack.POSTDATA_SENDING_DELTA, CreatePostData.alarmIntent);
+                            SettingsBetrack.POSTDATA_SENDING_DELTA, CreatePostData.alarmIntent);
                 }
             } else {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                 {
                     CreatePostData.alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
-                            ConfigSettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK, CreatePostData.alarmIntent);
+                            SettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK, CreatePostData.alarmIntent);
                 }
                 else
                 {
                     CreatePostData.alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
-                            ConfigSettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK, CreatePostData.alarmIntent);
+                            SettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK, CreatePostData.alarmIntent);
                 }
             }
         }
