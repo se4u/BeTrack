@@ -44,10 +44,10 @@ public class UtilsEula {
         if(hasBeenShown == false){
 
             // Show the ConfigEula
-            String title = mActivity.getString(R.string.disclaimers_title) + " v" + versionInfo.versionName;
+            String title = mActivity.getString(R.string.disclaimer_title) + " v" + versionInfo.versionName;
 
             //Includes the updates as well so users know what changed.
-            String message =  mActivity.getString(R.string.disclaimers);
+            String message =  mActivity.getString(R.string.disclaimer);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
                     .setTitle(title)

@@ -11,7 +11,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -26,26 +28,27 @@
                 <action android:name="com.app.uni.betrack.START_TRACKING" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".ReceiverAlarmNotification" />
+        <receiver android:name=".ReceiverAlarmPostData" />
+        <receiver android:name=".ReceiverAlarmTrackApp" />
+        <receiver android:name=".ReceiverAlarmTrackGPS" />
 
-        <receiver android:name=".ReceiverAlarmNotification"></receiver>
-        <receiver android:name=".ReceiverAlarmPostData"></receiver>
-        <receiver android:name=".ReceiverAlarmTrackApp"></receiver>
-
-        <service android:name=".JobSchedulerTrackApp"
+        <service
+            android:name=".JobSchedulerTrackApp"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <service android:name=".JobSchedulerPostData"
+        <service
+            android:name=".JobSchedulerPostData"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
         <service android:name=".UtilsForegroundEnablingService" />
         <service
             android:name=".IntentServiceTrackApp"
             android:exported="false" />
-
         <service
             android:name=".IntentServicePostData"
             android:exported="false" />
-
+        <service
+            android:name=".IntentServiceTrackGPS"
+            android:exported="false" />
         <service
             android:name=".ServiceBetrack"
             android:enabled="true"
@@ -57,21 +60,15 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ActivityBeTrack">
-        </activity>
-
-        <activity
-            android:name=".ActivitySettings">
-        </activity>
-
-        <activity
-            android:name=".ActivitySurvey">
-        </activity>
+        <activity android:name=".ActivityBeTrack" />
+        <activity android:name=".ActivitySettings" />
+        <activity android:name=".ActivitySurvey" />
+        <activity android:name=".ActivityStartStudy" />
+        <activity android:name=".ActivitySetupBetrack"></activity>
     </application>
 
 </manifest>
