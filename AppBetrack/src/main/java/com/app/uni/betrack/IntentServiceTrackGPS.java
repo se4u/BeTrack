@@ -23,8 +23,6 @@ public class IntentServiceTrackGPS  extends IntentService implements LocationLis
 
     static final String TAG = "IntentServiceTrackGPS";
 
-    private static SettingsBetrack ObjSettingsBetrack = null;
-
     private static UtilsLocalDataBase localdatabase = null;
 
     public UtilsLocalDataBase AccesLocalDB()
@@ -40,7 +38,6 @@ public class IntentServiceTrackGPS  extends IntentService implements LocationLis
         mHandler = new Handler();
     }
 
-    private SettingsStudy ContextInfoStudy = new SettingsStudy();
     private LocationManager locationManager;
     private String provider;
 

@@ -10,7 +10,7 @@ import android.util.Log;
 public class ServiceBetrack extends Service {
     public ServiceBetrack() {
     }
-    static final String TAG = "UpdaterService";
+    static final String TAG = "ServiceBetrack";
     static ServiceBetrack instance;
 
     @Override

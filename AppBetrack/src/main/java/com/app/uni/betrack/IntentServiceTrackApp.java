@@ -10,9 +10,7 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -33,8 +31,8 @@ public class IntentServiceTrackApp extends IntentService {
     public static String ActivityStartTime = null;
 
 
-    private static SettingsBetrack ObjSettingsBetrack = null;
-    private static SettingsStudy ObjSettingsStudy = null;
+    private SettingsBetrack ObjSettingsBetrack = null;
+    private SettingsStudy ObjSettingsStudy = null;
 
     private static UtilsLocalDataBase localdatabase = null;
 
@@ -56,8 +54,6 @@ public class IntentServiceTrackApp extends IntentService {
         String ActivityStopDate = null;
         String ActualTime = null;
         String ActivityStopTime=null;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
         boolean StudyOnGoing;
 
         ContentValues values = new ContentValues();
@@ -67,12 +63,11 @@ public class IntentServiceTrackApp extends IntentService {
         if (null == ObjSettingsBetrack) {
             //Read the preferences
             ObjSettingsBetrack = SettingsBetrack.getInstance();
-            ObjSettingsBetrack.UpdateSettingsBetrack(prefs, this);
+            ObjSettingsBetrack.Update(this);
         }
 
         if (null == ObjSettingsStudy)  {
-            ObjSettingsStudy = SettingsStudy.getInstance();
-            ObjSettingsStudy.Update(this);
+            ObjSettingsStudy = SettingsStudy.getInstance(this);
         }
 
         if (null == localdatabase) {

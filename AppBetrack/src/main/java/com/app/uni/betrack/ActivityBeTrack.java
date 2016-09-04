@@ -5,19 +5,13 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,16 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 
 public class ActivityBeTrack extends AppCompatActivity {
@@ -79,7 +68,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         mContext = this;
 
-        ObjSettingsStudy = SettingsStudy.getInstance();
+        ObjSettingsStudy = SettingsStudy.getInstance(this);
 
         actionBar = getSupportActionBar();
         actionBar.hide();
@@ -91,41 +80,20 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
-        //In case it's an Huawei phone we ask the user to put our app in the protected list
-        ifHuaweiAlert();
-
         notificationManager.cancel(SettingsBetrack.NOTIFICATION_ID);
 
-        //Display an ConfigEula if needed
-        new UtilsEula(this).show();
-
-        if (SettingsStudy.returnCode.NETWORKERROR == ObjSettingsStudy.Update(this)) {
-            NetworkError();
-        } else {
-            StartStudy();
-        }
     }
 
-    private void NetworkError()  {
-        findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
-        findViewById(R.id.Layout_Study).setVisibility(View.INVISIBLE);
-        findViewById(R.id.Layout_NetworkError).setVisibility(View.VISIBLE);
-    }
 
     private void StartStudy()  {
 
-
-        findViewById(R.id.Layout_Welcome).setVisibility(View.INVISIBLE);
-        findViewById(R.id.Layout_NetworkError).setVisibility(View.INVISIBLE);
-        findViewById(R.id.Layout_Study).setVisibility(View.VISIBLE);
-
         TextView StudyTitle = new TextView(this);
         StudyTitle = (TextView) findViewById(R.id.study_title);
-        StudyTitle.setText(NetworkGetStudiesAvailable.StudyName[0]);
+        //StudyTitle.setText(NetworkGetStudiesAvailable.StudyName[0]);
 
         TextView StudyDescription = new TextView(this);
         StudyDescription = (TextView) findViewById(R.id.study_description);
-        StudyDescription.setText(NetworkGetStudiesAvailable.StudyDescription[0]);
+        //StudyDescription.setText(NetworkGetStudiesAvailable.StudyDescription[0]);
 
         //we display the page of the study
         actionBar.show();
@@ -206,117 +174,14 @@ public class ActivityBeTrack extends AppCompatActivity {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
 
-        switch (view.getId()) {
-            case R.id.buttonUpdate:
-                TextView StudyDescription = new TextView(this);
 
-
-                //Save the study description
-                StudyDescription = (TextView) findViewById(R.id.study_description);
-                //editor.putString(SettingsStudy.STUDY_DESCRIPTION, StudyDescription.getText().toString());
-                //Get the description of the study
-                //SettingsStudy.StudyDescription = StudyDescription.getText().toString();
-                editor.commit();
-
-                dialog = ProgressDialog.show(this, this.getString(R.string.welcome_loading),
-                        this.getString(R.string.welcome_wait), true);
-
-                //We set up the study
-                //new UtilsSetupStudy(this, ObjInfoStudy);
-
-                break;
-            case R.id.ButtonNetwork:
-                dialog = ProgressDialog.show(this, this.getString(R.string.welcome_loading),
-                        this.getString(R.string.welcome_wait), true);
-                break;
-        }
 
         //We set up the study
-        if (SettingsStudy.returnCode.NETWORKERROR == ObjSettingsStudy.Update(this)) {
+        /*if (SettingsStudy.returnCode.NETWORKERROR == ObjSettingsStudy.Update(this)) {
             NetworkError();
         } else {
             StartStudy();
-        }
+        }*/
     }
 
-
-    private void ifHuaweiAlert() {
-        final SharedPreferences settings = getSharedPreferences("ProtectedApps", MODE_PRIVATE);
-        final String saveIfSkip = "skipProtectedAppsMessage";
-        boolean skipMessage = settings.getBoolean(saveIfSkip, false);
-        if (!skipMessage) {
-            String title =  this.getString(R.string.huawei_title);
-            String message =  this.getString(R.string.huawei_desc);
-            String check =  this.getString(R.string.huawei_check);
-            String buttonpositive =  this.getString(R.string.huawei_positive_button);
-
-            final SharedPreferences.Editor editor = settings.edit();
-            Intent intent = new Intent();
-            intent.setClassName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity");
-            if (isCallable(intent)) {
-                final AppCompatCheckBox dontShowAgain = new AppCompatCheckBox(this);
-                dontShowAgain.setText(check);
-                dontShowAgain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        editor.putBoolean(saveIfSkip, isChecked);
-                        editor.apply();
-                    }
-                });
-
-
-                new AlertDialog.Builder(this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle(title)
-                        .setMessage(String.format("%s " + message + ".%n", getString(R.string.app_name)))
-                        .setView(dontShowAgain)
-                        .setPositiveButton(buttonpositive, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                huaweiProtectedApps();
-                            }
-                        })
-                        .show();
-            } else {
-                editor.putBoolean(saveIfSkip, true);
-                editor.apply();
-            }
-        }
-    }
-
-    private boolean isCallable(Intent intent) {
-        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent,
-                PackageManager.MATCH_DEFAULT_ONLY);
-        return list.size() > 0;
-    }
-
-    private void huaweiProtectedApps() {
-        try {
-            String cmd = "am start -n com.huawei.systemmanager/.optimize.process.ProtectActivity";
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                cmd += " --user " + getUserSerial();
-            }
-            Runtime.getRuntime().exec(cmd);
-        } catch (IOException ignored) {
-        }
-    }
-
-    private String getUserSerial() {
-        //noinspection ResourceType
-        Object userManager = getSystemService("user");
-        if (null == userManager) return "";
-
-        try {
-            Method myUserHandleMethod = android.os.Process.class.getMethod("myUserHandle", (Class<?>[]) null);
-            Object myUserHandle = myUserHandleMethod.invoke(android.os.Process.class, (Object[]) null);
-            Method getSerialNumberForUser = userManager.getClass().getMethod("getSerialNumberForUser", myUserHandle.getClass());
-            Long userSerial = (Long) getSerialNumberForUser.invoke(userManager, myUserHandle);
-            if (userSerial != null) {
-                return String.valueOf(userSerial);
-            } else {
-                return "";
-            }
-        } catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ignored) {
-        }
-        return "";
-    }
 }

@@ -4,13 +4,11 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.BufferedWriter;
@@ -27,8 +25,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class IntentServicePostData extends IntentService {
     static final String TAG = "IntentServicePostData";
 
-    private static SettingsBetrack ObjSettingsBetrack = null;
-    private static SettingsStudy ObjSettingsStudy = null;
+    private SettingsBetrack ObjSettingsBetrack = null;
+    private SettingsStudy ObjSettingsStudy = null;
 
     private static UtilsLocalDataBase localdatabase  = null;
 
@@ -73,7 +71,7 @@ public class IntentServicePostData extends IntentService {
         //COMMON TO ALL TABLES
         Long IdSql;
         ConnectionState NetworkState;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
 
         java.net.URL urlPostAppwatched;
         java.net.URL urlPostDailyStatus;
@@ -86,12 +84,11 @@ public class IntentServicePostData extends IntentService {
         if (null == ObjSettingsBetrack) {
             //Read the preferences
             ObjSettingsBetrack = SettingsBetrack.getInstance();
-            ObjSettingsBetrack.UpdateSettingsBetrack(prefs, this);
+            ObjSettingsBetrack.Update(this);
         }
 
         if (null == ObjSettingsStudy)  {
-            ObjSettingsStudy = SettingsStudy.getInstance();
-            ObjSettingsStudy.Update(this);
+            ObjSettingsStudy = SettingsStudy.getInstance(this);
         }
 
         if (null == localdatabase) {

@@ -1,5 +1,6 @@
 package com.app.uni.betrack;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
@@ -16,16 +17,17 @@ import java.net.URL;
  */
 public class NetworkGetWhatToWatch extends AsyncTask<String, Void, String> {
     static final String TAG = "NetworkGetWhatToWatch";
-    static public SettingsStudy ContextInfoStudy;
+    private SettingsStudy ObjSettingsStudy;
+    private Context mContext;
 
-    // you may separate this or combined to caller class.
     public interface AsyncResponse {
         void processFinish(String output);
     }
 
     public AsyncResponse delegate = null;
 
-    public NetworkGetWhatToWatch(AsyncResponse delegate){
+    public NetworkGetWhatToWatch(Context context, AsyncResponse delegate){
+        mContext = context;
         this.delegate = delegate;
     }
 
@@ -39,6 +41,8 @@ public class NetworkGetWhatToWatch extends AsyncTask<String, Void, String> {
         String result = null;
         HttpURLConnection urlConnection = null;
         java.net.URL url;
+        ObjSettingsStudy = SettingsStudy.getInstance(mContext);
+
         try {
 
             //Connect to the remote database to get the available studies
@@ -57,16 +61,12 @@ public class NetworkGetWhatToWatch extends AsyncTask<String, Void, String> {
 
             while ((next = bufferedReader.readLine()) != null) {
                 JSONArray ja = new JSONArray(next);
-
                 for (int i = 0; i < ja.length(); i++) {
-
                     JSONObject jo = (JSONObject) ja.get(i);
-                    ContextInfoStudy.ApplicationsToWatch.add(jo.getString("ApplicationName"));
-
+                    ObjSettingsStudy.setApplicationsToWatch(jo.getString("ApplicationName"));
                 }
-
-
             }
+
             result = "OK";
         } catch (java.net.SocketTimeoutException e) {
             return result;

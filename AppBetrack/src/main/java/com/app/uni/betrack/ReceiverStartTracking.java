@@ -5,8 +5,6 @@ import android.app.AppOpsManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -21,14 +19,12 @@ public class ReceiverStartTracking extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) { //
 
         Log.d(TAG, "onReceived");
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
 
         ReceiverScreen.ScreenState = ReceiverScreen.StateScreen.ON;
 
         //Read the preferences
         ObjSettingsBetrack = SettingsBetrack.getInstance();
-        ObjSettingsBetrack.UpdateSettingsBetrack(prefs, context);
+        ObjSettingsBetrack.Update(context);
 
         context.startService(new Intent(context, ServiceBetrack.class));
 

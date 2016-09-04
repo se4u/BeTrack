@@ -103,8 +103,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             ObjSettingsBetrack = SettingsBetrack.getInstance();
         }
         if (ObjSettingsStudy == null) {
-            ObjSettingsStudy = SettingsStudy.getInstance();
-            ObjSettingsStudy.Update(this);
+            ObjSettingsStudy = SettingsStudy.getInstance(this);
         }
     }
 
@@ -208,7 +207,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
         {
             listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                    ObjSettingsBetrack.UpdateSettingsBetrack(prefs, mContext);
+                    ObjSettingsBetrack.Update(mContext);
                 }
             };
             prefs.registerOnSharedPreferenceChangeListener(listener);
@@ -269,7 +268,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
         {
             listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                    ObjSettingsBetrack.UpdateSettingsBetrack(prefs, mContext);
+                    ObjSettingsBetrack.Update(mContext);
                     CreateNotification.CreateAlarm(mContext,
                                                             ObjSettingsBetrack.GetStudyNotification(),
                                                                 ObjSettingsBetrack.GetStudyNotificationTime());
@@ -311,7 +310,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
         {
             listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                    ObjSettingsBetrack.UpdateSettingsBetrack(prefs, mContext);
+                    ObjSettingsBetrack.Update(mContext);
                 }
             };
             prefs.registerOnSharedPreferenceChangeListener(listener);

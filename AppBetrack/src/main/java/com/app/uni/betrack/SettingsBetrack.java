@@ -2,6 +2,7 @@ package com.app.uni.betrack;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.concurrent.Semaphore;
@@ -62,8 +63,9 @@ public class SettingsBetrack {
         return ConfigSettingsBetrackHolder.instance;
     }
 
-    public void UpdateSettingsBetrack(SharedPreferences prefs, Context mActivity) {
-        BuildPref(prefs, mActivity);
+    public void Update(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        BuildPref(prefs, context);
     }
 
     public Boolean GetStudyEnable()
