@@ -61,23 +61,23 @@
                     android:layout_margin="10dp"
                     android:textColor="#FFF"
                     android:text="@string/disclaimer_accept"
-                    android:onClick="onButtonClickedChoice1"
+                    android:onClick="onButtonClicked"
                     android:background="@drawable/button_custom"
                     android:textStyle="bold"
-                    android:id="@+id/DisclaimerChoice1">
+                    android:id="@+id/DisclaimerAccept">
                 </Button>
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/DisclaimerChoice1"
+                    android:layout_toRightOf="@+id/DisclaimerAccept"
                     android:layout_margin="10dp"
                     android:textColor="#FFF"
                     android:text="@string/disclaimer_cancel"
-                    android:onClick="onButtonClickedChoice2"
+                    android:onClick="onButtonClicked"
                     android:background="@drawable/button_custom"
                     android:textStyle="bold"
-                    android:id="@+id/DisclaimerChoice2">
+                    android:id="@+id/DisclaimerRefuse">
                 </Button>
             </RelativeLayout>
         </LinearLayout>
@@ -137,23 +137,23 @@
                     android:layout_margin="10dp"
                     android:textColor="#FFF"
                     android:text="@string/study_accept"
-                    android:onClick="onButtonClickedChoice1"
+                    android:onClick="onButtonClicked"
                     android:background="@drawable/button_custom"
                     android:textStyle="bold"
-                    android:id="@+id/StudyChoice1">
+                    android:id="@+id/StudyAccept">
                 </Button>
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/StudyChoice1"
+                    android:layout_toRightOf="@+id/StudyAccept"
                     android:layout_margin="10dp"
                     android:textColor="#FFF"
                     android:text="@string/study_cancel"
-                    android:onClick="onButtonClickedChoice2"
+                    android:onClick="onButtonClicked"
                     android:background="@drawable/button_custom"
                     android:textStyle="bold"
-                    android:id="@+id/StudyChoice2">
+                    android:id="@+id/StudyRefuse">
                 </Button>
             </RelativeLayout>
         </LinearLayout>
@@ -206,8 +206,53 @@
                 android:onClick="onButtonClicked"
                 android:background="@drawable/button_custom"
                 android:textStyle="bold"
-                android:id="@+id/ButtonNetwork">
+                android:id="@+id/ButtonNetworkRetry">
             </Button>
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/Layout_NetworkLoading"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:visibility="invisible">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|top"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:layout_weight="2"
+                android:text="@string/app_name"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:layout_weight="2"
+                android:text="@string/network_loading"/>
+
 
         </LinearLayout>
     </FrameLayout>

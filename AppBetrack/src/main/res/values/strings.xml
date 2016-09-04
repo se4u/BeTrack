@@ -40,6 +40,9 @@
         <string name="network_error_text">Please connect your phone to internet and restart the BeTrack. It is mandatory to have an internet connection to register for a new study</string>
         <string name="network_retry">Retry</string>
 
+        <!-- Network loading -->
+        <string name="network_loading">Loading...</string>
+
     <!-- end activity_start_study -->
 
 
@@ -82,14 +85,21 @@
     <!-- Informations about the study-->
     <string name="pref_header_info">Informations about the study </string>
 
+    <!-- set up Betrack -->
+    <string name="Betrack_setup_title">Set up your BeTrack application</string>
+    <string name="Betrack_setup_text">Almost there. To be a part of the study we need specific right on your phone please follow the steps below. Moreover if you use a battery manager please make sure that we are white listed</string>
+
     <!-- UsageStat enable -->
-    <string name="UsageStat_enable_title">Enable BeTrack</string>
-    <string name="UsageStat_enable_text">To be a part of a study we need specific right on your phone. When you will click on the OK button of that window, the setting menu of your phone will be open. In that menu please allow BeTrack to access the statistics of your phone. When you are done get back to BeTrack and you\'ll be able to start the study.</string>
+    <string name="UsageStat_enable_title">Enable Usage Stat</string>
+    <string name="UsageStat_enable_text">When you will click on the OK button of that window, the setting menu of your phone will be open. In that menu please allow BeTrack to access the statistics of your phone. When you are done get back to BeTrack and you\'ll be able to start the study.</string>
+    <string name="UsageStat_ok">Usage stat</string>
+
 
     <!-- notification -->
     <string name="notification_title">BeTrack</string>
     <string name="notification_desc">Please fill up our little daily survey</string>
     <string name="notification_running">Betrack is running</string>
+
     <!-- Huawei protected app -->
     <string name="huawei_title">Huawei Protected Apps</string>
     <string name="huawei_desc">requires to be enabled in Protected Apps to function properly.</string>
