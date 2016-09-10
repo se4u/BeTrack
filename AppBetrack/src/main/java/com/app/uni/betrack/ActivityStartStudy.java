@@ -51,9 +51,14 @@ public class ActivityStartStudy extends AppCompatActivity {
         @Override
         public void processFinish(final String output) {
             if (null != output) {
-                //We have all the information to start the study, we wan display the start survey
+                Intent i;
+                //We have all the information to start the study
                 ObjSettingsStudy.setStudyStarted(true);
-                Intent i = new Intent(ActivityStartStudy.this, ActivitySetupBetrack.class);
+                if (ObjSettingsStudy.getSetupBetrackDone() == false) {
+                    i = new Intent(ActivityStartStudy.this, ActivitySetupBetrack.class);
+                } else {
+                    i = new Intent(ActivityStartStudy.this, ActivitySurveyStart.class);
+                }
                 startActivity(i);
                 finish();
             } else {

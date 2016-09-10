@@ -2,17 +2,15 @@ package com.app.uni.betrack;
 
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.widget.CompoundButton;
+import android.view.View;
+import android.widget.CheckBox;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -21,6 +19,97 @@ import java.util.List;
 
 public class ActivitySetupBetrack extends AppCompatActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
+    private SettingsStudy ObjSettingsStudy;
+    private boolean EnableUsageStat = false;
+    private boolean EnableHuaweiProtMode = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_setup_betrack);
+
+        ObjSettingsStudy = SettingsStudy.getInstance(this);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            if(!hasPermission()) {
+                findViewById(R.id.EnableUsageStat).setVisibility(View.VISIBLE);
+            }
+            else {
+                findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
+                EnableUsageStat = true;
+            }
+
+            Intent intent = new Intent();
+            intent.setClassName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity");
+            if (isCallable(intent)) {
+                findViewById(R.id.EnableHuawei).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.EnableHuawei).setVisibility(View.GONE);
+                EnableHuaweiProtMode = true;
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        Intent i;
+        super.onResume();
+        if(!hasPermission()) {
+            findViewById(R.id.EnableUsageStat).setVisibility(View.VISIBLE);
+        }
+        else  {
+            findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
+            EnableUsageStat = true;
+            if (EnableHuaweiProtMode && EnableUsageStat) {
+                ObjSettingsStudy.setSetupBetrackDone(true);
+                i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
+                startActivity(i);
+                finish();
+            } else {
+                ObjSettingsStudy.setSetupBetrackDone(false);
+            }
+        }
+    }
+
+    public void onButtonClicked(View view) {
+        Intent i;
+        switch (view.getId()) {
+            case  R.id.EnableUsageStatBetrack:
+                this.startActivityForResult(
+                        new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
+                        MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
+                break;
+            case  R.id.EnableHuaweiBetrack:
+                huaweiProtectedApps();
+                if (ObjSettingsStudy.getSetupBetrackDone()) {
+                    i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
+                    startActivity(i);
+                    finish();
+                }
+                break;
+        }
+    }
+
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean isChecked = ((CheckBox) view).isChecked();
+        switch (view.getId()) {
+            case  R.id.CheckHuaweiWhiteList:
+                if ( isChecked ) {
+                    EnableHuaweiProtMode = true;
+                } else {
+                    EnableHuaweiProtMode = false;
+                }
+                if (EnableHuaweiProtMode && EnableUsageStat) {
+                    ObjSettingsStudy.setSetupBetrackDone(true);
+                } else {
+                    ObjSettingsStudy.setSetupBetrackDone(false);
+                }
+                break;
+        }
+    }
+
     @TargetApi(19) private boolean hasPermission() {
         AppOpsManager appOps = (AppOpsManager)
                 getSystemService(APP_OPS_SERVICE);
@@ -28,71 +117,6 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 android.os.Process.myUid(), getPackageName());
         return mode == AppOpsManager.MODE_ALLOWED;
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setup_betrack);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            while(true)
-            {
-                if(!hasPermission()) {
-                    //Explain what's going on to the user of the study before to display the setting menu
-                    //Thread.sleep(100);
-                    new UtilsEnableUsageStat(this).show();
-                }
-                else
-                {
-                    break;
-                }
-
-            }
-        }
-    }
-
-    private void ifHuaweiAlert() {
-        final SharedPreferences settings = getSharedPreferences("ProtectedApps", MODE_PRIVATE);
-        final String saveIfSkip = "skipProtectedAppsMessage";
-        boolean skipMessage = settings.getBoolean(saveIfSkip, false);
-        if (!skipMessage) {
-            String title =  this.getString(R.string.huawei_title);
-            String message =  this.getString(R.string.huawei_desc);
-            String check =  this.getString(R.string.huawei_check);
-            String buttonpositive =  this.getString(R.string.huawei_positive_button);
-
-            final SharedPreferences.Editor editor = settings.edit();
-            Intent intent = new Intent();
-            intent.setClassName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity");
-            if (isCallable(intent)) {
-                final AppCompatCheckBox dontShowAgain = new AppCompatCheckBox(this);
-                dontShowAgain.setText(check);
-                dontShowAgain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        editor.putBoolean(saveIfSkip, isChecked);
-                        editor.apply();
-                    }
-                });
-
-
-                new AlertDialog.Builder(this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle(title)
-                        .setMessage(String.format("%s " + message + ".%n", getString(R.string.app_name)))
-                        .setView(dontShowAgain)
-                        .setPositiveButton(buttonpositive, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                huaweiProtectedApps();
-                            }
-                        })
-                        .show();
-            } else {
-                editor.putBoolean(saveIfSkip, true);
-                editor.apply();
-            }
-        }
-    }
-
 
     private void huaweiProtectedApps() {
         try {

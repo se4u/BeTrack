@@ -2,5 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView android:layout_width="fill_parent"
+        android:id="@+id/survey_title"
+        android:layout_height="fill_parent" android:layout_weight="3"
+        android:textSize="30sp"
+        android:textColor="#000"
+        android:layout_margin="10dp" android:text="Title test"
+        android:gravity="center_vertical"/>
 
+    <TextView android:layout_width="fill_parent"
+        android:id="@+id/survey_desc"
+        android:layout_height="fill_parent" android:layout_weight="1"
+        android:textSize="20sp"
+        android:paddingTop="10dp"
+        android:textColor="#000"
+        android:layout_margin="10dp" android:text="Description test"
+        android:gravity="top"/>
 </LinearLayout>

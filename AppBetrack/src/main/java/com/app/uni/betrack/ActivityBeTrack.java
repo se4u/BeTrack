@@ -31,7 +31,6 @@ public class ActivityBeTrack extends AppCompatActivity {
     private static final String TAG = "Status";
 
     public static ProgressDialog dialog;
-    public static ActionBar actionBar;
 
     private Context mContext;
     private UtilsLocalDataBase localdatabase = new UtilsLocalDataBase(this);
@@ -70,8 +69,6 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         ObjSettingsStudy = SettingsStudy.getInstance(this);
 
-        actionBar = getSupportActionBar();
-        actionBar.hide();
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_logo_padding);
@@ -95,8 +92,6 @@ public class ActivityBeTrack extends AppCompatActivity {
         StudyDescription = (TextView) findViewById(R.id.study_description);
         //StudyDescription.setText(NetworkGetStudiesAvailable.StudyDescription[0]);
 
-        //we display the page of the study
-        actionBar.show();
 
         //Set up the main screen of the study
         LinearLayout item = (LinearLayout)findViewById(R.id.LinearLayout_Layout_List);

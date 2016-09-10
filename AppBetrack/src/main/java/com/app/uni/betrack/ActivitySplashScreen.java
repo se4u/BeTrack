@@ -59,21 +59,13 @@ public class ActivitySplashScreen extends AppCompatActivity {
         }
         else
         {
-            if (false == ObjSettingsStudy.getStudyStarted()) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent i = new Intent(ActivitySplashScreen.this, ActivitySurvey.class);
-                        startActivity(i);
-                        finish();
-                    }
-                }, TIME_OUT);
-            } else {
-                if (false == ObjSettingsStudy.getSetupBetrackDone()) {
+            if (true == ObjSettingsStudy.getSetupBetrackDone()) {
+
+                if (false == ObjSettingsStudy.getStartSurveyDone()) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent i = new Intent(ActivitySplashScreen.this, ActivitySetupBetrack.class);
+                            Intent i = new Intent(ActivitySplashScreen.this, ActivitySurveyStart.class);
                             startActivity(i);
                             finish();
                         }
@@ -88,6 +80,16 @@ public class ActivitySplashScreen extends AppCompatActivity {
                         }
                     }, TIME_OUT);
                 }
+
+            } else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(ActivitySplashScreen.this, ActivitySetupBetrack.class);
+                        startActivity(i);
+                        finish();
+                    }
+                }, TIME_OUT);
             }
         }
     }
