@@ -106,5 +106,30 @@
     <string name="huawei_positive_button">Protected Apps</string>
     <string name="huawei_check">Do not show again</string>
 
+    <!-- Start survey -->
+        <string name="question_ss_error">You need to answer that question</string>
+        <string name="survey_age">years old</string>
+        <string name="survey_days">days</string>
+
+    <!-- Screen 1 (relation) -->
+        <string name="title_ss_screen1">RELATION</string>
+        <string name="question_ss_screen1">Are you in a relation ?</string>
+  <!-- Screen 2 (age) -->
+        <string name="title_ss_screen2">AGE</string>
+        <string name="question_ss_screen2">How old are you ?</string>
+
+    <!-- Screen 3 (period) -->
+        <string name="title_ss_screen3">PERIOD</string>
+        <string name="question_ss_screen3">Please pick up a period length below.</string>
+
+    <!-- Screen 4 (cycle lenght) -->
+        <string name="title_ss_screen4">CYCLE LENGHT</string>
+        <string name="question_ss_screen4">Please pick up a cycle length below.</string>
+
+    <!-- Screen 5 (comment) -->
+        <string name="title_ss_screen5">CONTRACEPTION</string>
+        <string name="question_ss_screen5">If you use a contraceptive (optional) could you write down the name</string>
+        <string name="yourtext_ss_screen5">contraceptive name</string>
+
 
 </resources>

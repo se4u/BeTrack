@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:textSize="30sp"
                 android:textColor="#000"
                 android:text="@string/disclaimer_title"
@@ -51,34 +51,56 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
+                android:layout_weight="2">
 
-                android:paddingTop="10dp"
-                android:layout_weight="3">
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/FLDisclaimerBtn2"
+                    android:layout_width="fill_parent"
+                    android:layout_marginRight="100dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="fill_parent">
+                    <Button
+                        android:id="@+id/DisclaimerRefuse"
+                        android:onClick="onButtonClicked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/button_round_noselection"
+                        >
+                    </Button>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/ic_action_ko" />
+                </FrameLayout>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:textColor="#FFF"
-                    android:text="@string/disclaimer_accept"
-                    android:onClick="onButtonClicked"
-                    android:background="@drawable/button_custom"
-                    android:textStyle="bold"
-                    android:id="@+id/DisclaimerAccept">
-                </Button>
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/FLDisclaimerBtn1"
+                    android:layout_width="fill_parent"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="fill_parent">
+                    <Button
+                        android:id="@+id/DisclaimerAccept"
+                        android:onClick="onButtonClicked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/button_round_noselection"
+                        >
+                    </Button>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/ic_action_ok" />
+                </FrameLayout>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/DisclaimerAccept"
-                    android:layout_margin="10dp"
-                    android:textColor="#FFF"
-                    android:text="@string/disclaimer_cancel"
-                    android:onClick="onButtonClicked"
-                    android:background="@drawable/button_custom"
-                    android:textStyle="bold"
-                    android:id="@+id/DisclaimerRefuse">
-                </Button>
             </RelativeLayout>
         </LinearLayout>
     </FrameLayout>
@@ -87,10 +109,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/Layout_StudyDescription"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         android:visibility="invisible">
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
@@ -102,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:textSize="30sp"
                 android:textColor="#000"
                 android:text="@string/study_title"
@@ -128,33 +146,57 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:paddingTop="10dp"
-                android:layout_weight="3">
+                android:layout_weight="2">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:textColor="#FFF"
-                    android:text="@string/study_accept"
-                    android:onClick="onButtonClicked"
-                    android:background="@drawable/button_custom"
-                    android:textStyle="bold"
-                    android:id="@+id/StudyAccept">
-                </Button>
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/FrameLayoutBtn2"
+                    android:layout_width="fill_parent"
+                    android:layout_marginRight="100dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="fill_parent">
+                    <Button
+                        android:id="@+id/StudyRefuse"
+                        android:onClick="onButtonClicked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/button_round_noselection"
+                        >
+                    </Button>
+                    <ImageView
+                        android:id="@+id/ImgButtonChoice2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/ic_action_ko" />
+                </FrameLayout>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/StudyAccept"
-                    android:layout_margin="10dp"
-                    android:textColor="#FFF"
-                    android:text="@string/study_cancel"
-                    android:onClick="onButtonClicked"
-                    android:background="@drawable/button_custom"
-                    android:textStyle="bold"
-                    android:id="@+id/StudyRefuse">
-                </Button>
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/FrameLayoutBtn1"
+                    android:layout_width="fill_parent"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="fill_parent">
+                    <Button
+                        android:id="@+id/StudyAccept"
+                        android:onClick="onButtonClicked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/button_round_noselection"
+                        >
+                    </Button>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/ic_action_ok" />
+                </FrameLayout>
+
             </RelativeLayout>
         </LinearLayout>
     </FrameLayout>
@@ -163,10 +205,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/Layout_NetworkError"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         android:visibility="invisible">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -181,7 +219,7 @@
                 android:layout_height="fill_parent"
                 android:gravity="center"
                 android:textSize="30sp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:text="@string/network_error_title"/>
 
             <TextView
@@ -195,19 +233,29 @@
                 android:text="@string/network_error_text"/>
 
             <!-- Status EditText -->
-
-            <Button
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/FrameLayoutNetworkRetry"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="right"
-                android:layout_weight="3"
-                android:textColor="#FFF"
-                android:text="@string/network_retry"
-                android:onClick="onButtonClicked"
-                android:background="@drawable/button_custom"
-                android:textStyle="bold"
-                android:id="@+id/ButtonNetworkRetry">
-            </Button>
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:layout_height="fill_parent">
+                <Button
+                    android:id="@+id/ButtonNetworkRetry"
+                    android:onClick="onButtonClicked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_round_noselection"
+                    >
+                </Button>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_action_ok" />
+            </FrameLayout>
 
         </LinearLayout>
     </FrameLayout>
@@ -216,10 +264,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/Layout_NetworkLoading"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         android:visibility="invisible">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -241,9 +285,8 @@
                 android:id="@+id/progressBar1"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="1"/>
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"/>
 
             <TextView
                 android:layout_width="fill_parent"
@@ -252,8 +295,6 @@
                 android:textSize="30sp"
                 android:layout_weight="2"
                 android:text="@string/network_loading"/>
-
-
         </LinearLayout>
     </FrameLayout>
 

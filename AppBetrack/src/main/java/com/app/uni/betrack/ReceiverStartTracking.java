@@ -13,37 +13,40 @@ import android.util.Log;
 public class ReceiverStartTracking extends BroadcastReceiver {
     static final String TAG = "ReceiverStartTracking";
 
+    private SettingsStudy ObjSettingsStudy;
     private SettingsBetrack ObjSettingsBetrack;
 
     @Override
     public void onReceive(Context context, Intent intent) { //
 
         Log.d(TAG, "onReceived");
+        ObjSettingsStudy = SettingsStudy.getInstance(context);
 
         ReceiverScreen.ScreenState = ReceiverScreen.StateScreen.ON;
 
-        //Read the preferences
-        ObjSettingsBetrack = SettingsBetrack.getInstance();
-        ObjSettingsBetrack.Update(context);
+        if (ObjSettingsStudy.getStartSurveyDone() == true) {
+            //Read the preferences
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+            ObjSettingsBetrack.Update(context);
 
-        context.startService(new Intent(context, ServiceBetrack.class));
+            context.startService(new Intent(context, ServiceBetrack.class));
 
-        CreateNotification.CreateAlarm(context,
-                ObjSettingsBetrack.GetStudyNotification(),
-                ObjSettingsBetrack.GetStudyNotificationTime());
+            CreateNotification.CreateAlarm(context,
+                    ObjSettingsBetrack.GetStudyNotification(),
+                    ObjSettingsBetrack.GetStudyNotificationTime());
 
-        CreatePostData.CreateAlarm(context, false);
+            CreatePostData.CreateAlarm(context, false);
 
-        CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
+            CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
 
-        CreateTrackGPS.CreateAlarm(context);
+            CreateTrackGPS.CreateAlarm(context);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            if(!hasPermission(context)){
-                Log.d(TAG, "No permission !");
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                if(!hasPermission(context)){
+                    Log.d(TAG, "No permission !");
+                }
             }
         }
-
     }
 
     @TargetApi(19) private boolean hasPermission(Context context) {

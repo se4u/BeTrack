@@ -1,3 +1,2 @@
-include ':AppBetrack', ':vertical-stepper-form', ':material-stepper-form'
-project(':vertical-stepper-form').projectDir = new File('Lib/vertical-stepper-form')
+include ':AppBetrack', ':material-stepper-form', ':MPChartLib'
 project(':material-stepper-form').projectDir = new File('Lib/material-stepper/material-stepper-form')

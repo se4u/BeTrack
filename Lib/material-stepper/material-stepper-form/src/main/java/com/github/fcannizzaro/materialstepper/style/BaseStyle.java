@@ -109,16 +109,16 @@ public class BaseStyle extends AppCompatActivity implements Stepable {
     }
 
     private void findColors() {
-
+/*
         if (primaryColor == 0)
             primaryColor = AttrUtils.getPrimary(this);
-
+*/
         if (primaryColor == 0)
             primaryColor = ContextCompat.getColor(this, R.color.material_stepper_global);
-
+/*
         if (primaryColorDark == 0)
             primaryColorDark = AttrUtils.getPrimaryDark(this);
-
+*/
         if (primaryColorDark == 0)
             primaryColorDark = ContextCompat.getColor(this, R.color.material_stepper_global_dark);
 
@@ -127,7 +127,7 @@ public class BaseStyle extends AppCompatActivity implements Stepable {
     protected void applyTheme() {
 
         findColors();
-
+/*
         if (getSupportActionBar() != null) {
 
             getSupportActionBar().setTitle(Html.fromHtml(mTitle));
@@ -137,7 +137,8 @@ public class BaseStyle extends AppCompatActivity implements Stepable {
                 getWindow().setStatusBarColor(primaryColorDark);
 
         }
-
+*/
+        getSupportActionBar().hide();
         tintColor = ContextCompat.getColor(this, R.color.material_stepper_bottom_bar_text);
 
     }

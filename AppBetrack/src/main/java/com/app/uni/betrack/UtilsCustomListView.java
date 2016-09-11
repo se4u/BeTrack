@@ -4,6 +4,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 /**
  * Created by cevincent on 10/09/2016.
@@ -14,6 +16,7 @@ public class UtilsCustomListView extends ListView {
     final private float mEscapeVelocity = 2000.0f;
     final private int mMinDistanceMoved = 20;
     private float mStartY = 0;
+    private boolean firstIndicate = false;
 
     public UtilsCustomListView(Context context)
     {
@@ -32,7 +35,6 @@ public class UtilsCustomListView extends ListView {
 
     public void setSingleScroll(boolean aSingleScroll) { mSingleScroll = aSingleScroll; }
     public int getVerticalScrollOffset() { return getFirstVisiblePosition(); }
-
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent aMotionEvent)

@@ -4,8 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AppBetrack/AppBetrack.iml" filepath="$PROJECT_DIR$/AppBetrack/AppBetrack.iml" />
       <module fileurl="file://$PROJECT_DIR$/BeTrack.iml" filepath="$PROJECT_DIR$/BeTrack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/Lib/material-stepper/material-stepper-form/material-stepper-form.iml" filepath="$PROJECT_DIR$/Lib/material-stepper/material-stepper-form/material-stepper-form.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Lib/vertical-stepper-form/vertical-stepper-form.iml" filepath="$PROJECT_DIR$/Lib/vertical-stepper-form/vertical-stepper-form.iml" />
     </modules>
   </component>
 </project>

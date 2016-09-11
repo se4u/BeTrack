@@ -50,6 +50,7 @@ public class SettingsStudy {
     static private final String STUDY_CONTACTEMAIL = "StudyContactEmail";
 
     static private String IdUser;
+    static private final String USER_ID = "UserId";
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -60,6 +61,16 @@ public class SettingsStudy {
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
 
+        //Read user id from pref
+        IdUser = prefs.getString(USER_ID, null);
+        if (null == IdUser)
+        {
+            //User id doesn't exist yet we create one
+            IdUser = UtilsDeviceIdGenerator.readDeviceId(mContext);
+            //We save it
+            editor.putString(USER_ID, IdUser);
+            editor.commit();
+        }
         //Read app to watch
         ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new HashSet<String>());
         ApplicationsToWatchIn = new HashSet<>(ApplicationsToWatchHs);
@@ -228,7 +239,7 @@ public class SettingsStudy {
 
     public ArrayList<String>  getApplicationsToWatch()
     {
-        ArrayList<String>  ReturnApplicationsToWatch = null;
+        ArrayList<String>  ReturnApplicationsToWatch = new ArrayList<String>();
         Iterator<String> iterator = ApplicationsToWatchHs.iterator();
         try {
             SemSettingsStudy.acquire();

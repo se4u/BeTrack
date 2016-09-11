@@ -110,6 +110,11 @@ public class UtilsLocalDataBase {
                     + C_USER_PERIOD + " text, " + C_USER_DATE + " text)"; //
             db.execSQL(sql2);
             Log.d(TAG, "onCreated sql: " + sql2);
+
+            String sql3 = "create table " + TABLE_START_STUDY + " (" + C_STARTSTUDY_ID + " integer primary key autoincrement, "
+                    + C_STARTSTUDY_PID + " text, " + C_STARTSTUDY_AGE + " text, " + C_STARTSTUDY_RELATIONSHIP + " text, " + C_STARTSTUDY_CONTRACEPTION + " text, " + C_STARTSTUDY_AVGMENSTRUALCYCLE + " text, " + C_STARTSTUDY_DATE + " text)"; //
+            db.execSQL(sql3);
+            Log.d(TAG, "onCreated sql: " + sql3);
         }
 
         // Called whenever newVersion != oldVersion
@@ -119,6 +124,8 @@ public class UtilsLocalDataBase {
             db.execSQL("drop table if exists " + TABLE_APPWATCH); // drops the old database
 
             db.execSQL("drop table if exists " + TABLE_USER); // drops the old database
+
+            db.execSQL("drop table if exists " + TABLE_START_STUDY); // drops the old database
 
             Log.d(TAG, "onUpdated");
             onCreate(db); // run onCreate to get new database

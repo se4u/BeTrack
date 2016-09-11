@@ -1,54 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-    <TextView android:layout_width="fill_parent"
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="110dp"
         android:id="@+id/survey_title"
-        android:layout_height="fill_parent" android:layout_weight="3"
-        android:textSize="30sp"
-        android:textColor="#000"
-        android:layout_margin="10dp" android:text="Title test"
-        android:gravity="center_vertical"/>
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center|top"
+        android:paddingTop="40dp"
+        android:background="@color/colorLightGrey"
+        android:layout_margin="0dp"
+        android:text="Title test"/>
 
     <TextView android:layout_width="fill_parent"
         android:id="@+id/survey_desc"
-        android:layout_height="fill_parent" android:layout_weight="1"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
         android:textSize="20sp"
-        android:paddingTop="10dp"
+        android:paddingTop="30dp"
         android:textColor="#000"
-        android:layout_margin="10dp" android:text="Description test"
-        android:gravity="top"/>
+        android:gravity="center|top"
+        android:layout_margin="10dp"
+        android:text="Description test"/>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:layout_weight="3">
+        android:layout_weight="4">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textColor="#FFF"
-            android:text="Choice1"
-            android:onClick="onButtonClickedChoice1"
-            android:background="@drawable/button_custom"
-            android:textStyle="bold"
-            android:id="@+id/ButtonChoice1">
-        </Button>
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/FrameLayoutBtn1"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="30dp"
+            android:layout_height="fill_parent">
+            <Button
+                android:id="@+id/ButtonChoice1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/button_round_noselection"
+                >
+            </Button>
+            <ImageView
+                android:id="@+id/ImgButtonChoice1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/ic_action_ok" />
+        </FrameLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/ButtonChoice1"
-            android:layout_margin="10dp"
-            android:textColor="#FFF"
-            android:text="Choice2"
-            android:onClick="onButtonClickedChoice2"
-            android:background="@drawable/button_custom"
-            android:textStyle="bold"
-            android:id="@+id/ButtonChoice2">
-        </Button>
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/FrameLayoutBtn2"
+            android:layout_width="fill_parent"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="30dp"
+            android:layout_height="fill_parent">
+            <Button
+                android:id="@+id/ButtonChoice2"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/button_round_noselection"
+                >
+            </Button>
+            <ImageView
+                android:id="@+id/ImgButtonChoice2"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/ic_action_ko" />
+        </FrameLayout>
     </RelativeLayout>
 </LinearLayout>

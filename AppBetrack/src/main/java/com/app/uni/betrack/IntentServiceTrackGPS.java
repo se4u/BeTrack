@@ -44,6 +44,7 @@ public class IntentServiceTrackGPS  extends IntentService implements LocationLis
     protected void onHandleIntent(Intent intent) {
         Location location;
         boolean enabled;
+
         // Get the location manager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -54,27 +55,30 @@ public class IntentServiceTrackGPS  extends IntentService implements LocationLis
         criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
 
         provider = locationManager.getBestProvider(criteria, false);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
-        enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (provider != null) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            if ((ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) && (enabled)) {
-                location = locationManager.getLastKnownLocation(provider);
-                saveLocation(location);
+            enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                if ((ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) && (enabled)) {
+                    location = locationManager.getLastKnownLocation(provider);
+                    saveLocation(location);
+                } else {
+                    Log.d(TAG, "No permission or GPS disabled");
+                }
             } else {
-                Log.d(TAG, "No permission or GPS disabled");
-            }
-        } else {
-            if (enabled) {
-                location = locationManager.getLastKnownLocation(provider);
-                saveLocation(location);
+                if (enabled) {
+                    location = locationManager.getLastKnownLocation(provider);
+                    saveLocation(location);
 
-            } else {
-                Log.d(TAG, "No permission or GPS disabled");
+                } else {
+                    Log.d(TAG, "No permission or GPS disabled");
+                }
             }
         }
 
