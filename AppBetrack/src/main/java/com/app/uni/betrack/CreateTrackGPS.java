@@ -4,9 +4,12 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 
-import java.util.concurrent.Semaphore;
+import com.commonsware.cwac.locpoll.LocationPoller;
+import com.commonsware.cwac.locpoll.LocationPollerParameter;
 
 /**
  * Created by cedoctet on 27/08/2016.
@@ -16,7 +19,6 @@ public class CreateTrackGPS {
     private static AlarmManager alarmMgr;
     private static PendingIntent alarmIntent;
     private static final String TAG = "AlarmNotification";
-    public static final Semaphore SemTrackGPS = new Semaphore(1, true);
 
     static public void CreateAlarm(Context context)
     {
@@ -26,8 +28,17 @@ public class CreateTrackGPS {
         }
 
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, ReceiverAlarmTrackGPS.class);
-        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        Intent i=new Intent(context, LocationPoller.class);
+
+        Bundle bundle = new Bundle();
+        LocationPollerParameter parameter = new LocationPollerParameter(bundle);
+        parameter.setIntentToBroadcastOnCompletion(new Intent(context, ReceiverAlarmTrackGPS.class));
+        // try GPS and fall back to NETWORK_PROVIDER
+        parameter.setProviders(new String[] {LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER});
+        parameter.setTimeout(60000);
+        i.putExtras(bundle);
+
+        alarmIntent = PendingIntent.getBroadcast(context, 0, i, 0);
 
         try {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)

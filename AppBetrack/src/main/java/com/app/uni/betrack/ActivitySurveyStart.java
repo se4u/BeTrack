@@ -2,13 +2,10 @@ package com.app.uni.betrack;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
@@ -114,7 +110,14 @@ public class ActivitySurveyStart extends DotStepper {
 
         ObjSettingsStudy = SettingsStudy.getInstance(this);
 
-        addStep(createFragment(new StepScreen1()));
+        Bundle bundle = new Bundle();
+        bundle.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen1));
+        bundle.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_ss_screen1));
+
+        AbstractStep Step1 = new FragmentSurvey2Choices();
+        Step1.setArguments(bundle);
+        addStep(createFragment(Step1));
+
         addStep(createFragment(new StepScreen2()));
         addStep(createFragment(new StepScreen3()));
         addStep(createFragment(new StepScreen4()));

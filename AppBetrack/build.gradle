@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:support-v4:23.2.0'
     compile project(':material-stepper-form')
     compile project(':MPChartLib')
+    compile project(':locationPoller')
 }

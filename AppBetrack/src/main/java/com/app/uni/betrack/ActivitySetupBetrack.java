@@ -29,6 +29,8 @@ public class ActivitySetupBetrack extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_betrack);
 
+        Intent i;
+
         ObjSettingsStudy = SettingsStudy.getInstance(this);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
@@ -39,7 +41,13 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
                 EnableUsageStat = true;
             }
+        }
+        else {
+            EnableUsageStat = true;
+        }
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             Intent intent = new Intent();
             intent.setClassName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity");
             if (isCallable(intent)) {
@@ -48,6 +56,16 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 findViewById(R.id.EnableHuawei).setVisibility(View.GONE);
                 EnableHuaweiProtMode = true;
             }
+        } else {
+            EnableHuaweiProtMode = true;
+        }
+
+
+        if (EnableHuaweiProtMode && EnableUsageStat) {
+            ObjSettingsStudy.setSetupBetrackDone(true);
+            i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
+            startActivity(i);
+            finish();
         }
     }
 
@@ -111,11 +129,15 @@ public class ActivitySetupBetrack extends AppCompatActivity {
     }
 
     @TargetApi(19) private boolean hasPermission() {
-        AppOpsManager appOps = (AppOpsManager)
-                getSystemService(APP_OPS_SERVICE);
-        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
-                android.os.Process.myUid(), getPackageName());
-        return mode == AppOpsManager.MODE_ALLOWED;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            AppOpsManager appOps = (AppOpsManager)
+                    getSystemService(APP_OPS_SERVICE);
+            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                    android.os.Process.myUid(), getPackageName());
+            return mode == AppOpsManager.MODE_ALLOWED;
+        } else {
+            return true;
+        }
     }
 
     private void huaweiProtectedApps() {

@@ -3,7 +3,6 @@ package com.app.uni.betrack;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.concurrent.Semaphore;
 
@@ -32,7 +31,7 @@ public class SettingsBetrack {
     static public int POSTDATA_SENDING_DELTA = 10000; //In ms
     static public int POSTDATA_SENDING_DELTA_FASTCHECK = 1000; //In ms
 
-    static public int TRACKGPS_DELTA = 10000; //In ms
+    static public int TRACKGPS_DELTA = 120000; //In ms
 
     static public int UPDATE_STATUS_STUDY_TIME = 60000;
 

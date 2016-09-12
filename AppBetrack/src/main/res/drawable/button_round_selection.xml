@@ -2,11 +2,19 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
-            android:shape="ring"
-            android:thickness="5dp"
+            android:shape="rectangle"
             android:useLevel="false">
-            <solid android:color="@color/colorPrimary"/>
+            <stroke
+                android:width="5dp"
+                android:color="@color/colorPrimary" />
+            <solid
+                android:color="@android:color/transparent"/>
 
+            <corners
+                android:bottomLeftRadius="10dp"
+                android:bottomRightRadius="10dp"
+                android:topLeftRadius="10dp"
+                android:topRightRadius="10dp" />
         </shape>
     </item>
 </layer-list>

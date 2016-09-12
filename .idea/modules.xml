@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/AppBetrack/AppBetrack.iml" filepath="$PROJECT_DIR$/AppBetrack/AppBetrack.iml" />
       <module fileurl="file://$PROJECT_DIR$/BeTrack.iml" filepath="$PROJECT_DIR$/BeTrack.iml" />
       <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/locationPoller/locationPoller.iml" filepath="$PROJECT_DIR$/locationPoller/locationPoller.iml" />
       <module fileurl="file://$PROJECT_DIR$/Lib/material-stepper/material-stepper-form/material-stepper-form.iml" filepath="$PROJECT_DIR$/Lib/material-stepper/material-stepper-form/material-stepper-form.iml" />
     </modules>
   </component>
