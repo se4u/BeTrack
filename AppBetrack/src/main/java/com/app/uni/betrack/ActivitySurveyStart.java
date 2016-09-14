@@ -109,16 +109,15 @@ public class ActivitySurveyStart extends DotStepper {
         setTitle(getResources().getString(R.string.app_name));
 
         ObjSettingsStudy = SettingsStudy.getInstance(this);
-/*
+
+        //Step 1 of the survey
         Bundle bundle = new Bundle();
         bundle.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen1));
         bundle.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_ss_screen1));
-
         AbstractStep Step1 = new FragmentSurvey2Choices();
         Step1.setArguments(bundle);
-        addStep(createFragment(Step1));
-*/
-        addStep(createFragment(new StepScreen1()));
+        addStep(Step1);
+
         addStep(createFragment(new StepScreen2()));
         addStep(createFragment(new StepScreen3()));
         addStep(createFragment(new StepScreen4()));
@@ -133,134 +132,6 @@ public class ActivitySurveyStart extends DotStepper {
         b.putInt("position", i++);
         fragment.setArguments(b);
         return fragment;
-    }
-
-    static public class StepScreen1 extends AbstractStep {
-        private int i;
-        private Button button1;
-        private Button button2;
-        private ImageView imgbutton1;
-        private ImageView imgbutton2;
-        private TextView Title;
-        private TextView Description;
-
-        private final static String CLICK = "click";
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-            View v = inflater.inflate(R.layout.survey_2choices, container, false);
-            button1 = (Button) v.findViewById(R.id.ButtonChoice1);
-            button2 = (Button) v.findViewById(R.id.ButtonChoice2);
-
-            imgbutton1 = (ImageView) v.findViewById(R.id.ImgButtonChoice1);
-            imgbutton2 = (ImageView) v.findViewById(R.id.ImgButtonChoice2);
-
-            Title = (TextView) v.findViewById(R.id.survey_title);
-            Description = (TextView) v.findViewById(R.id.survey_desc);
-            Title.setText(getResources().getString(R.string.title_ss_screen1));
-            Description.setText(getResources().getString(R.string.question_ss_screen1));
-
-            if (savedInstanceState != null)
-                i = savedInstanceState.getInt(CLICK, 0);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                BackgroundNoSelection = (Drawable)getResources().getDrawable(R.drawable.button_round_noselection, getContext().getTheme());
-                BackgroundSelected = (Drawable)getResources().getDrawable(R.drawable.button_round_selection, getContext().getTheme());
-            } else {
-                BackgroundNoSelection = (Drawable)getResources().getDrawable(R.drawable.button_round_noselection);
-                BackgroundSelected = (Drawable)getResources().getDrawable(R.drawable.button_round_selection);
-            }
-
-            if (SurveyInRelation == 1) {
-                InternalSetBackground(BackgroundSelected, button1);
-                InternalSetBackground(BackgroundNoSelection, button2);
-                imgbutton1.setImageResource(R.drawable.ic_action_ok_selected);
-                imgbutton2.setImageResource(R.drawable.ic_action_ko);
-                i++;
-            } else if (SurveyInRelation == 0) {
-                InternalSetBackground(BackgroundNoSelection, button1);
-                InternalSetBackground(BackgroundSelected, button2);
-                imgbutton1.setImageResource(R.drawable.ic_action_ok);
-                imgbutton2.setImageResource(R.drawable.ic_action_ko_selected);
-                i++;
-            }
-
-            button1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    InternalSetBackground(BackgroundSelected, button1);
-                    InternalSetBackground(BackgroundNoSelection, button2);
-                    imgbutton1.setImageResource(R.drawable.ic_action_ok_selected);
-                    imgbutton2.setImageResource(R.drawable.ic_action_ko);
-                    i++;
-                    SurveyInRelation = 1;
-                    mStepper.getExtras().putInt(CLICK, i);
-                }
-            });
-
-            button2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    InternalSetBackground(BackgroundNoSelection, button1);
-                    InternalSetBackground(BackgroundSelected, button2);
-                    imgbutton1.setImageResource(R.drawable.ic_action_ok);
-                    imgbutton2.setImageResource(R.drawable.ic_action_ko_selected);
-                    i++;
-                    SurveyInRelation = 0;
-                    mStepper.getExtras().putInt(CLICK, i);
-                }
-            });
-
-            return v;
-        }
-
-        @Override
-        public void onSaveInstanceState(Bundle state) {
-            super.onSaveInstanceState(state);
-            state.putInt(CLICK, i);
-        }
-
-        @Override
-        public String name() {
-            return "Tab " + getArguments().getInt("position", 0);
-        }
-
-        @Override
-        public boolean isOptional() {
-            return false;
-        }
-
-
-        @Override
-        public void onStepVisible() {
-        }
-
-        @Override
-        public void onNext() {
-            System.out.println("onNext");
-        }
-
-        @Override
-        public void onPrevious() {
-            System.out.println("onPrevious");
-        }
-
-        @Override
-        public String optional() {
-            return "You can skip";
-        }
-
-        @Override
-        public boolean nextIf() {
-            return i > 0;
-        }
-
-        @Override
-        public String error() {
-            return getResources().getString(R.string.question_ss_error);
-        }
-
     }
 
     static public class StepScreen2 extends AbstractStep {

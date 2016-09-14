@@ -240,6 +240,12 @@ public class SettingsStudy {
     public ArrayList<String>  getApplicationsToWatch()
     {
         ArrayList<String>  ReturnApplicationsToWatch = new ArrayList<String>();
+
+        if (null == ApplicationsToWatchIn) {
+            ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new HashSet<String>());
+            ApplicationsToWatchIn = new HashSet<>(ApplicationsToWatchHs);
+        }
+
         Iterator<String> iterator = ApplicationsToWatchHs.iterator();
         try {
             SemSettingsStudy.acquire();

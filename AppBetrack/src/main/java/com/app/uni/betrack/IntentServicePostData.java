@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.util.Log;
 
 import java.io.BufferedWriter;
@@ -24,6 +25,7 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class IntentServicePostData extends IntentService {
     static final String TAG = "IntentServicePostData";
+    private static final String LOCK_NAME_STATIC = "com.app.uni.betrack.wakelock";
 
     private SettingsBetrack ObjSettingsBetrack = null;
     private SettingsStudy ObjSettingsStudy = null;
@@ -34,6 +36,8 @@ public class IntentServicePostData extends IntentService {
     {
         return localdatabase;
     }
+
+    private static volatile PowerManager.WakeLock lockStatic;
 
     private enum ConnectionState {
         NONE,
@@ -52,6 +56,18 @@ public class IntentServicePostData extends IntentService {
 
     }
 
+
+    synchronized private static PowerManager.WakeLock getLock(Context context) {
+        if (lockStatic == null) {
+            PowerManager mgr = (PowerManager) context.getApplicationContext()
+                    .getSystemService(Context.POWER_SERVICE);
+
+            lockStatic = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                    LOCK_NAME_STATIC);
+            lockStatic.setReferenceCounted(true);
+        }
+        return (lockStatic);
+    }
 
     protected void onHandleIntent(Intent intent) {
         InputStream inputStream = null;
@@ -75,6 +91,8 @@ public class IntentServicePostData extends IntentService {
 
         java.net.URL urlPostAppwatched;
         java.net.URL urlPostDailyStatus;
+
+        getLock(getApplicationContext()).acquire();
 
         char TaskDone = TABLE_APPWATCH_TRANSFERED | TABLE_USER_TRANSFERED;
 
@@ -255,6 +273,8 @@ public class IntentServicePostData extends IntentService {
             FastCheck(true);
 
         }
+
+        getLock(getApplicationContext()).release();
         CreatePostData.SemUpdateServer.release();
     }
 
