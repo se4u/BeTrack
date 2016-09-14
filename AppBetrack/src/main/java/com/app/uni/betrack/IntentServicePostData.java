@@ -95,7 +95,7 @@ public class IntentServicePostData extends IntentService {
             localdatabase = new UtilsLocalDataBase(this);
         }
 
-        //Log.d(TAG, "onHandleIntent");
+        Log.d(TAG, "try to post the data");
 
         // To transfer the data either we have access to a WIFI network or
         // we have are allowed to use the 3G/LTE

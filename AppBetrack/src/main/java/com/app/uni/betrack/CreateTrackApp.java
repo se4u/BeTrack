@@ -39,7 +39,14 @@ public class CreateTrackApp {
                     new ComponentName( context.getPackageName(),
                             JobSchedulerTrackApp.class.getName() ) );
 
-            builder.setPeriodic(SamplingRate);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                builder.setMinimumLatency(SamplingRate);
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder.setPeriodic(SamplingRate);
+                }
+            }
+
 
             if( mJobScheduler.schedule( builder.build() ) <= 0 ) {
                 //If something goes wrong

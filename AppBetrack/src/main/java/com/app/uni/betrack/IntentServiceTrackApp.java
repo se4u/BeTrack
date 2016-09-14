@@ -102,7 +102,7 @@ public class IntentServiceTrackApp extends IntentService {
                     //Check if that activity should be monitored
                     for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
 
-                        //Log.d(TAG, "Application to watch " + ContextInfoStudy.ApplicationsToWatch.get(i));
+                        //Log.d(TAG, "Application to watch " + ObjSettingsStudy.getApplicationsToWatch().get(i));
                         //Log.d(TAG, "ActivityOnGoing " + ActivityOnGoing);
                         //Log.d(TAG, "topActivity " + topActivity);
 

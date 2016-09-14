@@ -33,9 +33,14 @@ import android.os.Message;
                 Intent msgIntent = new Intent(getApplicationContext(), IntentServiceTrackApp.class);
                 //Start the service for monitoring app
                 startService(msgIntent);
+
             }
 
             jobFinished( (JobParameters) msg.obj, false );
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                CreateTrackApp.CreateAlarm(getApplicationContext(), SettingsBetrack.SAMPLING_RATE);
+            }
             return true;
         }
 

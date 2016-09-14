@@ -1,5 +1,6 @@
 package com.app.uni.betrack;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Intent;
@@ -7,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,9 +23,11 @@ import java.util.List;
 public class ActivitySetupBetrack extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1002;
     private SettingsStudy ObjSettingsStudy;
     private boolean EnableUsageStat = false;
     private boolean EnableHuaweiProtMode = false;
+    private boolean EnableGPS = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +65,21 @@ public class ActivitySetupBetrack extends AppCompatActivity {
             EnableHuaweiProtMode = true;
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Here, thisActivity is the current activity
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                findViewById(R.id.EnableGPS).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.EnableGPS).setVisibility(View.GONE);
+                EnableGPS = true;
+            }
+        } else {
+            EnableGPS = true;
+        }
 
-        if (EnableHuaweiProtMode && EnableUsageStat) {
+        if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS) {
             ObjSettingsStudy.setSetupBetrackDone(true);
             i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
             startActivity(i);
@@ -79,7 +97,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
         else  {
             findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
             EnableUsageStat = true;
-            if (EnableHuaweiProtMode && EnableUsageStat) {
+            if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS) {
                 ObjSettingsStudy.setSetupBetrackDone(true);
                 i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
                 startActivity(i);
@@ -106,6 +124,20 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                     finish();
                 }
                 break;
+            case  R.id.EnableGPSBetrack:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    // Here, thisActivity is the current activity
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
+                    }
+                }
+                break;
         }
     }
 
@@ -128,7 +160,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
         }
     }
 
-    @TargetApi(19) private boolean hasPermission() {
+    @TargetApi(Build.VERSION_CODES.KITKAT) private boolean hasPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             AppOpsManager appOps = (AppOpsManager)
                     getSystemService(APP_OPS_SERVICE);
@@ -140,6 +172,32 @@ public class ActivitySetupBetrack extends AppCompatActivity {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M) @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        Intent i;
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    EnableGPS = true;
+                    if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS) {
+                        ObjSettingsStudy.setSetupBetrackDone(true);
+                        i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
+                        startActivity(i);
+                        finish();
+                    } else {
+                        findViewById(R.id.EnableGPS).setVisibility(View.GONE);
+                        ObjSettingsStudy.setSetupBetrackDone(false);
+                    }
+                } else {
+                    EnableGPS = false;
+                }
+                return;
+            }
+        }
+    }
     private void huaweiProtectedApps() {
         try {
             String cmd = "am start -n com.huawei.systemmanager/.optimize.process.ProtectActivity";

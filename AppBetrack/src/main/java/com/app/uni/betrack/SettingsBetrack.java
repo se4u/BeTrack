@@ -26,10 +26,11 @@ public class SettingsBetrack {
 
     static public int SERVER_TIMEOUT = 20000;
     static public int DELTA_BTW_RECHECK_STUDY_STARTED = 10000;
-    static public int SAMPLING_RATE = 1000;
+
+    static public int SAMPLING_RATE = 1000; //In ms
 
     static public int POSTDATA_SENDING_DELTA = 10000; //In ms
-    static public int POSTDATA_SENDING_DELTA_FASTCHECK = 1000; //In ms
+    static public int POSTDATA_SENDING_DELTA_FASTCHECK = 5000; //In ms
 
     static public int TRACKGPS_DELTA = 120000; //In ms
 

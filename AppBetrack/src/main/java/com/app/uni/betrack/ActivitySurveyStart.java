@@ -109,7 +109,7 @@ public class ActivitySurveyStart extends DotStepper {
         setTitle(getResources().getString(R.string.app_name));
 
         ObjSettingsStudy = SettingsStudy.getInstance(this);
-
+/*
         Bundle bundle = new Bundle();
         bundle.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen1));
         bundle.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_ss_screen1));
@@ -117,7 +117,8 @@ public class ActivitySurveyStart extends DotStepper {
         AbstractStep Step1 = new FragmentSurvey2Choices();
         Step1.setArguments(bundle);
         addStep(createFragment(Step1));
-
+*/
+        addStep(createFragment(new StepScreen1()));
         addStep(createFragment(new StepScreen2()));
         addStep(createFragment(new StepScreen3()));
         addStep(createFragment(new StepScreen4()));

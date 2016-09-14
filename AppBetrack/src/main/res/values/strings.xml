@@ -106,6 +106,12 @@
     <string name="huawei_positive_button">Protected Apps</string>
     <string name="huawei_check">Do not show again</string>
 
+    <!-- GPS Enable -->
+    <string name="gps_enable_title">GPS Enable</string>
+    <string name="gps_enable_desc">We need to have to your positioning information to function properly</string>
+    <string name="gps_enable_positive_button">Enable the GPS</string>
+
+
     <!-- Start survey -->
         <string name="question_ss_error">You need to answer that question</string>
         <string name="survey_age">years old</string>

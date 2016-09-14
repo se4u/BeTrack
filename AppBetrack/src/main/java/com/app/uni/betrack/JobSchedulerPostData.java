@@ -34,6 +34,14 @@ import android.os.Message;
                 startService(msgIntent);
             }
             jobFinished( (JobParameters) msg.obj, false );
+
+            if (false == CreatePostData.InternalFastCheck) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
+                {
+                    CreatePostData.CreateAlarm(getApplicationContext(), CreatePostData.InternalFastCheck);
+                }
+            }
+
             return true;
         }
 

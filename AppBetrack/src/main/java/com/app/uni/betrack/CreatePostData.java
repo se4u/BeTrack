@@ -1,5 +1,6 @@
 package com.app.uni.betrack;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
@@ -24,7 +25,7 @@ public class CreatePostData {
 
     static public void CreateAlarm(Context context, boolean FastCheck)
     {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             if (null != mJobScheduler) {
                 mJobScheduler.cancel(SettingsBetrack.JOBID_POSTDATA);
@@ -38,10 +39,22 @@ public class CreatePostData {
                             JobSchedulerPostData.class.getName() ) );
 
             if (false == FastCheck) {
-                builder.setPeriodic(SettingsBetrack.POSTDATA_SENDING_DELTA);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    builder.setMinimumLatency(SettingsBetrack.POSTDATA_SENDING_DELTA);
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder.setPeriodic(SettingsBetrack.POSTDATA_SENDING_DELTA);
+                    }
+                }
             }
             else {
-                builder.setPeriodic(SettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    builder.setMinimumLatency(SettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK);
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder.setPeriodic(SettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK);
+                    }
+                }
             }
 
             InternalFastCheck = FastCheck;
@@ -62,7 +75,7 @@ public class CreatePostData {
 
             try {
                 if (false == FastCheck) {
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                     {
                         alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
                                 SettingsBetrack.POSTDATA_SENDING_DELTA, alarmIntent);
@@ -73,7 +86,7 @@ public class CreatePostData {
                                 SettingsBetrack.POSTDATA_SENDING_DELTA, alarmIntent);
                     }
                 } else {
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                     {
                         alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
                                 SettingsBetrack.POSTDATA_SENDING_DELTA_FASTCHECK, alarmIntent);
