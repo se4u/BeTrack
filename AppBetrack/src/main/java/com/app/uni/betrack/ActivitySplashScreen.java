@@ -54,7 +54,11 @@ public class ActivitySplashScreen extends AppCompatActivity {
         if (false == ObjSettingsStudy.getStudyStarted()) {
 
             //Try to read studies available from the distant server
-            gsa.execute();
+            //DEBUG for train gsa.execute();
+            Intent i = new Intent(ActivitySplashScreen.this, ActivitySurveyStart.class);
+            startActivity(i);
+            finish();
+            //END DEBUG FOR TRAIN
 
         }
         else

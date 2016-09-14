@@ -31,7 +31,6 @@
         android:id="@+id/survey_comment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/yourtext_ss_screen5"
         android:inputType="textNoSuggestions" />
 
     <View

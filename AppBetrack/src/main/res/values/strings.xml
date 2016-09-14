@@ -118,7 +118,7 @@
         <string name="survey_days">days</string>
 
     <!-- Screen 1 (relation) -->
-        <string name="title_ss_screen1">RELATION</string>
+        <string name="title_ss_screen1">RELATIONSHIP</string>
         <string name="question_ss_screen1">Are you in a relationship ?</string>
   <!-- Screen 2 (age) -->
         <string name="title_ss_screen2">AGE</string>
