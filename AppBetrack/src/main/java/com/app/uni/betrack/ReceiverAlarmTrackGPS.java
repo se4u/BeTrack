@@ -25,10 +25,12 @@ public class ReceiverAlarmTrackGPS extends BroadcastReceiver {
     {
         return localdatabase;
     }
+    private SettingsStudy ObjSettingsStudy;
 
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        ObjSettingsStudy = SettingsStudy.getInstance(context);
         Bundle b=intent.getExtras();
 
         if (null == localdatabase) {
@@ -69,6 +71,7 @@ public class ReceiverAlarmTrackGPS extends BroadcastReceiver {
             lat = location.getLatitude();
             lng = location.getLongitude();
             values.clear();
+            values.put(UtilsLocalDataBase.C_GPS_ID, ObjSettingsStudy.getIdUser());
             values.put(UtilsLocalDataBase.C_GPS_LATTITUDE, lat);
             values.put(UtilsLocalDataBase.C_GPS_LONGITUDE, lng);
             GpsDate = sdf.format(new Date());

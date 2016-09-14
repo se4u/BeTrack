@@ -162,7 +162,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
 
     @Override
     public String error() {
-        return getResources().getString(R.string.question_ss_error);
+        return getResources().getString(R.string.question_error);
     }
 
 

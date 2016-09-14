@@ -112,15 +112,16 @@
     <string name="gps_enable_positive_button">Enable the GPS</string>
 
 
-    <!-- Start survey -->
-        <string name="question_ss_error">You need to answer that question</string>
+    <!-- Surveys -->
+        <string name="question_error">You need to answer that question</string>
         <string name="survey_age">years old</string>
         <string name="survey_days">days</string>
 
+    <!-- Start survey -->
     <!-- Screen 1 (relation) -->
         <string name="title_ss_screen1">RELATIONSHIP</string>
         <string name="question_ss_screen1">Are you in a relationship ?</string>
-  <!-- Screen 2 (age) -->
+    <!-- Screen 2 (age) -->
         <string name="title_ss_screen2">AGE</string>
         <string name="question_ss_screen2">How old are you ?</string>
 
@@ -137,5 +138,9 @@
         <string name="question_ss_screen5">If you use a contraceptive (optional) could you write down the name</string>
         <string name="yourtext_ss_screen5">contraceptive name</string>
 
+    <!-- End survey -->
+    <!-- Screen 1 (relation) -->
+    <string name="title_se_screen1">RELATIONSHIP</string>
+    <string name="question_se_screen1">Are you in a relationship ?</string>
 
 </resources>

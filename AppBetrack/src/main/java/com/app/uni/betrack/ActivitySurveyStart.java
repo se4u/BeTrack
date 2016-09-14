@@ -35,15 +35,12 @@ public class ActivitySurveyStart extends DotStepper {
     private static final String TAG = "ActivitySurveyStart";
 
     private int i = 1;
-    private static Drawable BackgroundNoSelection;
-    private static Drawable BackgroundSelected;
 
-
-    private static int SurveyInRelation = -1;
+    private int SurveyInRelation = -1;
     private static int SurveyAge = 24;
     private static int SurveyLengthPeriod = 4;
     private static int SurveyLenghCycle = 29;
-    private static String SurveyContraception;
+    private String SurveyContraception;
 
     private static final int SURVEY_AGE_START = 18;
     private static final int SURVEY_AGE_END = 40;
@@ -68,17 +65,6 @@ public class ActivitySurveyStart extends DotStepper {
     }
     private SettingsStudy ObjSettingsStudy;
 
-    private static void InternalSetBackground(Drawable Background, Button button)
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            button.setBackground(Background);
-        }
-        else
-        {
-            button.setBackgroundDrawable(Background);
-        }
-    }
-
     @Override
     public void onComplete() {
         super.onComplete();
@@ -96,7 +82,8 @@ public class ActivitySurveyStart extends DotStepper {
 
         AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_START_STUDY);
         Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Participant age: " + SurveyAge + " In a relationship: " + SurveyInRelation
-        + "period lenght" + SurveyLengthPeriod + "cycle lenght" + SurveyLenghCycle + "Contraception used" + SurveyContraception);
+        + "period lenght" + SurveyLengthPeriod + "cycle lenght" + SurveyLenghCycle + "Contraception used" + SurveyContraception
+        + "date start" + DateStudyStart);
 
         ObjSettingsStudy.setStartSurveyDone(true);
 

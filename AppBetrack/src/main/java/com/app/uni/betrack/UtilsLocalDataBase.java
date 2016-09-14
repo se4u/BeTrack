@@ -55,6 +55,7 @@ public class UtilsLocalDataBase {
     //Table for GPS data
     static final String TABLE_GPS = "GpsFollowUp";
     static final String C_GPS_ID = BaseColumns._ID;
+    static final String C_GPS_PID = "ParticipantID";
     static final String C_GPS_LATTITUDE = "Lattitude";
     static final String C_GPS_LONGITUDE = "Longitude";
     static final String C_GPS_DATE = "Date";
@@ -62,6 +63,7 @@ public class UtilsLocalDataBase {
 
     private static final String[] DB_GPS = {
             C_GPS_ID,
+            C_GPS_PID,
             C_GPS_LATTITUDE,
             C_GPS_LONGITUDE,
             C_GPS_DATE,
@@ -99,9 +101,17 @@ public class UtilsLocalDataBase {
     //Table for End study
     static final String TABLE_END_STUDY = "EndStudy";
     static final String C_ENDSTUDY_ID = BaseColumns._ID;
+    static final String C_ENDSTUDY_PID = "ParticipantID";
     static final String C_ENDSTUDY_RELATIONSHIP = "RelationShip";
     static final String C_ENDSTUDY_CONTRACEPTION = "Contraception";
     static final String C_ENDSTUDY_DATE = "Date";
+
+    private static final String[] DB_END_STUDY = {
+            C_ENDSTUDY_ID,
+            C_ENDSTUDY_PID,
+            C_ENDSTUDY_RELATIONSHIP,
+            C_ENDSTUDY_CONTRACEPTION,
+            C_ENDSTUDY_DATE};
 
     private static final Semaphore SemUpdateDb = new Semaphore(1, true);
 
@@ -134,9 +144,14 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql3);
 
             String sql4 = "create table " + TABLE_GPS + " (" + C_GPS_ID + " integer primary key autoincrement, "
-                    + C_GPS_LATTITUDE + " text, " + C_GPS_LONGITUDE + " text, " + C_GPS_DATE + " text, " + C_GPS_TIME + " text)"; //
+                    + C_GPS_PID + " text, " + C_GPS_LATTITUDE + " text, " + C_GPS_LONGITUDE + " text, " + C_GPS_DATE + " text, " + C_GPS_TIME + " text)"; //
             db.execSQL(sql4);
             Log.d(TAG, "onCreated sql: " + sql4);
+
+            String sql6 = "create table " + TABLE_END_STUDY + " (" + C_ENDSTUDY_ID + " integer primary key autoincrement, "
+                    + C_ENDSTUDY_PID + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, " + C_ENDSTUDY_DATE + " text)"; //
+            db.execSQL(sql6);
+            Log.d(TAG, "onCreated sql: " + sql6);
         }
 
         // Called whenever newVersion != oldVersion
@@ -150,6 +165,8 @@ public class UtilsLocalDataBase {
             db.execSQL("drop table if exists " + TABLE_START_STUDY); // drops the old database
 
             db.execSQL("drop table if exists " + TABLE_GPS); // drops the old database
+
+            db.execSQL("drop table if exists " + TABLE_END_STUDY); // drops the old database
 
             Log.d(TAG, "onUpdated");
             onCreate(db); // run onCreate to get new database
@@ -240,6 +257,10 @@ public class UtilsLocalDataBase {
 
             if (Table.equals(TABLE_START_STUDY)) {
                 DB_TABLE = DB_START_STUDY;
+            }
+
+            if (Table.equals(TABLE_END_STUDY)) {
+                DB_TABLE = DB_END_STUDY;
             }
 
             SemUpdateDb.acquire();
