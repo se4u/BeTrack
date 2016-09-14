@@ -60,6 +60,13 @@ public class UtilsLocalDataBase {
     static final String C_GPS_DATE = "Date";
     static final String C_GPS_TIME = "Time";
 
+    private static final String[] DB_GPS = {
+            C_GPS_ID,
+            C_GPS_LATTITUDE,
+            C_GPS_LONGITUDE,
+            C_GPS_DATE,
+            C_GPS_TIME};
+
     //Table for Status study
     static final String TABLE_STATUS = "StatusStudy";
     static final String C_STATUS_ID = BaseColumns._ID;
@@ -75,9 +82,19 @@ public class UtilsLocalDataBase {
     static final String C_STARTSTUDY_SEX = "Sex";
     static final String C_STARTSTUDY_RELATIONSHIP = "RelationShip";
     static final String C_STARTSTUDY_CONTRACEPTION = "Contraception";
+    static final String C_STARTSTUDY_AVGPERIODLENGHT = "AvgPeriodLenght";
     static final String C_STARTSTUDY_AVGMENSTRUALCYCLE = "AvgMenstrualCycle";
     static final String C_STARTSTUDY_DATE = "Date";
 
+    private static final String[] DB_START_STUDY = {
+            C_STARTSTUDY_ID,
+            C_STARTSTUDY_PID,
+            C_STARTSTUDY_AGE,
+            C_STARTSTUDY_RELATIONSHIP,
+            C_STARTSTUDY_CONTRACEPTION,
+            C_STARTSTUDY_AVGPERIODLENGHT,
+            C_STARTSTUDY_AVGMENSTRUALCYCLE,
+            C_STARTSTUDY_DATE};
 
     //Table for End study
     static final String TABLE_END_STUDY = "EndStudy";
@@ -112,9 +129,14 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql2);
 
             String sql3 = "create table " + TABLE_START_STUDY + " (" + C_STARTSTUDY_ID + " integer primary key autoincrement, "
-                    + C_STARTSTUDY_PID + " text, " + C_STARTSTUDY_AGE + " text, " + C_STARTSTUDY_RELATIONSHIP + " text, " + C_STARTSTUDY_CONTRACEPTION + " text, " + C_STARTSTUDY_AVGMENSTRUALCYCLE + " text, " + C_STARTSTUDY_DATE + " text)"; //
+                    + C_STARTSTUDY_PID + " text, " + C_STARTSTUDY_AGE + " text, " + C_STARTSTUDY_RELATIONSHIP + " text, " + C_STARTSTUDY_CONTRACEPTION + " text, " + C_STARTSTUDY_AVGPERIODLENGHT + " text, " + C_STARTSTUDY_AVGMENSTRUALCYCLE + " text, " + C_STARTSTUDY_DATE + " text)"; //
             db.execSQL(sql3);
             Log.d(TAG, "onCreated sql: " + sql3);
+
+            String sql4 = "create table " + TABLE_GPS + " (" + C_GPS_ID + " integer primary key autoincrement, "
+                    + C_GPS_LATTITUDE + " text, " + C_GPS_LONGITUDE + " text, " + C_GPS_DATE + " text, " + C_GPS_TIME + " text)"; //
+            db.execSQL(sql4);
+            Log.d(TAG, "onCreated sql: " + sql4);
         }
 
         // Called whenever newVersion != oldVersion
@@ -126,6 +148,8 @@ public class UtilsLocalDataBase {
             db.execSQL("drop table if exists " + TABLE_USER); // drops the old database
 
             db.execSQL("drop table if exists " + TABLE_START_STUDY); // drops the old database
+
+            db.execSQL("drop table if exists " + TABLE_GPS); // drops the old database
 
             Log.d(TAG, "onUpdated");
             onCreate(db); // run onCreate to get new database
@@ -208,6 +232,14 @@ public class UtilsLocalDataBase {
 
             if (Table.equals(TABLE_USER)) {
                 DB_TABLE = DB_DAILYSTATUS;
+            }
+
+            if (Table.equals(TABLE_GPS)) {
+                DB_TABLE = DB_GPS;
+            }
+
+            if (Table.equals(TABLE_START_STUDY)) {
+                DB_TABLE = DB_START_STUDY;
             }
 
             SemUpdateDb.acquire();

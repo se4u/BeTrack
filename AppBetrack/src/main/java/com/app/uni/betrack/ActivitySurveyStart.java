@@ -82,17 +82,21 @@ public class ActivitySurveyStart extends DotStepper {
     @Override
     public void onComplete() {
         super.onComplete();
+
+        //TODO still need to find the proper to get the values from fragments...
         values.clear();
         values.put(UtilsLocalDataBase.C_STARTSTUDY_PID, ObjSettingsStudy.getIdUser());
         values.put(UtilsLocalDataBase.C_STARTSTUDY_AGE, SurveyAge);
         values.put(UtilsLocalDataBase.C_STARTSTUDY_RELATIONSHIP, SurveyInRelation);
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_CONTRACEPTION, SurveyContraception);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_AVGPERIODLENGHT, SurveyLengthPeriod);
         values.put(UtilsLocalDataBase.C_STARTSTUDY_AVGMENSTRUALCYCLE, SurveyLenghCycle);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_CONTRACEPTION, SurveyContraception);
         DateStudyStart = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_STARTSTUDY_DATE, DateStudyStart);
 
         AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_START_STUDY);
-        Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Period status: " + 1 + " date: " + DateStudyStart);
+        Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Participant age: " + SurveyAge + " In a relationship: " + SurveyInRelation
+        + "period lenght" + SurveyLengthPeriod + "cycle lenght" + SurveyLenghCycle + "Contraception used" + SurveyContraception);
 
         ObjSettingsStudy.setStartSurveyDone(true);
 
