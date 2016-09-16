@@ -133,7 +133,7 @@
         <string name="title_ss_screen4">CYCLE LENGHT</string>
         <string name="question_ss_screen4">Please pick up a cycle length below.</string>
 
-    <!-- Screen 5 (comment) -->
+    <!-- Screen 5 (Contraception) -->
         <string name="title_ss_screen5">CONTRACEPTION</string>
         <string name="question_ss_screen5">If you use a contraceptive (optional) could you write down the name</string>
         <string name="yourtext_ss_screen5">contraceptive name</string>
@@ -142,5 +142,10 @@
     <!-- Screen 1 (relation) -->
     <string name="title_se_screen1">RELATIONSHIP</string>
     <string name="question_se_screen1">Are you in a relationship ?</string>
+
+    <!-- Screen 2 (Contraception) -->
+    <string name="title_se_screen2">CONTRACEPTION</string>
+    <string name="question_se_screen2">If you use a contraceptive (optional) could you write down the name</string>
+    <string name="yourtext_se_screen2">contraceptive name</string>
 
 </resources>

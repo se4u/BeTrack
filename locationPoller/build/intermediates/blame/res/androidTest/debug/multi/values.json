@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/cedoctet/AndroidStudioProjects/BeTrack/locationPoller/build/intermediates/res/merged/androidTest/debug/values/values.xml",
+        "outputFile": "D:\\Projects\\Android\\BeTrack\\locationPoller\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 107
                 },
                 "from": {
-                    "file": "/Users/cedoctet/AndroidStudioProjects/BeTrack/locationPoller/build/intermediates/bundles/debug/res/values/values.xml",
+                    "file": "D:\\Projects\\Android\\BeTrack\\locationPoller\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,

@@ -23,6 +23,9 @@ public class SettingsBetrack {
     static public String STUDY_GETAPPTOWATCH = "BeTrackGetAppToWatch.php?table_name=TestPeriod_applications";
     static public String STUDY_POSTAPPWATCHED = "BeTrackPostAppWatch.php";
     static public String STUDY_POSTDAILYSTATUS = "BeTrackPostDailyStatus.php";
+    static public String STUDY_POSTSTARTSTUDY = "BeTrackPostStartStudy.php";
+    static public String STUDY_POSTENDSTUDY = "BeTrackPostEndStudy.php";
+    static public String STUDY_POSTGPSDATA = "BeTrackPostGPSData.php";
 
     static public int SERVER_TIMEOUT = 20000;
     static public int DELTA_BTW_RECHECK_STUDY_STARTED = 10000;

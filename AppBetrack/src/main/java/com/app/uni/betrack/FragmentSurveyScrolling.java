@@ -18,15 +18,13 @@ import java.util.List;
  * Created by cedoctet on 12/09/2016.
  */
 public class FragmentSurveyScrolling extends AbstractStep {
-    private int i = 1;
-    private Button button;
-    private final static String CLICK = "click";
     private TextView Title;
     private TextView Description;
     private boolean UserScrolled = false;
 
 
     //Output
+    public  static final String SURVEY_STATUS = "SURVEY_STATUS";
     public int SurveyStatus = -1;
 
     //Input
@@ -48,7 +46,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
         listElement = new UtilsListBean(" ");
         DATA_LIST .add(listElement);
 
-        Bundle bundle = this.getArguments();
+        final Bundle bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_SCROLLING_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_SCROLLING_DESC, null);
         String SurveyUnit = bundle.getString(SURVEY_SCROLLING_UNIT, null);
@@ -101,6 +99,9 @@ public class FragmentSurveyScrolling extends AbstractStep {
                                  int visibleItemCount, int totalItemCount) {
                 if (UserScrolled == true) {
                     SurveyStatus = SurveyStartRange + firstVisibleItem;
+                    mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
+                    bundle.putInt(SURVEY_STATUS, SurveyStatus);
+                    setArguments(bundle);
                     UserScrolled = false;
                 }
 
@@ -108,7 +109,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
         });
 
         if (savedInstanceState != null)
-            i = savedInstanceState.getInt(CLICK, 0);
+            SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
 
         return v;
     }
@@ -116,12 +117,12 @@ public class FragmentSurveyScrolling extends AbstractStep {
     @Override
     public void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
-        state.putInt(CLICK, i);
+        state.putInt(SURVEY_STATUS, SurveyStatus);
     }
 
     @Override
     public String name() {
-        return "Tab " + getArguments().getInt("position", 0);
+        return "Tab " + getArguments().getInt(SURVEY_STATUS, 0);
     }
 
     @Override
@@ -151,7 +152,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
     @Override
     public boolean nextIf() {
-        return i > 1;
+        return SurveyStatus > 1;
     }
 
     @Override

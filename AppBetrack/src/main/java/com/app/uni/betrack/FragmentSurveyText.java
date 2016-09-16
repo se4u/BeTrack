@@ -20,6 +20,7 @@ public class FragmentSurveyText extends AbstractStep {
     private static final String TAG = "FragmentSurveyText";
 
     //Output
+    public  static final String SURVEY_STATUS = "SURVEY_STATUS";
     public String SurveyStatus = null;
 
     //Input
@@ -27,21 +28,16 @@ public class FragmentSurveyText extends AbstractStep {
     public static final String SURVEY_TEXT_DESC = "SURVEY_TEXT_DESC";
     public static final String SURVEY_TEXT_COMMENT = "SURVEY_TEXT_COMMENT";
 
-
-    private int i;
     private TextView Title;
     private TextView Description;
     private EditText Comment;
-
-
-    private final static String CLICK = "click";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.survey_text, container, false);
 
-        Bundle bundle = this.getArguments();
+        final Bundle bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_TEXT_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_TEXT_DESC, null);
         String SurveyComment = bundle.getString(SURVEY_TEXT_COMMENT, null);
@@ -72,13 +68,14 @@ public class FragmentSurveyText extends AbstractStep {
                 if(s.length()>0) {
                     Log.d(TAG, "afterTextChanged");
                     SurveyStatus = s.toString();
-                    i++;
-                    mStepper.getExtras().putInt(CLICK, i);
+                    mStepper.getExtras().putString(SURVEY_STATUS, SurveyStatus);
+                    bundle.putString(SURVEY_STATUS, SurveyStatus);
+                    setArguments(bundle);
                 }
             }
         });
         if (savedInstanceState != null)
-            i = savedInstanceState.getInt(CLICK, 0);
+            SurveyStatus = savedInstanceState.getString(SURVEY_STATUS, null);
 
         return v;
     }
@@ -86,12 +83,12 @@ public class FragmentSurveyText extends AbstractStep {
     @Override
     public void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
-        state.putInt(CLICK, i);
+        state.putString(SURVEY_STATUS, SurveyStatus);
     }
 
     @Override
     public String name() {
-        return "Tab " + getArguments().getInt("position", 0);
+        return "Tab " + getArguments().getString(SURVEY_STATUS, null);
     }
 
     @Override
@@ -123,7 +120,7 @@ public class FragmentSurveyText extends AbstractStep {
 
     @Override
     public boolean nextIf() {
-        return i > 0;
+        return SurveyStatus != null;
     }
 
     @Override

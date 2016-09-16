@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -46,7 +47,10 @@ public class IntentServicePostData extends IntentService {
     };
 
     private static final char TABLE_APPWATCH_TRANSFERED = 1;
-    private static final char TABLE_USER_TRANSFERED = 2;
+    private static final char TABLE_DAILYSTATUS_TRANSFERED = 2;
+    private static final char TABLE_STARTSTUDY_TRANSFERED = 4;
+    private static final char TABLE_ENDSTUDY_TRANSFERED = 8;
+    private static final char TABLE_GPS_TRANSFERED = 16;
 
     Handler mHandler;
 
@@ -70,31 +74,14 @@ public class IntentServicePostData extends IntentService {
     }
 
     protected void onHandleIntent(Intent intent) {
-        InputStream inputStream = null;
-        String result = null;
-        HttpURLConnection urlConnection = null;
         ContentValues values = new ContentValues();
-        BufferedWriter writer = null;
-        //TABLE_APPWATCH
-        String AppName;
-        String StartDate;
-        String StopDate;
-        String StartTime;
-        String StopTime;
-        //TABLE_USER
-        String PeriodStatus;
-        String Date;
-        //COMMON TO ALL TABLES
         Long IdSql;
         ConnectionState NetworkState;
-
-
-        java.net.URL urlPostAppwatched;
-        java.net.URL urlPostDailyStatus;
-
         getLock(getApplicationContext()).acquire();
 
-        char TaskDone = TABLE_APPWATCH_TRANSFERED | TABLE_USER_TRANSFERED;
+        char TaskDone = TABLE_APPWATCH_TRANSFERED | TABLE_DAILYSTATUS_TRANSFERED |
+                        TABLE_STARTSTUDY_TRANSFERED | TABLE_ENDSTUDY_TRANSFERED |
+                        TABLE_GPS_TRANSFERED;
 
         //Check if there is a data connection
         NetworkState = hasNetworkConnection();
@@ -122,148 +109,126 @@ public class IntentServicePostData extends IntentService {
         {
             while(TaskDone != 0)
             {
+                //APPLICATIONS WATCHED
                 values.clear();
                 values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
                 if (0 != values.size()) {
+                    boolean rc;
 
-                    try {
+                    ArrayList<String>  AppWatchData;
 
-                        urlPostAppwatched = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTAPPWATCHED +"?");
-                        urlConnection = (HttpURLConnection) urlPostAppwatched.openConnection();
-                        urlConnection.setRequestMethod("POST");
-                        urlConnection.setRequestProperty("Content-Type",
-                                "application/x-www-form-urlencoded");
-                        urlConnection.setDoOutput(true);
-                        urlConnection.setDoInput(true);
-                        urlConnection.setReadTimeout(SettingsBetrack.SERVER_TIMEOUT);
-                        urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
+                    IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
 
-                        IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
-
-                        AppName = values.get(UtilsLocalDataBase.C_APPWATCH_APPLICATION).toString();
-                        StartDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTART).toString();
-                        StartTime = values.get(UtilsLocalDataBase.C_APPWATCH_TIMESTART).toString();
-                        StopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
-                        StopTime = values.get(UtilsLocalDataBase.C_APPWATCH_TIMESTOP).toString();
-
-                        mHandler.post(new UtilsDisplayToast(this, "Betrack: Post app watched: " + AppName));
-
-                        Log.d(TAG, "PHP request: " + SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTAPPWATCHED + "?" +
-                                "userid=" + ObjSettingsStudy.getIdUser() + "&application=" + AppName + "&datestart=" + StartDate + "&datestop=" + StopDate + "&timestart=" + StartTime + "&timestop=" + StopTime);
-
-                        Uri.Builder builder = new Uri.Builder()
-                                .appendQueryParameter("userid", ObjSettingsStudy.getIdUser())
-                                .appendQueryParameter("application", AppName)
-                                .appendQueryParameter("datestart", StartDate)
-                                .appendQueryParameter("datestop", StopDate)
-                                .appendQueryParameter("timestart", StartTime)
-                                .appendQueryParameter("timestop", StopTime)
-                                ;
-                        String query = builder.build().getEncodedQuery();
-
-                        writer = new BufferedWriter(
-                                new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
-                        writer.write(query,0, query.length());
-                        writer.flush();
-                        writer.close();
-
-                        if (HttpsURLConnection.HTTP_OK == urlConnection.getResponseCode()) {
-                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
-                            FastCheck(false);
-                        }
-                        else {
-                            Log.d(TAG, "Unable to access to server... ");
-                            //Check if an internet connection is available more often to get more chance to be able to transfer the data
-                            FastCheck(true);
-                        }
-
-                    } catch (java.net.SocketTimeoutException e) {
-                        Log.d(TAG, "Unable to access to server... ");
-                        //Check if an internet connection is available more often to get more chance to be able to transfer the data
+                    //Encrypt the data
+                    AppWatchData = EncryptData(values, UtilsLocalDataBase.DB_APPWATCH, false);
+                    mHandler.post(new UtilsDisplayToast(this,  getResources().getString(R.string.app_name)
+                            + "Post app watched: " +  AppWatchData.get(0) + " Date start:" + AppWatchData.get(1) + " Time start:" + AppWatchData.get(2)
+                            + " Date end:" + AppWatchData.get(3) + " Time end:" + AppWatchData.get(4)));
+                    //Post the data
+                    rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, ObjSettingsStudy.getIdUser());
+                    if (rc == true) {
+                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
+                        FastCheck(false);
+                    } else {
                         FastCheck(true);
-                        break;
-                    } catch (Exception e) {
-                        //Log.d(TAG, "Last request not completed we don't transfer the data ");
-                        break;
-                    } finally {
-                        if (urlConnection != null) {
-                            urlConnection.disconnect();
-                        }
                     }
                 }
                 else
                 {
                     TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
-                    //Log.d(TAG, "TABLE_APPWATCH has been transfered to the remote server, we can stop");
                 }
 
+
+                //DAILY STATUS
                 values.clear();
                 values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_USER);
                 if (0 != values.size()) {
-                    try {
-                        //Connect to the remote database to get the available studies
-                        urlPostDailyStatus = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTDAILYSTATUS +"?");
-                        urlConnection = (HttpURLConnection) urlPostDailyStatus.openConnection();
-                        urlConnection.setRequestMethod("POST");
-                        urlConnection.setRequestProperty("Content-Type",
-                                "application/x-www-form-urlencoded");
-                        urlConnection.setDoOutput(true);
-                        urlConnection.setDoInput(true);
-                        urlConnection.setReadTimeout(SettingsBetrack.SERVER_TIMEOUT);
-                        urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
+                    boolean rc;
+                    ArrayList<String>  DailyStatusData;
 
-                        IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
+                    IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
 
-                        PeriodStatus = values.get(UtilsLocalDataBase.C_USER_PERIOD).toString();
-                        Date = values.get(UtilsLocalDataBase.C_USER_DATE).toString();
-
-                        mHandler.post(new UtilsDisplayToast(this, "Betrack: Post survey status: " + PeriodStatus));
-
-                        Log.d(TAG, "PHP request: " + SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_POSTDAILYSTATUS + "?" +
-                                "userid=" + ObjSettingsStudy.getIdUser() + "&periodstatus=" + PeriodStatus + "&date=" + Date);
-
-                        Uri.Builder builder = new Uri.Builder()
-                                .appendQueryParameter("userid", ObjSettingsStudy.getIdUser())
-                                .appendQueryParameter("periodstatus", PeriodStatus)
-                                .appendQueryParameter("date", Date)
-                                ;
-                        String query = builder.build().getEncodedQuery();
-
-                        writer = new BufferedWriter(
-                                new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
-                        writer.write(query, 0, query.length());
-                        writer.flush();
-                        writer.close();
-
-                        if (HttpsURLConnection.HTTP_OK == urlConnection.getResponseCode()) {
-                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
-                            FastCheck(false);
-                        }
-                        else {
-                            Log.d(TAG, "Unable to access to server... ");
-                            //Check if an internet connection is available more often to get more chance to be able to transfer the data
-                            FastCheck(true);
-                        }
-
-
-                    } catch (java.net.SocketTimeoutException e) {
-                        Log.d(TAG, "Unable to access to server... ");
-                        //Check if an internet connection is available more often to get more chance to be able to transfer the data
-                        FastCheck(true);
-                        break;
-                    } catch (Exception e) {
-                        //Log.d(TAG, "Last request not completed we don't transfer the data ");
-                        break;
-                    } finally {
-                        if (urlConnection != null) {
-                            urlConnection.disconnect();
-                        }
+                    //Encrypt the data
+                    DailyStatusData = EncryptData(values, UtilsLocalDataBase.DB_DAILYSTATUS, false);
+                    mHandler.post(new UtilsDisplayToast(this, getResources().getString(R.string.app_name)+": Post survey status: " + DailyStatusData.get(0) + " Date: " +  DailyStatusData.get(1)));
+                    //Post the data
+                    rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, ObjSettingsStudy.getIdUser());
+                    if (rc == true) {
+                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
                     }
                 }
                 else
                 {
-                    TaskDone &= ~TABLE_USER_TRANSFERED;
-                    //Log.d(TAG, "TABLE_USER has been transfered to the remote server, we can stop");
+                    TaskDone &= ~TABLE_DAILYSTATUS_TRANSFERED;
+                }
+
+                //START STUDY
+                values.clear();
+                values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_START_STUDY);
+                if (0 != values.size()) {
+                    boolean rc;
+                    ArrayList<String>  StartStudyData;
+
+                    IdSql = values.getAsLong(UtilsLocalDataBase.C_STARTSTUDY_ID);
+
+                    //Encrypt the data
+                    StartStudyData = EncryptData(values, UtilsLocalDataBase.DB_START_STUDY, false);
+
+                    //Post the data
+                    rc = PostData(SettingsBetrack.STUDY_POSTSTARTSTUDY, UtilsLocalDataBase.DB_START_STUDY, StartStudyData, ObjSettingsStudy.getIdUser());
+                    if (rc == true) {
+                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_START_STUDY, IdSql);
+                    }
+                }
+                else
+                {
+                    TaskDone &= ~TABLE_STARTSTUDY_TRANSFERED;
+                }
+
+                //END STUDY
+                values.clear();
+                values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_END_STUDY);
+                if (0 != values.size()) {
+                    boolean rc;
+                    ArrayList<String>  EndStudyData;
+
+                    IdSql = values.getAsLong(UtilsLocalDataBase.C_ENDSTUDY_ID);
+
+                    //Encrypt the data
+                    EndStudyData = EncryptData(values, UtilsLocalDataBase.DB_END_STUDY, false);
+
+                    //Post the data
+                    rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, ObjSettingsStudy.getIdUser());
+                    if (rc == true) {
+                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
+                    }
+                }
+                else
+                {
+                    TaskDone &= ~TABLE_ENDSTUDY_TRANSFERED;
+                }
+
+                //GPS DATA
+                values.clear();
+                values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_GPS);
+                if (0 != values.size()) {
+                    boolean rc;
+                    ArrayList<String>  GpsData;
+
+                    IdSql = values.getAsLong(UtilsLocalDataBase.C_GPS_ID);
+
+                    //Encrypt the data
+                    GpsData = EncryptData(values, UtilsLocalDataBase.DB_GPS, false);
+
+                    //Post the data
+                    rc = PostData(SettingsBetrack.STUDY_POSTGPSDATA, UtilsLocalDataBase.DB_GPS, GpsData, ObjSettingsStudy.getIdUser());
+                    if (rc == true) {
+                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
+                    }
+                }
+                else
+                {
+                    TaskDone &= ~TABLE_ENDSTUDY_TRANSFERED;
                 }
             }
         }
@@ -271,7 +236,6 @@ public class IntentServicePostData extends IntentService {
         {
             //Check if an internet connection is available more often to get more chance to be able to transfer the data
             FastCheck(true);
-
         }
 
         getLock(getApplicationContext()).release();
@@ -322,6 +286,74 @@ public class IntentServicePostData extends IntentService {
                 //Log.d(TAG, "hasNetworkConnection: nope");
             }
             return NetworkState;
+        }
+    }
+
+    public ArrayList<String> EncryptData(ContentValues values, ArrayList<String> Field, boolean Encrypt) {
+
+        ArrayList<String> rc = new ArrayList<String>();
+        //We skip the first element which is the user personnal id (generated automatically)
+        for (int i=1; i<Field.size(); i++){
+            rc.add(values.get(Field.get(i)).toString());
+            if (Encrypt == true) {
+
+            }
+        }
+        return rc;
+    }
+
+    public boolean PostData(String WebLink, ArrayList<String> Field, ArrayList<String> Data, String IdUser) {
+
+        boolean rc = false;
+        HttpURLConnection urlConnection = null;
+        java.net.URL urlPostData;
+        BufferedWriter writer = null;
+
+        try {
+            //Connect to the remote database to get the available studies
+            urlPostData = new URL(SettingsBetrack.STUDY_WEBSITE + WebLink +"?");
+            urlConnection = (HttpURLConnection) urlPostData.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
+            urlConnection.setReadTimeout(SettingsBetrack.SERVER_TIMEOUT);
+            urlConnection.setConnectTimeout(SettingsBetrack.SERVER_TIMEOUT);
+
+            Uri.Builder builder = new Uri.Builder();
+            builder.appendQueryParameter(Field.get(0).toString(), ObjSettingsStudy.getIdUser());
+            for (int i=1; i<Field.size(); i++){
+                builder.appendQueryParameter("userid", Data.get(i).toString());
+            }
+            String query = builder.build().getEncodedQuery();
+
+            writer = new BufferedWriter(
+                    new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
+            writer.write(query, 0, query.length());
+            writer.flush();
+            writer.close();
+
+            if (HttpsURLConnection.HTTP_OK == urlConnection.getResponseCode()) {
+                rc= true;
+            }
+            else {
+                Log.d(TAG, "Unable to access to server... ");
+                //Check if an internet connection is available more often to get more chance to be able to transfer the data
+                rc = false;
+            }
+
+
+        } catch (java.net.SocketTimeoutException e) {
+            Log.d(TAG, "Unable to access to server... ");
+            rc= false;
+        } catch (Exception e) {
+            rc = false;
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            return rc;
         }
     }
 }

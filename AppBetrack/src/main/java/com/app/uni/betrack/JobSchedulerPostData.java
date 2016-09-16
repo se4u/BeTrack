@@ -30,7 +30,7 @@ import android.os.Message;
         public boolean handleMessage( Message msg ) {
             if (CreatePostData.SemUpdateServer.tryAcquire()) {
                 Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
-                //Start the service for monitoring app
+                //Start the service for sending the data to the remote server
                 startService(msgIntent);
             }
             jobFinished( (JobParameters) msg.obj, false );

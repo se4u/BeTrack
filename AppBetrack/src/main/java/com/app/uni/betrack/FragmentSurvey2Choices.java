@@ -18,20 +18,21 @@ import com.github.fcannizzaro.materialstepper.AbstractStep;
 public class FragmentSurvey2Choices extends AbstractStep {
 
     //Output
+    public  static final String SURVEY_STATUS = "SURVEY_STATUS";
     public int SurveyStatus = -1;
 
     //Input
     public static final String SURVEY_2_CHOICES_TITLE = "SURVEY_2_CHOICES_TITLE";
     public static final String SURVEY_2_CHOICES_DESC = "SURVEY_2_CHOICES_DESC";
 
-    private int i;
+
     private Button button1;
     private Button button2;
     private ImageView imgbutton1;
     private ImageView imgbutton2;
     private TextView Title;
     private TextView Description;
-    private final static String CLICK = "click";
+
     private static Drawable BackgroundNoSelection;
     private static Drawable BackgroundSelected;
 
@@ -59,14 +60,14 @@ public class FragmentSurvey2Choices extends AbstractStep {
         Title = (TextView) v.findViewById(R.id.survey_title);
         Description = (TextView) v.findViewById(R.id.survey_desc);
 
-        Bundle bundle = this.getArguments();
+        final Bundle bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_2_CHOICES_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_2_CHOICES_DESC, null);
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
 
         if (savedInstanceState != null)
-            i = savedInstanceState.getInt(CLICK, 0);
+            SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BackgroundNoSelection = (Drawable)getResources().getDrawable(R.drawable.button_round_noselection, getContext().getTheme());
@@ -81,13 +82,11 @@ public class FragmentSurvey2Choices extends AbstractStep {
             InternalSetBackground(BackgroundNoSelection, button2);
             imgbutton1.setImageResource(R.drawable.ic_action_ok_selected);
             imgbutton2.setImageResource(R.drawable.ic_action_ko);
-            i++;
         } else if (SurveyStatus == 0) {
             InternalSetBackground(BackgroundNoSelection, button1);
             InternalSetBackground(BackgroundSelected, button2);
             imgbutton1.setImageResource(R.drawable.ic_action_ok);
             imgbutton2.setImageResource(R.drawable.ic_action_ko_selected);
-            i++;
         }
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -97,9 +96,10 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 InternalSetBackground(BackgroundNoSelection, button2);
                 imgbutton1.setImageResource(R.drawable.ic_action_ok_selected);
                 imgbutton2.setImageResource(R.drawable.ic_action_ko);
-                i++;
                 SurveyStatus = 1;
-                mStepper.getExtras().putInt(CLICK, i);
+                mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
+                bundle.putInt(SURVEY_STATUS, SurveyStatus);
+                setArguments(bundle);
             }
         });
 
@@ -110,9 +110,10 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 InternalSetBackground(BackgroundSelected, button2);
                 imgbutton1.setImageResource(R.drawable.ic_action_ok);
                 imgbutton2.setImageResource(R.drawable.ic_action_ko_selected);
-                i++;
                 SurveyStatus = 0;
-                mStepper.getExtras().putInt(CLICK, i);
+                mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
+                bundle.putInt(SURVEY_STATUS, SurveyStatus);
+                setArguments(bundle);
             }
         });
 
@@ -122,12 +123,12 @@ public class FragmentSurvey2Choices extends AbstractStep {
     @Override
     public void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
-        state.putInt(CLICK, i);
+        state.putInt(SURVEY_STATUS, SurveyStatus);
     }
 
     @Override
     public String name() {
-        return "Tab " + getArguments().getInt("position", 0);
+        return "Tab " + getArguments().getInt(SURVEY_STATUS, 0);
     }
 
     @Override
@@ -157,7 +158,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
 
     @Override
     public boolean nextIf() {
-        return i > 0;
+        return SurveyStatus > 0;
     }
 
     @Override

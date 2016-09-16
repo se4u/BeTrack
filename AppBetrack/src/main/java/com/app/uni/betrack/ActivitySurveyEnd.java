@@ -26,6 +26,11 @@ public class ActivitySurveyEnd  extends DotStepper {
     private String SurveyContraception = null;
     private String DateStudyEnd = null;
 
+    private AbstractStep Step1;
+    private Bundle bundle1;
+    private AbstractStep Step2;
+    private Bundle bundle2;
+
     private ContentValues values = new ContentValues();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
     private UtilsLocalDataBase localdatabase = new UtilsLocalDataBase(this);
@@ -39,7 +44,9 @@ public class ActivitySurveyEnd  extends DotStepper {
     public void onComplete() {
         super.onComplete();
 
-        //TODO still need to find the proper to get the values from fragments...
+        SurveyInRelation = Step1.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        SurveyContraception  = Step2.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
+
         values.clear();
         values.put(UtilsLocalDataBase.C_ENDSTUDY_PID, ObjSettingsStudy.getIdUser());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP, SurveyInRelation);
@@ -53,11 +60,12 @@ public class ActivitySurveyEnd  extends DotStepper {
                 + "Contraception used: " + SurveyContraception
                 + "Date end of the study: " + DateStudyEnd);
 
-        ObjSettingsStudy.setStartSurveyDone(true);
+        ObjSettingsStudy.setEndSurveyDone(true);
 
-        //Intent i = new Intent(ActivitySurveyStart.this, ActivityBeTrack.class);
-        //startActivity(i);
-        //finish();
+        Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
+        //Start the service for sending the data to the remote server
+        startService(msgIntent);
+
         System.out.println("completed");
     }
 
@@ -70,14 +78,21 @@ public class ActivitySurveyEnd  extends DotStepper {
         ObjSettingsStudy = SettingsStudy.getInstance(this);
 
         //Step 1 RELATIONSHIP
-        Bundle bundle1 = new Bundle();
+        bundle1 = new Bundle();
         bundle1.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_se_screen1));
         bundle1.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_se_screen1));
-        AbstractStep Step1 = new FragmentSurvey2Choices();
+        Step1 = new FragmentSurvey2Choices();
         Step1.setArguments(bundle1);
         addStep(Step1);
 
         //Step 2 CONTRACEPTION
+        bundle2 = new Bundle();
+        bundle2.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_se_screen2));
+        bundle2.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_se_screen2));
+        bundle2.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, getResources().getString(R.string.yourtext_se_screen2));
+        Step2 = new FragmentSurvey2Choices();
+        Step2.setArguments(bundle2);
+        addStep(Step2);
 
         super.onCreate(savedInstanceState);
     }

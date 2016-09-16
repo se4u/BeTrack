@@ -21,13 +21,13 @@ public class LockedViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        // Disable swipe
+        //return super.onTouchEvent(event);
         return false;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // Disable swipe
+        //return super.onTouchEvent(event);
         return false;
     }
 }
