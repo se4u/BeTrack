@@ -84,6 +84,7 @@ CREATE TABLE `BetrackDailyStatus` (
   CREATE TABLE `BetrackEndStudy` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` varchar(255) COLLATE latin1_general_ci NOT NULL,
+  `Period` varchar(2) COLLATE latin1_general_ci NOT NULL,
   `RelationShip` varchar(2) COLLATE latin1_general_ci NOT NULL,
   `Contraception` varchar(255) COLLATE latin1_general_ci NOT NULL,
   `Date` varchar(15) COLLATE latin1_general_ci NOT NULL,
