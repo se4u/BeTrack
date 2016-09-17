@@ -206,6 +206,11 @@ public class IntentServicePostData extends IntentService {
                     rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, ObjSettingsStudy.getIdUser());
                     if (rc == true) {
                         AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
+                        ObjSettingsStudy.setEndSurveyDone(true);
+                        CreateNotification.StopAlarm(this);
+                        CreatePostData.StopAlarm(this);
+                        CreateTrackApp.StopAlarm(this);
+                        CreateTrackGPS.StopAlarm(this);
                     }
                 }
                 else
@@ -233,7 +238,7 @@ public class IntentServicePostData extends IntentService {
                 }
                 else
                 {
-                    TaskDone &= ~TABLE_ENDSTUDY_TRANSFERED;
+                    TaskDone &= ~TABLE_GPS_TRANSFERED;
                 }
             }
         }

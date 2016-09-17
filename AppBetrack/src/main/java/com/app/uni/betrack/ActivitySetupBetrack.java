@@ -28,6 +28,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
     private SettingsStudy ObjSettingsStudy;
     private boolean EnableUsageStat = false;
     private boolean EnableHuaweiProtMode = false;
+    private boolean EnableHuaweiProtModeClicked = false;
     private boolean EnableGPS = false;
 
     @Override
@@ -111,6 +112,12 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 ObjSettingsStudy.setSetupBetrackDone(false);
             }
         }
+
+        //Remove huawei set up box if the checkbox was selected and the button clicked
+        if ((EnableHuaweiProtMode == true) && (EnableHuaweiProtModeClicked == true)) {
+            findViewById(R.id.EnableHuawei).setVisibility(View.GONE);
+        }
+
     }
 
     public void onButtonClicked(View view) {
@@ -123,6 +130,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 break;
             case  R.id.EnableHuaweiBetrack:
                 huaweiProtectedApps();
+                EnableHuaweiProtModeClicked = true;
                 if (ObjSettingsStudy.getSetupBetrackDone()) {
                     i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
                     startActivity(i);

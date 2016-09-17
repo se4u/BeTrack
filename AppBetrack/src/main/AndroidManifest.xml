@@ -63,13 +63,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityBeTrack" />
-        <activity android:name=".ActivitySettings" />
-        <activity android:name=".ActivitySurveyStart" />
-        <activity android:name=".ActivitySurveyDaily" />
-        <activity android:name=".ActivitySurveyEnd" />
-        <activity android:name=".ActivityStartStudy" />
-        <activity android:name=".ActivitySetupBetrack"></activity>
+        <activity android:name=".ActivityBeTrack" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivitySettings" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivitySurveyStart" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivitySurveyDaily" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivitySurveyEnd" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityStartStudy" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivitySetupBetrack" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -20,6 +20,7 @@ import java.util.Date;
 public class ActivitySurveyEnd  extends DotStepper {
     private static final String TAG = "ActivitySurveyEnd";
 
+    private int SurveyPeriod = -1;
     private int SurveyInRelation = -1;
     private String SurveyContraception = null;
     private String DateStudyEnd = null;
@@ -28,6 +29,8 @@ public class ActivitySurveyEnd  extends DotStepper {
     private Bundle bundle1;
     private AbstractStep Step2;
     private Bundle bundle2;
+    private AbstractStep Step3;
+    private Bundle bundle3;
 
     private ContentValues values = new ContentValues();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
@@ -43,9 +46,11 @@ public class ActivitySurveyEnd  extends DotStepper {
         super.onComplete();
         String resultString;
 
-        SurveyInRelation = Step1.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        SurveyPeriod = Step1.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
 
-        resultString  = Step2.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
+        SurveyInRelation = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+
+        resultString  = Step3.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
         if (resultString != null) {
             SurveyContraception = resultString;
         }
@@ -61,8 +66,6 @@ public class ActivitySurveyEnd  extends DotStepper {
                 + " In a relationship: " + SurveyInRelation
                 + " Contraception used: " + SurveyContraception
                 + " Date end of the study: " + DateStudyEnd);
-
-        ObjSettingsStudy.setEndSurveyDone(true);
 
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
         //Start the service for sending the data to the remote server
@@ -89,7 +92,7 @@ public class ActivitySurveyEnd  extends DotStepper {
             ObjSettingsStudy = SettingsStudy.getInstance(this);
         }
 
-        //Step 1 RELATIONSHIP
+        //Step 1 PERIOD
         bundle1 = new Bundle();
         bundle1.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_se_screen1));
         bundle1.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_se_screen1));
@@ -97,14 +100,22 @@ public class ActivitySurveyEnd  extends DotStepper {
         Step1.setArguments(bundle1);
         addStep(Step1);
 
-        //Step 2 CONTRACEPTION
+        //Step 2 RELATIONSHIP
         bundle2 = new Bundle();
-        bundle2.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_se_screen2));
-        bundle2.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_se_screen2));
-        bundle2.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, getResources().getString(R.string.yourtext_se_screen2));
+        bundle2.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_se_screen2));
+        bundle2.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_se_screen2));
         Step2 = new FragmentSurvey2Choices();
         Step2.setArguments(bundle2);
         addStep(Step2);
+
+        //Step 3 CONTRACEPTION
+        bundle3 = new Bundle();
+        bundle3.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_se_screen3));
+        bundle3.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_se_screen3));
+        bundle3.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, getResources().getString(R.string.yourtext_se_screen3));
+        Step3 = new FragmentSurveyText();
+        Step3.setArguments(bundle3);
+        addStep(Step3);
 
         super.onCreate(savedInstanceState);
     }

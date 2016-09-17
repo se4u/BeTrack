@@ -1,5 +1,6 @@
 package com.app.uni.betrack;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -7,11 +8,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
@@ -45,31 +51,12 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ArrayList;
 
 
 public class ActivityBeTrack extends AppCompatActivity {
-
-    private static final String TAG = "Status";
-
-    public static ProgressDialog dialog;
-
-    protected String[] mParties = new String[] {
-            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
-            "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
-            "Party Q", "Party R", "Party S", "Party T", "Party U", "Party V", "Party W", "Party X",
-            "Party Y", "Party Z"
-    };
-
-    private UtilsLocalDataBase localdatabase = null;
-    public UtilsLocalDataBase AccesLocalDB()
-    {
-        return localdatabase;
-    }
-
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-    private String DatePeriod = null;
 
     private Menu SaveMenuRef = null;
 
@@ -94,25 +81,39 @@ public class ActivityBeTrack extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (false == ObjSettingsStudy.getSetupBetrackDone()) {
-            Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
-            startActivity(i);
-            finish();
-        }
-        else if (ObjSettingsStudy.getDailySurveyDone() == false) {
-            Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
-            startActivity(i);
-            finish();
+        if (false == ObjSettingsStudy.getEndSurveyDone()) {
+            if (ComputeTimeRemaing() != 0)
+            {
+                if (false == ObjSettingsStudy.getSetupBetrackDone()) {
+                    Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
+                    startActivity(i);
+                    finish();
+                }
+                else if (ObjSettingsStudy.getDailySurveyDone() == false) {
+                    Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
+                    startActivity(i);
+                    finish();
+                }
+                mChart.setCenterText(generateCenterSpannableText());
+            } else {
+                Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
+                startActivity(i);
+                finish();
+            }
+        } else {
+            prepareChart(true);
+            View buttonSetting = findViewById(R.id.FrameLayoutBetrackBtnSetting);
+            buttonSetting.setVisibility(View.GONE);
+            TextView textWelcome = (TextView)findViewById(R.id.TextWelcome);
+            textWelcome.setText(getResources().getString(R.string.Betrack_end));
+            TextView textTitle = (TextView)findViewById(R.id.TextTitle);
+            textTitle.setText(getResources().getString(R.string.Betrack_info_end));
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (null == localdatabase) {
-            localdatabase =  new UtilsLocalDataBase(this);
-        }
 
         if (null == ObjSettingsStudy) {
             //Read the setting of the study
@@ -124,24 +125,34 @@ public class ActivityBeTrack extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_betrack);
 
-        //Set the notification to make sure that we never got killed
-        final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(SettingsBetrack.NOTIFICATION_ID);
 
-        if (ObjSettingsStudy.getDailySurveyDone() == false) {
-            Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
-            startActivity(i);
-            finish();
+        if (false == ObjSettingsStudy.getEndSurveyDone()) {
+            //Set the notification to make sure that we never got killed
+            final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(SettingsBetrack.NOTIFICATION_ID);
+
+            if (ObjSettingsStudy.getDailySurveyDone() == false) {
+                Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
+                startActivity(i);
+                finish();
+            } else {
+                //Prepare the chart to be display
+                prepareChart(false);
+                //We start the study
+                StartStudy();
+            }
         } else {
-            //Prepare the chart to be display
-            prepareChart();
-
-            //We start the study
-            StartStudy();
+            prepareChart(true);
+            View buttonSetting = findViewById(R.id.FrameLayoutBetrackBtnSetting);
+            buttonSetting.setVisibility(View.GONE);
+            TextView textWelcome = (TextView)findViewById(R.id.TextWelcome);
+            textWelcome.setText(getResources().getString(R.string.Betrack_end));
+            TextView textTitle = (TextView)findViewById(R.id.TextTitle);
+            textTitle.setText(getResources().getString(R.string.Betrack_info_end));
         }
     }
 
-    private void prepareChart() {
+    private void prepareChart(boolean endStudy) {
         //Set up the chart
         mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
@@ -153,9 +164,18 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         mChart.setDragDecelerationFrictionCoef(0.95f);
 
-        mChart.setCenterText(generateCenterSpannableText());
+        if (endStudy==false) {
+            mChart.setCenterText(generateCenterSpannableText());
+        } else {
+            mChart.setCenterText(generateEmptySpannableText());
+        }
 
-        mChart.setDrawHoleEnabled(true);
+
+        if (endStudy==false) {
+            mChart.setDrawHoleEnabled(true);
+        } else {
+            mChart.setDrawHoleEnabled(false);
+        }
         mChart.setHoleColor(Color.WHITE);
 
         mChart.setTransparentCircleColor(Color.WHITE);
@@ -174,22 +194,37 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         int[] myIntArray = {10,20,30};
 
-        setData(myIntArray);
+        setData(myIntArray, endStudy);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
     }
 
     private SpannableString generateCenterSpannableText() {
 
-        int NbrDays = ObjSettingsStudy.getStudyDuration();
-        String Desc = "Days";
+        int NbrDays = ComputeTimeRemaing();
+        String Desc = getResources().getString(R.string.survey_days);
 
         SpannableString s = new SpannableString(NbrDays+"\n"+Desc);
-        s.setSpan(new RelativeSizeSpan(3.0f), 0, 2, 0);
+        if (NbrDays > 99) {
+            s.setSpan(new RelativeSizeSpan(5.0f), 0, 3, 0);
+            s.setSpan(new RelativeSizeSpan(3.0f), 3, 8, 0);
+        }
+        if (NbrDays > 9) {
+            s.setSpan(new RelativeSizeSpan(5.0f), 0, 2, 0);
+            s.setSpan(new RelativeSizeSpan(3.0f), 2, 7, 0);
+        } else {
+            s.setSpan(new RelativeSizeSpan(5.0f), 0, 1, 0);
+            s.setSpan(new RelativeSizeSpan(3.0f), 1, 6, 0);
+        }
         return s;
     }
 
-    private void setData(int UsagePerApp[]) {
+    private SpannableString generateEmptySpannableText() {
+        SpannableString s = new SpannableString("");
+        return s;
+    }
+
+    private void setData(int UsagePerApp[], boolean endStudy) {
 
         int sumUsage = 0;
         float mult = 100;
@@ -200,15 +235,19 @@ public class ActivityBeTrack extends AppCompatActivity {
             sumUsage += UsagePerApp[i];
         }
 
-        for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
-            entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
+        if (endStudy == true) {
+            for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
+                entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
+            }
+        } else {
+            entries.add(new PieEntry((float) (1), ""));
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Days study");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
 
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setColors(ColorTemplate.PASTEL_COLORS);
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
@@ -236,7 +275,7 @@ public class ActivityBeTrack extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.settingsmenu, menu);
+        //inflater.inflate(R.menu.settingsmenu, menu);
         SaveMenuRef = menu;
 
         return true;
@@ -251,4 +290,30 @@ public class ActivityBeTrack extends AppCompatActivity {
         return true;
     }
 
+    public void onButtonClicked(View view) {
+        switch (view.getId()) {
+            case  R.id.ButtonSettings:
+                startActivity(new Intent(this, ActivitySettings.class));
+                break;
+        }
+    }
+
+    private int ComputeTimeRemaing() {
+        //Compute the time remaining of the study
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+        int StudyDuration = ObjSettingsStudy.getStudyDuration();
+        try {
+            //Parse the date from preference
+            sdf.parse(ObjSettingsStudy.getStartDateSurvey());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Calendar calendarStartDate = sdf.getCalendar();
+
+        long millisStartDate = calendarStartDate.getTimeInMillis();
+        long millisActualDate = System.currentTimeMillis();
+
+        return (StudyDuration - (int)((millisActualDate - millisStartDate) / (24*60*60*1000)));
+    }
 }

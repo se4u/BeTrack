@@ -1,11 +1,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- A 'parent' preference, which enables/disables child preferences (below)
-         when checked/unchecked. -->
+         when checked/unchecked.
     <SwitchPreference
         android:defaultValue="true"
         android:key="@string/pref_key_study_notification"
-        android:title="@string/pref_title_new_message_notifications" />
+        android:title="@string/pref_title_new_message_notifications" />  -->
 
     <com.app.uni.betrack.UtilsTimePreference
         android:key="@string/pref_key_study_notification_time"

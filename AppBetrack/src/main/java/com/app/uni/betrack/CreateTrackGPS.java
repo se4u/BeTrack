@@ -79,4 +79,11 @@ public class CreateTrackGPS {
             e.printStackTrace();
         }
     }
+
+    static public void StopAlarm(Context context)
+    {
+        if (alarmMgr!= null) {
+            alarmMgr.cancel(alarmIntent);
+        }
+    }
 }

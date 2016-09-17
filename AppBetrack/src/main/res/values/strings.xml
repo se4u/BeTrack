@@ -58,6 +58,12 @@
     <string name="welcome_loading">Loading</string>
     <string name="welcome_wait">Please wait...</string>
 
+    <!-- Study main screen -->
+    <string name="Betrack_welcome">Thank you for participating, see you tomorrow !</string>
+    <string name="Betrack_info_start">Days remaining:</string>
+    <string name="Betrack_end">Thank you for participating in the study, you can uninstall Betrack</string>
+    <string name="Betrack_info_end">Your phone usage:</string>
+
     <!-- Your personnal ID-->
     <string name="pref_header_your_id">Your personnal ID </string>
 
@@ -144,13 +150,17 @@
     <string name="question_sd_screen1">Do you have your period ?</string>
 
     <!-- End survey -->
-    <!-- Screen 1 (relation) -->
-    <string name="title_se_screen1">RELATIONSHIP</string>
-    <string name="question_se_screen1">Are you in a relationship ?</string>
+    <!-- Screen 1 (period) -->
+    <string name="title_se_screen1">PERIOD</string>
+    <string name="question_se_screen1">Do you have your period ?</string>
 
-    <!-- Screen 2 (Contraception) -->
-    <string name="title_se_screen2">CONTRACEPTION</string>
-    <string name="question_se_screen2">If you use a contraceptive (optional) could you write down the name</string>
-    <string name="yourtext_se_screen2">contraceptive name</string>
+    <!-- Screen 2 (relation) -->
+    <string name="title_se_screen2">RELATIONSHIP</string>
+    <string name="question_se_screen2">Are you in a relationship ?</string>
+
+    <!-- Screen 3 (Contraception) -->
+    <string name="title_se_screen3">CONTRACEPTION</string>
+    <string name="question_se_screen3">If you use a contraceptive (optional) could you write down the name</string>
+    <string name="yourtext_se_screen3">contraceptive name</string>
 
 </resources>

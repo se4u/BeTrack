@@ -105,4 +105,17 @@ public class CreatePostData {
             }
         }
     }
+
+    static public void StopAlarm(Context context)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (null != mJobScheduler) {
+                mJobScheduler.cancel(SettingsBetrack.JOBID_POSTDATA);
+            }
+        } else {
+            if (alarmMgr!= null) {
+                alarmMgr.cancel(alarmIntent);
+            }
+        }
+    }
 }

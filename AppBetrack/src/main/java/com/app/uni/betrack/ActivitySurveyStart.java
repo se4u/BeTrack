@@ -117,6 +117,7 @@ public class ActivitySurveyStart extends DotStepper {
         + " period lenght: " + SurveyLengthPeriod + " cycle lenght: " + SurveyLenghCycle + " Contraception used: " + SurveyContraception
         + " date start: " + DateStudyStart);
 
+        ObjSettingsStudy.setStartDateSurvey(DateStudyStart);
         ObjSettingsStudy.setStartSurveyDone(true);
 
         //We don't to trigger directly the daily survey so we fake it

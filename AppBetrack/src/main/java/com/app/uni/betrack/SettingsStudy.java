@@ -53,9 +53,9 @@ public class SettingsStudy {
     static private final String USER_ID = "UserId";
 
     static private Boolean DailySurveyDone;
-    static private String LastDateDailySurvey;
+    static private String StartDateSurvey;
     static private final String STUDY_DAILY_SURVEY_DONE = "DailySurveyDone";
-    static private final String STUDY_LASTDATE_SURVEY = "LastDateDailySurvey";
+    static private final String STUDY_STARTDATE_SURVEY = "StartDateSurvey";
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -97,7 +97,7 @@ public class SettingsStudy {
 
         //Read information used to trigger the daily survey
         DailySurveyDone = prefs.getBoolean(STUDY_DAILY_SURVEY_DONE, false);
-        LastDateDailySurvey = prefs.getString(STUDY_LASTDATE_SURVEY, null);
+        StartDateSurvey = prefs.getString(STUDY_STARTDATE_SURVEY, null);
 
     }
 
@@ -112,26 +112,26 @@ public class SettingsStudy {
         return ConfigInfoStudyHolder.instance;
     }
 
-    public String getLastDateDailySurvey()
+    public String getStartDateSurvey()
     {
-        String ReturnLastDateDailySurvey = null;
+        String ReturnStartDateSurvey = null;
         try {
             SemSettingsStudy.acquire();
-            ReturnLastDateDailySurvey = LastDateDailySurvey;
+            ReturnStartDateSurvey = StartDateSurvey;
             SemSettingsStudy.release();
         } catch (Exception e) {
-            ReturnLastDateDailySurvey = null;
+            ReturnStartDateSurvey = null;
         } finally {
-            return ReturnLastDateDailySurvey;
+            return ReturnStartDateSurvey;
         }
     }
 
-    public void setLastDateDailySurvey(String lastdatedailysurvey)
+    public void setStartDateSurvey(String startdatesurvey)
     {
         try {
             SemSettingsStudy.acquire();
-            LastDateDailySurvey = lastdatedailysurvey;
-            editor.putString(STUDY_LASTDATE_SURVEY, LastDateDailySurvey);
+            StartDateSurvey = startdatesurvey;
+            editor.putString(STUDY_STARTDATE_SURVEY, StartDateSurvey);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {

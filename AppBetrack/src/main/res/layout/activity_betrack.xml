@@ -4,11 +4,62 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+
+    <TextView
+        android:id="@+id/TextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:gravity="left"
+        android:layout_weight="3"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:text="@string/Betrack_info_start"
+        />
     <com.github.mikephil.charting.charts.PieChart
         android:layout_weight="1"
         android:id="@+id/chart1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        android:id="@+id/TextWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:gravity="left"
+        android:layout_weight="3"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:text="@string/Betrack_welcome"
+        />
 
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/FrameLayoutBetrackBtnSetting"
+        android:layout_width="100dp"
+        android:layout_gravity="right"
+        android:paddingBottom="10dp"
+        android:layout_height="70dp">
+        <Button
+            android:id="@+id/ButtonSettings"
+            android:layout_width="70dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:onClick="onButtonClicked"
+            android:background="@drawable/button_round_noselection"
+            >
+        </Button>
+        <ImageView
+            android:id="@+id/ImgButtonChoice1"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_action_settings" />
+    </FrameLayout>
 </LinearLayout>

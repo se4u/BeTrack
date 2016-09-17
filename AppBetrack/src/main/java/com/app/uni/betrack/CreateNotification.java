@@ -138,4 +138,11 @@ public class CreateNotification {
         }
     }
 
+    static public void StopAlarm(Context context)
+    {
+        if (alarmMgr!= null) {
+            alarmMgr.cancel(alarmIntent);
+        }
+    }
+
 }

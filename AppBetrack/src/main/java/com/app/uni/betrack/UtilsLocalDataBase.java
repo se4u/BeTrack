@@ -107,12 +107,14 @@ public class UtilsLocalDataBase {
     static final String TABLE_END_STUDY = "EndStudy";
     static final String C_ENDSTUDY_ID = BaseColumns._ID;
     static final String C_ENDSTUDY_PID = "ParticipantID";
+    static final String C_ENDSTUDY_PERIOD = "Period";
     static final String C_ENDSTUDY_RELATIONSHIP = "RelationShip";
     static final String C_ENDSTUDY_CONTRACEPTION = "Contraception";
     static final String C_ENDSTUDY_DATE = "Date";
 
     public static final ArrayList<String> DB_END_STUDY = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_ENDSTUDY_PID);
+        add(UtilsLocalDataBase.C_ENDSTUDY_PERIOD);
         add(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP);
         add(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION);
         add(UtilsLocalDataBase.C_ENDSTUDY_DATE);
@@ -154,7 +156,7 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql4);
 
             String sql6 = "create table " + TABLE_END_STUDY + " (" + C_ENDSTUDY_ID + " integer primary key autoincrement, "
-                    + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, " + C_ENDSTUDY_DATE + " text)"; //
+                    + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, " + C_ENDSTUDY_DATE + " text)"; //
             db.execSQL(sql6);
             Log.d(TAG, "onCreated sql: " + sql6);
         }
