@@ -34,9 +34,8 @@ public class IntentServiceTrackApp extends IntentService {
     private SettingsBetrack ObjSettingsBetrack = null;
     private SettingsStudy ObjSettingsStudy = null;
 
-    private static UtilsLocalDataBase localdatabase = null;
-
-    public UtilsLocalDataBase AccesLocalDB()
+    private UtilsLocalDataBase localdatabase = null;
+    private UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
@@ -60,6 +59,10 @@ public class IntentServiceTrackApp extends IntentService {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
 
+        if (null == localdatabase) {
+            localdatabase =  new UtilsLocalDataBase(this);
+        }
+
         if (null == ObjSettingsBetrack) {
             //Read the preferences
             ObjSettingsBetrack = SettingsBetrack.getInstance();
@@ -68,10 +71,6 @@ public class IntentServiceTrackApp extends IntentService {
 
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(this);
-        }
-
-        if (null == localdatabase) {
-            localdatabase = new UtilsLocalDataBase(this);
         }
 
         if (intent != null) {
@@ -114,7 +113,7 @@ public class IntentServiceTrackApp extends IntentService {
 
                                     //We save in the local database the informations about the study
                                     values.clear();
-                                    values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
+                                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
                                     try {
                                         ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
                                         //Log.d(TAG, "Data ready to be transfer to the remote database ");
@@ -143,7 +142,7 @@ public class IntentServiceTrackApp extends IntentService {
                         }
                         else {
                             values.clear();
-                            values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
+                            values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
                             if (0 != values.size()) {
                                 try {
                                     ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
@@ -190,7 +189,7 @@ public class IntentServiceTrackApp extends IntentService {
 
                                         if (!locked) {
                                             values.clear();
-                                            values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
+                                            values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
                                             try {
                                                 if (0 != values.size()) {
                                                     ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();

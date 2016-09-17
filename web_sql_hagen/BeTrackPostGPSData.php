@@ -12,7 +12,7 @@ $date = $_POST['Date'];
 $time = $_POST['Time'];
 
 $result = mysqli_query($con,"INSERT INTO BetrackGPS (UserId, Lattitude, Longitude, Date, Time) 
-          VALUES ('$userid ', '$lattitude', '$longitude', $date, $time)");
+          VALUES ('$userid', '$lattitude', '$longitude', '$date', '$time')");
  
 if($result == true) {
     echo '{"query_result":"SUCCESS"} ';

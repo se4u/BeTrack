@@ -20,8 +20,6 @@ import java.util.Date;
 public class ActivitySurveyEnd  extends DotStepper {
     private static final String TAG = "ActivitySurveyEnd";
 
-    private int i = 1;
-
     private int SurveyInRelation = -1;
     private String SurveyContraception = null;
     private String DateStudyEnd = null;
@@ -33,8 +31,8 @@ public class ActivitySurveyEnd  extends DotStepper {
 
     private ContentValues values = new ContentValues();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-    private UtilsLocalDataBase localdatabase = new UtilsLocalDataBase(this);
-    public UtilsLocalDataBase AccesLocalDB()
+    private UtilsLocalDataBase localdatabase = null;
+    private UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
@@ -43,12 +41,16 @@ public class ActivitySurveyEnd  extends DotStepper {
     @Override
     public void onComplete() {
         super.onComplete();
+        String resultString;
 
         SurveyInRelation = Step1.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveyContraception  = Step2.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
+
+        resultString  = Step2.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
+        if (resultString != null) {
+            SurveyContraception = resultString;
+        }
 
         values.clear();
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_PID, ObjSettingsStudy.getIdUser());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP, SurveyInRelation);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION, SurveyContraception);
         DateStudyEnd = sdf.format(new Date());
@@ -56,15 +58,19 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_END_STUDY);
         Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser()
-                + "In a relationship: " + SurveyInRelation
-                + "Contraception used: " + SurveyContraception
-                + "Date end of the study: " + DateStudyEnd);
+                + " In a relationship: " + SurveyInRelation
+                + " Contraception used: " + SurveyContraception
+                + " Date end of the study: " + DateStudyEnd);
 
         ObjSettingsStudy.setEndSurveyDone(true);
 
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
         //Start the service for sending the data to the remote server
         startService(msgIntent);
+
+        Intent i = new Intent(ActivitySurveyEnd.this, ActivityBeTrack.class);
+        startActivity(i);
+        finish();
 
         System.out.println("completed");
     }
@@ -75,7 +81,13 @@ public class ActivitySurveyEnd  extends DotStepper {
         setErrorTimeout(1500);
         setTitle(getResources().getString(R.string.app_name));
 
-        ObjSettingsStudy = SettingsStudy.getInstance(this);
+        if (null == localdatabase) {
+            localdatabase =  new UtilsLocalDataBase(this);
+        }
+
+        if (null == ObjSettingsStudy) {
+            ObjSettingsStudy = SettingsStudy.getInstance(this);
+        }
 
         //Step 1 RELATIONSHIP
         bundle1 = new Bundle();

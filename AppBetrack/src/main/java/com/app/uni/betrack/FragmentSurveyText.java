@@ -70,7 +70,6 @@ public class FragmentSurveyText extends AbstractStep {
                     SurveyStatus = s.toString();
                     mStepper.getExtras().putString(SURVEY_STATUS, SurveyStatus);
                     bundle.putString(SURVEY_STATUS, SurveyStatus);
-                    setArguments(bundle);
                 }
             }
         });

@@ -58,8 +58,8 @@ public class ActivitySurveyStart extends DotStepper {
 
     private ContentValues values = new ContentValues();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-    private UtilsLocalDataBase localdatabase = new UtilsLocalDataBase(this);
-    public UtilsLocalDataBase AccesLocalDB()
+    private UtilsLocalDataBase localdatabase = null;
+    private UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
@@ -80,17 +80,30 @@ public class ActivitySurveyStart extends DotStepper {
     @Override
     public void onComplete() {
         super.onComplete();
+        int resultInt =0;
+        String resultString = null;
 
         //get data from the different steps
-        SurveyAge = Step1.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
-        SurveyInRelation = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveyLengthPeriod = Step3.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveyLenghCycle = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveyContraception  = Step5.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
+        SurveyInRelation = Step1.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
+        resultInt = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        if (resultInt != 0) {
+            SurveyAge = resultInt;
+        }
+        resultInt = Step3.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        if (resultInt != 0) {
+            SurveyLengthPeriod = resultInt;
+        }
+        resultInt = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        if (resultInt != 0) {
+            SurveyLenghCycle = resultInt;
+        }
+        resultString  = Step5.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
+        if (resultString != null) {
+            SurveyContraception = resultString;
+        }
 
         //Save those data in the local database
         values.clear();
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_PID, ObjSettingsStudy.getIdUser());
         values.put(UtilsLocalDataBase.C_STARTSTUDY_AGE, SurveyAge);
         values.put(UtilsLocalDataBase.C_STARTSTUDY_RELATIONSHIP, SurveyInRelation);
         values.put(UtilsLocalDataBase.C_STARTSTUDY_AVGPERIODLENGHT, SurveyLengthPeriod);
@@ -101,10 +114,13 @@ public class ActivitySurveyStart extends DotStepper {
 
         AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_START_STUDY);
         Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Participant age: " + SurveyAge + " In a relationship: " + SurveyInRelation
-        + "period lenght" + SurveyLengthPeriod + "cycle lenght" + SurveyLenghCycle + "Contraception used" + SurveyContraception
-        + "date start" + DateStudyStart);
+        + " period lenght: " + SurveyLengthPeriod + " cycle lenght: " + SurveyLenghCycle + " Contraception used: " + SurveyContraception
+        + " date start: " + DateStudyStart);
 
         ObjSettingsStudy.setStartSurveyDone(true);
+
+        //We don't to trigger directly the daily survey so we fake it
+        ObjSettingsStudy.setDailySurveyDone(true);
 
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
         //Start the service for sending the data to the remote server
@@ -122,7 +138,13 @@ public class ActivitySurveyStart extends DotStepper {
         setErrorTimeout(1500);
         setTitle(getResources().getString(R.string.app_name));
 
-        ObjSettingsStudy = SettingsStudy.getInstance(this);
+        if (null == localdatabase) {
+            localdatabase =  new UtilsLocalDataBase(this);
+        }
+
+        if (null == ObjSettingsStudy) {
+            ObjSettingsStudy = SettingsStudy.getInstance(this);
+        }
 
         //Step 1 RELATIONSHIP
         bundle1 = new Bundle();

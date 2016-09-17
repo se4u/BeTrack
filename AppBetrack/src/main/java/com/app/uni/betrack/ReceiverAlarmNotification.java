@@ -9,13 +9,19 @@ import android.content.Intent;
  */
 public class ReceiverAlarmNotification extends BroadcastReceiver {
 
+    private SettingsStudy ObjSettingsStudy;
+
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        ObjSettingsStudy = SettingsStudy.getInstance(context);
+        //We enable the daily survey
+        ObjSettingsStudy.setDailySurveyDone(false);
         //Trigger a notification
         CreateNotification.Create(context);
         //Restart for a new notification in 24 hours
         CreateNotification.ResetAlarm(context);
+
 
     }
 

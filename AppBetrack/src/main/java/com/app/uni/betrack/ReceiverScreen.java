@@ -26,9 +26,9 @@ public class ReceiverScreen extends BroadcastReceiver {
 
     private SettingsStudy ObjSettingsStudy;
 
-    public static UtilsLocalDataBase localdatabase =  null;
+    private static UtilsLocalDataBase localdatabase =  null;
 
-    public UtilsLocalDataBase AccesLocalDB()
+    private UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
@@ -113,7 +113,7 @@ public class ReceiverScreen extends BroadcastReceiver {
                 CreateTrackApp.StopAlarm(context);
 
                 values.clear();
-                values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
+                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
                 try {
                     ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
                     Log.d(TAG, "End monitoring date: nothing to save");

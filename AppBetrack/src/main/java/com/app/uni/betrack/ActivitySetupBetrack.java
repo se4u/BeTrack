@@ -10,6 +10,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,10 @@ public class ActivitySetupBetrack extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
         setContentView(R.layout.activity_setup_betrack);
 
         Intent i;
@@ -151,7 +156,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 } else {
                     EnableHuaweiProtMode = false;
                 }
-                if (EnableHuaweiProtMode && EnableUsageStat) {
+                if (EnableHuaweiProtMode && EnableUsageStat  && EnableGPS) {
                     ObjSettingsStudy.setSetupBetrackDone(true);
                 } else {
                     ObjSettingsStudy.setSetupBetrackDone(false);

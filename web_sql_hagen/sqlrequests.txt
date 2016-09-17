@@ -45,7 +45,7 @@ CREATE TABLE `TestPeriod_applications` (
 INSERT INTO TestPeriod_applications (ApplicationName) 
           VALUES ('Appcom.example.cevincent.test')
 
-
+DELETE FROM `BetrackStudy`
 
 Create study table study
 The name should be StudyId_study

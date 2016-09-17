@@ -66,6 +66,8 @@
         <activity android:name=".ActivityBeTrack" />
         <activity android:name=".ActivitySettings" />
         <activity android:name=".ActivitySurveyStart" />
+        <activity android:name=".ActivitySurveyDaily" />
+        <activity android:name=".ActivitySurveyEnd" />
         <activity android:name=".ActivityStartStudy" />
         <activity android:name=".ActivitySetupBetrack"></activity>
     </application>

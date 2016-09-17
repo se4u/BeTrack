@@ -21,7 +21,7 @@ public class ReceiverAlarmTrackGPS extends BroadcastReceiver {
     static final String TAG = "ReceiverAlarmTrackGPS";
     private ContentValues values = new ContentValues();
     private UtilsLocalDataBase localdatabase = null;
-    public UtilsLocalDataBase AccesLocalDB()
+    private UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
@@ -71,9 +71,8 @@ public class ReceiverAlarmTrackGPS extends BroadcastReceiver {
             lat = location.getLatitude();
             lng = location.getLongitude();
             values.clear();
-            values.put(UtilsLocalDataBase.C_GPS_ID, ObjSettingsStudy.getIdUser());
-            values.put(UtilsLocalDataBase.C_GPS_LATTITUDE, lat);
-            values.put(UtilsLocalDataBase.C_GPS_LONGITUDE, lng);
+            values.put(UtilsLocalDataBase.C_GPS_LATTITUDE, Double.toString(lat));
+            values.put(UtilsLocalDataBase.C_GPS_LONGITUDE, Double.toString(lng));
             GpsDate = sdf.format(new Date());
             values.put(UtilsLocalDataBase.C_GPS_DATE, GpsDate);
             GpsTime = shf.format(new Date());

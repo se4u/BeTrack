@@ -35,7 +35,7 @@ public class SettingsBetrack {
     static public int POSTDATA_SENDING_DELTA = 10000; //In ms
     static public int POSTDATA_SENDING_DELTA_FASTCHECK = 5000; //In ms
 
-    static public int TRACKGPS_DELTA = 120000; //In ms
+    static public int TRACKGPS_DELTA = 600000; //In ms
 
     static public int UPDATE_STATUS_STUDY_TIME = 60000;
 
@@ -43,8 +43,6 @@ public class SettingsBetrack {
 
     static public int JOBID_TRACKAPP = 1;
     static public int JOBID_POSTDATA = 2;
-    static public int JOBID_TRACKGPS = 3;
-    static public int JOBID_NOTIFICATION = 4;
 
     public static final Semaphore SemSettingsBetrack = new Semaphore(1, true);
 
@@ -52,6 +50,7 @@ public class SettingsBetrack {
     private Boolean StudyNotification;
     private String StudyNotificationTime;
     private Boolean EnableDataUsage;
+
 
     private SettingsBetrack()
     {}

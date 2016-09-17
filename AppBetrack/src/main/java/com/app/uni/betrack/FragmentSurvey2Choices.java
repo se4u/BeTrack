@@ -99,7 +99,6 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 SurveyStatus = 1;
                 mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
                 bundle.putInt(SURVEY_STATUS, SurveyStatus);
-                setArguments(bundle);
             }
         });
 
@@ -113,7 +112,6 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 SurveyStatus = 0;
                 mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
                 bundle.putInt(SURVEY_STATUS, SurveyStatus);
-                setArguments(bundle);
             }
         });
 

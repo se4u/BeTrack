@@ -68,14 +68,14 @@
     <string name="pref_description_enable_study">Allow to be temporarily or permanently be out of the study
     </string>
 
-    <!-- Example settings for Data & Sync -->
+    <!-- Settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
     <string name="pref_key_data_sync_enable_usage_3g"> Betrack.Settings.EnableDataUsage </string>
     <string name="pref_title_enable_usage_3g">Enable usage of 3G/LTE to transfer study data</string>
     <string name="pref_description_enable_usage_3g">Allow to use the 3G/LTE connection to transfer data of the study to our server
     </string>
 
-    <!-- Example settings for Notifications -->
+    <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
     <string name="pref_key_study_notification"> Betrack.Settings.StudyNotification </string>
     <string name="pref_key_study_notification_time"> Betrack.Settings.StudyNotificationTime </string>
@@ -137,6 +137,11 @@
         <string name="title_ss_screen5">CONTRACEPTION</string>
         <string name="question_ss_screen5">If you use a contraceptive (optional) could you write down the name</string>
         <string name="yourtext_ss_screen5">contraceptive name</string>
+
+    <!-- Daily survey -->
+    <!-- Screen 1 (Period) -->
+    <string name="title_sd_screen1">PERIOD</string>
+    <string name="question_sd_screen1">Do you have your period ?</string>
 
     <!-- End survey -->
     <!-- Screen 1 (relation) -->

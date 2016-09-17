@@ -31,8 +31,7 @@ public class IntentServicePostData extends IntentService {
     private SettingsBetrack ObjSettingsBetrack = null;
     private SettingsStudy ObjSettingsStudy = null;
 
-    private static UtilsLocalDataBase localdatabase  = null;
-
+    private UtilsLocalDataBase localdatabase = null;
     private UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
@@ -86,6 +85,10 @@ public class IntentServicePostData extends IntentService {
         //Check if there is a data connection
         NetworkState = hasNetworkConnection();
 
+        if (null == localdatabase) {
+            localdatabase =  new UtilsLocalDataBase(this);
+        }
+
         if (null == ObjSettingsBetrack) {
             //Read the preferences
             ObjSettingsBetrack = SettingsBetrack.getInstance();
@@ -94,10 +97,6 @@ public class IntentServicePostData extends IntentService {
 
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(this);
-        }
-
-        if (null == localdatabase) {
-            localdatabase = new UtilsLocalDataBase(this);
         }
 
         Log.d(TAG, "try to post the data");
@@ -111,26 +110,33 @@ public class IntentServicePostData extends IntentService {
             {
                 //APPLICATIONS WATCHED
                 values.clear();
-                values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_APPWATCH);
+                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, true);
                 if (0 != values.size()) {
-                    boolean rc;
+                    //Check if the time end is different of null which means that the entry is complete
+                    if (values.get(UtilsLocalDataBase.DB_APPWATCH.get(4)) != null) {
+                        boolean rc;
 
-                    ArrayList<String>  AppWatchData;
+                        ArrayList<String>  AppWatchData;
 
-                    IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
+                        IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
 
-                    //Encrypt the data
-                    AppWatchData = EncryptData(values, UtilsLocalDataBase.DB_APPWATCH, false);
-                    mHandler.post(new UtilsDisplayToast(this,  getResources().getString(R.string.app_name)
-                            + "Post app watched: " +  AppWatchData.get(0) + " Date start:" + AppWatchData.get(1) + " Time start:" + AppWatchData.get(2)
-                            + " Date end:" + AppWatchData.get(3) + " Time end:" + AppWatchData.get(4)));
-                    //Post the data
-                    rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, ObjSettingsStudy.getIdUser());
-                    if (rc == true) {
-                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
-                        FastCheck(false);
-                    } else {
-                        FastCheck(true);
+                        //Encrypt the data
+                        AppWatchData = EncryptData(values, UtilsLocalDataBase.DB_APPWATCH, false);
+                        mHandler.post(new UtilsDisplayToast(this,  getResources().getString(R.string.app_name)
+                                + "Post app watched: " +  AppWatchData.get(0) + " Date start:" + AppWatchData.get(1) + " Time start:" + AppWatchData.get(2)
+                                + " Date end:" + AppWatchData.get(3) + " Time end:" + AppWatchData.get(4)));
+                        //Post the data
+                        rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, ObjSettingsStudy.getIdUser());
+                        if (rc == true) {
+                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
+                            FastCheck(false);
+                        } else {
+                            FastCheck(true);
+                        }
+                    }
+                    else
+                    {
+                        TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
                     }
                 }
                 else
@@ -138,10 +144,9 @@ public class IntentServicePostData extends IntentService {
                     TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
                 }
 
-
                 //DAILY STATUS
                 values.clear();
-                values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_USER);
+                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_USER, true);
                 if (0 != values.size()) {
                     boolean rc;
                     ArrayList<String>  DailyStatusData;
@@ -164,7 +169,7 @@ public class IntentServicePostData extends IntentService {
 
                 //START STUDY
                 values.clear();
-                values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_START_STUDY);
+                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_START_STUDY, true);
                 if (0 != values.size()) {
                     boolean rc;
                     ArrayList<String>  StartStudyData;
@@ -187,7 +192,7 @@ public class IntentServicePostData extends IntentService {
 
                 //END STUDY
                 values.clear();
-                values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_END_STUDY);
+                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_END_STUDY, true);
                 if (0 != values.size()) {
                     boolean rc;
                     ArrayList<String>  EndStudyData;
@@ -210,7 +215,7 @@ public class IntentServicePostData extends IntentService {
 
                 //GPS DATA
                 values.clear();
-                values = AccesLocalDB().getOldestElementDb(UtilsLocalDataBase.TABLE_GPS);
+                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_GPS, true);
                 if (0 != values.size()) {
                     boolean rc;
                     ArrayList<String>  GpsData;
@@ -223,7 +228,7 @@ public class IntentServicePostData extends IntentService {
                     //Post the data
                     rc = PostData(SettingsBetrack.STUDY_POSTGPSDATA, UtilsLocalDataBase.DB_GPS, GpsData, ObjSettingsStudy.getIdUser());
                     if (rc == true) {
-                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
+                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_GPS, IdSql);
                     }
                 }
                 else
@@ -294,7 +299,12 @@ public class IntentServicePostData extends IntentService {
         ArrayList<String> rc = new ArrayList<String>();
         //We skip the first element which is the user personnal id (generated automatically)
         for (int i=1; i<Field.size(); i++){
-            rc.add(values.get(Field.get(i)).toString());
+            //Log.d(TAG, Field.get(i));
+            if (values.get(Field.get(i)) != null) {
+                rc.add(values.get(Field.get(i)).toString());
+            } else {
+                rc.add(null);
+            }
             if (Encrypt == true) {
 
             }
@@ -324,7 +334,11 @@ public class IntentServicePostData extends IntentService {
             Uri.Builder builder = new Uri.Builder();
             builder.appendQueryParameter(Field.get(0).toString(), ObjSettingsStudy.getIdUser());
             for (int i=1; i<Field.size(); i++){
-                builder.appendQueryParameter("userid", Data.get(i).toString());
+                if (Data.get(i-1) != null) {
+                    builder.appendQueryParameter(Field.get(i).toString(), Data.get(i-1).toString());
+                } else {
+                    builder.appendQueryParameter(Field.get(i).toString(), null);
+                }
             }
             String query = builder.build().getEncodedQuery();
 

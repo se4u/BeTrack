@@ -182,7 +182,7 @@ public class UtilsLocalDataBase {
 
     public UtilsLocalDataBase(Context context) { //
         this.dbHelper = new DbHelper(context);
-        Log.i(TAG, "Initialized data");
+        //Log.i(TAG, "Initialized data");
     }
 
     public void close() { //
@@ -242,7 +242,7 @@ public class UtilsLocalDataBase {
         }
     }
 
-    public ContentValues getOldestElementDb(String Table) { //
+    public ContentValues getElementDb(String Table, boolean OldestElement) { //
 
         Cursor cursor = null;
         SQLiteDatabase db = null;
@@ -261,7 +261,11 @@ public class UtilsLocalDataBase {
                 values.clear();
 
                 if (cursor.getCount()>0) {
-                    cursor.moveToLast();
+                    if (OldestElement == true) {
+                        cursor.moveToFirst();
+                    } else {
+                        cursor.moveToLast();
+                    }
 
                     String[] columns = cursor.getColumnNames();
                     int length = columns.length;

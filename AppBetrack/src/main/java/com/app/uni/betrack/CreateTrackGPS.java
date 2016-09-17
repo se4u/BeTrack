@@ -1,12 +1,16 @@
 package com.app.uni.betrack;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 import com.commonsware.cwac.locpoll.LocationPoller;
 import com.commonsware.cwac.locpoll.LocationPollerParameter;
@@ -18,10 +22,24 @@ public class CreateTrackGPS {
 
     private static AlarmManager alarmMgr;
     private static PendingIntent alarmIntent;
-    private static final String TAG = "AlarmNotification";
+    private static final String TAG = "AlarmNotificationGPS";
+    private static SettingsStudy ObjSettingsStudy = null;
 
     static public void CreateAlarm(Context context)
     {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Here, thisActivity is the current activity
+            if (ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                if (null == ObjSettingsStudy)  {
+                    ObjSettingsStudy = SettingsStudy.getInstance(context);
+                }
+                ObjSettingsStudy.setSetupBetrackDone(false);
+                return;
+            }
+        }
 
         if (alarmMgr!= null) {
             alarmMgr.cancel(alarmIntent);
@@ -60,6 +78,5 @@ public class CreateTrackGPS {
         }catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

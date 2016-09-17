@@ -101,7 +101,6 @@ public class FragmentSurveyScrolling extends AbstractStep {
                     SurveyStatus = SurveyStartRange + firstVisibleItem;
                     mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
                     bundle.putInt(SURVEY_STATUS, SurveyStatus);
-                    setArguments(bundle);
                     UserScrolled = false;
                 }
 

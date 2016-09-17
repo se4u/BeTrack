@@ -62,7 +62,7 @@ public class ActivityBeTrack extends AppCompatActivity {
             "Party Y", "Party Z"
     };
 
-    private UtilsLocalDataBase localdatabase = new UtilsLocalDataBase(this);
+    private UtilsLocalDataBase localdatabase = null;
     public UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
@@ -92,12 +92,32 @@ public class ActivityBeTrack extends AppCompatActivity {
     private SettingsStudy ObjSettingsStudy;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (false == ObjSettingsStudy.getSetupBetrackDone()) {
+            Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
+            startActivity(i);
+            finish();
+        }
+        else if (ObjSettingsStudy.getDailySurveyDone() == false) {
+            Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
+            startActivity(i);
+            finish();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Read the setting of the study
-        ObjSettingsStudy = SettingsStudy.getInstance(this);
+        if (null == localdatabase) {
+            localdatabase =  new UtilsLocalDataBase(this);
+        }
 
+        if (null == ObjSettingsStudy) {
+            //Read the setting of the study
+            ObjSettingsStudy = SettingsStudy.getInstance(this);
+        }
         //Setup the action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_logo_padding);
@@ -108,6 +128,20 @@ public class ActivityBeTrack extends AppCompatActivity {
         final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(SettingsBetrack.NOTIFICATION_ID);
 
+        if (ObjSettingsStudy.getDailySurveyDone() == false) {
+            Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
+            startActivity(i);
+            finish();
+        } else {
+            //Prepare the chart to be display
+            prepareChart();
+
+            //We start the study
+            StartStudy();
+        }
+    }
+
+    private void prepareChart() {
         //Set up the chart
         mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
@@ -138,38 +172,37 @@ public class ActivityBeTrack extends AppCompatActivity {
         mChart.setRotationEnabled(false);
         mChart.setHighlightPerTapEnabled(false);
 
-        setData(25, 1);
+        int[] myIntArray = {10,20,30};
+
+        setData(myIntArray);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-
-        //We start the study
-        StartStudy();
     }
 
     private SpannableString generateCenterSpannableText() {
 
-        String Title = "UBC";
-        String Desc = "Days of the study";
-        SpannableString s = new SpannableString(Title+"\n"+Desc);
-        s.setSpan(new RelativeSizeSpan(1.7f), 0, Title.length(), 0);
+        int NbrDays = ObjSettingsStudy.getStudyDuration();
+        String Desc = "Days";
+
+        SpannableString s = new SpannableString(NbrDays+"\n"+Desc);
+        s.setSpan(new RelativeSizeSpan(3.0f), 0, 2, 0);
         return s;
     }
 
-    private void setData(int daysRemaining, int daysUsed) {
+    private void setData(int UsagePerApp[]) {
 
-        int count = 2;
+        int sumUsage = 0;
         float mult = 100;
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
-        if ((daysUsed * mult) / (daysRemaining + daysUsed)!=100) {
-            entries.add(new PieEntry((float) ((daysRemaining * mult) / (daysRemaining + daysUsed)), "Remaining"));
+        for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
+            sumUsage += UsagePerApp[i];
         }
 
-        if ((daysRemaining * mult) / (daysRemaining + daysUsed)!=100) {
-            entries.add(new PieEntry((float) ((daysUsed * mult) / (daysRemaining + daysUsed)), "Done"));
+        for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
+            entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
         }
-
 
         PieDataSet dataSet = new PieDataSet(entries, "Days study");
         dataSet.setSliceSpace(3f);
@@ -190,23 +223,6 @@ public class ActivityBeTrack extends AppCompatActivity {
     }
 
     private void StartStudy()  {
-/*
-        values.clear();
-        values.put(UtilsLocalDataBase.C_USER_PERIOD, "1");
-        DatePeriod = sdf.format(new Date());
-        values.put(UtilsLocalDataBase.C_USER_DATE, DatePeriod);
-
-        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_USER);
-        Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Period status: " + 1 + " date: " + DatePeriod);
-
-        values.clear();
-        values.put(UtilsLocalDataBase.C_USER_PERIOD, "0");
-        DatePeriod = sdf.format(new Date());
-        values.put(UtilsLocalDataBase.C_USER_DATE, DatePeriod);
-
-        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_USER);
-        Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Period status: " + 0 + " date: " + DatePeriod);
-*/
         //Broadcast an event to start the tracking service if not yet started
         if (!isMyServiceRunning()) {
             Intent intent = new Intent();

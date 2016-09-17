@@ -52,6 +52,11 @@ public class SettingsStudy {
     static private String IdUser;
     static private final String USER_ID = "UserId";
 
+    static private Boolean DailySurveyDone;
+    static private String LastDateDailySurvey;
+    static private final String STUDY_DAILY_SURVEY_DONE = "DailySurveyDone";
+    static private final String STUDY_LASTDATE_SURVEY = "LastDateDailySurvey";
+
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     static private Context mContext = null;
@@ -89,6 +94,11 @@ public class SettingsStudy {
         StudyDuration = prefs.getInt(STUDY_DURATION, 0);
         StudyPublicKey = prefs.getString(STUDY_PUBLICKEY, null);
         StudyContactEmail = prefs.getString(STUDY_CONTACTEMAIL, null);
+
+        //Read information used to trigger the daily survey
+        DailySurveyDone = prefs.getBoolean(STUDY_DAILY_SURVEY_DONE, false);
+        LastDateDailySurvey = prefs.getString(STUDY_LASTDATE_SURVEY, null);
+
     }
 
     private static class ConfigInfoStudyHolder
@@ -100,6 +110,60 @@ public class SettingsStudy {
     {
         mContext = context;
         return ConfigInfoStudyHolder.instance;
+    }
+
+    public String getLastDateDailySurvey()
+    {
+        String ReturnLastDateDailySurvey = null;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnLastDateDailySurvey = LastDateDailySurvey;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnLastDateDailySurvey = null;
+        } finally {
+            return ReturnLastDateDailySurvey;
+        }
+    }
+
+    public void setLastDateDailySurvey(String lastdatedailysurvey)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            LastDateDailySurvey = lastdatedailysurvey;
+            editor.putString(STUDY_LASTDATE_SURVEY, LastDateDailySurvey);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    public Boolean getDailySurveyDone()
+    {
+        boolean ReturnDailySurveyDone = false;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnDailySurveyDone = DailySurveyDone;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnDailySurveyDone = false;
+        } finally {
+            return ReturnDailySurveyDone;
+        }
+    }
+
+    public void setDailySurveyDone(boolean status)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            DailySurveyDone = status;
+            editor.putBoolean(STUDY_DAILY_SURVEY_DONE, DailySurveyDone);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
     }
 
     public String getIdUser()
@@ -246,7 +310,7 @@ public class SettingsStudy {
             ApplicationsToWatchIn = new HashSet<>(ApplicationsToWatchHs);
         }
 
-        Iterator<String> iterator = ApplicationsToWatchHs.iterator();
+        Iterator<String> iterator = ApplicationsToWatchIn.iterator();
         try {
             SemSettingsStudy.acquire();
             while(iterator.hasNext()) {
