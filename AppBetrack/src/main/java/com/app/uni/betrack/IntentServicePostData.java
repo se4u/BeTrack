@@ -13,7 +13,6 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import java.io.BufferedWriter;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -155,7 +154,10 @@ public class IntentServicePostData extends IntentService {
 
                     //Encrypt the data
                     DailyStatusData = EncryptData(values, UtilsLocalDataBase.DB_DAILYSTATUS, false);
-                    mHandler.post(new UtilsDisplayToast(this, getResources().getString(R.string.app_name)+": Post survey status: " + DailyStatusData.get(0) + " Date: " +  DailyStatusData.get(1)));
+                    mHandler.post(new UtilsDisplayToast(this, getResources().getString(R.string.app_name)+": Post survey status: " + DailyStatusData.get(0) +
+                            "Post social 1: " + DailyStatusData.get(1) + "Post social 2: " + DailyStatusData.get(2) +
+                            "Post mood: " + DailyStatusData.get(3)
+                            + " Date: " +  DailyStatusData.get(4)));
                     //Post the data
                     rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, ObjSettingsStudy.getIdUser());
                     if (rc == true) {

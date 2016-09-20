@@ -13,6 +13,17 @@ public class SettingsBetrack {
 
     static private final String TAG = "ConfigSettingsBetrack";
 
+    //Colors should match the colors.xml file !!!
+    /*<color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorLightGrey">#ECEFF1</color>
+    <color name="colorDarkGrey">#455A64</color>*/
+    static final public String colorPrimary = "#3F51B5";
+    static final public String colorDarkGrey = "#455A64";
+
+    //Server access
+
     static public String SERVICE_TRACKING_NAME = "com.app.uni.betrack.IntentServiceTrackApp";
     static public String BROADCAST_START_TRACKING_NAME = "com.app.uni.betrack.START_TRACKING";
     static public String BROADCAST_CHECK_SCREEN_STATUS = "com.app.uni.betrack.CHECK_SCREEN_STATUS";

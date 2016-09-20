@@ -2,4 +2,12 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- 6 choices specific dimensions -->
+    <dimen name="survey_6choices_margin_top_2_line">130dp</dimen>
+    <dimen name="survey_6choices_button_width">100dp</dimen>
+    <dimen name="survey_6choices_button_height">100dp</dimen>
+    <dimen name="survey_6choices_textsize">15sp</dimen>
+    <dimen name="survey_6choices_padding_image">22dp</dimen>
+    <dimen name="survey_6choices_margin_bottom_image">10dp</dimen>
 </resources>

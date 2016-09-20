@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="110dp"
+        android:id="@+id/survey_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center|top"
+        android:paddingTop="40dp"
+        android:background="@color/colorLightGrey"
+        android:layout_margin="0dp"
+        android:text="Title test"/>
+
+    <TextView android:layout_width="fill_parent"
+        android:id="@+id/survey_desc"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:textSize="20sp"
+        android:paddingTop="30dp"
+        android:textColor="#000"
+        android:gravity="center|top"
+        android:layout_margin="10dp"
+        android:text="Description test"/>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/RelativeLayoutFrame"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/RelativeTextLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left">
+            <TextView android:layout_width="wrap_content"
+                android:id="@+id/TextInfoLeft"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_height="fill_parent"
+                android:textSize="@dimen/survey_6choices_textsize"
+                android:textColor="#000"
+                android:gravity="left|top"
+                android:text="Bad"/>
+        </RelativeLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/RelativeTextRight"
+            android:layout_toRightOf="@id/RelativeTextLeft"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right">
+            <TextView android:layout_width="fill_parent"
+                android:id="@+id/TextChoice6"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:textSize="@dimen/survey_6choices_textsize"
+                android:textColor="#000"
+                android:gravity="right|top"
+                android:text="Good"/>
+        </RelativeLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/RelativeSeekBar"
+            android:layout_toRightOf="@id/RelativeTextLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center">
+            <SeekBar
+                android:id="@+id/volume_bar"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="25dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/progressbar"
+                android:secondaryProgress="0" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

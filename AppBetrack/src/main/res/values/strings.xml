@@ -59,7 +59,7 @@
     <string name="welcome_wait">Please wait...</string>
 
     <!-- Study main screen -->
-    <string name="Betrack_welcome">Thank you for participating, see you tomorrow !</string>
+    <string name="Betrack_welcome">Thank you for participating, see you later !</string>
     <string name="Betrack_info_start">Days remaining:</string>
     <string name="Betrack_end">Thank you for participating in the study, you can uninstall Betrack</string>
     <string name="Betrack_info_end">Your phone usage:</string>
@@ -147,12 +147,40 @@
     <!-- Daily survey -->
     <!-- Screen 1 (Period) -->
     <string name="title_sd_screen1">PERIOD</string>
-    <string name="question_sd_screen1">Do you have your period ?</string>
+    <string name="question_sd_screen1">Are you on period ?</string>
+
+    <!-- Screen 2 (Clothes) -->
+    <string name="title_sd_screen2">CLOTHES</string>
+    <string name="question_sd_screen2">Which are the dominant colors of the shirt/ dress you are wearing (max. 3)?</string>
+
+    <!-- Screen 3 (Social) -->
+    <string name="title_sd_screen3">SOCIAL (1/2)</string>
+    <string name="question_sd_screen3">In which of these activities did you engage in the last 24 hours?</string>
+    <string name="answer1_sd_screen3">work</string>
+    <string name="answer2_sd_screen3">study</string>
+    <string name="answer3_sd_screen3">read</string>
+    <string name="answer4_sd_screen3">watch tv</string>
+    <string name="answer5_sd_screen3">sports</string>
+    <string name="answer6_sd_screen3">shopping</string>
+
+    <!-- Screen 4 (Social 2/2) -->
+    <string name="title_sd_screen4">SOCIAL (2/2)</string>
+    <string name="question_sd_screen4">In which of these activities did you engage in the last 24 hours?</string>
+    <string name="answer1_sd_screen4">meet friends</string>
+    <string name="answer2_sd_screen4">go out</string>
+    <string name="answer3_sd_screen4">clubbing</string>
+    <string name="answer4_sd_screen4">date</string>
+    <string name="answer5_sd_screen4">sex</string>
+    <string name="answer6_sd_screen4">kiss</string>
+
+    <!-- Screen 5 (Mood) -->
+    <string name="title_sd_screen5">MOOD</string>
+    <string name="question_sd_screen5">How are you feeling right now?</string>
 
     <!-- End survey -->
     <!-- Screen 1 (period) -->
     <string name="title_se_screen1">PERIOD</string>
-    <string name="question_se_screen1">Do you have your period ?</string>
+    <string name="question_se_screen1">Are you on period ?</string>
 
     <!-- Screen 2 (relation) -->
     <string name="title_se_screen2">RELATIONSHIP</string>

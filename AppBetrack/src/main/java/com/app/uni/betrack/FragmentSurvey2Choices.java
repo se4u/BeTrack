@@ -1,5 +1,7 @@
 package com.app.uni.betrack;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,7 +51,9 @@ public class FragmentSurvey2Choices extends AbstractStep {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        int tintPrimary = Color.parseColor(SettingsBetrack.colorPrimary);
+        int tintGray = Color.parseColor(SettingsBetrack.colorDarkGrey);
+        PorterDuff.Mode mode = PorterDuff.Mode.SRC_ATOP;
         View v = inflater.inflate(R.layout.survey_2choices, container, false);
         button1 = (Button) v.findViewById(R.id.ButtonChoice1);
         button2 = (Button) v.findViewById(R.id.ButtonChoice2);
@@ -80,22 +84,27 @@ public class FragmentSurvey2Choices extends AbstractStep {
         if (SurveyStatus == 1) {
             InternalSetBackground(BackgroundSelected, button1);
             InternalSetBackground(BackgroundNoSelection, button2);
-            imgbutton1.setImageResource(R.drawable.ic_action_ok_selected);
-            imgbutton2.setImageResource(R.drawable.ic_action_ko);
+            imgbutton1.setColorFilter(tintPrimary, mode);
+            imgbutton2.setColorFilter(tintGray, mode);
         } else if (SurveyStatus == 0) {
             InternalSetBackground(BackgroundNoSelection, button1);
             InternalSetBackground(BackgroundSelected, button2);
-            imgbutton1.setImageResource(R.drawable.ic_action_ok);
-            imgbutton2.setImageResource(R.drawable.ic_action_ko_selected);
+            imgbutton1.setColorFilter(tintGray, mode);
+            imgbutton2.setColorFilter(tintPrimary, mode);
         }
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int tintPrimary = Color.parseColor(SettingsBetrack.colorPrimary);
+                int tintGray = Color.parseColor(SettingsBetrack.colorDarkGrey);
+                PorterDuff.Mode mode = PorterDuff.Mode.SRC_ATOP;
+
+
                 InternalSetBackground(BackgroundSelected, button1);
                 InternalSetBackground(BackgroundNoSelection, button2);
-                imgbutton1.setImageResource(R.drawable.ic_action_ok_selected);
-                imgbutton2.setImageResource(R.drawable.ic_action_ko);
+                imgbutton1.setColorFilter(tintPrimary, mode);
+                imgbutton2.setColorFilter(tintGray, mode);
                 SurveyStatus = 1;
                 mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
                 bundle.putInt(SURVEY_STATUS, SurveyStatus);
@@ -105,10 +114,14 @@ public class FragmentSurvey2Choices extends AbstractStep {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int tintPrimary = Color.parseColor(SettingsBetrack.colorPrimary);
+                int tintGray = Color.parseColor(SettingsBetrack.colorDarkGrey);
+                PorterDuff.Mode mode = PorterDuff.Mode.SRC_ATOP;
+
                 InternalSetBackground(BackgroundNoSelection, button1);
                 InternalSetBackground(BackgroundSelected, button2);
-                imgbutton1.setImageResource(R.drawable.ic_action_ok);
-                imgbutton2.setImageResource(R.drawable.ic_action_ko_selected);
+                imgbutton1.setColorFilter(tintGray, mode);
+                imgbutton2.setColorFilter(tintPrimary, mode);
                 SurveyStatus = 0;
                 mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
                 bundle.putInt(SURVEY_STATUS, SurveyStatus);
@@ -156,7 +169,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
 
     @Override
     public boolean nextIf() {
-        return SurveyStatus > 0;
+        return SurveyStatus > -1;
     }
 
     @Override

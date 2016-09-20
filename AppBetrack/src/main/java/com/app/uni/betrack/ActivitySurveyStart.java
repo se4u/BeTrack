@@ -2,30 +2,14 @@ package com.app.uni.betrack;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.DotStepper;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by cevincent on 13/07/2016.
@@ -65,6 +49,8 @@ public class ActivitySurveyStart extends DotStepper {
     }
     private SettingsStudy ObjSettingsStudy;
 
+    private AbstractStep Step0;
+    private Bundle bundle0;
     private AbstractStep Step1;
     private Bundle bundle1;
     private AbstractStep Step2;
@@ -85,6 +71,7 @@ public class ActivitySurveyStart extends DotStepper {
 
         //get data from the different steps
         SurveyInRelation = Step1.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
+
         resultInt = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
         if (resultInt != 0) {
             SurveyAge = resultInt;

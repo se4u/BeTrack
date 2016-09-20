@@ -45,15 +45,17 @@ public class UtilsLocalDataBase {
     static final String C_USER_ID = BaseColumns._ID;
     static final String C_USER_PID = "ParticipantID";
     static final String C_USER_PERIOD = "Period";
-    static final String C_USER_LIBIDO = "Libido";
-    static final String C_USER_SOCIAL_LIFE = "SocialLife";
-    static final String C_USER_SEXUAL_LIFE = "SexualLife";
+    static final String C_USER_SOCIAL1_LIFE = "SocialLife1";
+    static final String C_USER_SOCIAL2_LIFE = "SocialLife2";
+    static final String C_USER_MOOD = "Mood";
     static final String C_USER_DATE = "Date";
-    static final String C_USER_TIME = "Time";
 
     public static final ArrayList<String> DB_DAILYSTATUS = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_USER_PID);
         add(UtilsLocalDataBase.C_USER_PERIOD);
+        add(UtilsLocalDataBase.C_USER_SOCIAL1_LIFE);
+        add(UtilsLocalDataBase.C_USER_SOCIAL2_LIFE);
+        add(UtilsLocalDataBase.C_USER_MOOD);
         add(UtilsLocalDataBase.C_USER_DATE);
     }};
 
@@ -141,7 +143,7 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql);
 
             String sql2 = "create table " + TABLE_USER + " (" + C_USER_ID + " integer primary key autoincrement, "
-                    + C_USER_PERIOD + " text, " + C_USER_DATE + " text)"; //
+                    + C_USER_PERIOD + " text, " + C_USER_SOCIAL1_LIFE + " text, " + C_USER_SOCIAL2_LIFE + " text, " + C_USER_MOOD + " text, " + C_USER_DATE + " text)"; //
             db.execSQL(sql2);
             Log.d(TAG, "onCreated sql: " + sql2);
 
@@ -263,7 +265,7 @@ public class UtilsLocalDataBase {
                 values.clear();
 
                 if (cursor.getCount()>0) {
-                    if (OldestElement == true) {
+                    if (OldestElement == false) {
                         cursor.moveToFirst();
                     } else {
                         cursor.moveToLast();
