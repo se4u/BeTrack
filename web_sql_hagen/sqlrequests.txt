@@ -65,6 +65,9 @@ CREATE TABLE `BetrackDailyStatus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` varchar(255) COLLATE latin1_general_ci NOT NULL,
   `PeriodStatus` varchar(2) COLLATE latin1_general_ci NOT NULL,
+  `SocialLife1` varchar(10) COLLATE latin1_general_ci NOT NULL,
+  `SocialLife2` varchar(10) COLLATE latin1_general_ci NOT NULL,
+  `Mood` varchar(10) COLLATE latin1_general_ci NOT NULL,
   `Date` varchar(15) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`)) ENGINE=MyISAM  
   COLLATE=latin1_general_ci AUTO_INCREMENT=61;
