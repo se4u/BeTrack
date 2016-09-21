@@ -102,6 +102,8 @@ public class FragmentSurveyText extends AbstractStep {
 
     @Override
     public void onNext() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(Comment.getWindowToken(), 0);
         System.out.println("onNext");
     }
 

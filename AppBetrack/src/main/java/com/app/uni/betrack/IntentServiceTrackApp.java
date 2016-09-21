@@ -91,7 +91,7 @@ public class IntentServiceTrackApp extends IntentService {
                         topActivity = handleCheckActivity(intent);
                     }
 
-                    Log.d(TAG, "Foreground App " + topActivity);
+                    //Log.d(TAG, "Foreground App " + topActivity + " ActivityOnGoing " + ActivityOnGoing);
                     if (ReceiverScreen.StateScreen.UNKNOWN == ReceiverScreen.ScreenState) {
                         intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
                         this.sendBroadcast(intentCheckScreenStatus);
@@ -128,14 +128,16 @@ public class IntentServiceTrackApp extends IntentService {
 
                                         this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
 
+                                        Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
+
                                         //Reinitialize activity watched infos
                                         ActivityOnGoing = null;
                                         ActivityStartDate = null;
                                         ActivityStartTime = null;
                                         ActivityStopDate = null;
                                         ActivityStopTime = null;
+                                        break;
 
-                                        Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
                                     }
                                 }
                             }
@@ -148,6 +150,7 @@ public class IntentServiceTrackApp extends IntentService {
                                     ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
                                     //Log.d(TAG, "Data ready to be transfer to the remote database ");
                                 } catch (Exception e) {
+
                                     Log.d(TAG, "Check in case some monitoring was started but never stopped");
                                     //Save the stop date
                                     ActivityStopDate = sdf.format(new Date());
@@ -160,24 +163,23 @@ public class IntentServiceTrackApp extends IntentService {
                                     this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
 
                                     Log.d(TAG, "Finish last entry end monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
-                                }
-                                finally {
                                     //Reinitialize activity watched infos
                                     ActivityOnGoing = null;
                                     ActivityStartDate = null;
                                     ActivityStartTime = null;
                                     ActivityStopDate = null;
                                     ActivityStopTime = null;
+                                    break;
                                 }
                             }
                         }
 
-                        //Log.d(TAG, "Check app foreground: " + topActivity + "app to monitor: " + ContextInfoStudy.ApplicationsToWatch.get(i) + " Screen state: " + ReceiverScreen.ScreenState);
+                        //Log.d(TAG, "Check app foreground: " + topActivity + " app to monitor: " + ObjSettingsStudy.getApplicationsToWatch().get(i) + " Screen state: " + ReceiverScreen.ScreenState);
 
                         if ((null != topActivity) && (null != ObjSettingsStudy.getApplicationsToWatch().get(i))) {
                             if (topActivity.toLowerCase().contains(ObjSettingsStudy.getApplicationsToWatch().get(i).toLowerCase())) {
 
-                                //Log.d(TAG, "Status ActivityOnGoing: " + ActivityOnGoing);
+                                Log.d(TAG, "Status ActivityOnGoing: " + ActivityOnGoing);
 
                                 //A new activity to be watch
                                 if (null == ActivityOnGoing) {
@@ -227,6 +229,9 @@ public class IntentServiceTrackApp extends IntentService {
                                                 ActivityStartDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTART).toString();
                                                 ActivityStartTime = values.get(UtilsLocalDataBase.C_APPWATCH_TIMESTART).toString();
                                                 Log.d(TAG, "Last entry is null we should not start a new monitoring");
+                                            }
+                                            finally {
+                                                break;
                                             }
                                         }
                                         else

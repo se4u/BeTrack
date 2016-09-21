@@ -61,6 +61,8 @@ public class ActivitySurveyStart extends DotStepper {
     private Bundle bundle4;
     private AbstractStep Step5;
     private Bundle bundle5;
+    private AbstractStep Step6;
+    private Bundle bundle6;
 
 
     @Override
@@ -186,6 +188,16 @@ public class ActivitySurveyStart extends DotStepper {
         Step5 = new FragmentSurveyText();
         Step5.setArguments(bundle5);
         addStep(Step5);
+
+        //Step 6 NOTIFICATION TIME
+        bundle6 = new Bundle();
+        bundle6.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen6));
+        bundle6.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_DESC, getResources().getString(R.string.question_ss_screen6));
+        Step6 = new FragmentSurveyTimePicker();
+        Step6.setArguments(bundle6);
+        addStep(Step6);
+
+
         super.onCreate(savedInstanceState);
     }
 }

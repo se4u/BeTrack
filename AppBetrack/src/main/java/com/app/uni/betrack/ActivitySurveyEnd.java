@@ -74,7 +74,7 @@ public class ActivitySurveyEnd  extends DotStepper {
         Intent i = new Intent(ActivitySurveyEnd.this, ActivityBeTrack.class);
         startActivity(i);
         finish();
-
+        ObjSettingsStudy.setEndSurveyDone(true);
         System.out.println("completed");
     }
 

@@ -12,4 +12,10 @@
         <item name="colorAccent">#fff</item>
         <item name="android:textColorSecondary">#fff</item>
     </style>
+
+    <style name="CustomSeekBar" parent="android:Widget.SeekBar">
+        <item name="android:progressDrawable">@drawable/progressbar</item>
+        <item name="android:thumb">@drawable/seek_bar_thumb</item>
+        <item name="android:thumbOffset">0dip</item>
+    </style>
 </resources>

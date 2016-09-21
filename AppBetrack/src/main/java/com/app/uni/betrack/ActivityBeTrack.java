@@ -1,59 +1,34 @@
 package com.app.uni.betrack;
 
-import android.Manifest;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class ActivityBeTrack extends AppCompatActivity {
@@ -106,8 +81,8 @@ public class ActivityBeTrack extends AppCompatActivity {
             buttonSetting.setVisibility(View.GONE);
             TextView textWelcome = (TextView)findViewById(R.id.TextWelcome);
             textWelcome.setText(getResources().getString(R.string.Betrack_end));
-            TextView textTitle = (TextView)findViewById(R.id.TextTitle);
-            textTitle.setText(getResources().getString(R.string.Betrack_info_end));
+            //TextView textTitle = (TextView)findViewById(R.id.TextTitle);
+            //textTitle.setText(getResources().getString(R.string.Betrack_info_end));
         }
     }
 
@@ -131,24 +106,31 @@ public class ActivityBeTrack extends AppCompatActivity {
             final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(SettingsBetrack.NOTIFICATION_ID);
 
-            if (ObjSettingsStudy.getDailySurveyDone() == false) {
-                Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
+            if (ComputeTimeRemaing() != 0) {
+                if (ObjSettingsStudy.getDailySurveyDone() == false) {
+                    Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    //Prepare the chart to be display
+                    prepareChart(false);
+                    //We start the study
+                    StartStudy();
+                }
+            }  else {
+                Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
                 startActivity(i);
                 finish();
-            } else {
-                //Prepare the chart to be display
-                prepareChart(false);
-                //We start the study
-                StartStudy();
             }
+
         } else {
             prepareChart(true);
             View buttonSetting = findViewById(R.id.FrameLayoutBetrackBtnSetting);
             buttonSetting.setVisibility(View.GONE);
             TextView textWelcome = (TextView)findViewById(R.id.TextWelcome);
             textWelcome.setText(getResources().getString(R.string.Betrack_end));
-            TextView textTitle = (TextView)findViewById(R.id.TextTitle);
-            textTitle.setText(getResources().getString(R.string.Betrack_info_end));
+            //TextView textTitle = (TextView)findViewById(R.id.TextTitle);
+            //textTitle.setText(getResources().getString(R.string.Betrack_info_end));
         }
     }
 
@@ -181,7 +163,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         mChart.setTransparentCircleColor(Color.WHITE);
         mChart.setTransparentCircleAlpha(110);
 
-        mChart.setHoleRadius(58f);
+        mChart.setHoleRadius(80f);
         mChart.setTransparentCircleRadius(61f);
 
         mChart.setDrawCenterText(true);
@@ -200,22 +182,29 @@ public class ActivityBeTrack extends AppCompatActivity {
     }
 
     private SpannableString generateCenterSpannableText() {
-
+        SpannableString s;
         int NbrDays = ComputeTimeRemaing();
-        String Desc = getResources().getString(R.string.survey_days);
-
-        SpannableString s = new SpannableString(NbrDays+"\n"+Desc);
-        if (NbrDays > 99) {
-            s.setSpan(new RelativeSizeSpan(5.0f), 0, 3, 0);
-            s.setSpan(new RelativeSizeSpan(3.0f), 3, 8, 0);
-        }
-        if (NbrDays > 9) {
-            s.setSpan(new RelativeSizeSpan(5.0f), 0, 2, 0);
-            s.setSpan(new RelativeSizeSpan(3.0f), 2, 7, 0);
+        if (NbrDays > 1) {
+            String Desc = getResources().getString(R.string.survey_days);
+            s = new SpannableString(NbrDays+"\n"+Desc);
+            if (NbrDays > 99) {
+                s.setSpan(new RelativeSizeSpan(3.0f), 0, 3, 0);
+                s.setSpan(new RelativeSizeSpan(2.0f), 3, 13, 0);
+            }
+            if (NbrDays > 9) {
+                s.setSpan(new RelativeSizeSpan(3.0f), 0, 2, 0);
+                s.setSpan(new RelativeSizeSpan(2.0f), 2, 12, 0);
+            } else {
+                s.setSpan(new RelativeSizeSpan(3.0f), 0, 1, 0);
+                s.setSpan(new RelativeSizeSpan(2.0f), 1, 11, 0);
+            }
         } else {
-            s.setSpan(new RelativeSizeSpan(5.0f), 0, 1, 0);
-            s.setSpan(new RelativeSizeSpan(3.0f), 1, 6, 0);
+            String Desc = getResources().getString(R.string.survey_day);
+            s = new SpannableString(NbrDays+"\n"+Desc);
+            s.setSpan(new RelativeSizeSpan(3.0f), 0, 1, 0);
+            s.setSpan(new RelativeSizeSpan(2.0f), 1, 10, 0);
         }
+
         return s;
     }
 
@@ -240,7 +229,7 @@ public class ActivityBeTrack extends AppCompatActivity {
                 entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
             }
         } else {
-            entries.add(new PieEntry((float) (1), ""));
+            entries.add(new PieEntry((float) (100), ""));
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Days study");

@@ -265,7 +265,7 @@ public class UtilsLocalDataBase {
                 values.clear();
 
                 if (cursor.getCount()>0) {
-                    if (OldestElement == false) {
+                    if (OldestElement == true) {
                         cursor.moveToFirst();
                     } else {
                         cursor.moveToLast();

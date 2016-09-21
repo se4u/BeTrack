@@ -3,6 +3,16 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- start study specific dimensions -->
+    <dimen name="start_study_button_width">100dp</dimen>
+    <dimen name="start_study_button_height">100dp</dimen>
+    <dimen name="start_study_button_space">130dp</dimen>
+
+    <!-- 2 choices specific dimensions -->
+    <dimen name="survey_2choices_button_width">100dp</dimen>
+    <dimen name="survey_2choices_button_height">100dp</dimen>
+    <dimen name="survey_2choices_button_space">130dp</dimen>
+
     <!-- 6 choices specific dimensions -->
     <dimen name="survey_6choices_margin_top_2_line">130dp</dimen>
     <dimen name="survey_6choices_button_width">100dp</dimen>

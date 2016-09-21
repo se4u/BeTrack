@@ -121,7 +121,8 @@
     <!-- Surveys -->
         <string name="question_error">You need to answer that question</string>
         <string name="survey_age">years old</string>
-        <string name="survey_days">days</string>
+        <string name="survey_days">days left</string>
+        <string name="survey_day">day left</string>
 
     <!-- Start survey -->
     <!-- Screen 1 (relation) -->
@@ -143,6 +144,10 @@
         <string name="title_ss_screen5">CONTRACEPTION</string>
         <string name="question_ss_screen5">If you use a contraceptive (optional) could you write down the name</string>
         <string name="yourtext_ss_screen5">contraceptive name</string>
+
+    <!-- Screen 6 (Reminder) -->
+    <string name="title_ss_screen6">REMINDER</string>
+    <string name="question_ss_screen6">Please select at what time you want to get notified</string>
 
     <!-- Daily survey -->
     <!-- Screen 1 (Period) -->

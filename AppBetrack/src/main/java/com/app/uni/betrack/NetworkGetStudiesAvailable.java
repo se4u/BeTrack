@@ -117,7 +117,7 @@ public class NetworkGetStudiesAvailable extends AsyncTask<String, Void, String> 
         } catch (java.net.SocketTimeoutException e) {
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
+            return result;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

@@ -44,7 +44,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
         UtilsListBean listElement = new UtilsListBean(" ");
         DATA_LIST .add(listElement);
         listElement = new UtilsListBean(" ");
-        DATA_LIST .add(listElement);
+        //DATA_LIST .add(listElement);
 
         final Bundle bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_SCROLLING_TITLE, null);
@@ -74,7 +74,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
         listView.setSelection(SurveyDefaultValue);
 
-
+/*
         v.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -83,7 +83,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
             }
         });
 
-
+*/
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override

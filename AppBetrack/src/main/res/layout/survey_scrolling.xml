@@ -31,8 +31,7 @@
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/listViewLayout"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_weight="4">
+        android:layout_height="150dp">
         <com.app.uni.betrack.UtilsCustomListView
             android:id="@+id/listView"
             android:divider="@null"
@@ -52,18 +51,25 @@
 
         <View
             android:id="@+id/listTopBar"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
+            android:layout_gravity="center|bottom"
             android:layout_height="match_parent"
             android:layout_marginBottom="50dp"
             android:background="@drawable/line_white"/>
 
         <View
             android:id="@+id/listBottomBar"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
+            android:layout_gravity="center|top"
             android:layout_height="match_parent"
             android:layout_marginTop="50dp"
             android:background="@drawable/line_white"/>
-
+        <!--
+        <NumberPicker
+            android:id="@+id/weightPicker"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp" /> -->
     </FrameLayout>
 
     <View

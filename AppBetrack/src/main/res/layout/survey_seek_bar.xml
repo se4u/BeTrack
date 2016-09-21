@@ -74,12 +74,12 @@
             <SeekBar
                 android:id="@+id/volume_bar"
                 android:layout_marginLeft="1dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginRight="50dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/progressbar"
+                style="@style/CustomSeekBar"
                 android:secondaryProgress="0" />
         </RelativeLayout>
 

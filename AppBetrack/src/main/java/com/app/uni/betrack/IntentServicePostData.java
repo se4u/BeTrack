@@ -124,6 +124,7 @@ public class IntentServicePostData extends IntentService {
                         mHandler.post(new UtilsDisplayToast(this,  getResources().getString(R.string.app_name)
                                 + "Post app watched: " +  AppWatchData.get(0) + " Date start:" + AppWatchData.get(1) + " Time start:" + AppWatchData.get(2)
                                 + " Date end:" + AppWatchData.get(3) + " Time end:" + AppWatchData.get(4)));
+
                         //Post the data
                         rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, ObjSettingsStudy.getIdUser());
                         if (rc == true) {
@@ -208,7 +209,6 @@ public class IntentServicePostData extends IntentService {
                     rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, ObjSettingsStudy.getIdUser());
                     if (rc == true) {
                         AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
-                        ObjSettingsStudy.setEndSurveyDone(true);
                         CreateNotification.StopAlarm(this);
                         CreatePostData.StopAlarm(this);
                         CreateTrackApp.StopAlarm(this);

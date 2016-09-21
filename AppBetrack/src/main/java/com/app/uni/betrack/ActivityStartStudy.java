@@ -22,56 +22,6 @@ public class ActivityStartStudy extends AppCompatActivity {
     private startStudyState studyStateMachine;
     private SettingsStudy ObjSettingsStudy;
 
-    private NetworkGetStudiesAvailable gsa = new NetworkGetStudiesAvailable(this, new NetworkGetStudiesAvailable.AsyncResponse(){
-
-        @Override
-        public void processFinish(final String output) {
-            if (null != output) {
-                //This time we manage to read the studies from the distant server
-                studyStateMachine = startStudyState.DISCLAIMER;
-                findViewById(R.id.Layout_Disclaimer).setVisibility(View.VISIBLE);
-                findViewById(R.id.Layout_StudyDescription).setVisibility(View.INVISIBLE);
-                findViewById(R.id.Layout_NetworkError).setVisibility(View.INVISIBLE);
-                findViewById(R.id.Layout_NetworkLoading).setVisibility(View.INVISIBLE);
-
-            } else {
-                //Still not access to the server...
-                studyStateMachine = startStudyState.NETWORK_ERROR_FROM_GET_STUDIES;
-                findViewById(R.id.Layout_NetworkError).setVisibility(View.VISIBLE);
-                findViewById(R.id.Layout_Disclaimer).setVisibility(View.INVISIBLE);
-                findViewById(R.id.Layout_StudyDescription).setVisibility(View.INVISIBLE);
-                findViewById(R.id.Layout_NetworkLoading).setVisibility(View.INVISIBLE);
-            }
-        }
-
-    });
-
-    private NetworkGetWhatToWatch gwtw = new NetworkGetWhatToWatch(this, new NetworkGetWhatToWatch.AsyncResponse(){
-
-        @Override
-        public void processFinish(final String output) {
-            if (null != output) {
-                Intent i;
-                //We have all the information to start the study
-                ObjSettingsStudy.setStudyStarted(true);
-                if (ObjSettingsStudy.getSetupBetrackDone() == false) {
-                    i = new Intent(ActivityStartStudy.this, ActivitySetupBetrack.class);
-                } else {
-                    i = new Intent(ActivityStartStudy.this, ActivitySurveyStart.class);
-                }
-                startActivity(i);
-                finish();
-            } else {
-                //We didn't not manage to read the information from the distant server
-                studyStateMachine = startStudyState.NETWORK_ERROR_FROM_GET_INFO_STUDY;
-                findViewById(R.id.Layout_NetworkError).setVisibility(View.VISIBLE);
-                findViewById(R.id.Layout_Disclaimer).setVisibility(View.INVISIBLE);
-                findViewById(R.id.Layout_StudyDescription).setVisibility(View.INVISIBLE);
-                findViewById(R.id.Layout_NetworkLoading).setVisibility(View.INVISIBLE);
-            }
-        }}
-    );
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String networkStatus;
@@ -131,32 +81,106 @@ public class ActivityStartStudy extends AppCompatActivity {
                 finish();
                 break;
             case  R.id.StudyAccept:
-                //Read the data from the distant server
-                gwtw.execute();
 
                 findViewById(R.id.Layout_Disclaimer).setVisibility(View.INVISIBLE);
                 findViewById(R.id.Layout_StudyDescription).setVisibility(View.INVISIBLE);
                 findViewById(R.id.Layout_NetworkError).setVisibility(View.INVISIBLE);
                 findViewById(R.id.Layout_NetworkLoading).setVisibility(View.VISIBLE);
+
+                //Read the data from the distant server
+                new NetworkGetWhatToWatch(this, new NetworkGetWhatToWatch.AsyncResponse(){
+
+                    @Override
+                    public void processFinish(final String output) {
+                        if (null != output) {
+                            Intent i;
+                            //We have all the information to start the study
+                            ObjSettingsStudy.setStudyStarted(true);
+                            if (ObjSettingsStudy.getSetupBetrackDone() == false) {
+                                i = new Intent(ActivityStartStudy.this, ActivitySetupBetrack.class);
+                            } else {
+                                i = new Intent(ActivityStartStudy.this, ActivitySurveyStart.class);
+                            }
+                            startActivity(i);
+                            finish();
+                        } else {
+                            //We didn't not manage to read the information from the distant server
+                            studyStateMachine = startStudyState.NETWORK_ERROR_FROM_GET_INFO_STUDY;
+                            findViewById(R.id.Layout_NetworkError).setVisibility(View.VISIBLE);
+                            findViewById(R.id.Layout_Disclaimer).setVisibility(View.INVISIBLE);
+                            findViewById(R.id.Layout_StudyDescription).setVisibility(View.INVISIBLE);
+                            findViewById(R.id.Layout_NetworkLoading).setVisibility(View.INVISIBLE);
+                        }
+                    }}
+                ).execute();
+
                 break;
             case  R.id.StudyRefuse:
                 // Study refused we close this activity
                 finish();
                 break;
             case R.id.ButtonNetworkRetry:
-                if (studyStateMachine == startStudyState.NETWORK_ERROR_FROM_GET_STUDIES) {
-                    //Read the data from the distant server
-                    gsa.execute();
-                } else if (studyStateMachine == startStudyState.NETWORK_ERROR_FROM_GET_INFO_STUDY) {
-                    //Read the data from the distant server
-                    gwtw.execute();
-                } else {
-                    //Should never happen...
-                }
                 findViewById(R.id.Layout_Disclaimer).setVisibility(View.INVISIBLE);
                 findViewById(R.id.Layout_StudyDescription).setVisibility(View.INVISIBLE);
                 findViewById(R.id.Layout_NetworkError).setVisibility(View.INVISIBLE);
                 findViewById(R.id.Layout_NetworkLoading).setVisibility(View.VISIBLE);
+
+                if (studyStateMachine == startStudyState.NETWORK_ERROR_FROM_GET_STUDIES) {
+                    //Read the data from the distant server
+                    new NetworkGetStudiesAvailable(this, new NetworkGetStudiesAvailable.AsyncResponse(){
+
+                        @Override
+                        public void processFinish(final String output) {
+                            if (null != output) {
+                                //This time we manage to read the studies from the distant server
+                                studyStateMachine = startStudyState.DISCLAIMER;
+                                findViewById(R.id.Layout_Disclaimer).setVisibility(View.VISIBLE);
+                                findViewById(R.id.Layout_StudyDescription).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.Layout_NetworkError).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.Layout_NetworkLoading).setVisibility(View.INVISIBLE);
+
+                            } else {
+                                //Still not access to the server...
+                                studyStateMachine = startStudyState.NETWORK_ERROR_FROM_GET_STUDIES;
+                                findViewById(R.id.Layout_NetworkError).setVisibility(View.VISIBLE);
+                                findViewById(R.id.Layout_Disclaimer).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.Layout_StudyDescription).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.Layout_NetworkLoading).setVisibility(View.INVISIBLE);
+                            }
+                        }
+
+                    }).execute();
+                } else if (studyStateMachine == startStudyState.NETWORK_ERROR_FROM_GET_INFO_STUDY) {
+                    //Read the data from the distant server
+                    new NetworkGetWhatToWatch(this, new NetworkGetWhatToWatch.AsyncResponse(){
+
+                        @Override
+                        public void processFinish(final String output) {
+                            if (null != output) {
+                                Intent i;
+                                //We have all the information to start the study
+                                ObjSettingsStudy.setStudyStarted(true);
+                                if (ObjSettingsStudy.getSetupBetrackDone() == false) {
+                                    i = new Intent(ActivityStartStudy.this, ActivitySetupBetrack.class);
+                                } else {
+                                    i = new Intent(ActivityStartStudy.this, ActivitySurveyStart.class);
+                                }
+                                startActivity(i);
+                                finish();
+                            } else {
+                                //We didn't not manage to read the information from the distant server
+                                studyStateMachine = startStudyState.NETWORK_ERROR_FROM_GET_INFO_STUDY;
+                                findViewById(R.id.Layout_NetworkError).setVisibility(View.VISIBLE);
+                                findViewById(R.id.Layout_Disclaimer).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.Layout_StudyDescription).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.Layout_NetworkLoading).setVisibility(View.INVISIBLE);
+                            }
+                        }}
+                    ).execute();
+                } else {
+                    //Should never happen...
+                }
+
                 break;
         }
     }
