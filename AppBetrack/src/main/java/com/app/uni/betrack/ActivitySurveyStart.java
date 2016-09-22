@@ -64,7 +64,6 @@ public class ActivitySurveyStart extends DotStepper {
     private AbstractStep Step6;
     private Bundle bundle6;
 
-
     @Override
     public void onComplete() {
         super.onComplete();
@@ -76,15 +75,21 @@ public class ActivitySurveyStart extends DotStepper {
 
         resultInt = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
         if (resultInt != 0) {
-            SurveyAge = resultInt;
+            SurveyAge = resultInt + 1;
+        } else {
+            SurveyAge += 1;
         }
         resultInt = Step3.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
         if (resultInt != 0) {
-            SurveyLengthPeriod = resultInt;
+            SurveyLengthPeriod = resultInt + 1;
+        } else {
+            SurveyLengthPeriod += 1;
         }
         resultInt = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
         if (resultInt != 0) {
-            SurveyLenghCycle = resultInt;
+            SurveyLenghCycle = resultInt + 1;
+        } else {
+            SurveyLenghCycle += 1;
         }
         resultString  = Step5.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
         if (resultString != null) {

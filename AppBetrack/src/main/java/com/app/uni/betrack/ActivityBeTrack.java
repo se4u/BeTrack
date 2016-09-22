@@ -35,6 +35,23 @@ public class ActivityBeTrack extends AppCompatActivity {
 
     private Menu SaveMenuRef = null;
 
+    /**
+     * Converts the given hex-color-string to rgb.
+     *
+     * @param hex
+     * @return
+     */
+    public static int rgb(String hex) {
+        int color = (int) Long.parseLong(hex.replace("#", ""), 16);
+        int r = (color >> 16) & 0xFF;
+        int g = (color >> 8) & 0xFF;
+        int b = (color >> 0) & 0xFF;
+        return Color.rgb(r, g, b);
+    }
+    public static final int[] BETRACK_COLORS = {
+            rgb("#90caf9"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db")
+    };
+
     private PieChart mChart;
 
     private ContentValues values = new ContentValues();
@@ -236,7 +253,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
 
-        dataSet.setColors(ColorTemplate.PASTEL_COLORS);
+        dataSet.setColors(BETRACK_COLORS);
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());

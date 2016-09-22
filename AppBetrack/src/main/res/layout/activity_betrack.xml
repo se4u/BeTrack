@@ -38,7 +38,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:onClick="onButtonClicked"
-            android:background="@drawable/button_round_noselection"
+            android:background="@drawable/button_settings"
             >
         </Button>
         <ImageView

@@ -71,13 +71,13 @@ public class FragmentSurveyTimePicker extends AbstractStep {
 
 
         Title = (TextView) v.findViewById(R.id.survey_title);
-        Description = (TextView) v.findViewById(R.id.survey_desc);
+        //Description = (TextView) v.findViewById(R.id.survey_desc);
 
         final Bundle bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_TIMEPICKER_CHOICES_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_TIMEPICKER_CHOICES_DESC, null);
         Title.setText(SurveyTitle);
-        Description.setText(SurveyDescription);
+        //Description.setText(SurveyDescription);
 
         if (savedInstanceState != null)
             SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
