@@ -22,6 +22,7 @@ public class ActivitySurveyDaily   extends DotStepper {
     private int SurveySocial1 = 0;
     private int SurveySocial2 = 0;
     private int SurveyMood = 0;
+    private int PhoneUsage = 0;
 
     private String DateDaily = null;
 
@@ -62,6 +63,17 @@ public class ActivitySurveyDaily   extends DotStepper {
         values.put(UtilsLocalDataBase.C_USER_PERIOD, SurveyPeriod);
         values.put(UtilsLocalDataBase.C_USER_SOCIAL1_LIFE, SurveySocial1);
         values.put(UtilsLocalDataBase.C_USER_SOCIAL2_LIFE, SurveySocial2);
+
+        try {
+            SettingsStudy.SemPhoneUsage.acquire();
+            PhoneUsage = ObjSettingsStudy.getPhoneUsage();
+            ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - IntentServiceTrackApp.ScreenOnStartTime) / 1000));
+            IntentServiceTrackApp.ScreenOnStartTime = System.currentTimeMillis();
+            PhoneUsage = ObjSettingsStudy.getPhoneUsage();
+            values.put(UtilsLocalDataBase.C_USER_PHONE_USAGE, PhoneUsage);
+            SettingsStudy.SemPhoneUsage.release();
+        } catch (Exception e) {}
+
         values.put(UtilsLocalDataBase.C_USER_MOOD, SurveyMood);
         DateDaily = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_USER_DATE, DateDaily);
@@ -71,6 +83,7 @@ public class ActivitySurveyDaily   extends DotStepper {
                 + " Period: " + SurveyPeriod
                 + " SurveySocial1: " + SurveySocial1
                 + " SurveySocial2: " + SurveySocial2
+                + " PhoneUsage: " + PhoneUsage
                 + " SurveyMood: " + SurveyMood
                 + " Date: " + DateDaily);
 

@@ -121,8 +121,9 @@
     <!-- Surveys -->
         <string name="question_error">You need to answer that question</string>
         <string name="survey_age">years old</string>
-        <string name="survey_days">days left</string>
-        <string name="survey_day">day left</string>
+        <string name="survey_days">days</string>
+        <string name="survey_days_left">days left</string>
+        <string name="survey_day_left">day left</string>
 
     <!-- Start survey -->
     <!-- Screen 1 (relation) -->

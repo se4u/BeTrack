@@ -21,6 +21,7 @@ public class SettingsStudy {
     static final String TAG = "SettingsStudy";
 
     public static final Semaphore SemSettingsStudy = new Semaphore(1, true);
+    public static final Semaphore SemPhoneUsage = new Semaphore(1, true);
 
     static private final String STUDY_STARTED = "study_started";
     static private final String START_SURVEY_DONE = "start_survey_done";
@@ -60,8 +61,10 @@ public class SettingsStudy {
 
     static private Boolean DailySurveyDone;
     static private String StartDateSurvey;
+    static private int PhoneUsage;
     static private final String STUDY_DAILY_SURVEY_DONE = "DailySurveyDone";
     static private final String STUDY_STARTDATE_SURVEY = "StartDateSurvey";
+    static private final String STUDY_PHONEUSAGE_SURVEY = "PhoneUsageSurvey";
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -107,6 +110,8 @@ public class SettingsStudy {
         //Read information used to trigger the daily survey
         DailySurveyDone = prefs.getBoolean(STUDY_DAILY_SURVEY_DONE, false);
         StartDateSurvey = prefs.getString(STUDY_STARTDATE_SURVEY, null);
+        PhoneUsage = prefs.getInt(STUDY_PHONEUSAGE_SURVEY, 0);
+
 
     }
 
@@ -502,6 +507,33 @@ public class SettingsStudy {
             SemSettingsStudy.acquire();
             StudyVersionApp = studyversionapp;
             editor.putString(STUDY_VERSIONAPP, StudyVersionApp);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    public int getPhoneUsage()
+    {
+        int ReturnPhoneUsage = 0;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnPhoneUsage = PhoneUsage;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnPhoneUsage = 0;
+        } finally {
+            return ReturnPhoneUsage;
+        }
+    }
+
+    public void setPhoneUsage(int phoneusage)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            PhoneUsage = phoneusage;
+            editor.putInt(STUDY_PHONEUSAGE_SURVEY, PhoneUsage);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {

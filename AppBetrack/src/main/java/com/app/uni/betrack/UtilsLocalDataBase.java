@@ -47,6 +47,7 @@ public class UtilsLocalDataBase {
     static final String C_USER_PERIOD = "Period";
     static final String C_USER_SOCIAL1_LIFE = "SocialLife1";
     static final String C_USER_SOCIAL2_LIFE = "SocialLife2";
+    static final String C_USER_PHONE_USAGE = "PhoneUsage";
     static final String C_USER_MOOD = "Mood";
     static final String C_USER_DATE = "Date";
 
@@ -55,6 +56,7 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_USER_PERIOD);
         add(UtilsLocalDataBase.C_USER_SOCIAL1_LIFE);
         add(UtilsLocalDataBase.C_USER_SOCIAL2_LIFE);
+        add(UtilsLocalDataBase.C_USER_PHONE_USAGE);
         add(UtilsLocalDataBase.C_USER_MOOD);
         add(UtilsLocalDataBase.C_USER_DATE);
     }};
@@ -143,7 +145,7 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql);
 
             String sql2 = "create table " + TABLE_USER + " (" + C_USER_ID + " integer primary key autoincrement, "
-                    + C_USER_PERIOD + " text, " + C_USER_SOCIAL1_LIFE + " text, " + C_USER_SOCIAL2_LIFE + " text, " + C_USER_MOOD + " text, " + C_USER_DATE + " text)"; //
+                    + C_USER_PERIOD + " text, " + C_USER_SOCIAL1_LIFE + " text, " + C_USER_SOCIAL2_LIFE + " text, " + C_USER_PHONE_USAGE + " text, " + C_USER_MOOD + " text, " + C_USER_DATE + " text)"; //
             db.execSQL(sql2);
             Log.d(TAG, "onCreated sql: " + sql2);
 

@@ -200,7 +200,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         SpannableString s;
         int NbrDays = ComputeTimeRemaing();
         if (NbrDays > 1) {
-            String Desc = getResources().getString(R.string.survey_days);
+            String Desc = getResources().getString(R.string.survey_days_left);
             s = new SpannableString(NbrDays+"\n"+Desc);
             if (NbrDays > 99) {
                 s.setSpan(new RelativeSizeSpan(3.0f), 0, 3, 0);
@@ -214,7 +214,7 @@ public class ActivityBeTrack extends AppCompatActivity {
                 s.setSpan(new RelativeSizeSpan(2.0f), 1, 11, 0);
             }
         } else {
-            String Desc = getResources().getString(R.string.survey_day);
+            String Desc = getResources().getString(R.string.survey_day_left);
             s = new SpannableString(NbrDays+"\n"+Desc);
             s.setSpan(new RelativeSizeSpan(3.0f), 0, 1, 0);
             s.setSpan(new RelativeSizeSpan(2.0f), 1, 10, 0);

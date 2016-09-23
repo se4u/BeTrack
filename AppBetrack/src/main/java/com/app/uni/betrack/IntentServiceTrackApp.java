@@ -31,6 +31,7 @@ public class IntentServiceTrackApp extends IntentService {
     public static String ActivityStartTime = null;
     public static String ActivityStopDate = null;
     public static String ActivityStopTime=null;
+    public static long ScreenOnStartTime;
 
 
     private SettingsBetrack ObjSettingsBetrack = null;
@@ -73,6 +74,17 @@ public class IntentServiceTrackApp extends IntentService {
 
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(this);
+        }
+
+        //Check the status of the screen
+        if (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState) {
+            if (!locked) {
+                try {
+                    SettingsStudy.SemPhoneUsage.acquire();
+                    ScreenOnStartTime = System.currentTimeMillis();
+                    SettingsStudy.SemPhoneUsage.release();
+                } catch (Exception e) {}
+            }
         }
 
         if (intent != null) {
