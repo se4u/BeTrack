@@ -276,7 +276,7 @@
                         android:layout_alignParentLeft="true"
                         android:src="@drawable/ic_action_ko" />
                     <TextView android:layout_width="fill_parent"
-                        android:id="@+id/TextChoice6"
+                        android:id="@+id/TextInfoRight"
                         android:layout_height="fill_parent"
                         android:textSize="@dimen/survey_6choices_textsize"
                         android:textColor="#000"

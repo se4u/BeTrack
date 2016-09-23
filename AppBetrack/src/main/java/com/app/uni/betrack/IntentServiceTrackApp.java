@@ -32,8 +32,6 @@ public class IntentServiceTrackApp extends IntentService {
     public static String ActivityStopDate = null;
     public static String ActivityStopTime=null;
 
-    public static boolean ScreenUnlocked = false;
-
 
     private SettingsBetrack ObjSettingsBetrack = null;
     private SettingsStudy ObjSettingsStudy = null;
@@ -76,10 +74,7 @@ public class IntentServiceTrackApp extends IntentService {
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(this);
         }
-        if ((!locked) && (!ScreenUnlocked)){
-            mHandler.post(new UtilsDisplayToast(this, "Betrack: Screen Unlocked"));
-            ScreenUnlocked = true;
-        }
+
         if (intent != null) {
 
             //Check if a study is going on

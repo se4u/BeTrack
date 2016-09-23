@@ -4,15 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by cedoctet on 12/09/2016.
@@ -20,7 +15,9 @@ import java.util.List;
 public class FragmentSurveyScrolling extends AbstractStep {
     private TextView Title;
     private TextView Description;
-    private boolean UserScrolled = false;
+    private NumberPicker pickers;
+    private Bundle bundle;
+    private int SurveyStartRange;
 
 
     //Output
@@ -38,77 +35,48 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        List<UtilsListBean> DATA_LIST = new ArrayList<>();
         View v = inflater.inflate(R.layout.survey_scrolling, container, false);
-        UtilsListBean listElement = new UtilsListBean(" ");
-        DATA_LIST .add(listElement);
-        listElement = new UtilsListBean(" ");
-        //DATA_LIST .add(listElement);
 
-        final Bundle bundle = this.getArguments();
+        bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_SCROLLING_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_SCROLLING_DESC, null);
         String SurveyUnit = bundle.getString(SURVEY_SCROLLING_UNIT, null);
-        final int SurveyStartRange = bundle.getInt(SURVEY_SCROLLING_START_RANGE, 0);
+        SurveyStartRange = bundle.getInt(SURVEY_SCROLLING_START_RANGE, 0);
         int SurveyEndRange = bundle.getInt(SURVEY_SCROLLING_END_RANGE, 0);
         int SurveyDefaultValue = bundle.getInt(SURVEY_SCROLLING_DEFAULT_VALUE, 0);
 
-        for(int i=SurveyStartRange;i<=SurveyEndRange;i++) {
-            listElement = new UtilsListBean(i + " " +  SurveyUnit);
-            DATA_LIST .add(listElement);
-        }
+        if (savedInstanceState != null)
+            SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
 
-        listElement = new UtilsListBean(" ");
-        DATA_LIST .add(listElement);
+        String[] arrayPicker= new String[SurveyEndRange-SurveyStartRange];
+        for(int i=SurveyStartRange;i<SurveyEndRange;i++) {
+            arrayPicker[i-SurveyStartRange] = i + " " +  SurveyUnit;
+        }
 
         Title = (TextView) v.findViewById(R.id.survey_title);
         Description = (TextView) v.findViewById(R.id.survey_desc);
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
 
-        UtilsCustomListView listView;
-        listView = (UtilsCustomListView) v.findViewById(R.id.listView);
+        pickers = (NumberPicker) v.findViewById(R.id.genericPicker);
 
-        listView.setAdapter(new UtilsListAdapter(getContext(), DATA_LIST));
+        //set min value zero
+        pickers.setMinValue(0);
+        //set max value from length array string reduced 1
+        pickers.setMaxValue(arrayPicker.length - 1);
+        //implement array string to number picker
+        pickers.setDisplayedValues(arrayPicker);
+        //disable soft keyboard
+        pickers.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        //set wrap true or false, try it you will know the difference
+        pickers.setWrapSelectorWheel(false);
+        if (SurveyStatus == -1) {
+            pickers.setValue(SurveyDefaultValue);
+        } else {
+            pickers.setValue(SurveyStatus-SurveyStartRange);
+        }
 
-        listView.setSelection(SurveyDefaultValue);
 
-/*
-        v.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                FrameLayout listViewLayout = (FrameLayout) v.findViewById(R.id.listViewLayout);
-                listViewLayout.setPadding((right-left)/4, 0, (right-left)/4, 0);
-            }
-        });
-
-*/
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(AbsListView view,
-                                             int scrollState) {
-                if ((scrollState == SCROLL_STATE_FLING) || (scrollState == SCROLL_STATE_TOUCH_SCROLL)) {
-                    UserScrolled = true;
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-                if (UserScrolled == true) {
-                    SurveyStatus = SurveyStartRange + firstVisibleItem;
-                    mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
-                    bundle.putInt(SURVEY_STATUS, SurveyStatus);
-                    UserScrolled = false;
-                }
-
-            }
-        });
-
-        if (savedInstanceState != null)
-            SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
 
         return v;
     }
@@ -136,11 +104,19 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
     @Override
     public void onNext() {
+        int pos = pickers.getValue();
+        SurveyStatus = SurveyStartRange + pos;
+        mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
+        bundle.putInt(SURVEY_STATUS, SurveyStatus);
         System.out.println("onNext");
     }
 
     @Override
     public void onPrevious() {
+        int pos = pickers.getValue();
+        SurveyStatus = SurveyStartRange + pos;
+        mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
+        bundle.putInt(SURVEY_STATUS, SurveyStatus);
         System.out.println("onPrevious");
     }
 

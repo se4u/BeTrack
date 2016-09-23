@@ -28,49 +28,17 @@
         android:layout_margin="10dp"
         android:text="Description test"/>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/listViewLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp">
-        <com.app.uni.betrack.UtilsCustomListView
-            android:id="@+id/listView"
-            android:divider="@null"
-            android:scrollbars="none"
-            android:listSelector="@android:color/transparent"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:alwaysDrawnWithCache="true"
-            android:scrollingCache="true"
-            android:smoothScrollbar="true"
-            android:fastScrollEnabled="false"
-            android:fadingEdge="vertical"
-            android:requiresFadingEdge="vertical"
-            android:fadingEdgeLength="70sp"
-            android:cacheColorHint="#00000000">
-        </com.app.uni.betrack.UtilsCustomListView>
 
-        <View
-            android:id="@+id/listTopBar"
-            android:layout_width="150dp"
-            android:layout_gravity="center|bottom"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/line_white"/>
+    <NumberPicker
+        android:id="@+id/genericPicker"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:gravity="center"
+        android:layout_width="wrap_content" />
 
-        <View
-            android:id="@+id/listBottomBar"
-            android:layout_width="150dp"
-            android:layout_gravity="center|top"
-            android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/line_white"/>
-        <!--
-        <NumberPicker
-            android:id="@+id/weightPicker"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp" /> -->
-    </FrameLayout>
+
 
     <View
         android:layout_width="wrap_content"

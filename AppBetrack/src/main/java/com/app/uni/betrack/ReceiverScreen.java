@@ -117,7 +117,6 @@ public class ReceiverScreen extends BroadcastReceiver {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
                 SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
 
-                IntentServiceTrackApp.ScreenUnlocked = false;
                 // We should never stop the alarm or from marshallow at some point the whole service goes into a kind of sleep mode
                 //CreateTrackApp.StopAlarm(context);
 

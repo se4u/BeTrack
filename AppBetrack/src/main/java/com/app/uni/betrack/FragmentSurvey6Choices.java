@@ -130,7 +130,7 @@ public class FragmentSurvey6Choices extends AbstractStep {
         IconText5.setText(IconsText.get(4));
         imgbutton5.setImageResource(Icons.get(4));
 
-        IconText6 = (TextView) v.findViewById(R.id.TextChoice6);
+        IconText6 = (TextView) v.findViewById(R.id.TextInfoRight);
         IconText6.setText(IconsText.get(5));
         imgbutton6.setImageResource(Icons.get(5));
 

@@ -53,6 +53,7 @@ public class FragmentSurveyTimePicker extends AbstractStep {
         picker = (TimePicker) v.findViewById(R.id.time_picker);
 
         picker.setIs24HourView(true);
+        picker.setDescendantFocusability(TimePicker.FOCUS_BLOCK_DESCENDANTS);
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         String time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "20:00");

@@ -75,21 +75,15 @@ public class ActivitySurveyStart extends DotStepper {
 
         resultInt = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
         if (resultInt != 0) {
-            SurveyAge = resultInt + 1;
-        } else {
-            SurveyAge += 1;
+            SurveyAge = resultInt;
         }
         resultInt = Step3.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
         if (resultInt != 0) {
-            SurveyLengthPeriod = resultInt + 1;
-        } else {
-            SurveyLengthPeriod += 1;
+            SurveyLengthPeriod = resultInt;
         }
         resultInt = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
         if (resultInt != 0) {
-            SurveyLenghCycle = resultInt + 1;
-        } else {
-            SurveyLenghCycle += 1;
+            SurveyLenghCycle = resultInt;
         }
         resultString  = Step5.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
         if (resultString != null) {
