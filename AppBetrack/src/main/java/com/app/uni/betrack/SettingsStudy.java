@@ -6,9 +6,11 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -33,6 +35,10 @@ public class SettingsStudy {
     static private final String APP_NAME_TO_WATCH = "AppNameToWatch";
     Set<String> ApplicationsToWatchHs;
     Set<String> ApplicationsToWatchIn;
+    static private final String APP_TIME_WATCHED = "AppTimeWatched";
+    static private String ApplicationsTimeWatched;
+    static public long AppWatchStartTime = 0;
+    static public int AppWatchId = 0;
 
     static private String StudyId;
     static private String StudyName;
@@ -79,6 +85,9 @@ public class SettingsStudy {
         //Read app to watch
         ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new HashSet<String>());
         ApplicationsToWatchIn = new HashSet<>(ApplicationsToWatchHs);
+
+        //Read time spend per application
+        ApplicationsTimeWatched = prefs.getString(APP_TIME_WATCHED, null);
 
         //Read status flags
         StudyStarted  = prefs.getBoolean(STUDY_STARTED, false);
@@ -285,6 +294,74 @@ public class SettingsStudy {
             ReturnEndSurveyDone = false;
         } finally {
             return ReturnEndSurveyDone;
+        }
+    }
+
+    public void  setAppTimeWatched(int appWatchedId, int numAppWatched, int timeWatched)
+    {
+        int[] listTimeAppWatched = new int[numAppWatched];
+        StringBuilder str = new StringBuilder();
+
+        Arrays.fill(listTimeAppWatched, 0);
+
+        try {
+            SemSettingsStudy.acquire();
+            if (ApplicationsTimeWatched != null) {
+                StringTokenizer st = new StringTokenizer(ApplicationsTimeWatched, ",");
+
+                for (int i = 0; i < listTimeAppWatched.length; i++) {
+                    listTimeAppWatched[i] = Integer.parseInt(st.nextToken());
+                    if (i == appWatchedId) {
+                        listTimeAppWatched[i] += timeWatched;
+                    }
+                }
+            } else {
+                listTimeAppWatched[appWatchedId] += timeWatched;
+            }
+
+            for (int i = 0; i < listTimeAppWatched.length; i++) {
+                str.append(listTimeAppWatched[i]).append(",");
+            }
+
+            editor.putString(APP_TIME_WATCHED, str.toString());
+            ApplicationsTimeWatched = str.toString();
+
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    public int getAppTimeWatched(int appWatchedId, int numAppWatched)
+    {
+        int ReturnTimeWatched = 0;
+        int[] listTimeAppWatched = new int[numAppWatched];
+        StringBuilder str = new StringBuilder();
+
+        Arrays.fill(listTimeAppWatched, 0);
+
+        try {
+            SemSettingsStudy.acquire();
+            if (ApplicationsTimeWatched != null) {
+                StringTokenizer st = new StringTokenizer(ApplicationsTimeWatched, ",");
+
+                for (int i = 0; i < listTimeAppWatched.length; i++) {
+                    listTimeAppWatched[i] = Integer.parseInt(st.nextToken());
+                    if (i == appWatchedId) {
+                        ReturnTimeWatched = listTimeAppWatched[i];
+                        break;
+                    }
+                }
+            } else {
+                ReturnTimeWatched = 0;
+            }
+
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnTimeWatched = 0;
+        } finally {
+            return ReturnTimeWatched;
         }
     }
 

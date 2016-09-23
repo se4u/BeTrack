@@ -121,9 +121,9 @@ public class IntentServicePostData extends IntentService {
 
                         //Encrypt the data
                         AppWatchData = EncryptData(values, UtilsLocalDataBase.DB_APPWATCH, false);
-                        mHandler.post(new UtilsDisplayToast(this,  getResources().getString(R.string.app_name)
+                        /*mHandler.post(new UtilsDisplayToast(this,  getResources().getString(R.string.app_name)
                                 + "Post app watched: " +  AppWatchData.get(0) + " Date start:" + AppWatchData.get(1) + " Time start:" + AppWatchData.get(2)
-                                + " Date end:" + AppWatchData.get(3) + " Time end:" + AppWatchData.get(4)));
+                                + " Date end:" + AppWatchData.get(3) + " Time end:" + AppWatchData.get(4)));*/
 
                         //Post the data
                         rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, ObjSettingsStudy.getIdUser());

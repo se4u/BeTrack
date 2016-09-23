@@ -24,7 +24,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -191,9 +190,8 @@ public class ActivityBeTrack extends AppCompatActivity {
         mChart.setRotationEnabled(false);
         mChart.setHighlightPerTapEnabled(false);
 
-        int[] myIntArray = {10,20,30};
 
-        setData(myIntArray, endStudy);
+        setData(endStudy);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
     }
@@ -230,18 +228,19 @@ public class ActivityBeTrack extends AppCompatActivity {
         return s;
     }
 
-    private void setData(int UsagePerApp[], boolean endStudy) {
+    private void setData(boolean endStudy) {
+        int[] UsagePerApp = new int[ObjSettingsStudy.getApplicationsToWatch().size()];
 
         int sumUsage = 0;
         float mult = 100;
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
-        for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
-            sumUsage += UsagePerApp[i];
-        }
-
         if (endStudy == true) {
+            for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
+                UsagePerApp[i] = ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getApplicationsToWatch().size());
+                sumUsage += UsagePerApp[i];
+            }
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
                 entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
             }

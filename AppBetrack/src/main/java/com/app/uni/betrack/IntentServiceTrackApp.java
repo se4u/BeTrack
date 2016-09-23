@@ -29,6 +29,10 @@ public class IntentServiceTrackApp extends IntentService {
     public static String ActivityOnGoing = null;
     public static String ActivityStartDate = null;
     public static String ActivityStartTime = null;
+    public static String ActivityStopDate = null;
+    public static String ActivityStopTime=null;
+
+    public static boolean ScreenUnlocked = false;
 
 
     private SettingsBetrack ObjSettingsBetrack = null;
@@ -49,10 +53,10 @@ public class IntentServiceTrackApp extends IntentService {
     }
 
     protected void onHandleIntent(Intent intent) {
+        KeyguardManager km = (KeyguardManager) getBaseContext().getSystemService(Context.KEYGUARD_SERVICE);
+        boolean locked = km.inKeyguardRestrictedInputMode();
         String topActivity = null;
-        String ActivityStopDate = null;
         String ActualTime = null;
-        String ActivityStopTime=null;
         boolean StudyOnGoing;
 
         ContentValues values = new ContentValues();
@@ -72,7 +76,10 @@ public class IntentServiceTrackApp extends IntentService {
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(this);
         }
-
+        if ((!locked) && (!ScreenUnlocked)){
+            mHandler.post(new UtilsDisplayToast(this, "Betrack: Screen Unlocked"));
+            ScreenUnlocked = true;
+        }
         if (intent != null) {
 
             //Check if a study is going on
@@ -91,7 +98,7 @@ public class IntentServiceTrackApp extends IntentService {
                         topActivity = handleCheckActivity(intent);
                     }
 
-                    //Log.d(TAG, "Foreground App " + topActivity + " ActivityOnGoing " + ActivityOnGoing);
+                    Log.d(TAG, "Foreground App " + topActivity + " ActivityOnGoing " + ActivityOnGoing);
                     if (ReceiverScreen.StateScreen.UNKNOWN == ReceiverScreen.ScreenState) {
                         intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
                         this.sendBroadcast(intentCheckScreenStatus);
@@ -126,7 +133,11 @@ public class IntentServiceTrackApp extends IntentService {
                                         values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
                                         values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
 
+                                        int TimeWatched = (int)((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime)/1000);
+                                        ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+
                                         this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
+                                        mHandler.post(new UtilsDisplayToast(this, "Betrack: Stop 1 monitoring date: " + ActivityStopDate + " time: " + ActivityStopTime));
 
                                         Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
 
@@ -160,7 +171,11 @@ public class IntentServiceTrackApp extends IntentService {
                                     values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
                                     values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
 
+                                    int TimeWatched = (int)((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime)/1000);
+                                    ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+
                                     this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
+                                    mHandler.post(new UtilsDisplayToast(this, "Betrack: Stop 2 monitoring date: " + ActivityStopDate + " time: " + ActivityStopTime));
 
                                     Log.d(TAG, "Finish last entry end monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
                                     //Reinitialize activity watched infos
@@ -186,8 +201,6 @@ public class IntentServiceTrackApp extends IntentService {
 
                                     //Check the status of the screen
                                     if (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState) {
-                                        KeyguardManager km = (KeyguardManager) getBaseContext().getSystemService(Context.KEYGUARD_SERVICE);
-                                        boolean locked = km.inKeyguardRestrictedInputMode();
 
                                         if (!locked) {
                                             values.clear();
@@ -201,9 +214,11 @@ public class IntentServiceTrackApp extends IntentService {
                                                     Log.d(TAG, "New monitoring started");
                                                 }
 
-                                                mHandler.post(new UtilsDisplayToast(this, "Betrack: Start monitoring: " + topActivity));
 
                                                 ActivityOnGoing = topActivity;
+
+                                                SettingsStudy.AppWatchStartTime = System.currentTimeMillis();
+                                                SettingsStudy.AppWatchId = i;
 
                                                 //Save the date
                                                 ActivityStartDate = sdf.format(new Date());
@@ -222,6 +237,7 @@ public class IntentServiceTrackApp extends IntentService {
                                                 this.AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_APPWATCH);
 
                                                 Log.d(TAG, "IdUser: " + ObjSettingsStudy.getIdUser() + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
+                                                mHandler.post(new UtilsDisplayToast(this, "Betrack: Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime));
 
                                             } catch (Exception e) {
 

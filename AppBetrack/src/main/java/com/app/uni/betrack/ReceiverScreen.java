@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
 import android.os.Build;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.util.Log;
 import android.view.Display;
@@ -18,6 +19,8 @@ import java.util.Date;
  * Created by cevincent on 6/24/16.
  */
 public class ReceiverScreen extends BroadcastReceiver {
+
+    Handler mHandler;
 
     public enum StateScreen {
         UNKNOWN, OFF, ON
@@ -43,7 +46,7 @@ public class ReceiverScreen extends BroadcastReceiver {
                 return true;
             }
         }
-        Log.d(TAG, "Betrack sevirce is not runnning");
+        Log.d(TAG, "Betrack service is not runnning");
         return false;
     }
 
@@ -53,6 +56,10 @@ public class ReceiverScreen extends BroadcastReceiver {
         String ActivityStopTime = "";
         ContentValues values = new ContentValues();
         ObjSettingsStudy = SettingsStudy.getInstance(context);
+
+        if (null == mHandler) {
+            mHandler = new Handler();
+        }
 
         if (ObjSettingsStudy.getStartSurveyDone() == true) {
             if (null == localdatabase) {
@@ -110,7 +117,9 @@ public class ReceiverScreen extends BroadcastReceiver {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
                 SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
 
-                CreateTrackApp.StopAlarm(context);
+                IntentServiceTrackApp.ScreenUnlocked = false;
+                // We should never stop the alarm or from marshallow at some point the whole service goes into a kind of sleep mode
+                //CreateTrackApp.StopAlarm(context);
 
                 values.clear();
                 values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
@@ -134,6 +143,8 @@ public class ReceiverScreen extends BroadcastReceiver {
                         IntentServiceTrackApp.ActivityOnGoing = null;
                         IntentServiceTrackApp.ActivityStartDate = null;
                         IntentServiceTrackApp.ActivityStartTime = null;
+                        IntentServiceTrackApp.ActivityStopDate = null;
+                        IntentServiceTrackApp.ActivityStopTime = null;
 
                         Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
                     }
@@ -141,7 +152,8 @@ public class ReceiverScreen extends BroadcastReceiver {
             }
             else
             {
-                CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
+                // We should never stop the alarm or from marshallow at some point the whole service goes into a kind of sleep mode
+                //CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
             }
         }
     }

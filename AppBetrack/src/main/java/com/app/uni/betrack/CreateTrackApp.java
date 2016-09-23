@@ -17,7 +17,7 @@ import java.util.concurrent.Semaphore;
 public class CreateTrackApp {
 
 
-    private static JobScheduler mJobScheduler;
+    private static JobScheduler mJobScheduler = null;
     public static AlarmManager alarmMgr;
     public static PendingIntent alarmIntent;
     public static final Semaphore SemTrackApp = new Semaphore(1, true);
