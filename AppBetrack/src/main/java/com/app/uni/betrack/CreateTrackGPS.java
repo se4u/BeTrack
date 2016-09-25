@@ -10,7 +10,6 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 
 import com.commonsware.cwac.locpoll.LocationPoller;
 import com.commonsware.cwac.locpoll.LocationPollerParameter;
@@ -25,7 +24,7 @@ public class CreateTrackGPS {
     private static final String TAG = "AlarmNotificationGPS";
     private static SettingsStudy ObjSettingsStudy = null;
 
-    static public void CreateAlarm(Context context)
+    static public void CreateAlarm(Context context, boolean fastCheck)
     {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -59,6 +58,13 @@ public class CreateTrackGPS {
         alarmIntent = PendingIntent.getBroadcast(context, 0, i, 0);
 
         try {
+            int nextAlarm = 0;
+            if (fastCheck == true) {
+                nextAlarm = SettingsBetrack.TRACKGPS_DELTA_FASTCHECK;
+            } else {
+                nextAlarm = SettingsBetrack.TRACKGPS_DELTA;
+            }
+
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             {
                 alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +

@@ -47,6 +47,7 @@ public class SettingsBetrack {
     static public int POSTDATA_SENDING_DELTA_FASTCHECK = 1000 * 60 * 30; //In ms (every 3O minutes)
 
     static public int TRACKGPS_DELTA = 1000 * 60 * 60 * 1; //In ms (every 1 hour)
+    static public int TRACKGPS_DELTA_FASTCHECK = 1000 * 60 * 10; //In ms (every 10 minutes)
 
     static public int UPDATE_STATUS_STUDY_TIME = 60000;
 

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.commonsware.cwac.locpoll.LocationPollerResult;
@@ -46,17 +45,19 @@ public class ReceiverAlarmTrackGPS extends BroadcastReceiver {
 
             if (loc==null) {
                 Log.d(TAG, "GPS location not available");
+                //Set next alarm
+                CreateTrackGPS.CreateAlarm(context, true);
             }
             else {
                 saveLocation(loc);
+                //Set next alarm
+                CreateTrackGPS.CreateAlarm(context, false);
             }
         }
         else {
-            saveLocation(loc);
+            saveLocation(loc);        //Set next alarm
+            CreateTrackGPS.CreateAlarm(context,false);
         }
-
-        //Set next alarm
-        CreateTrackGPS.CreateAlarm(context);
 
     }
 
