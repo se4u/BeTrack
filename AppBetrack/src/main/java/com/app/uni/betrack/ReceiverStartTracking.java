@@ -39,7 +39,7 @@ public class ReceiverStartTracking extends BroadcastReceiver {
 
             CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
 
-            CreateTrackGPS.CreateAlarm(context);
+            CreateTrackGPS.CreateAlarm(context, false);
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                 if(!hasPermission(context)){

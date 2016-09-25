@@ -123,6 +123,7 @@ public class ReceiverScreen extends BroadcastReceiver {
                     SettingsStudy.SemPhoneUsage.acquire();
                     if (IntentServiceTrackApp.ScreenOnStartTime != 0) {
                         int PhoneUsage = ObjSettingsStudy.getPhoneUsage();
+                        Log.d(TAG, "Screen is off previous phone usage: " + PhoneUsage + " we add : " + (int) ((System.currentTimeMillis() - IntentServiceTrackApp.ScreenOnStartTime) / 1000));
                         ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - IntentServiceTrackApp.ScreenOnStartTime) / 1000));
                         IntentServiceTrackApp.ScreenOnStartTime = 0;
                     }

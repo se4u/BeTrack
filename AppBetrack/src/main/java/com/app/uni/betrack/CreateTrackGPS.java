@@ -52,7 +52,7 @@ public class CreateTrackGPS {
         parameter.setIntentToBroadcastOnCompletion(new Intent(context, ReceiverAlarmTrackGPS.class));
         // try GPS and fall back to NETWORK_PROVIDER
         parameter.setProviders(new String[] {LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER});
-        parameter.setTimeout(60000);
+        parameter.setTimeout(3*60000);
         i.putExtras(bundle);
 
         alarmIntent = PendingIntent.getBroadcast(context, 0, i, 0);

@@ -71,6 +71,7 @@ public class ActivitySurveyDaily   extends DotStepper {
             IntentServiceTrackApp.ScreenOnStartTime = System.currentTimeMillis();
             PhoneUsage = ObjSettingsStudy.getPhoneUsage();
             values.put(UtilsLocalDataBase.C_USER_PHONE_USAGE, PhoneUsage);
+            ObjSettingsStudy.setPhoneUsage(0);
             SettingsStudy.SemPhoneUsage.release();
         } catch (Exception e) {}
 
