@@ -120,10 +120,13 @@ public class ReceiverScreen extends BroadcastReceiver {
                 // We should never stop the alarm or from marshallow at some point the whole service goes into a kind of sleep mode
                 //CreateTrackApp.StopAlarm(context);
                 try {
-                SettingsStudy.SemPhoneUsage.acquire();
-                int PhoneUsage = ObjSettingsStudy.getPhoneUsage();
-                ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - IntentServiceTrackApp.ScreenOnStartTime) / 1000));
-                SettingsStudy.SemPhoneUsage.release();
+                    SettingsStudy.SemPhoneUsage.acquire();
+                    if (IntentServiceTrackApp.ScreenOnStartTime != 0) {
+                        int PhoneUsage = ObjSettingsStudy.getPhoneUsage();
+                        ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - IntentServiceTrackApp.ScreenOnStartTime) / 1000));
+                        IntentServiceTrackApp.ScreenOnStartTime = 0;
+                    }
+                     SettingsStudy.SemPhoneUsage.release();
                 } catch (Exception e) {}
 
 

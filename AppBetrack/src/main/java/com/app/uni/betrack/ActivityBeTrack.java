@@ -33,6 +33,7 @@ import java.util.Calendar;
 public class ActivityBeTrack extends AppCompatActivity {
 
     private Menu SaveMenuRef = null;
+    public static boolean OnForeground = false;
 
     /**
      * Converts the given hex-color-string to rgb.
@@ -70,8 +71,15 @@ public class ActivityBeTrack extends AppCompatActivity {
     private SettingsStudy ObjSettingsStudy;
 
     @Override
+    public void onStop() {
+        super.onStop();
+        OnForeground = false;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+        OnForeground = true;
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
             if (ComputeTimeRemaing() != 0)
             {
@@ -105,7 +113,7 @@ public class ActivityBeTrack extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        OnForeground = true;
         if (null == ObjSettingsStudy) {
             //Read the setting of the study
             ObjSettingsStudy = SettingsStudy.getInstance(this);

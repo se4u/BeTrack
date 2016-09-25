@@ -63,6 +63,9 @@ public class FragmentSurveySeekBar extends AbstractStep {
             seekBar1.setProgress(SurveyStatus);
         } else {
             seekBar1.setProgress(50);
+            SurveyStatus = 50;
+            mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
+            bundle.putInt(SURVEY_STATUS, SurveyStatus);
         }
 
         seekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

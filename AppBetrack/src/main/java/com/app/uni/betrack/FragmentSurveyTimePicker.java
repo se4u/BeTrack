@@ -33,6 +33,8 @@ public class FragmentSurveyTimePicker extends AbstractStep {
     private int lastHour=0;
     private int lastMinute=0;
 
+    private static SettingsBetrack ObjSettingsBetrack;
+
     private static int getHour(String time) {
         String[] pieces=time.split(":");
 
@@ -110,6 +112,21 @@ public class FragmentSurveyTimePicker extends AbstractStep {
     @Override
     public void onNext() {
         System.out.println("onNext");
+        UpdateNotificationTime();
+    }
+
+    @Override
+    public void onPrevious() {
+        System.out.println("onPrevious");
+        UpdateNotificationTime();
+    }
+
+    private void UpdateNotificationTime() {
+
+        if (ObjSettingsBetrack == null)  {
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+        }
+
         if (Build.VERSION.SDK_INT >= 23 )
             lastHour=picker.getHour();
         else
@@ -126,11 +143,7 @@ public class FragmentSurveyTimePicker extends AbstractStep {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(getContext().getString(R.string.pref_key_study_notification_time), time);
         editor.commit();
-    }
-
-    @Override
-    public void onPrevious() {
-        System.out.println("onPrevious");
+        ObjSettingsBetrack.Update(getContext());
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(picker.getWindowToken(), 0);
     }

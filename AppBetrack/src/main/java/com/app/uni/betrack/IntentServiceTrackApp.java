@@ -81,7 +81,9 @@ public class IntentServiceTrackApp extends IntentService {
             if (!locked) {
                 try {
                     SettingsStudy.SemPhoneUsage.acquire();
-                    ScreenOnStartTime = System.currentTimeMillis();
+                    if (ScreenOnStartTime == 0) {
+                        ScreenOnStartTime = System.currentTimeMillis();
+                    }
                     SettingsStudy.SemPhoneUsage.release();
                 } catch (Exception e) {}
             }
