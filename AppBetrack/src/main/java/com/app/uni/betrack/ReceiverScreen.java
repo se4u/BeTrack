@@ -119,6 +119,8 @@ public class ReceiverScreen extends BroadcastReceiver {
 
                 // We should never stop the alarm or from marshallow at some point the whole service goes into a kind of sleep mode
                 //CreateTrackApp.StopAlarm(context);
+                //Instead we decrease the frequency
+                CreateTrackApp.CreateAlarm(context,SettingsBetrack.SAMPLING_RATE_SCREEN_OFF);
                 try {
                     SettingsStudy.SemPhoneUsage.acquire();
                     if (IntentServiceTrackApp.ScreenOnStartTime != 0) {
@@ -162,8 +164,7 @@ public class ReceiverScreen extends BroadcastReceiver {
             }
             else
             {
-                // We should never stop the alarm or from marshallow at some point the whole service goes into a kind of sleep mode
-                //CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
+                CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
             }
         }
     }

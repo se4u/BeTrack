@@ -25,7 +25,7 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class IntentServicePostData extends IntentService {
     static final String TAG = "IntentServicePostData";
-    private static final String LOCK_NAME_STATIC = "com.app.uni.betrack.wakelock";
+    private static final String LOCK_NAME_STATIC = "com.app.uni.betrack.wakelock.postdata";
 
     private SettingsBetrack ObjSettingsBetrack = null;
     private SettingsStudy ObjSettingsStudy = null;

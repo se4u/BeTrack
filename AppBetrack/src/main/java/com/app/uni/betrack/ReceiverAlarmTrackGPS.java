@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 
 import com.commonsware.cwac.locpoll.LocationPollerResult;
@@ -25,10 +26,26 @@ public class ReceiverAlarmTrackGPS extends BroadcastReceiver {
         return localdatabase;
     }
     private SettingsStudy ObjSettingsStudy;
+    private static final String LOCK_NAME_STATIC = "com.app.uni.betrack.wakelock.trackgps";
+
+    private static volatile PowerManager.WakeLock lockStatic;
+
+    synchronized private static PowerManager.WakeLock getLock(Context context) {
+        if (lockStatic == null) {
+            PowerManager mgr = (PowerManager) context.getApplicationContext()
+                    .getSystemService(Context.POWER_SERVICE);
+
+            lockStatic = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                    LOCK_NAME_STATIC);
+            lockStatic.setReferenceCounted(true);
+        }
+        return (lockStatic);
+    }
 
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        getLock(context).acquire();
         ObjSettingsStudy = SettingsStudy.getInstance(context);
         Bundle b=intent.getExtras();
 
@@ -44,9 +61,17 @@ public class ReceiverAlarmTrackGPS extends BroadcastReceiver {
             loc=locationResult.getLastKnownLocation();
 
             if (loc==null) {
+                loc = new Location("dummyprovider");
+                loc.setLatitude(0);
+                loc.setLongitude(0);
+                saveLocation(loc);
+
                 Log.d(TAG, "GPS location not available");
                 //Set next alarm
-                CreateTrackGPS.CreateAlarm(context, true);
+                //CreateTrackGPS.CreateAlarm(context, true);
+                //To avoid to be killed most of the battery manager don't use a sampling rate below 1 hour for
+                //the GPS tracking
+                CreateTrackGPS.CreateAlarm(context, false);
             }
             else {
                 saveLocation(loc);
@@ -58,7 +83,7 @@ public class ReceiverAlarmTrackGPS extends BroadcastReceiver {
             saveLocation(loc);        //Set next alarm
             CreateTrackGPS.CreateAlarm(context,false);
         }
-
+        getLock(context).release();
     }
 
     private void saveLocation(Location location) {
