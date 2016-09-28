@@ -3,16 +3,19 @@ package com.app.uni.betrack;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 
@@ -30,6 +33,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
     private boolean EnableHuaweiProtMode = false;
     private boolean EnableHuaweiProtModeClicked = false;
     private boolean EnableGPS = false;
+    private boolean EnableBattery = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +89,22 @@ public class ActivitySetupBetrack extends AppCompatActivity {
             EnableGPS = true;
         }
 
-        if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            // Here, thisActivity is the current activity
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                findViewById(R.id.EnableWhiteListBattery).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.EnableWhiteListBattery).setVisibility(View.GONE);
+                EnableBattery = true;
+            }
+        } else {
+            EnableBattery = true;
+        }
+
+
+        if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && EnableBattery) {
             ObjSettingsStudy.setSetupBetrackDone(true);
             i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
             startActivity(i);
@@ -97,13 +116,34 @@ public class ActivitySetupBetrack extends AppCompatActivity {
     public void onResume() {
         Intent i;
         super.onResume();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            // Here, thisActivity is the current activity
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                findViewById(R.id.EnableWhiteListBattery).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.EnableWhiteListBattery).setVisibility(View.GONE);
+                EnableBattery = true;
+                if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && EnableBattery) {
+                    ObjSettingsStudy.setSetupBetrackDone(true);
+                    i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    ObjSettingsStudy.setSetupBetrackDone(false);
+                }
+            }
+        }
+
         if(!hasPermission()) {
             findViewById(R.id.EnableUsageStat).setVisibility(View.VISIBLE);
         }
         else  {
             findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
             EnableUsageStat = true;
-            if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS) {
+            if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && EnableBattery) {
                 ObjSettingsStudy.setSetupBetrackDone(true);
                 i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
                 startActivity(i);
@@ -151,6 +191,20 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                     }
                 }
                 break;
+            case  R.id.EnableWhiteListBatteryBetrack:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    Intent intent = new Intent();
+                    String packageName = getBaseContext().getPackageName();
+                    PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                    if (pm.isIgnoringBatteryOptimizations(packageName))
+                        intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                    else {
+                        intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                        intent.setData(Uri.parse("package:" + packageName));
+                    }
+                    startActivity(intent);
+                }
+                break;
         }
     }
 
@@ -164,7 +218,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 } else {
                     EnableHuaweiProtMode = false;
                 }
-                if (EnableHuaweiProtMode && EnableUsageStat  && EnableGPS) {
+                if (EnableHuaweiProtMode && EnableUsageStat  && EnableGPS && EnableBattery) {
                     ObjSettingsStudy.setSetupBetrackDone(true);
                 } else {
                     ObjSettingsStudy.setSetupBetrackDone(false);
@@ -195,7 +249,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     EnableGPS = true;
-                    if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS) {
+                    if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && EnableBattery) {
                         ObjSettingsStudy.setSetupBetrackDone(true);
                         i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
                         startActivity(i);
