@@ -40,20 +40,25 @@ public class ReceiverScreen extends BroadcastReceiver {
 
     static final String TAG = "ReceiverScreen";
 
-    private boolean isMyServiceRunning(Context mActivity) {
-        ActivityManager manager = (ActivityManager) mActivity.getSystemService(mActivity.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (SettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
-                Log.d(TAG, "Betrack service is runnning");
-                return true;
-            }
+    private static final String LOCK_NAME_STATIC = "com.app.uni.betrack.wakelock.receiverscreen";
+
+    private static volatile PowerManager.WakeLock lockStatic;
+
+    synchronized private static PowerManager.WakeLock getLock(Context context) {
+        if (lockStatic == null) {
+            PowerManager mgr = (PowerManager) context.getApplicationContext()
+                    .getSystemService(Context.POWER_SERVICE);
+
+            lockStatic = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                    LOCK_NAME_STATIC);
+            lockStatic.setReferenceCounted(true);
         }
-        Log.d(TAG, "Betrack service is not runnning");
-        return false;
+        return (lockStatic);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        getLock(context).acquire();
         String ActivityStopDate = "";
         String ActivityStopTime = "";
         ContentValues values = new ContentValues();
@@ -176,5 +181,6 @@ public class ReceiverScreen extends BroadcastReceiver {
                 }
             }
         }
+        getLock(context).release();
     }
 }
