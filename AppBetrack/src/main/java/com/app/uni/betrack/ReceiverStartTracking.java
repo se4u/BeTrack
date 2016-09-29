@@ -35,11 +35,9 @@ public class ReceiverStartTracking extends BroadcastReceiver {
                     ObjSettingsBetrack.GetStudyNotification(),
                     ObjSettingsBetrack.GetStudyNotificationTime());
 
-            CreatePostData.CreateAlarm(context, false);
-
             CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
 
-            CreateTrackGPS.CreateAlarm(context, false);
+            CreateTrackGPS.CreateAlarm(context);
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                 if(!hasPermission(context)){

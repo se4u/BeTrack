@@ -64,25 +64,11 @@ public class ReceiverAlarmTrackGPS extends BroadcastReceiver {
                 loc = new Location("dummyprovider");
                 loc.setLatitude(0);
                 loc.setLongitude(0);
-                saveLocation(loc);
-
                 Log.d(TAG, "GPS location not available");
-                //Set next alarm
-                //CreateTrackGPS.CreateAlarm(context, true);
-                //To avoid to be killed most of the battery manager don't use a sampling rate below 1 hour for
-                //the GPS tracking
-                CreateTrackGPS.CreateAlarm(context, false);
-            }
-            else {
-                saveLocation(loc);
-                //Set next alarm
-                CreateTrackGPS.CreateAlarm(context, false);
             }
         }
-        else {
-            saveLocation(loc);        //Set next alarm
-            CreateTrackGPS.CreateAlarm(context,false);
-        }
+        saveLocation(loc);        //Set next alarm
+        CreateTrackGPS.CreateAlarm(context);
         getLock(context).release();
     }
 

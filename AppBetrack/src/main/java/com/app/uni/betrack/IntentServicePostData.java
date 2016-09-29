@@ -129,9 +129,6 @@ public class IntentServicePostData extends IntentService {
                         rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, ObjSettingsStudy.getIdUser());
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
-                            FastCheck(false);
-                        } else {
-                            FastCheck(true);
                         }
                     }
                     else
@@ -210,7 +207,6 @@ public class IntentServicePostData extends IntentService {
                     if (rc == true) {
                         AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
                         CreateNotification.StopAlarm(this);
-                        CreatePostData.StopAlarm(this);
                         CreateTrackApp.StopAlarm(this);
                         CreateTrackGPS.StopAlarm(this);
                     }
@@ -244,19 +240,9 @@ public class IntentServicePostData extends IntentService {
                 }
             }
         }
-        else
-        {
-            //Check if an internet connection is available more often to get more chance to be able to transfer the data
-            FastCheck(true);
-        }
-
         getLock(getApplicationContext()).release();
-        CreatePostData.SemUpdateServer.release();
     }
 
-    private void FastCheck(boolean Enable) {
-        CreatePostData.CreateAlarm(getApplicationContext(), Enable);
-    }
 
     private ConnectionState hasNetworkConnection() {
 

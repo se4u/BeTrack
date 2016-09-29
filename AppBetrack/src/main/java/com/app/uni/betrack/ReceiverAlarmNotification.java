@@ -5,11 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 /**
  * Created by cedoctet on 21/08/2016.
  */
@@ -46,38 +41,6 @@ public class ReceiverAlarmNotification extends BroadcastReceiver {
             //Read the preferences
             ObjSettingsBetrack = SettingsBetrack.getInstance();
             ObjSettingsBetrack.Update(context);
-        }
-
-        //Check that the alarm was not triggered too early
-        //Prepare a new calendar
-        Date time = null;
-
-
-        //Read the time from the preference
-        SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
-
-        try {
-            //Parse the time from preference
-            time = shf.parse(ObjSettingsBetrack.GetStudyNotificationTime());
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        Calendar calendarpref = new GregorianCalendar();
-        calendarpref.setTime(time);
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        cal.set(Calendar.SECOND, calendarpref.get(calendarpref.SECOND));
-        cal.set(Calendar.HOUR_OF_DAY, calendarpref.get(calendarpref.HOUR_OF_DAY));
-        cal.set(Calendar.MINUTE, calendarpref.get(calendarpref.MINUTE));
-        long TimeToSleep = cal.getTimeInMillis() - System.currentTimeMillis();
-        if (TimeToSleep > 0) {
-            try {
-                //Sleep until we reach the exact time + 5s
-                Thread.sleep(TimeToSleep + 5000);
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
         //We enable the daily survey

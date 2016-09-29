@@ -30,7 +30,6 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".ReceiverAlarmNotification" />
-        <receiver android:name=".ReceiverAlarmPostData" />
         <receiver android:name=".ReceiverAlarmTrackApp" />
         <receiver android:name=".ReceiverAlarmTrackGPS" />
         <receiver android:name="com.commonsware.cwac.locpoll.LocationPoller" />
@@ -38,9 +37,6 @@
         <service android:name="com.commonsware.cwac.locpoll.LocationPollerService" />
         <service
             android:name=".JobSchedulerTrackApp"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name=".JobSchedulerPostData"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service android:name=".UtilsForegroundEnablingService" />
         <service

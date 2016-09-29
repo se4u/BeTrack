@@ -42,20 +42,17 @@ public class SettingsBetrack {
     static public int DELTA_BTW_RECHECK_STUDY_STARTED = 10000;
 
     static public int SAMPLING_RATE = 1000; //In ms
-    static public int SAMPLING_RATE_SCREEN_OFF = 2 * 60 * 1000;
+    static public int SAMPLING_RATE_SCREEN_OFF = 1 * 60 * 60 * 1000; //TODO to be tested
 
-    static public int POSTDATA_SENDING_DELTA = 1000 * 60 * 60 * 3; //In ms (every 3 hours)
-    static public int POSTDATA_SENDING_DELTA_FASTCHECK = 1000 * 60 * 60 * 1; //In ms (every 1 hour)
+    static public int POSTDATA_SENDING_DELTA = 1000 * 60 * 60 * 2; //In ms (every 2 hours)
 
     static public int TRACKGPS_DELTA = 1000 * 60 * 60 * 1; //In ms (every 1 hour)
-    static public int TRACKGPS_DELTA_FASTCHECK = 1000 * 60 * 10; //In ms (every 10 minutes)
 
     static public int UPDATE_STATUS_STUDY_TIME = 60000;
 
     static public int NOTIFICATION_ID = 1;
 
     static public int JOBID_TRACKAPP = 1;
-    static public int JOBID_POSTDATA = 2;
 
     public static final Semaphore SemSettingsBetrack = new Semaphore(1, true);
 

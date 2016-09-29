@@ -95,9 +95,10 @@ public class CreateNotification {
             try {
                 Log.d(TAG, "Time to set in ms: " + TimeToSet + " Time today in ms: " + System.currentTimeMillis() + " Result: " + (cal.getTimeInMillis() - System.currentTimeMillis()));
 
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                {
-                    alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, TimeToSet, alarmIntent);
+                if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                    AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(TimeToSet, alarmIntent);
+                    alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
                 }
                 else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                 {
@@ -120,9 +121,9 @@ public class CreateNotification {
         try {
             Log.d(TAG, "Reset alarm in 24 hours");
 
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            {
-                alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TimeToSet, alarmIntent);
+            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(System.currentTimeMillis() + TimeToSet, alarmIntent);
+                alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
             }
             else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
             {

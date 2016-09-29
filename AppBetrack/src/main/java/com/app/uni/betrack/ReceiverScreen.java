@@ -29,6 +29,8 @@ public class ReceiverScreen extends BroadcastReceiver {
 
     private SettingsStudy ObjSettingsStudy;
 
+    private long TimeLastTransfer = System.currentTimeMillis();
+
     private static UtilsLocalDataBase localdatabase =  null;
 
     private UtilsLocalDataBase AccesLocalDB()
@@ -165,6 +167,13 @@ public class ReceiverScreen extends BroadcastReceiver {
             else
             {
                 CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
+                long DeltaLastTransfer = System.currentTimeMillis() - TimeLastTransfer;
+                if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {
+                    TimeLastTransfer = System.currentTimeMillis();
+                    Intent msgIntent = new Intent(context, IntentServicePostData.class);
+                    //Start the service for sending the data to the remote server
+                    context.startService(msgIntent);
+                }
             }
         }
     }
