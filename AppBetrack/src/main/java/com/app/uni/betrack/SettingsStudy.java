@@ -66,6 +66,9 @@ public class SettingsStudy {
     static private final String STUDY_STARTDATE_SURVEY = "StartDateSurvey";
     static private final String STUDY_PHONEUSAGE_SURVEY = "PhoneUsageSurvey";
 
+    static private long TimeLastTransfer;
+
+
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     static private Context mContext = null;
@@ -112,6 +115,7 @@ public class SettingsStudy {
         StartDateSurvey = prefs.getString(STUDY_STARTDATE_SURVEY, null);
         PhoneUsage = prefs.getInt(STUDY_PHONEUSAGE_SURVEY, 0);
 
+        TimeLastTransfer = System.currentTimeMillis();
 
     }
 
@@ -147,6 +151,30 @@ public class SettingsStudy {
             StartDateSurvey = startdatesurvey;
             editor.putString(STUDY_STARTDATE_SURVEY, StartDateSurvey);
             editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+    public long getTimeLastTransfer()
+    {
+        long ReturnTimeLastTransfer = 0;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnTimeLastTransfer = TimeLastTransfer;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnTimeLastTransfer = 0;
+        } finally {
+            return ReturnTimeLastTransfer;
+        }
+    }
+
+    public void setTimeLastTransfer(long timelasttransfer)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            TimeLastTransfer = timelasttransfer;
             SemSettingsStudy.release();
         } catch (Exception e) {
             Log.d(TAG, "Error during acquiring SemSettingsStudy");

@@ -50,7 +50,7 @@ public class ReceiverAlarmNotification extends BroadcastReceiver {
         CreateNotification.ResetAlarm(context);
 
         //onResume Betrack activity
-        if (ActivityBeTrack.OnForeground) {
+        if ((ActivityBeTrack.OnForeground) && (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState)) {
             Intent i=new Intent(context,ActivityBeTrack.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

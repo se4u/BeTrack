@@ -73,6 +73,7 @@ public class IntentServicePostData extends IntentService {
 
     protected void onHandleIntent(Intent intent) {
         ContentValues values = new ContentValues();
+        boolean rc = false;
         Long IdSql;
         ConnectionState NetworkState;
         getLock(getApplicationContext()).acquire();
@@ -113,8 +114,6 @@ public class IntentServicePostData extends IntentService {
                 if (0 != values.size()) {
                     //Check if the time end is different of null which means that the entry is complete
                     if (values.get(UtilsLocalDataBase.DB_APPWATCH.get(4)) != null) {
-                        boolean rc;
-
                         ArrayList<String>  AppWatchData;
 
                         IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
@@ -129,15 +128,15 @@ public class IntentServicePostData extends IntentService {
                         rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, ObjSettingsStudy.getIdUser());
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
+                        } else {
+                            break;
                         }
-                    }
-                    else
-                    {
+                    } else {
+                        rc = true;
                         TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
                     }
-                }
-                else
-                {
+                } else {
+                    rc = true;
                     TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
                 }
 
@@ -145,7 +144,6 @@ public class IntentServicePostData extends IntentService {
                 values.clear();
                 values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_USER, true);
                 if (0 != values.size()) {
-                    boolean rc;
                     ArrayList<String>  DailyStatusData;
 
                     IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
@@ -160,10 +158,11 @@ public class IntentServicePostData extends IntentService {
                     rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, ObjSettingsStudy.getIdUser());
                     if (rc == true) {
                         AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
+                    } else {
+                        break;
                     }
-                }
-                else
-                {
+                } else {
+                    rc = true;
                     TaskDone &= ~TABLE_DAILYSTATUS_TRANSFERED;
                 }
 
@@ -171,7 +170,6 @@ public class IntentServicePostData extends IntentService {
                 values.clear();
                 values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_START_STUDY, true);
                 if (0 != values.size()) {
-                    boolean rc;
                     ArrayList<String>  StartStudyData;
 
                     IdSql = values.getAsLong(UtilsLocalDataBase.C_STARTSTUDY_ID);
@@ -183,10 +181,11 @@ public class IntentServicePostData extends IntentService {
                     rc = PostData(SettingsBetrack.STUDY_POSTSTARTSTUDY, UtilsLocalDataBase.DB_START_STUDY, StartStudyData, ObjSettingsStudy.getIdUser());
                     if (rc == true) {
                         AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_START_STUDY, IdSql);
+                    } else {
+                        break;
                     }
-                }
-                else
-                {
+                } else {
+                    rc = true;
                     TaskDone &= ~TABLE_STARTSTUDY_TRANSFERED;
                 }
 
@@ -194,7 +193,6 @@ public class IntentServicePostData extends IntentService {
                 values.clear();
                 values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_END_STUDY, true);
                 if (0 != values.size()) {
-                    boolean rc;
                     ArrayList<String>  EndStudyData;
 
                     IdSql = values.getAsLong(UtilsLocalDataBase.C_ENDSTUDY_ID);
@@ -209,10 +207,12 @@ public class IntentServicePostData extends IntentService {
                         CreateNotification.StopAlarm(this);
                         CreateTrackApp.StopAlarm(this);
                         CreateTrackGPS.StopAlarm(this);
+                    } else {
+                        break;
                     }
                 }
-                else
-                {
+                else {
+                    rc = true;
                     TaskDone &= ~TABLE_ENDSTUDY_TRANSFERED;
                 }
 
@@ -220,7 +220,6 @@ public class IntentServicePostData extends IntentService {
                 values.clear();
                 values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_GPS, true);
                 if (0 != values.size()) {
-                    boolean rc;
                     ArrayList<String>  GpsData;
 
                     IdSql = values.getAsLong(UtilsLocalDataBase.C_GPS_ID);
@@ -232,13 +231,17 @@ public class IntentServicePostData extends IntentService {
                     rc = PostData(SettingsBetrack.STUDY_POSTGPSDATA, UtilsLocalDataBase.DB_GPS, GpsData, ObjSettingsStudy.getIdUser());
                     if (rc == true) {
                         AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_GPS, IdSql);
+                    } else {
+                        break;
                     }
-                }
-                else
-                {
+                } else {
+                    rc = true;
                     TaskDone &= ~TABLE_GPS_TRANSFERED;
                 }
             }
+        }
+        if (rc == true) {
+            ObjSettingsStudy.setTimeLastTransfer(System.currentTimeMillis());
         }
         getLock(getApplicationContext()).release();
     }

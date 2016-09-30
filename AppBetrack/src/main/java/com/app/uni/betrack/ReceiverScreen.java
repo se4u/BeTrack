@@ -1,6 +1,5 @@
 package com.app.uni.betrack;
 
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,8 +27,6 @@ public class ReceiverScreen extends BroadcastReceiver {
     public static StateScreen ScreenState = StateScreen.UNKNOWN;
 
     private SettingsStudy ObjSettingsStudy;
-
-    private long TimeLastTransfer = System.currentTimeMillis();
 
     private static UtilsLocalDataBase localdatabase =  null;
 
@@ -172,9 +169,8 @@ public class ReceiverScreen extends BroadcastReceiver {
             else
             {
                 CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
-                long DeltaLastTransfer = System.currentTimeMillis() - TimeLastTransfer;
+                long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();;
                 if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {
-                    TimeLastTransfer = System.currentTimeMillis();
                     Intent msgIntent = new Intent(context, IntentServicePostData.class);
                     //Start the service for sending the data to the remote server
                     context.startService(msgIntent);
