@@ -23,6 +23,8 @@ public class CreateNotification {
     private static PendingIntent alarmIntent;
     private static final String TAG = "AlarmNotification";
 
+    public static long TimeToSet;
+
     public final static void Create(Context context){
         final NotificationManager mNotification = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         final Intent launchNotificationIntent = new Intent(context, ActivityBeTrack.class);
@@ -49,7 +51,6 @@ public class CreateNotification {
 
     static public void CreateAlarm(Context context, boolean StudyNotification, String StudyNotificationTime)
     {
-        long TimeToSet;
         Date time = null;
 
 
@@ -97,8 +98,9 @@ public class CreateNotification {
 
                 if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                    AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(TimeToSet, alarmIntent);
-                    alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
+                    //AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(TimeToSet, alarmIntent);
+                    //alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
+                    //TimeToSet = TimeToSet + System.currentTimeMillis();
                 }
                 else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                 {
@@ -117,13 +119,14 @@ public class CreateNotification {
 
     static public void ResetAlarm(Context context)
     {
-        long TimeToSet = 24 * 60 * 60 * 1000;
+        TimeToSet = 24 * 60 * 60 * 1000;
         try {
             Log.d(TAG, "Reset alarm in 24 hours");
 
             if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(System.currentTimeMillis() + TimeToSet, alarmIntent);
-                alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
+                //AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(System.currentTimeMillis() + TimeToSet, alarmIntent);
+                //alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
+                TimeToSet = TimeToSet + System.currentTimeMillis();
             }
             else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
             {

@@ -26,6 +26,7 @@ public class SettingsBetrack {
 
     static public String SERVICE_TRACKING_NAME = "com.app.uni.betrack.IntentServiceTrackApp";
     static public String BROADCAST_START_TRACKING_NAME = "com.app.uni.betrack.START_TRACKING";
+    static public String BROADCAST_TIGGER_NOTIFICATION = "com.app.uni.betrack.TRIGGER_NOTIFICATION";
     static public String BROADCAST_CHECK_SCREEN_STATUS = "com.app.uni.betrack.CHECK_SCREEN_STATUS";
 
     static public String STUDY_WEBSITE = "http://www.ricphoto.fr/";
@@ -46,7 +47,7 @@ public class SettingsBetrack {
 
     static public int POSTDATA_SENDING_DELTA = 1000 * 60 * 60 * 2; //In ms (every 2 hours)
 
-    static public int TRACKGPS_DELTA = 1000 * 60 * 60 * 1; //In ms (every 1 hour)
+    static public int TRACKGPS_DELTA = 1000  * 60 * 60 * 1; //In ms (every 1 hour)
 
     static public int UPDATE_STATUS_STUDY_TIME = 60000;
 

@@ -35,14 +35,18 @@
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".ReceiverAlarmNotification" />
+        <receiver android:name=".ReceiverAlarmNotification">
+            <intent-filter>
+                <action android:name="com.app.uni.betrack.TRIGGER_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
         <receiver android:name=".ReceiverAlarmTrackApp" />
         <receiver android:name=".ReceiverAlarmTrackGPS" />
         <receiver android:name="com.commonsware.cwac.locpoll.LocationPoller" />
 
         <service android:name="com.commonsware.cwac.locpoll.LocationPollerService" />
         <service
-            android:name=".JobSchedulerTrackApp"
+            android:name=".JobSchedulerBetrack"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service android:name=".UtilsForegroundEnablingService" />
         <service

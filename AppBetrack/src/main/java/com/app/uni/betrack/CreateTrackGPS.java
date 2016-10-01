@@ -20,9 +20,10 @@ import com.commonsware.cwac.locpoll.LocationPollerParameter;
 public class CreateTrackGPS {
 
     private static AlarmManager alarmMgr;
-    private static PendingIntent alarmIntent;
+    public static PendingIntent alarmIntent;
     private static final String TAG = "AlarmNotificationGPS";
     private static SettingsStudy ObjSettingsStudy = null;
+    public static long TimeToSet;
 
     static public void CreateAlarm(Context context)
     {
@@ -58,10 +59,9 @@ public class CreateTrackGPS {
         alarmIntent = PendingIntent.getBroadcast(context, 0, i, 0);
 
         try {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             {
-                alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
-                        SettingsBetrack.TRACKGPS_DELTA, alarmIntent);
+                TimeToSet = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
             }
             else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
             {

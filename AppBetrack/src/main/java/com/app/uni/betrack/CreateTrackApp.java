@@ -37,7 +37,7 @@ public class CreateTrackApp {
 
             JobInfo.Builder builder = new JobInfo.Builder( SettingsBetrack.JOBID_TRACKAPP,
                     new ComponentName( context.getPackageName(),
-                            JobSchedulerTrackApp.class.getName() ) );
+                            JobSchedulerBetrack.class.getName() ) );
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 builder.setMinimumLatency(SamplingRate);
