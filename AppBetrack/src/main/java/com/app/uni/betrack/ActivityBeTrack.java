@@ -58,16 +58,6 @@ public class ActivityBeTrack extends AppCompatActivity {
 
     private Animation animTranslate;
 
-    private boolean isMyServiceRunning() {
-        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (SettingsBetrack.SERVICE_TRACKING_NAME.equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private SettingsStudy ObjSettingsStudy;
 
     @Override
@@ -276,7 +266,7 @@ public class ActivityBeTrack extends AppCompatActivity {
 
     private void StartStudy()  {
         //Broadcast an event to start the tracking service if not yet started
-        if (!isMyServiceRunning()) {
+        if (!ReceiverStartTracking.startTrackingRunning) {
             Intent intent = new Intent();
             intent.setAction(SettingsBetrack.BROADCAST_START_TRACKING_NAME);
             sendBroadcast(intent);

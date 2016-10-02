@@ -23,8 +23,6 @@ public class CreateNotification {
     private static PendingIntent alarmIntent;
     private static final String TAG = "AlarmNotification";
 
-    public static long TimeToSet;
-
     public final static void Create(Context context){
         final NotificationManager mNotification = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         final Intent launchNotificationIntent = new Intent(context, ActivityBeTrack.class);
@@ -51,6 +49,7 @@ public class CreateNotification {
 
     static public void CreateAlarm(Context context, boolean StudyNotification, String StudyNotificationTime)
     {
+        long TimeToSet;
         Date time = null;
 
 
@@ -91,16 +90,16 @@ public class CreateNotification {
         if (true == StudyNotification)  {
             alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, ReceiverAlarmNotification.class);
-            alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+            alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             try {
                 Log.d(TAG, "Time to set in ms: " + TimeToSet + " Time today in ms: " + System.currentTimeMillis() + " Result: " + (cal.getTimeInMillis() - System.currentTimeMillis()));
 
                 if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                    //AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(TimeToSet, alarmIntent);
-                    //alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
-                    //TimeToSet = TimeToSet + System.currentTimeMillis();
+                    AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(TimeToSet, alarmIntent);
+                    intent.setAction("from.alarm.clock");
+                    alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
                 }
                 else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                 {
@@ -119,14 +118,17 @@ public class CreateNotification {
 
     static public void ResetAlarm(Context context)
     {
-        TimeToSet = 24 * 60 * 60 * 1000;
+        long TimeToSet = 24 * 60 * 60 * 1000;
         try {
             Log.d(TAG, "Reset alarm in 24 hours");
+            alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context, ReceiverAlarmNotification.class);
+            alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(System.currentTimeMillis() + TimeToSet, alarmIntent);
-                //alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
-                TimeToSet = TimeToSet + System.currentTimeMillis();
+                AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(System.currentTimeMillis() + TimeToSet, alarmIntent);
+                intent.setAction("from.alarm.clock");
+                alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
             }
             else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
             {

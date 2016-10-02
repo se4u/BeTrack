@@ -4,12 +4,10 @@ import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PowerManager;
 
 /**
  * Created by cedoctet on 24/08/2016.
@@ -26,26 +24,11 @@ import android.os.PowerManager;
         mJobHandler.removeMessages( 1 );
         return false;
     }
-    private static final String LOCK_NAME_STATIC = "com.app.uni.betrack.wakelock.jobtrackapp";
 
-    private static volatile PowerManager.WakeLock lockStatic;
-
-    synchronized private static PowerManager.WakeLock getLock(Context context) {
-        if (lockStatic == null) {
-            PowerManager mgr = (PowerManager) context.getApplicationContext()
-                    .getSystemService(Context.POWER_SERVICE);
-
-            lockStatic = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                    LOCK_NAME_STATIC);
-            lockStatic.setReferenceCounted(true);
-        }
-        return (lockStatic);
-    }
     private Handler mJobHandler = new Handler( new Handler.Callback() {
 
         @Override
         public boolean handleMessage( Message msg ) {
-            getLock(getApplicationContext()).acquire();
 
             if (CreateTrackApp.SemTrackApp.tryAcquire()) {
                 Intent msgIntent = new Intent(getApplicationContext(), IntentServiceTrackApp.class);
@@ -54,28 +37,22 @@ import android.os.PowerManager;
 
             }
 
-            if (System.currentTimeMillis() >= CreateNotification.TimeToSet) {
-                Intent intent = new Intent();
-                intent.setAction(SettingsBetrack.BROADCAST_TIGGER_NOTIFICATION);
-                sendBroadcast(intent);
-            }
-
-            if (System.currentTimeMillis() >= CreateTrackGPS.TimeToSet) {
+            if (System.currentTimeMillis() >= CreateTrackGPS.TimeTrigger) {
                 try {
                     CreateTrackGPS.alarmIntent.send();
-                    CreateTrackGPS.TimeToSet = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
+                    CreateTrackGPS.TimeTrigger = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
                 } catch (PendingIntent.CanceledException e) {
                     // the stack trace isn't very helpful here.  Just log the exception message.
                     System.out.println( "Sending contentIntent failed: " );
                 }
             }
 
-            jobFinished( (JobParameters) msg.obj, false );
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 CreateTrackApp.CreateAlarm(getApplicationContext(), SettingsBetrack.SAMPLING_RATE);
             }
-            getLock(getApplicationContext()).release();
+
+            jobFinished((JobParameters) msg.obj, false);
+
             return true;
         }
 

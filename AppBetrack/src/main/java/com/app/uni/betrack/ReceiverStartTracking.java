@@ -2,16 +2,18 @@ package com.app.uni.betrack;
 
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
 /**
  * Created by cevincent on 6/24/16.
  */
-public class ReceiverStartTracking extends BroadcastReceiver {
+public class ReceiverStartTracking extends WakefulBroadcastReceiver {
     static final String TAG = "ReceiverStartTracking";
+
+    public static boolean startTrackingRunning = false;
 
     private SettingsStudy ObjSettingsStudy;
     private SettingsBetrack ObjSettingsBetrack;
@@ -38,6 +40,8 @@ public class ReceiverStartTracking extends BroadcastReceiver {
             CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
 
             CreateTrackGPS.CreateAlarm(context);
+
+            startTrackingRunning = true;
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                 if(!hasPermission(context)){

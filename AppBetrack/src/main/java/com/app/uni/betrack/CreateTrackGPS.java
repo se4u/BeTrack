@@ -23,7 +23,7 @@ public class CreateTrackGPS {
     public static PendingIntent alarmIntent;
     private static final String TAG = "AlarmNotificationGPS";
     private static SettingsStudy ObjSettingsStudy = null;
-    public static long TimeToSet;
+    public static long TimeTrigger;
 
     static public void CreateAlarm(Context context)
     {
@@ -61,7 +61,7 @@ public class CreateTrackGPS {
         try {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             {
-                TimeToSet = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
+                TimeTrigger = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
             }
             else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
             {

@@ -1,6 +1,5 @@
 package com.app.uni.betrack;
 
-import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +7,7 @@ import android.hardware.display.DisplayManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 import android.view.Display;
 
@@ -17,7 +17,7 @@ import java.util.Date;
 /**
  * Created by cevincent on 6/24/16.
  */
-public class ReceiverScreen extends BroadcastReceiver {
+public class ReceiverScreen extends WakefulBroadcastReceiver {
 
     Handler mHandler;
 
@@ -37,25 +37,8 @@ public class ReceiverScreen extends BroadcastReceiver {
 
     static final String TAG = "ReceiverScreen";
 
-    private static final String LOCK_NAME_STATIC = "com.app.uni.betrack.wakelock.receiverscreen";
-
-    private static volatile PowerManager.WakeLock lockStatic;
-
-    synchronized private static PowerManager.WakeLock getLock(Context context) {
-        if (lockStatic == null) {
-            PowerManager mgr = (PowerManager) context.getApplicationContext()
-                    .getSystemService(Context.POWER_SERVICE);
-
-            lockStatic = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                    LOCK_NAME_STATIC);
-            lockStatic.setReferenceCounted(true);
-        }
-        return (lockStatic);
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        getLock(context).acquire();
         String ActivityStopDate = "";
         String ActivityStopTime = "";
         ContentValues values = new ContentValues();
@@ -177,6 +160,5 @@ public class ReceiverScreen extends BroadcastReceiver {
                 }
             }
         }
-        getLock(context).release();
     }
 }
