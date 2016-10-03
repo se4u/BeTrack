@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.crypto.Cipher;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
@@ -297,7 +298,20 @@ public class IntentServicePostData extends IntentService {
         for (int i=1; i<Field.size(); i++){
             //Log.d(TAG, Field.get(i));
             if (values.get(Field.get(i)) != null) {
-                rc.add(values.get(Field.get(i)).toString());
+                try {
+                    /*byte[] encodedBytes = null;
+                    Key publicKey = null
+
+                    Cipher c = Cipher.getInstance("RSA");
+                    c.init(Cipher.ENCRYPT_MODE, privateKey);
+                    encodedBytes = c.doFinal(values.get(Field.get(i)).getBytes());*/
+                    rc.add(values.get(Field.get(i)).toString());
+                } catch (Exception e) {
+
+                } finally {
+
+                }
+
             } else {
                 rc.add(null);
             }

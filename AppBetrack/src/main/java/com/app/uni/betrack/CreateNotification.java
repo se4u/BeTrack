@@ -95,11 +95,9 @@ public class CreateNotification {
             try {
                 Log.d(TAG, "Time to set in ms: " + TimeToSet + " Time today in ms: " + System.currentTimeMillis() + " Result: " + (cal.getTimeInMillis() - System.currentTimeMillis()));
 
-                if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-                    AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(TimeToSet, alarmIntent);
-                    intent.setAction("from.alarm.clock");
-                    alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                {
+                    alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, TimeToSet, alarmIntent);
                 }
                 else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                 {
@@ -121,14 +119,9 @@ public class CreateNotification {
         long TimeToSet = 24 * 60 * 60 * 1000;
         try {
             Log.d(TAG, "Reset alarm in 24 hours");
-            alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(context, ReceiverAlarmNotification.class);
-            alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(System.currentTimeMillis() + TimeToSet, alarmIntent);
-                intent.setAction("from.alarm.clock");
-                alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TimeToSet, alarmIntent);
             }
             else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
             {

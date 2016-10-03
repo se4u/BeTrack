@@ -31,15 +31,15 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
         //Restart for a new notification in 24 hours
         CreateNotification.ResetAlarm(context);
 
+        //Trigger a notification
+        CreateNotification.Create(context);
+
         //onResume Betrack activity
         if ((ActivityBeTrack.OnForeground) && (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState)) {
             Intent i=new Intent(context,ActivityBeTrack.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             context.startActivity(i);
-        } else {
-            //Trigger a notification
-            CreateNotification.Create(context);
         }
     }
 }

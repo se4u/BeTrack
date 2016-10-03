@@ -39,7 +39,10 @@ import android.os.Message;
 
             if (System.currentTimeMillis() >= CreateTrackGPS.TimeTrigger) {
                 try {
-                    CreateTrackGPS.alarmIntent.send();
+                    if (null != CreateTrackGPS.alarmIntent) {
+                        CreateTrackGPS.alarmIntent.send();
+                    }
+
                     CreateTrackGPS.TimeTrigger = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
                 } catch (PendingIntent.CanceledException e) {
                     // the stack trace isn't very helpful here.  Just log the exception message.

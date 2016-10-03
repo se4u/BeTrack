@@ -113,31 +113,38 @@ public class FragmentSurvey6Choices extends AbstractStep {
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
 
+        int width = ((int)getResources().getDimension(R.dimen.survey_6choices_button_width))/4;
+        int height = ((int)getResources().getDimension(R.dimen.survey_6choices_button_height))/4;;
+
         IconText1 = (TextView) v.findViewById(R.id.TextChoice1);
         IconText1.setText(IconsText.get(0));
-        /*imgbutton1.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
-                Icons.get(0), imgbutton1.getMaxWidth(), imgbutton1.getMaxHeight()));*/
-        imgbutton1.setImageResource(Icons.get(0));
+        imgbutton1.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
+                Icons.get(0), height, width));
 
         IconText2 = (TextView) v.findViewById(R.id.TextChoice2);
         IconText2.setText(IconsText.get(1));
-        imgbutton2.setImageResource(Icons.get(1));
+        imgbutton2.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
+                Icons.get(1), height, width));
 
         IconText3 = (TextView) v.findViewById(R.id.TextChoice3);
         IconText3.setText(IconsText.get(2));
-        imgbutton3.setImageResource(Icons.get(2));
+        imgbutton3.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
+                Icons.get(2), height, width));
 
         IconText4 = (TextView) v.findViewById(R.id.TextChoice4);
         IconText4.setText(IconsText.get(3));
-        imgbutton4.setImageResource(Icons.get(3));
+        imgbutton4.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
+                Icons.get(3), height, width));
 
         IconText5 = (TextView) v.findViewById(R.id.TextChoice5);
         IconText5.setText(IconsText.get(4));
-        imgbutton5.setImageResource(Icons.get(4));
+        imgbutton5.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
+                Icons.get(4), height, width));
 
         IconText6 = (TextView) v.findViewById(R.id.TextInfoRight);
         IconText6.setText(IconsText.get(5));
-        imgbutton6.setImageResource(Icons.get(5));
+        imgbutton6.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
+                Icons.get(5), height, width));
 
         if (savedInstanceState != null)
             SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
