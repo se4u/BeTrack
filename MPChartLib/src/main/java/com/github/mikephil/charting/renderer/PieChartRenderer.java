@@ -569,7 +569,10 @@ public class PieChartRenderer extends DataRenderer {
                     // draw everything, depending on settings
                     if (drawXInside && drawYInside) {
 
-                        drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
+                        if (value != 100) {
+                            drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
+                        }
+
 
                         if (j < data.getEntryCount() && entry.getLabel() != null) {
                             drawEntryLabel(c, entry.getLabel(), x, y + lineHeight);
