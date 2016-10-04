@@ -1,5 +1,6 @@
 package com.app.uni.betrack;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
@@ -28,29 +29,7 @@ public class CreateTrackApp {
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            if (null != mJobScheduler) {
-                mJobScheduler.cancel(SettingsBetrack.JOBID_TRACKAPP);
-            }
-
-            mJobScheduler = (JobScheduler)
-                    context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-
-            JobInfo.Builder builder = new JobInfo.Builder( SettingsBetrack.JOBID_TRACKAPP,
-                    new ComponentName( context.getPackageName(),
-                            JobSchedulerBetrack.class.getName() ) );
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                builder.setMinimumLatency(SamplingRate);
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder.setPeriodic(SamplingRate);
-                }
-            }
-
-
-            if( mJobScheduler.schedule( builder.build() ) <= 0 ) {
-                //If something goes wrong
-            }
+            CreateJob(context, SamplingRate);
 
         }
         else {
@@ -96,5 +75,31 @@ public class CreateTrackApp {
             }
         }
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)  private static void CreateJob(Context context, int SamplingRate) {
+        if (null != mJobScheduler) {
+            mJobScheduler.cancel(SettingsBetrack.JOBID_TRACKAPP);
+        }
+
+        mJobScheduler = (JobScheduler)
+                context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+
+        JobInfo.Builder builder = new JobInfo.Builder( SettingsBetrack.JOBID_TRACKAPP,
+                new ComponentName( context.getPackageName(),
+                        JobSchedulerBetrack.class.getName() ) );
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            builder.setMinimumLatency(SamplingRate);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder.setPeriodic(SamplingRate);
+            }
+        }
+
+
+        if( mJobScheduler.schedule( builder.build() ) <= 0 ) {
+            //If something goes wrong
+        }
     }
 }

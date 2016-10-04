@@ -34,9 +34,10 @@
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".ReceiverAlarmNotification">
+        <receiver android:name=".ReceiverAlarmNotification"></receiver>
+        <receiver android:name=".ReceiverGPSChange">
             <intent-filter>
-                <action android:name="com.app.uni.betrack.TRIGGER_NOTIFICATION" />
+                <action android:name="android.location.PROVIDERS_CHANGED" />
             </intent-filter>
         </receiver>
         <receiver android:name=".ReceiverAlarmTrackApp" />

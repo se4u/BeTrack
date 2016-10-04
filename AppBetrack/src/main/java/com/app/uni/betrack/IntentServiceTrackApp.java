@@ -313,6 +313,7 @@ public class IntentServiceTrackApp extends IntentService {
             }
             if (mySortedMap != null && !mySortedMap.isEmpty()) {
                 topActivity = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
+                Log.d(TAG, "Time in foreground " + mySortedMap.get(mySortedMap.lastKey()).getTotalTimeInForeground());
             }
         }
 

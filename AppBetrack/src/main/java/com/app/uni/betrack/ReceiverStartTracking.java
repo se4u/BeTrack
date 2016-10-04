@@ -39,8 +39,6 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
 
             CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
 
-            CreateTrackGPS.CreateAlarm(context);
-
             startTrackingRunning = true;
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {

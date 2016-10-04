@@ -158,6 +158,11 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                     //Start the service for sending the data to the remote server
                     context.startService(msgIntent);
                 }
+
+                DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastGPS();
+                if ((DeltaLastTransfer >= SettingsBetrack.TRACKGPS_DELTA) || (DeltaLastTransfer < 0))  {
+                    ReceiverGPSChange.StartGPS(context);
+                }
             }
         }
     }

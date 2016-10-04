@@ -67,6 +67,7 @@ public class SettingsStudy {
     static private final String STUDY_PHONEUSAGE_SURVEY = "PhoneUsageSurvey";
 
     static private long TimeLastTransfer;
+    static private long TimeLastGPS;
 
 
     SharedPreferences prefs;
@@ -116,6 +117,7 @@ public class SettingsStudy {
         PhoneUsage = prefs.getInt(STUDY_PHONEUSAGE_SURVEY, 0);
 
         TimeLastTransfer = System.currentTimeMillis();
+        TimeLastGPS = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
 
     }
 
@@ -156,6 +158,33 @@ public class SettingsStudy {
             Log.d(TAG, "Error during acquiring SemSettingsStudy");
         }
     }
+
+    public long getTimeLastGPS()
+    {
+
+        long ReturnTimeLastGPS = 0;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnTimeLastGPS = TimeLastGPS;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnTimeLastGPS = 0;
+        } finally {
+            return ReturnTimeLastGPS;
+        }
+    }
+
+    public void setTimeLastGPS(long timelastgps)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            TimeLastGPS = timelastgps;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
     public long getTimeLastTransfer()
     {
         long ReturnTimeLastTransfer = 0;

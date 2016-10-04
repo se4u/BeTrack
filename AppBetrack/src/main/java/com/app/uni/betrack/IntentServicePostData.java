@@ -18,7 +18,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import javax.crypto.Cipher;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
@@ -207,7 +206,6 @@ public class IntentServicePostData extends IntentService {
                         AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
                         CreateNotification.StopAlarm(this);
                         CreateTrackApp.StopAlarm(this);
-                        CreateTrackGPS.StopAlarm(this);
                     } else {
                         break;
                     }

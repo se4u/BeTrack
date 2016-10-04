@@ -113,8 +113,8 @@ public class FragmentSurvey6Choices extends AbstractStep {
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
 
-        int width = ((int)getResources().getDimension(R.dimen.survey_6choices_button_width))/6;
-        int height = ((int)getResources().getDimension(R.dimen.survey_6choices_button_height))/6;
+        int width = ((int)getResources().getDimension(R.dimen.survey_6choices_button_width))/4;
+        int height = ((int)getResources().getDimension(R.dimen.survey_6choices_button_height))/4;
 
         IconText1 = (TextView) v.findViewById(R.id.TextChoice1);
         IconText1.setText(IconsText.get(0));
