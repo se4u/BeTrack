@@ -1,6 +1,5 @@
 package com.app.uni.betrack;
 
-import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
@@ -118,7 +117,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
             //Set the notification to make sure that we never got killed
             final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(SettingsBetrack.NOTIFICATION_ID);
+            notificationManager.cancel(SettingsBetrack.ID_NOTIFICATION_BETRACK);
 
             if (ComputeTimeRemaing() != 0) {
                 if (ObjSettingsStudy.getDailySurveyDone() == false) {

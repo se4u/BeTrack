@@ -1,9 +1,15 @@
 package com.app.uni.betrack;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.content.WakefulBroadcastReceiver;
+
+import static com.app.uni.betrack.CreateTrackApp.alarmIntent;
+import static com.app.uni.betrack.CreateTrackApp.alarmMgr;
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Created by cedoctet on 21/08/2016.
@@ -26,14 +32,17 @@ public class ReceiverAlarmTrackApp extends WakefulBroadcastReceiver {
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
             {
-                CreateTrackApp.alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
-                        internalSamplingRate, CreateTrackApp.alarmIntent);
+                SetAlarmFromKitKat(System.currentTimeMillis() + internalSamplingRate);
             }
             else
             {
-                CreateTrackApp.alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
-                        internalSamplingRate, CreateTrackApp.alarmIntent);
+                alarmMgr.set(AlarmManager.RTC_WAKEUP, currentTimeMillis() +
+                        internalSamplingRate, alarmIntent);
             }
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)  private static void SetAlarmFromKitKat(long TimeToSet) {
+        alarmMgr.setExact(AlarmManager.RTC_WAKEUP, TimeToSet, alarmIntent);
     }
 }

@@ -40,15 +40,14 @@ public class CreateTrackApp {
 
             alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, ReceiverAlarmTrackApp.class);
-            alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+            alarmIntent = PendingIntent.getBroadcast(context, SettingsBetrack.ID_TRACKAPP, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             try {
                 ReceiverAlarmTrackApp.internalSamplingRate = SamplingRate;
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                 {
-                    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +
-                            SamplingRate, alarmIntent);
+                    SetAlarmFromKitKat(System.currentTimeMillis() + SamplingRate);
                 }
                 else
                 {
@@ -66,9 +65,7 @@ public class CreateTrackApp {
     static public void StopAlarm(Context context)
     {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (null != mJobScheduler) {
-                mJobScheduler.cancel(SettingsBetrack.JOBID_TRACKAPP);
-            }
+            CancelJob(SettingsBetrack.ID_TRACKAPP);
         } else {
             if (alarmMgr != null) {
                 alarmMgr.cancel(alarmIntent);
@@ -77,15 +74,26 @@ public class CreateTrackApp {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)  private static void SetAlarmFromKitKat(long TimeToSet) {
+        alarmMgr.setExact(AlarmManager.RTC_WAKEUP, TimeToSet, alarmIntent);
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)  private static void CancelJob(int jobId) {
+        if (null != mJobScheduler) {
+            mJobScheduler.cancel(jobId);
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)  private static void CreateJob(Context context, int SamplingRate) {
         if (null != mJobScheduler) {
-            mJobScheduler.cancel(SettingsBetrack.JOBID_TRACKAPP);
+            mJobScheduler.cancel(SettingsBetrack.ID_TRACKAPP);
         }
 
         mJobScheduler = (JobScheduler)
                 context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
-        JobInfo.Builder builder = new JobInfo.Builder( SettingsBetrack.JOBID_TRACKAPP,
+        JobInfo.Builder builder = new JobInfo.Builder( SettingsBetrack.ID_TRACKAPP,
                 new ComponentName( context.getPackageName(),
                         JobSchedulerBetrack.class.getName() ) );
 

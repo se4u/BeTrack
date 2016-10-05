@@ -1,5 +1,6 @@
 package com.app.uni.betrack;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -7,13 +8,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 /**
  * Created by cedoctet on 25/08/2016.
  */
@@ -22,15 +23,18 @@ public class CreateNotification {
     private static AlarmManager alarmMgr;
     private static PendingIntent alarmIntent;
     private static final String TAG = "AlarmNotification";
+    private static NotificationCompat.Builder builder;
+    private static NotificationManager mNotification;
 
     public final static void Create(Context context){
-        final NotificationManager mNotification = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
         final Intent launchNotificationIntent = new Intent(context, ActivityBeTrack.class);
         final PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                1, launchNotificationIntent,
-                PendingIntent.FLAG_ONE_SHOT);
+                SettingsBetrack.ID_NOTIFICATION_BETRACK, launchNotificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        mNotification = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Notification.Builder builder = new Notification.Builder(context)
+        builder = new NotificationCompat.Builder(context)
                 .setWhen(System.currentTimeMillis())
                 .setTicker(context.getString(R.string.notification_title))
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -40,11 +44,19 @@ public class CreateNotification {
                 .setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mNotification.notify(SettingsBetrack.NOTIFICATION_ID, builder.build());
+            SetNotificationFromJellyBean();
         } else {
-            mNotification.notify(SettingsBetrack.NOTIFICATION_ID, builder.getNotification());
+            SetNotificationFromIceCream();
         }
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)  private static void SetNotificationFromJellyBean() {
+        mNotification.notify(SettingsBetrack.ID_NOTIFICATION_BETRACK, builder.build());
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)  private static void SetNotificationFromIceCream() {
+        mNotification.notify(SettingsBetrack.ID_NOTIFICATION_BETRACK, builder.getNotification());
     }
 
     static public void CreateAlarm(Context context, boolean StudyNotification, String StudyNotificationTime)
@@ -90,18 +102,18 @@ public class CreateNotification {
         if (true == StudyNotification)  {
             alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, ReceiverAlarmNotification.class);
-            alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmIntent = PendingIntent.getBroadcast(context, SettingsBetrack.ID_NOTIFICATION_BETRACK, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             try {
                 Log.d(TAG, "Time to set in ms: " + TimeToSet + " Time today in ms: " + System.currentTimeMillis() + " Result: " + (cal.getTimeInMillis() - System.currentTimeMillis()));
 
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                 {
-                    alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, TimeToSet, alarmIntent);
+                    SetAlarmFromM(TimeToSet);
                 }
                 else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                 {
-                    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, TimeToSet, alarmIntent);
+                    SetAlarmFromKitKat(TimeToSet);
                 }
                 else
                 {
@@ -121,11 +133,11 @@ public class CreateNotification {
             Log.d(TAG, "Reset alarm in 24 hours");
 
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TimeToSet, alarmIntent);
+                SetAlarmFromM(System.currentTimeMillis() + TimeToSet);
             }
             else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
             {
-                alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TimeToSet, alarmIntent);
+                SetAlarmFromKitKat(System.currentTimeMillis() + TimeToSet);
             }
             else
             {
@@ -135,6 +147,14 @@ public class CreateNotification {
         }catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)  private static void SetAlarmFromM(long TimeToSet) {
+        alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, TimeToSet, alarmIntent);
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)  private static void SetAlarmFromKitKat(long TimeToSet) {
+        alarmMgr.setExact(AlarmManager.RTC_WAKEUP, TimeToSet, alarmIntent);
     }
 
     static public void StopAlarm(Context context)

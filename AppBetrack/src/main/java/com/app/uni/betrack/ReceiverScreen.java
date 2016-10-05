@@ -1,5 +1,6 @@
 package com.app.uni.betrack;
 
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +38,37 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
 
     static final String TAG = "ReceiverScreen";
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)  private static void CheckScreenStatusFromLollipop(Context context) {
+        DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+        for (Display display : dm.getDisplays()) {
+            if (display.getState() != Display.STATE_OFF) {
+                Log.d(TAG, "MANUAL CHECK SCREEN IS ON");
+                ScreenState = StateScreen.ON;
+                break;
+            }
+            else
+            {
+                Log.d(TAG, "MANUAL CHECK SCREEN IS OFF");
+                ScreenState = StateScreen.OFF;
+                break;
+            }
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)  private static void CheckScreenStatusFromIceCream(Context context) {
+        PowerManager powerManager = (PowerManager) context.getSystemService(context.POWER_SERVICE);
+        if  (powerManager.isScreenOn()) {
+            Log.d(TAG, "MANUAL CHECK SCREEN IS ON");
+            ScreenState = StateScreen.ON;
+        }
+        else
+        {
+            Log.d(TAG, "MANUAL CHECK SCREEN IS OFF");
+            ScreenState = StateScreen.OFF;
+
+        }
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String ActivityStopDate = "";
@@ -55,33 +87,10 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
 
             Log.d(TAG, "Check screen state");
             if (intent.getAction().equals(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS)) {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-                    DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
-                    for (Display display : dm.getDisplays()) {
-                        if (display.getState() != Display.STATE_OFF) {
-                            Log.d(TAG, "MANUAL CHECK SCREEN IS ON");
-                            ScreenState = StateScreen.ON;
-                            break;
-                        }
-                        else
-                        {
-                            Log.d(TAG, "MANUAL CHECK SCREEN IS OFF");
-                            ScreenState = StateScreen.OFF;
-                            break;
-                        }
-                    }
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    CheckScreenStatusFromLollipop(context);
                 } else {
-                    PowerManager powerManager = (PowerManager) context.getSystemService(context.POWER_SERVICE);
-                    if  (powerManager.isScreenOn()) {
-                        Log.d(TAG, "MANUAL CHECK SCREEN IS ON");
-                        ScreenState = StateScreen.ON;
-                    }
-                    else
-                    {
-                        Log.d(TAG, "MANUAL CHECK SCREEN IS OFF");
-                        ScreenState = StateScreen.OFF;
-
-                    }
+                    CheckScreenStatusFromIceCream(context);
                 }
             }
             if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {

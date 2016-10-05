@@ -51,9 +51,9 @@ public class SettingsBetrack {
 
     static public int UPDATE_STATUS_STUDY_TIME = 60000;
 
-    static public int NOTIFICATION_ID = 1;
-
-    static public int JOBID_TRACKAPP = 1;
+    static public int ID_NOTIFICATION_BETRACK = 8500001;
+    static public int ID_TRACKAPP = 8500002;
+    static public int ID_NOTIFICATION_SERVICE = 8500003;
 
     public static final Semaphore SemSettingsBetrack = new Semaphore(1, true);
 

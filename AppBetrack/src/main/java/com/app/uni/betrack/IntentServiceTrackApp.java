@@ -310,10 +310,10 @@ public class IntentServiceTrackApp extends IntentService {
             SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
             for (UsageStats usageStats : stats) {
                 mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
+                Log.d(TAG, "App" + usageStats.getPackageName() + "Time in foreground " + usageStats.getTotalTimeInForeground());
             }
             if (mySortedMap != null && !mySortedMap.isEmpty()) {
                 topActivity = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
-                Log.d(TAG, "Time in foreground " + mySortedMap.get(mySortedMap.lastKey()).getTotalTimeInForeground());
             }
         }
 

@@ -49,7 +49,7 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
         }
     }
 
-    @TargetApi(19) private boolean hasPermission(Context context) {
+    @TargetApi(android.os.Build.VERSION_CODES.KITKAT) private boolean hasPermission(Context context) {
 
         AppOpsManager appOps = (AppOpsManager)
                 context.getSystemService(context.APP_OPS_SERVICE);

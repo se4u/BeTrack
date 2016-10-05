@@ -1,10 +1,12 @@
 package com.app.uni.betrack;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 
 public class UtilsForegroundEnablingService extends Service {
 
@@ -26,17 +28,25 @@ public class UtilsForegroundEnablingService extends Service {
         return START_NOT_STICKY;
     }
 
-    private static final int NOTIFICATION_ID = 10;
+
 
     private static void startForeground(Service service) {
         Notification notification;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            notification = new Notification.Builder(service).build();
+            notification = SetNotificationFromJellyBean(service);
         } else {
-            notification = new Notification.Builder(service).getNotification();
+            notification = SetNotificationFromIceCream(service);
         }
 
-        service.startForeground(NOTIFICATION_ID, notification);
+        service.startForeground(SettingsBetrack.ID_NOTIFICATION_SERVICE, notification);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)  private static Notification SetNotificationFromJellyBean(Service service) {
+        return new NotificationCompat.Builder(service).build();
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)  private static Notification SetNotificationFromIceCream(Service service) {
+        return new NotificationCompat.Builder(service).getNotification();
     }
 
     @Override
