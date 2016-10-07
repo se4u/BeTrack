@@ -10,6 +10,7 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 
@@ -101,8 +102,8 @@ public class IntentServiceTrackApp extends IntentService {
                 {
 
                     // We get usage stats for the last minute
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                        topActivity = handleCheckActivity_FromKitkat(intent);
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        topActivity = handleCheckActivity_FromLollipop(intent);
                     } else {
                         topActivity = handleCheckActivity(intent);
                     }
@@ -295,7 +296,7 @@ public class IntentServiceTrackApp extends IntentService {
 
     }
 
-    @TargetApi(21) private String handleCheckActivity_FromKitkat(Intent intent)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) private String handleCheckActivity_FromLollipop(Intent intent)
     {
         // result
         String topActivity = null;
@@ -310,7 +311,7 @@ public class IntentServiceTrackApp extends IntentService {
             SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
             for (UsageStats usageStats : stats) {
                 mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
-                Log.d(TAG, "App" + usageStats.getPackageName() + "Time in foreground " + usageStats.getTotalTimeInForeground());
+                //Log.d(TAG, "App" + usageStats.getPackageName() + "Time in foreground " + usageStats.getTotalTimeInForeground());
             }
             if (mySortedMap != null && !mySortedMap.isEmpty()) {
                 topActivity = mySortedMap.get(mySortedMap.lastKey()).getPackageName();

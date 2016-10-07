@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
@@ -41,7 +42,7 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
 
             startTrackingRunning = true;
 
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if(!hasPermission(context)){
                     Log.d(TAG, "No permission !");
                 }
@@ -49,7 +50,7 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
         }
     }
 
-    @TargetApi(android.os.Build.VERSION_CODES.KITKAT) private boolean hasPermission(Context context) {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) private boolean hasPermission(Context context) {
 
         AppOpsManager appOps = (AppOpsManager)
                 context.getSystemService(context.APP_OPS_SERVICE);

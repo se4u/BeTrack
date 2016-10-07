@@ -34,8 +34,6 @@ public class ServiceBetrack extends Service {
         instance = this;
         if (startService(new Intent(this, UtilsForegroundEnablingService.class)) == null)
             throw new RuntimeException("Couldn't find " + UtilsForegroundEnablingService.class.getSimpleName());
-
-
     }
 
     @Override

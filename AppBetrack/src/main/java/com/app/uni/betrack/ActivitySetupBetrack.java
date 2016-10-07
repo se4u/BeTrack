@@ -47,7 +47,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
 
         ObjSettingsStudy = SettingsStudy.getInstance(this);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if(!hasPermission()) {
                 findViewById(R.id.EnableUsageStat).setVisibility(View.VISIBLE);
             }
@@ -85,6 +85,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 EnableGPS = true;
             }
         } else {
+            findViewById(R.id.EnableGPS).setVisibility(View.GONE);
             EnableGPS = true;
         }
 
@@ -101,8 +102,22 @@ public class ActivitySetupBetrack extends AppCompatActivity {
         Intent i;
         super.onResume();
 
-        if(!hasPermission()) {
-            findViewById(R.id.EnableUsageStat).setVisibility(View.VISIBLE);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(!hasPermission()) {
+                findViewById(R.id.EnableUsageStat).setVisibility(View.VISIBLE);
+            }
+            else  {
+                findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
+                EnableUsageStat = true;
+                if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS ) {
+                    ObjSettingsStudy.setSetupBetrackDone(true);
+                    i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    ObjSettingsStudy.setSetupBetrackDone(false);
+                }
+            }
         }
         else  {
             findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
@@ -178,11 +193,14 @@ public class ActivitySetupBetrack extends AppCompatActivity {
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT) private boolean hasPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int mode;
             AppOpsManager appOps = (AppOpsManager)
                     getSystemService(APP_OPS_SERVICE);
-            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+
+            mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
                     android.os.Process.myUid(), getPackageName());
+
             return mode == AppOpsManager.MODE_ALLOWED;
         } else {
             return true;
