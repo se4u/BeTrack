@@ -40,6 +40,9 @@ public class CreateTrackApp {
 
             alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, ReceiverAlarmTrackApp.class);
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+            }
             alarmIntent = PendingIntent.getBroadcast(context, SettingsBetrack.ID_TRACKAPP, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             try {

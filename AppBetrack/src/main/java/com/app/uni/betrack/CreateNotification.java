@@ -102,6 +102,9 @@ public class CreateNotification {
         if (true == StudyNotification)  {
             alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, ReceiverAlarmNotification.class);
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+            }
             alarmIntent = PendingIntent.getBroadcast(context, SettingsBetrack.ID_NOTIFICATION_BETRACK, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             try {
