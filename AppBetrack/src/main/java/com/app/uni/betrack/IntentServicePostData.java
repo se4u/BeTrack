@@ -10,23 +10,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
@@ -36,6 +28,7 @@ public class IntentServicePostData extends IntentService {
     static final String TAG = "IntentServicePostData";
     private static final String LOCK_NAME_STATIC = "com.app.uni.betrack.wakelock.postdata";
 
+    public static final Semaphore SemPostData = new Semaphore(1, true);
     private SettingsBetrack ObjSettingsBetrack = null;
     private SettingsStudy ObjSettingsStudy = null;
     private UtilsCipher Cipher = null;
@@ -110,7 +103,7 @@ public class IntentServicePostData extends IntentService {
         }
 
         if (null == Cipher) {
-            Cipher = new UtilsCipher(UtilsCypherSecretKey.SecretKey);
+            Cipher = new UtilsCipher(UtilsCipherSecretKey.SecretKey);
         }
 
         Log.d(TAG, "try to post the data");
@@ -182,14 +175,14 @@ public class IntentServicePostData extends IntentService {
 
                 //START STUDY
                 values.clear();
-                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_START_STUDY, true);
+                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_START_STUDY, false);
                 if (0 != values.size()) {
                     ArrayList<String>  StartStudyData;
 
                     IdSql = values.getAsLong(UtilsLocalDataBase.C_STARTSTUDY_ID);
 
                     //Encrypt the data
-                    StartStudyData = EncryptData(values, UtilsLocalDataBase.DB_START_STUDY, false);
+                    StartStudyData = EncryptData(values, UtilsLocalDataBase.DB_START_STUDY, true);
 
                     //Post the data
                     rc = PostData(SettingsBetrack.STUDY_POSTSTARTSTUDY, UtilsLocalDataBase.DB_START_STUDY, StartStudyData, ObjSettingsStudy.getIdUser());
@@ -256,6 +249,7 @@ public class IntentServicePostData extends IntentService {
         if (rc == true) {
             ObjSettingsStudy.setTimeLastTransfer(System.currentTimeMillis());
         }
+        SemPostData.release();
         getLock(getApplicationContext()).release();
     }
 

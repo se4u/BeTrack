@@ -11,6 +11,8 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import com.commonsware.cwac.locpoll.LocationPoller;
 import com.commonsware.cwac.locpoll.LocationPollerParameter;
 
+import java.util.concurrent.Semaphore;
+
 /**
  * Created by cedoctet on 04/10/2016.
  */
@@ -19,6 +21,7 @@ public class ReceiverGPSChange  extends WakefulBroadcastReceiver {
     private static AlarmManager alarmMgr;
     private static PendingIntent alarmIntent;
     private SettingsStudy ObjSettingsStudy;
+    public static final Semaphore SemGPS = new Semaphore(1, true);
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
@@ -31,6 +34,11 @@ public class ReceiverGPSChange  extends WakefulBroadcastReceiver {
     }
 
     public static void StartGPS(Context context) {
+
+        if (!SemGPS.tryAcquire()) {
+            return;
+        }
+
         if (alarmMgr!= null) {
             alarmMgr.cancel(alarmIntent);
         }

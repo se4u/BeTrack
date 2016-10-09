@@ -24,6 +24,11 @@ public class UtilsCipher {
 
     public String encryptUTF8(String data){
         try{
+            int Align64Bits = data.length() % 4;
+            if (null == data) data = "0000";
+            for (int i = 0; i < Align64Bits; i++) {
+                data = " " + data;
+            }
             byte[] bytes = data.toString().getBytes("utf-8");
             byte[] bytesBase64 = android.util.Base64.encode(bytes, Base64.DEFAULT);
             return encrypt(bytesBase64);

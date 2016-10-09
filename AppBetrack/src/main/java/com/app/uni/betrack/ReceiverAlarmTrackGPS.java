@@ -52,6 +52,7 @@ public class ReceiverAlarmTrackGPS extends WakefulBroadcastReceiver {
         }
         saveLocation(loc);        //Set next alarm
         ObjSettingsStudy.setTimeLastGPS(System.currentTimeMillis());
+        ReceiverGPSChange.SemGPS.release();
     }
 
     private void saveLocation(Location location) {

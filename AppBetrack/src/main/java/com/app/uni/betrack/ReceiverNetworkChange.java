@@ -17,9 +17,11 @@ public class ReceiverNetworkChange  extends WakefulBroadcastReceiver {
 
         long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
         if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {
-            Intent msgIntent = new Intent(context, IntentServicePostData.class);
-            //Start the service for sending the data to the remote server
-            context.startService(msgIntent);
+            if (IntentServicePostData.SemPostData.tryAcquire()) {
+                Intent msgIntent = new Intent(context, IntentServicePostData.class);
+                //Start the service for sending the data to the remote server
+                context.startService(msgIntent);
+            }
         }
     }
 }

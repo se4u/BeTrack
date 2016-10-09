@@ -62,14 +62,14 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:background="@color/colorLightGrey">
+                android:paddingBottom="10dp"
+                android:background="@drawable/button_round_noselection">
                 <TextView
                     android:id="@+id/EnableUsageStatTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingBottom="10dp"
+                    android:padding="10dp"
                     android:textSize="30sp"
                     android:textColor="#000"
                     android:text="@string/UsageStat_enable_title"
@@ -119,19 +119,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingBottom="10dp"
                 android:layout_gravity="top"
                 android:id="@+id/EnableHuawei"
                 android:layout_below="@+id/ViewEnableUsageStat"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:background="@color/colorLightGrey">
+                android:background="@drawable/button_round_noselection">
                 <TextView
                     android:id="@+id/EnableHuaweiTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingBottom="10dp"
+                    android:padding="10dp"
                     android:textSize="30sp"
                     android:textColor="#000"
                     android:text="@string/huawei_title"
@@ -197,14 +197,14 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="15dp"
                 android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:background="@color/colorLightGrey">
+                android:paddingBottom="10dp"
+                android:background="@drawable/button_round_noselection">
                 <TextView
                     android:id="@+id/EnableGPSTitle"
+                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingBottom="10dp"
                     android:textSize="30sp"
                     android:textColor="#000"
                     android:text="@string/gps_enable_title"
