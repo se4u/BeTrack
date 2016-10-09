@@ -78,7 +78,7 @@
         <activity android:name=".ActivityStartStudy" android:screenOrientation="portrait"/>
         <activity android:name=".ActivitySetupBetrack" android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".DummyActivity"
+            android:name=".ActivityDummy"
             android:theme="@android:style/Theme.NoDisplay"
             android:enabled="true"
             android:allowTaskReparenting="true"

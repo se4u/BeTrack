@@ -55,7 +55,7 @@ public class ServiceBetrack extends Service {
     public void onTaskRemoved(Intent rootIntent) {
         // start blank activity to prevent kill
         // @see https://code.google.com/p/android/issues/detail?id=53313
-        Intent intent = new Intent(this, DummyActivity.class);
+        Intent intent = new Intent(this, ActivityDummy.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         super.onTaskRemoved(rootIntent);

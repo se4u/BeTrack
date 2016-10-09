@@ -10,14 +10,23 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
@@ -29,6 +38,7 @@ public class IntentServicePostData extends IntentService {
 
     private SettingsBetrack ObjSettingsBetrack = null;
     private SettingsStudy ObjSettingsStudy = null;
+    private UtilsCipher Cipher = null;
 
     private UtilsLocalDataBase localdatabase = null;
     private UtilsLocalDataBase AccesLocalDB()
@@ -97,6 +107,10 @@ public class IntentServicePostData extends IntentService {
 
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(this);
+        }
+
+        if (null == Cipher) {
+            Cipher = new UtilsCipher(UtilsCypherSecretKey.SecretKey);
         }
 
         Log.d(TAG, "try to post the data");
@@ -297,15 +311,18 @@ public class IntentServicePostData extends IntentService {
             //Log.d(TAG, Field.get(i));
             if (values.get(Field.get(i)) != null) {
                 try {
-                    /*byte[] encodedBytes = null;
-                    Key publicKey = null
+                    String data = null;
+                    String beforeEncryption = values.get(Field.get(i)).toString();
+                    if (true == Encrypt) {
+                        data = Cipher.encryptUTF8(values.get(Field.get(i)).toString());
+                        Log.d(TAG, "Data size before: " + values.get(Field.get(i)).toString().length() + " data size after encryption " + data.length());
+                    } else {
+                        data = values.get(Field.get(i)).toString();
+                    }
 
-                    Cipher c = Cipher.getInstance("RSA");
-                    c.init(Cipher.ENCRYPT_MODE, privateKey);
-                    encodedBytes = c.doFinal(values.get(Field.get(i)).getBytes());*/
-                    rc.add(values.get(Field.get(i)).toString());
+                    rc.add(data);
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 } finally {
 
                 }
@@ -313,12 +330,10 @@ public class IntentServicePostData extends IntentService {
             } else {
                 rc.add(null);
             }
-            if (Encrypt == true) {
-
-            }
         }
         return rc;
     }
+
 
     public boolean PostData(String WebLink, ArrayList<String> Field, ArrayList<String> Data, String IdUser) {
 

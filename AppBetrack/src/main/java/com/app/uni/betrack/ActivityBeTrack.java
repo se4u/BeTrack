@@ -70,7 +70,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         super.onResume();
         OnForeground = true;
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
-            if (ComputeTimeRemaing() != 0)
+            if (ComputeTimeRemaing() > 0)
             {
                 if (false == ObjSettingsStudy.getSetupBetrackDone()) {
                     Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
@@ -119,7 +119,7 @@ public class ActivityBeTrack extends AppCompatActivity {
             final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(SettingsBetrack.ID_NOTIFICATION_BETRACK);
 
-            if (ComputeTimeRemaing() != 0) {
+            if (ComputeTimeRemaing() > 0) {
                 if (ObjSettingsStudy.getDailySurveyDone() == false) {
                     Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
                     startActivity(i);

@@ -6,7 +6,7 @@ import android.os.Bundle;
 /**
  * Created by cevincent on 07/10/2016.
  */
-public class DummyActivity extends Activity {
+public class ActivityDummy extends Activity {
     @Override
     public void onCreate( Bundle icicle ) {
         super.onCreate( icicle );
