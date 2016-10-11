@@ -16,7 +16,7 @@ import java.util.Date;
  * Created by cevincent on 16/09/2016.
  */
 public class ActivitySurveyDaily   extends DotStepper {
-    private static final String TAG = "ActivitySurveyEnd";
+    private static final String TAG = "ActivitySurveyDaily";
 
     private int SurveyPeriod = -1;
     private int SurveySocial1 = 0;
@@ -25,6 +25,7 @@ public class ActivitySurveyDaily   extends DotStepper {
     private int PhoneUsage = 0;
 
     private String DateDaily = null;
+    private String TimeDaily = null;
 
     private AbstractStep Step1;
     private Bundle bundle1;
@@ -43,6 +44,8 @@ public class ActivitySurveyDaily   extends DotStepper {
 
     private ContentValues values = new ContentValues();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+    private SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+
     private UtilsLocalDataBase localdatabase = null;
     private UtilsLocalDataBase AccesLocalDB()
     {
@@ -78,6 +81,8 @@ public class ActivitySurveyDaily   extends DotStepper {
         values.put(UtilsLocalDataBase.C_USER_MOOD, SurveyMood);
         DateDaily = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_USER_DATE, DateDaily);
+        TimeDaily = shf.format(new Date());
+        values.put(UtilsLocalDataBase.C_USER_TIME, TimeDaily);
 
         AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_USER);
         Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser()
@@ -86,7 +91,8 @@ public class ActivitySurveyDaily   extends DotStepper {
                 + " SurveySocial2: " + SurveySocial2
                 + " PhoneUsage: " + PhoneUsage
                 + " SurveyMood: " + SurveyMood
-                + " Date: " + DateDaily);
+                + " Date: " + DateDaily
+                + " Time: " + TimeDaily);
 
 
         ObjSettingsStudy.setDailySurveyDone(true);

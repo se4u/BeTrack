@@ -2,11 +2,8 @@ package com.app.uni.betrack;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.DotStepper;
@@ -24,6 +21,7 @@ public class ActivitySurveyEnd  extends DotStepper {
     private int SurveyInRelation = -1;
     private String SurveyContraception = null;
     private String DateStudyEnd = null;
+    private String TimeStudyEnd = null;
 
     private AbstractStep Step1;
     private Bundle bundle1;
@@ -34,6 +32,8 @@ public class ActivitySurveyEnd  extends DotStepper {
 
     private ContentValues values = new ContentValues();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+    private SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+
     private UtilsLocalDataBase localdatabase = null;
     private UtilsLocalDataBase AccesLocalDB()
     {
@@ -60,12 +60,15 @@ public class ActivitySurveyEnd  extends DotStepper {
         values.put(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION, SurveyContraception);
         DateStudyEnd = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_DATE, DateStudyEnd);
+        TimeStudyEnd = shf.format(new Date());
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_TIME, TimeStudyEnd);
 
         AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_END_STUDY);
         Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser()
                 + " In a relationship: " + SurveyInRelation
                 + " Contraception used: " + SurveyContraception
-                + " Date end of the study: " + DateStudyEnd);
+                + " Date end of the study: " + DateStudyEnd
+                + " Time end of the study: " + TimeStudyEnd);
 
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
         //Start the service for sending the data to the remote server

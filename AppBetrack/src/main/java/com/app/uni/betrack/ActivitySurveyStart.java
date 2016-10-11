@@ -39,9 +39,13 @@ public class ActivitySurveyStart extends DotStepper {
     private static final int SURVEY_DEFAULT_CYCLE = SurveyLenghCycle - SURVEY_CYCLE_MIN + 1;
 
     private String DateStudyStart = null;
+    private String TimeStudyStart = null;
+
 
     private ContentValues values = new ContentValues();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+    private SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+
     private UtilsLocalDataBase localdatabase = null;
     private UtilsLocalDataBase AccesLocalDB()
     {
@@ -99,11 +103,13 @@ public class ActivitySurveyStart extends DotStepper {
         values.put(UtilsLocalDataBase.C_STARTSTUDY_CONTRACEPTION, SurveyContraception);
         DateStudyStart = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_STARTSTUDY_DATE, DateStudyStart);
+        TimeStudyStart = shf.format(new Date());
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_TIME, TimeStudyStart);
 
         AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_START_STUDY);
         Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Participant age: " + SurveyAge + " In a relationship: " + SurveyInRelation
         + " period lenght: " + SurveyLengthPeriod + " cycle lenght: " + SurveyLenghCycle + " Contraception used: " + SurveyContraception
-        + " date start: " + DateStudyStart);
+        + " date start: " + DateStudyStart + " time start: " + TimeStudyStart);
 
         ObjSettingsStudy.setStartDateSurvey(DateStudyStart);
         ObjSettingsStudy.setStartSurveyDone(true);

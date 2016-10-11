@@ -50,6 +50,8 @@ public class UtilsLocalDataBase {
     static final String C_USER_PHONE_USAGE = "PhoneUsage";
     static final String C_USER_MOOD = "Mood";
     static final String C_USER_DATE = "Date";
+    static final String C_USER_TIME = "Time";
+
 
     public static final ArrayList<String> DB_DAILYSTATUS = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_USER_PID);
@@ -59,6 +61,7 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_USER_PHONE_USAGE);
         add(UtilsLocalDataBase.C_USER_MOOD);
         add(UtilsLocalDataBase.C_USER_DATE);
+        add(UtilsLocalDataBase.C_USER_TIME);
     }};
 
     //Table for GPS data
@@ -96,6 +99,7 @@ public class UtilsLocalDataBase {
     static final String C_STARTSTUDY_AVGPERIODLENGHT = "AvgPeriodLenght";
     static final String C_STARTSTUDY_AVGMENSTRUALCYCLE = "AvgMenstrualCycle";
     static final String C_STARTSTUDY_DATE = "Date";
+    static final String C_STARTSTUDY_TIME = "Time";
 
     public static final ArrayList<String> DB_START_STUDY = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_STARTSTUDY_PID);
@@ -105,6 +109,7 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_STARTSTUDY_AVGPERIODLENGHT);
         add(UtilsLocalDataBase.C_STARTSTUDY_AVGMENSTRUALCYCLE);
         add(UtilsLocalDataBase.C_STARTSTUDY_DATE);
+        add(UtilsLocalDataBase.C_STARTSTUDY_TIME);
     }};
 
     //Table for End study
@@ -115,6 +120,7 @@ public class UtilsLocalDataBase {
     static final String C_ENDSTUDY_RELATIONSHIP = "RelationShip";
     static final String C_ENDSTUDY_CONTRACEPTION = "Contraception";
     static final String C_ENDSTUDY_DATE = "Date";
+    static final String C_ENDSTUDY_TIME = "Time";
 
     public static final ArrayList<String> DB_END_STUDY = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_ENDSTUDY_PID);
@@ -122,6 +128,7 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP);
         add(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION);
         add(UtilsLocalDataBase.C_ENDSTUDY_DATE);
+        add(UtilsLocalDataBase.C_ENDSTUDY_TIME);
     }};
 
     private static final Semaphore SemUpdateDb = new Semaphore(1, true);
@@ -145,12 +152,12 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql);
 
             String sql2 = "create table " + TABLE_USER + " (" + C_USER_ID + " integer primary key autoincrement, "
-                    + C_USER_PERIOD + " text, " + C_USER_SOCIAL1_LIFE + " text, " + C_USER_SOCIAL2_LIFE + " text, " + C_USER_PHONE_USAGE + " text, " + C_USER_MOOD + " text, " + C_USER_DATE + " text)"; //
+                    + C_USER_PERIOD + " text, " + C_USER_SOCIAL1_LIFE + " text, " + C_USER_SOCIAL2_LIFE + " text, " + C_USER_PHONE_USAGE + " text, " + C_USER_MOOD + " text, " + C_USER_DATE + " text, " + C_USER_TIME + " text)"; //
             db.execSQL(sql2);
             Log.d(TAG, "onCreated sql: " + sql2);
 
             String sql3 = "create table " + TABLE_START_STUDY + " (" + C_STARTSTUDY_ID + " integer primary key autoincrement, "
-                    +  C_STARTSTUDY_AGE + " text, " + C_STARTSTUDY_RELATIONSHIP + " text, " + C_STARTSTUDY_CONTRACEPTION + " text, " + C_STARTSTUDY_AVGPERIODLENGHT + " text, " + C_STARTSTUDY_AVGMENSTRUALCYCLE + " text, " + C_STARTSTUDY_DATE + " text)"; //
+                    +  C_STARTSTUDY_AGE + " text, " + C_STARTSTUDY_RELATIONSHIP + " text, " + C_STARTSTUDY_CONTRACEPTION + " text, " + C_STARTSTUDY_AVGPERIODLENGHT + " text, " + C_STARTSTUDY_AVGMENSTRUALCYCLE + " text, " + C_STARTSTUDY_DATE + " text, " + C_STARTSTUDY_TIME + " text)"; //
             db.execSQL(sql3);
             Log.d(TAG, "onCreated sql: " + sql3);
 
@@ -160,7 +167,7 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql4);
 
             String sql6 = "create table " + TABLE_END_STUDY + " (" + C_ENDSTUDY_ID + " integer primary key autoincrement, "
-                    + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, " + C_ENDSTUDY_DATE + " text)"; //
+                    + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, " + C_ENDSTUDY_DATE +  " text, " + C_ENDSTUDY_TIME + " text)"; //
             db.execSQL(sql6);
             Log.d(TAG, "onCreated sql: " + sql6);
         }

@@ -158,9 +158,13 @@ public class IntentServicePostData extends IntentService {
                     //Encrypt the data
                     DailyStatusData = EncryptData(values, UtilsLocalDataBase.DB_DAILYSTATUS, false);
                     mHandler.post(new UtilsDisplayToast(this, getResources().getString(R.string.app_name)+": Post survey status: " + DailyStatusData.get(0) +
-                            " Post social 1: " + DailyStatusData.get(1) + " Post social 2: " + DailyStatusData.get(2) +
-                            " Post mood: " + DailyStatusData.get(4)
-                            + " Date: " +  DailyStatusData.get(3)));
+                            " Post social 1: " + DailyStatusData.get(1) +
+                            " Post social 2: " + DailyStatusData.get(2) +
+                            " Post phone usage: " + DailyStatusData.get(3) +
+                            " Post mood: " + DailyStatusData.get(4) +
+                            " Date: " +  DailyStatusData.get(5) +
+                            " Time: " +  DailyStatusData.get(6)
+                    ));
                     //Post the data
                     rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, ObjSettingsStudy.getIdUser());
                     if (rc == true) {
@@ -182,7 +186,7 @@ public class IntentServicePostData extends IntentService {
                     IdSql = values.getAsLong(UtilsLocalDataBase.C_STARTSTUDY_ID);
 
                     //Encrypt the data
-                    StartStudyData = EncryptData(values, UtilsLocalDataBase.DB_START_STUDY, true);
+                    StartStudyData = EncryptData(values, UtilsLocalDataBase.DB_START_STUDY, false);
 
                     //Post the data
                     rc = PostData(SettingsBetrack.STUDY_POSTSTARTSTUDY, UtilsLocalDataBase.DB_START_STUDY, StartStudyData, ObjSettingsStudy.getIdUser());
