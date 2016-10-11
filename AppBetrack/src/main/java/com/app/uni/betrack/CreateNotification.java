@@ -26,6 +26,8 @@ public class CreateNotification {
     private static NotificationCompat.Builder builder;
     private static NotificationManager mNotification;
 
+    private static SettingsStudy ObjSettingsStudy;
+
     public final static void Create(Context context){
 
         final Intent launchNotificationIntent = new Intent(context, ActivityBeTrack.class);
@@ -64,6 +66,9 @@ public class CreateNotification {
         long TimeToSet;
         Date time = null;
 
+        if (null == ObjSettingsStudy)  {
+            ObjSettingsStudy = SettingsStudy.getInstance(context);
+        }
 
         //Read the time from the preference
         SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
@@ -93,6 +98,8 @@ public class CreateNotification {
         }
 
         TimeToSet = cal.getTimeInMillis();
+
+        ObjSettingsStudy.setTimeNextNotification(TimeToSet);
 
 
         if (alarmMgr!= null) {
@@ -132,6 +139,13 @@ public class CreateNotification {
     static public void ResetAlarm(Context context)
     {
         long TimeToSet = 24 * 60 * 60 * 1000;
+
+        if (null == ObjSettingsStudy)  {
+            ObjSettingsStudy = SettingsStudy.getInstance(context);
+        }
+
+        ObjSettingsStudy.setTimeNextNotification(System.currentTimeMillis() + TimeToSet);
+
         try {
             Log.d(TAG, "Reset alarm in 24 hours");
 

@@ -5,6 +5,7 @@ import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
@@ -27,10 +28,43 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
 
         ReceiverScreen.ScreenState = ReceiverScreen.StateScreen.ON;
 
+        Bundle results = getResultExtras(true);
+
+        String id = intent.getStringExtra(SettingsBetrack.BROADCAST_ARG_MANUAL_START);
+
+        if(id == null) {
+            Log.d(TAG, "The system is just started");
+            //The system is just started
+            if (null == ObjSettingsStudy)  {
+                ObjSettingsStudy = SettingsStudy.getInstance(context);
+            }
+
+
+            if (ObjSettingsBetrack == null) {
+                ObjSettingsBetrack = SettingsBetrack.getInstance();
+                ObjSettingsBetrack.Update(context);
+            }
+
+            //Since we were off we check if we didn't miss the last notification
+            if ( (true == ObjSettingsBetrack.GetStudyNotification()) && (ObjSettingsStudy.getTimeNextNotification() - System.currentTimeMillis() < 0) ) {
+                Log.d(TAG, "We missed the notification so we trigger it manually");
+                //We enable the daily survey
+                ObjSettingsStudy.setDailySurveyDone(false);
+
+                //Trigger a notification
+                CreateNotification.Create(context);
+            } else {
+                Log.d(TAG, "notification was not missed we go on with the startup");
+            }
+        }
+
+
         if (ObjSettingsStudy.getStartSurveyDone() == true) {
             //Read the preferences
-            ObjSettingsBetrack = SettingsBetrack.getInstance();
-            ObjSettingsBetrack.Update(context);
+            if (ObjSettingsBetrack == null) {
+                ObjSettingsBetrack = SettingsBetrack.getInstance();
+                ObjSettingsBetrack.Update(context);
+            }
 
             context.startService(new Intent(context, ServiceBetrack.class));
 

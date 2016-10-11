@@ -268,6 +268,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         if (!ReceiverStartTracking.startTrackingRunning) {
             Intent intent = new Intent();
             intent.setAction(SettingsBetrack.BROADCAST_START_TRACKING_NAME);
+            intent.putExtra(SettingsBetrack.BROADCAST_ARG_MANUAL_START, "1");
             sendBroadcast(intent);
         }
 

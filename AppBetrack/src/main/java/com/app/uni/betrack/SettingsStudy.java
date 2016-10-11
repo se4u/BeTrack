@@ -69,6 +69,9 @@ public class SettingsStudy {
     static private long TimeLastTransfer;
     static private long TimeLastGPS;
 
+    static private final String STUDY_TIME_NEXT_NOTIFICATION = "TimeNextNotification";
+    static private long TimeNextNotification;
+
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -119,6 +122,7 @@ public class SettingsStudy {
         TimeLastTransfer = System.currentTimeMillis();
         TimeLastGPS = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
 
+        TimeNextNotification = prefs.getLong(STUDY_TIME_NEXT_NOTIFICATION, 0);
     }
 
     private static class ConfigInfoStudyHolder
@@ -184,6 +188,35 @@ public class SettingsStudy {
             Log.d(TAG, "Error during acquiring SemSettingsStudy");
         }
     }
+
+    public long getTimeNextNotification()
+    {
+
+        long ReturnTimeNextNotification = 0;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnTimeNextNotification = TimeNextNotification;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnTimeNextNotification = 0;
+        } finally {
+            return ReturnTimeNextNotification;
+        }
+    }
+
+    public void setTimeNextNotification(long timenextnotification)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            TimeNextNotification = timenextnotification;
+            editor.putLong(STUDY_TIME_NEXT_NOTIFICATION, TimeNextNotification);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
 
     public long getTimeLastTransfer()
     {

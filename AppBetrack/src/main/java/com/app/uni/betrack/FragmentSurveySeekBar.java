@@ -72,12 +72,12 @@ public class FragmentSurveySeekBar extends AbstractStep {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
+
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
+
             }
 
             @Override
