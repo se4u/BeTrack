@@ -12,9 +12,10 @@ $sociallife2 = $_POST['SocialLife2'];
 $phoneusage = $_POST['PhoneUsage'];
 $mood = $_POST['Mood'];
 $date = $_POST['Date'];
+$time = $_POST['Time'];
 
-$result = mysqli_query($con,"INSERT INTO BetrackDailyStatus (UserId, PeriodStatus, SocialLife1, SocialLife2, PhoneUsage, Mood, Date) 
-          VALUES ('$userid ', '$periodstatus', '$sociallife1', '$sociallife2', '$phoneusage', '$mood', '$date')");
+$result = mysqli_query($con,"INSERT INTO BetrackDailyStatus (UserId, PeriodStatus, SocialLife1, SocialLife2, PhoneUsage, Mood, Date, Time) 
+          VALUES ('$userid ', '$periodstatus', '$sociallife1', '$sociallife2', '$phoneusage', '$mood', '$date', '$time')");
  
 if($result == true) {
     echo '{"query_result":"SUCCESS"} ';
