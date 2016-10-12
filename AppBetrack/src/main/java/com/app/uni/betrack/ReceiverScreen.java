@@ -80,7 +80,7 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
             mHandler = new Handler();
         }
 
-        if (ObjSettingsStudy.getStartSurveyDone() == true) {
+        if ((ObjSettingsStudy.getStartSurveyDone() == true) && (ObjSettingsStudy.getEndSurveyDone() == false)) {
             if (null == localdatabase) {
                 localdatabase =  new UtilsLocalDataBase(context);
             }

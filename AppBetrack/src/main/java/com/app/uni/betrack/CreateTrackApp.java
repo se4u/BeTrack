@@ -22,10 +22,19 @@ public class CreateTrackApp {
     public static AlarmManager alarmMgr;
     public static PendingIntent alarmIntent;
     public static final Semaphore SemTrackApp = new Semaphore(1, true);
+    private static SettingsStudy ObjSettingsStudy;
 
 
     static public void CreateAlarm(Context context, int SamplingRate)
     {
+        if (null == ObjSettingsStudy)  {
+            ObjSettingsStudy = SettingsStudy.getInstance(context);
+        }
+
+        if (true == ObjSettingsStudy.getEndSurveyDone()) {
+            StopAlarm(context);
+            return;
+        }
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 

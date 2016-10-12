@@ -119,6 +119,7 @@ public class UtilsLocalDataBase {
     static final String C_ENDSTUDY_PERIOD = "Period";
     static final String C_ENDSTUDY_RELATIONSHIP = "RelationShip";
     static final String C_ENDSTUDY_CONTRACEPTION = "Contraception";
+    static final String C_ENDSTUDY_USAGE = "PhoneUsage";
     static final String C_ENDSTUDY_DATE = "Date";
     static final String C_ENDSTUDY_TIME = "Time";
 
@@ -127,6 +128,7 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_ENDSTUDY_PERIOD);
         add(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP);
         add(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION);
+        add(UtilsLocalDataBase.C_ENDSTUDY_USAGE);
         add(UtilsLocalDataBase.C_ENDSTUDY_DATE);
         add(UtilsLocalDataBase.C_ENDSTUDY_TIME);
     }};
@@ -167,7 +169,7 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql4);
 
             String sql6 = "create table " + TABLE_END_STUDY + " (" + C_ENDSTUDY_ID + " integer primary key autoincrement, "
-                    + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, " + C_ENDSTUDY_DATE +  " text, " + C_ENDSTUDY_TIME + " text)"; //
+                    + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, " + C_ENDSTUDY_USAGE + " text, " + C_ENDSTUDY_DATE +  " text, " + C_ENDSTUDY_TIME + " text)"; //
             db.execSQL(sql6);
             Log.d(TAG, "onCreated sql: " + sql6);
         }

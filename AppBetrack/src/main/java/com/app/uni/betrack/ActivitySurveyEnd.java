@@ -20,6 +20,7 @@ public class ActivitySurveyEnd  extends DotStepper {
     private int SurveyPeriod = -1;
     private int SurveyInRelation = -1;
     private String SurveyContraception = null;
+    private int PhoneUsage = 0;
     private String DateStudyEnd = null;
     private String TimeStudyEnd = null;
 
@@ -44,27 +45,38 @@ public class ActivitySurveyEnd  extends DotStepper {
     @Override
     public void onComplete() {
         super.onComplete();
-        String resultString;
 
         SurveyPeriod = Step1.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
 
         SurveyInRelation = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
 
-        resultString  = Step3.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
-        if (resultString != null) {
-            SurveyContraception = resultString;
-        }
+        SurveyContraception  = Step3.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
 
         values.clear();
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_PERIOD, SurveyPeriod);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP, SurveyInRelation);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION, SurveyContraception);
+
+        try {
+            SettingsStudy.SemPhoneUsage.acquire();
+            PhoneUsage = ObjSettingsStudy.getPhoneUsage();
+            ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - IntentServiceTrackApp.ScreenOnStartTime) / 1000));
+            IntentServiceTrackApp.ScreenOnStartTime = System.currentTimeMillis();
+            PhoneUsage = ObjSettingsStudy.getPhoneUsage();
+            values.put(UtilsLocalDataBase.C_ENDSTUDY_USAGE, PhoneUsage);
+            ObjSettingsStudy.setPhoneUsage(0);
+            SettingsStudy.SemPhoneUsage.release();
+        } catch (Exception e) {}
+
         DateStudyEnd = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_DATE, DateStudyEnd);
         TimeStudyEnd = shf.format(new Date());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_TIME, TimeStudyEnd);
 
+
         AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_END_STUDY);
         Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser()
+                + " Period: " + SurveyPeriod
                 + " In a relationship: " + SurveyInRelation
                 + " Contraception used: " + SurveyContraception
                 + " Date end of the study: " + DateStudyEnd
@@ -78,6 +90,7 @@ public class ActivitySurveyEnd  extends DotStepper {
         startActivity(i);
         finish();
         ObjSettingsStudy.setEndSurveyDone(true);
+
         System.out.println("completed");
     }
 

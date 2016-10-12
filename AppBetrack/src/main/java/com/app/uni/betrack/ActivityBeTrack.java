@@ -239,7 +239,9 @@ public class ActivityBeTrack extends AppCompatActivity {
                 sumUsage += UsagePerApp[i];
             }
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
-                entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
+                if (UsagePerApp[i] > 0) {
+                    entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
+                }
             }
         } else {
             entries.add(new PieEntry((float) (100), ""));
