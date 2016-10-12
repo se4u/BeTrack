@@ -9,11 +9,12 @@ $userid = $_POST['ParticipantID'];
 $periodstatus = $_POST['Period'];
 $relationship = $_POST['RelationShip'];
 $contraception = $_POST['Contraception'];
+$phoneusage = $_POST['PhoneUsage'];
 $date = $_POST['Date'];
 $time = $_POST['Time'];
 
-$result = mysqli_query($con,"INSERT INTO BetrackEndStudy (UserId, Period, RelationShip, Contraception, Date, Time) 
-          VALUES ('$userid ', '$periodstatus', '$relationship', '$contraception', '$date', '$time')");
+$result = mysqli_query($con,"INSERT INTO BetrackEndStudy (UserId, Period, RelationShip, Contraception, PhoneUsage, Date, Time) 
+          VALUES ('$userid ', '$periodstatus', '$relationship', '$contraception', '$phoneusage', '$date', '$time')");
  
 if($result == true) {
     echo '{"query_result":"SUCCESS"} ';
