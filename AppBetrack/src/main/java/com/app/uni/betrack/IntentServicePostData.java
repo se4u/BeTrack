@@ -10,15 +10,20 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
+import javax.crypto.Cipher;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
@@ -31,7 +36,6 @@ public class IntentServicePostData extends IntentService {
     public static final Semaphore SemPostData = new Semaphore(1, true);
     private SettingsBetrack ObjSettingsBetrack = null;
     private SettingsStudy ObjSettingsStudy = null;
-    private UtilsCipher Cipher = null;
 
     private UtilsLocalDataBase localdatabase = null;
     private UtilsLocalDataBase AccesLocalDB()
@@ -100,10 +104,6 @@ public class IntentServicePostData extends IntentService {
 
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(this);
-        }
-
-        if (null == Cipher) {
-            Cipher = new UtilsCipher(UtilsCipherSecretKey.SecretKey);
         }
 
         Log.d(TAG, "try to post the data");
@@ -312,15 +312,25 @@ public class IntentServicePostData extends IntentService {
                     String data = null;
                     String beforeEncryption = values.get(Field.get(i)).toString();
                     if (true == Encrypt) {
-                        data = Cipher.encryptUTF8(values.get(Field.get(i)).toString());
-                        Log.d(TAG, "Data size before: " + values.get(Field.get(i)).toString().length() + " data size after encryption " + data.length());
+                        byte[] encodedBytes = null;
+                        String keyString = ObjSettingsStudy.getStudyPublicKey();
+                        // converts the String to a PublicKey instance
+                        byte[] keyBytes = Base64.decode(keyString.getBytes("utf-8"),Base64.DEFAULT);
+                        X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
+                        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+                        PublicKey key = keyFactory.generatePublic(spec);
+
+                        Cipher c = Cipher.getInstance("RSA");
+                        c.init(Cipher.ENCRYPT_MODE, key);
+                        byte[] dataBytes = Base64.decode(values.get(Field.get(i)).toString().getBytes("utf-8"),Base64.DEFAULT);
+                        encodedBytes = c.doFinal(dataBytes);
+
                     } else {
                         data = values.get(Field.get(i)).toString();
                     }
-
                     rc.add(data);
                 } catch (Exception e) {
-                    e.printStackTrace();
+
                 } finally {
 
                 }
