@@ -32,11 +32,13 @@ public class SettingsBetrack {
 
     static public String STUDY_GETSTUDIESAVAILABLE = "BeTrackGetStudiesAvailable.php";
     static public String STUDY_GETAPPTOWATCH = "BeTrackGetAppToWatch.php?table_name=TestPeriod_applications";
-    static public String STUDY_POSTAPPWATCHED = "BeTrackPostAppWatch.php";
-    static public String STUDY_POSTDAILYSTATUS = "BeTrackPostDailyStatus.php";
-    static public String STUDY_POSTSTARTSTUDY = "BeTrackPostStartStudy.php";
-    static public String STUDY_POSTENDSTUDY = "BeTrackPostEndStudy.php";
-    static public String STUDY_POSTGPSDATA = "BeTrackPostGPSData.php";
+
+
+    static public String STUDY_POSTAPPWATCHED = "BeTrackPostAppWatch";
+    static public String STUDY_POSTDAILYSTATUS = "BeTrackPostDailyStatus";
+    static public String STUDY_POSTSTARTSTUDY = "BeTrackPostStartStudy";
+    static public String STUDY_POSTENDSTUDY = "BeTrackPostEndStudy";
+    static public String STUDY_POSTGPSDATA = "BeTrackPostGPSData";
 
     static public int SERVER_TIMEOUT = 20000;
     static public int DELTA_BTW_RECHECK_STUDY_STARTED = 10000;
@@ -53,6 +55,12 @@ public class SettingsBetrack {
     static public int ID_NOTIFICATION_BETRACK = 1335;
     static public int ID_TRACKAPP = 1336;
     static public int ID_NOTIFICATION_SERVICE = 1337;
+
+    static public int GPSMAXTIMEOUT = 30000;
+    static public int GPSDECTIMEOUT = 5000;
+    static public int GPSMINTIMEOUT = 5000;
+
+    static public String STUDY_PUBLIC_KEY = "public.pem";
 
     public static final Semaphore SemSettingsBetrack = new Semaphore(1, true);
 

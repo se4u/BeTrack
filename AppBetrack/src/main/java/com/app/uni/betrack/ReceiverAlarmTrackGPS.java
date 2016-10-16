@@ -25,15 +25,23 @@ public class ReceiverAlarmTrackGPS extends WakefulBroadcastReceiver {
         return localdatabase;
     }
     private SettingsStudy ObjSettingsStudy;
+    private SettingsBetrack ObjSettingsBetrack = null;
 
     @Override
     public void onReceive(Context context, Intent intent)
     {
         ObjSettingsStudy = SettingsStudy.getInstance(context);
+
         Bundle b=intent.getExtras();
 
         if (null == localdatabase) {
             localdatabase =  new UtilsLocalDataBase(context);
+        }
+
+        if (null == ObjSettingsBetrack) {
+            //Read the preferences
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+            ObjSettingsBetrack.Update(context);
         }
 
         LocationPollerResult locationResult = new LocationPollerResult(b);
@@ -47,8 +55,16 @@ public class ReceiverAlarmTrackGPS extends WakefulBroadcastReceiver {
                 loc = new Location("dummyprovider");
                 loc.setLatitude(0);
                 loc.setLongitude(0);
+                if (ReceiverGPSChange.GPSTimeout > ObjSettingsBetrack.GPSMINTIMEOUT) {
+                    ReceiverGPSChange.GPSTimeout -= ObjSettingsBetrack.GPSDECTIMEOUT;
+                }
                 Log.d(TAG, "GPS location not available");
+            } else {
+                ReceiverGPSChange.GPSTimeout = ObjSettingsBetrack.GPSMAXTIMEOUT;
             }
+            
+        } else {
+            ReceiverGPSChange.GPSTimeout = ObjSettingsBetrack.GPSMAXTIMEOUT;
         }
         saveLocation(loc);        //Set next alarm
         ObjSettingsStudy.setTimeLastGPS(System.currentTimeMillis());

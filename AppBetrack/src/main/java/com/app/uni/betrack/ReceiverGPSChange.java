@@ -22,6 +22,7 @@ public class ReceiverGPSChange  extends WakefulBroadcastReceiver {
     private static PendingIntent alarmIntent;
     private SettingsStudy ObjSettingsStudy;
     public static final Semaphore SemGPS = new Semaphore(1, true);
+    public static int GPSTimeout = SettingsBetrack.GPSMAXTIMEOUT;
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
@@ -51,7 +52,7 @@ public class ReceiverGPSChange  extends WakefulBroadcastReceiver {
         parameter.setIntentToBroadcastOnCompletion(new Intent(context, ReceiverAlarmTrackGPS.class));
         // try GPS and fall back to NETWORK_PROVIDER
         parameter.setProviders(new String[] {LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER});
-        parameter.setTimeout(3*60000);
+        parameter.setTimeout(GPSTimeout);
         i.putExtras(bundle);
 
         alarmIntent = PendingIntent.getBroadcast(context, 0, i, 0);
