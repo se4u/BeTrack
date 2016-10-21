@@ -108,7 +108,7 @@ CREATE TABLE `BetrackDailyStatus` (
   CREATE TABLE `BetrackSessionKeys` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` varchar(255) COLLATE latin1_general_ci NOT NULL,
-  `BlobSessionkey` varchar(255) COLLATE latin1_general_ci NOT NULL,
+  `BlobSessionkey` varchar(1024) COLLATE latin1_general_ci NOT NULL,
   `Date` varchar(15) COLLATE latin1_general_ci NOT NULL,
   `Time` varchar(15) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`)) ENGINE=MyISAM  

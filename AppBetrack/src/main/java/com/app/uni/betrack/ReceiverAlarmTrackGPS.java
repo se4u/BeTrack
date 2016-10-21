@@ -62,7 +62,7 @@ public class ReceiverAlarmTrackGPS extends WakefulBroadcastReceiver {
             } else {
                 ReceiverGPSChange.GPSTimeout = ObjSettingsBetrack.GPSMAXTIMEOUT;
             }
-            
+
         } else {
             ReceiverGPSChange.GPSTimeout = ObjSettingsBetrack.GPSMAXTIMEOUT;
         }

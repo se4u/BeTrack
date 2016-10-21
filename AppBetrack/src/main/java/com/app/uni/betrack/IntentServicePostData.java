@@ -4,32 +4,21 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.util.Base64;
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Semaphore;
 
-import javax.crypto.Cipher;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
@@ -119,143 +108,174 @@ public class IntentServicePostData extends IntentService {
         if ((ConnectionState.WIFI == NetworkState) ||
                 ((ConnectionState.LTE == NetworkState) && (ObjSettingsBetrack.GetEnableDataUsage())))
         {
-            while(TaskDone != 0)
-            {
-                //APPLICATIONS WATCHED
+
+            while(true) {
+                //BLOB KEY
                 values.clear();
-                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, true);
+                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_SESSION_KEY, false);
                 if (0 != values.size()) {
-                    //Check if the time end is different of null which means that the entry is complete
-                    if (values.get(UtilsLocalDataBase.DB_APPWATCH.get(4)) != null) {
-                        ArrayList<String>  AppWatchData;
+                    ArrayList<String> StatusData;
 
-                        IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
+                    IdSql = values.getAsLong(UtilsLocalDataBase.C_SESSION_KEY_ID);
 
-                        //Encrypt the data
-                        AppWatchData = EncryptData(values, UtilsLocalDataBase.DB_APPWATCH, false);
-                        /*mHandler.post(new UtilsDisplayToast(this,  getResources().getString(R.string.app_name)
+                    //Prepare the data
+                    StatusData = PrepareData(values, UtilsLocalDataBase.DB_SESSION_KEY, UtilsLocalDataBase.DB_SESSION_KEY_CYPHER,  false);
+                    //Post the data
+                    rc = PostData(SettingsBetrack.STUDY_POSTBLOBKEY, UtilsLocalDataBase.DB_SESSION_KEY, StatusData, false);
+                    if (rc == true) {
+                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_SESSION_KEY, IdSql);
+                    } else {
+                        break;
+                    }
+                } else {
+                    rc = true;
+                    break;
+                }
+            }
+
+            if (rc == true) {
+
+                rc =false;
+
+                while(TaskDone != 0)
+                {
+                    //APPLICATIONS WATCHED
+                    values.clear();
+                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, true);
+                    if (0 != values.size()) {
+                        //Check if the time end is different of null which means that the entry is complete
+                        if (values.get(UtilsLocalDataBase.DB_APPWATCH.get(4)) != null) {
+                            ArrayList<String>  AppWatchData;
+
+                            IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
+
+                            //Prepare the data
+                            AppWatchData = PrepareData(values, UtilsLocalDataBase.DB_APPWATCH, UtilsLocalDataBase.DB_APPWATCH_CYPHER, false);
+                            /*mHandler.post(new UtilsDisplayToast(this,  getResources().getString(R.string.app_name)
                                 + "Post app watched: " +  AppWatchData.get(0) + " Date start:" + AppWatchData.get(1) + " Time start:" + AppWatchData.get(2)
                                 + " Date end:" + AppWatchData.get(3) + " Time end:" + AppWatchData.get(4)));*/
 
-                        //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, false);
-                        if (rc == true) {
-                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
+                            //Post the data
+                            rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, false);
+                            if (rc == true) {
+                                AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
+                            } else {
+                                break;
+                            }
                         } else {
-                            break;
+                            rc = true;
+                            TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
                         }
                     } else {
                         rc = true;
                         TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
                     }
-                } else {
-                    rc = true;
-                    TaskDone &= ~TABLE_APPWATCH_TRANSFERED;
-                }
 
-                //DAILY STATUS
-                values.clear();
-                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_USER, true);
-                if (0 != values.size()) {
-                    ArrayList<String>  DailyStatusData;
+                    //DAILY STATUS
+                    values.clear();
+                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_USER, true);
+                    if (0 != values.size()) {
+                        ArrayList<String>  DailyStatusData;
 
-                    IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
+                        IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
 
-                    //Encrypt the data
-                    DailyStatusData = EncryptData(values, UtilsLocalDataBase.DB_DAILYSTATUS, false);
-                    mHandler.post(new UtilsDisplayToast(this, getResources().getString(R.string.app_name)+": Post survey status: " + DailyStatusData.get(0) +
-                            " Post social 1: " + DailyStatusData.get(1) +
-                            " Post social 2: " + DailyStatusData.get(2) +
-                            " Post phone usage: " + DailyStatusData.get(3) +
-                            " Post mood: " + DailyStatusData.get(4) +
-                            " Date: " +  DailyStatusData.get(5) +
-                            " Time: " +  DailyStatusData.get(6)
-                    ));
-                    //Post the data
-                    rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, false);
-                    if (rc == true) {
-                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
+                        //Encrypt the data
+                        DailyStatusData = PrepareData(values, UtilsLocalDataBase.DB_DAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS_CYPHER, false);
+                        mHandler.post(new UtilsDisplayToast(this, getResources().getString(R.string.app_name)+": Post survey status: " + DailyStatusData.get(0) +
+                                " Post social 1: " + DailyStatusData.get(1) +
+                                " Post social 2: " + DailyStatusData.get(2) +
+                                " Post phone usage: " + DailyStatusData.get(3) +
+                                " Post mood: " + DailyStatusData.get(4) +
+                                " Date: " +  DailyStatusData.get(5) +
+                                " Time: " +  DailyStatusData.get(6)
+                        ));
+                        //Post the data
+                        rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, false);
+                        if (rc == true) {
+                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
+                        } else {
+                            break;
+                        }
                     } else {
-                        break;
+                        rc = true;
+                        TaskDone &= ~TABLE_DAILYSTATUS_TRANSFERED;
                     }
-                } else {
-                    rc = true;
-                    TaskDone &= ~TABLE_DAILYSTATUS_TRANSFERED;
-                }
 
-                //START STUDY
-                values.clear();
-                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_START_STUDY, false);
-                if (0 != values.size()) {
-                    ArrayList<String>  StartStudyData;
+                    //START STUDY
+                    values.clear();
+                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_START_STUDY, false);
+                    if (0 != values.size()) {
+                        ArrayList<String>  StartStudyData;
 
-                    IdSql = values.getAsLong(UtilsLocalDataBase.C_STARTSTUDY_ID);
+                        IdSql = values.getAsLong(UtilsLocalDataBase.C_STARTSTUDY_ID);
 
-                    //Encrypt the data
-                    StartStudyData = EncryptData(values, UtilsLocalDataBase.DB_START_STUDY, true);
+                        //Prepare the data
+                        StartStudyData = PrepareData(values, UtilsLocalDataBase.DB_START_STUDY, UtilsLocalDataBase.DB_START_STUDY_CYPHER, true);
 
-                    //Post the data
-                    rc = PostData(SettingsBetrack.STUDY_POSTSTARTSTUDY, UtilsLocalDataBase.DB_START_STUDY, StartStudyData, true);
-                    if (rc == true) {
-                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_START_STUDY, IdSql);
+                        //Post the data
+                        rc = PostData(SettingsBetrack.STUDY_POSTSTARTSTUDY, UtilsLocalDataBase.DB_START_STUDY, StartStudyData, true);
+                        if (rc == true) {
+                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_START_STUDY, IdSql);
+                        } else {
+                            break;
+                        }
                     } else {
-                        break;
+                        rc = true;
+                        TaskDone &= ~TABLE_STARTSTUDY_TRANSFERED;
                     }
-                } else {
-                    rc = true;
-                    TaskDone &= ~TABLE_STARTSTUDY_TRANSFERED;
-                }
 
-                //END STUDY
-                values.clear();
-                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_END_STUDY, true);
-                if (0 != values.size()) {
-                    ArrayList<String>  EndStudyData;
+                    //END STUDY
+                    values.clear();
+                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_END_STUDY, true);
+                    if (0 != values.size()) {
+                        ArrayList<String>  EndStudyData;
 
-                    IdSql = values.getAsLong(UtilsLocalDataBase.C_ENDSTUDY_ID);
+                        IdSql = values.getAsLong(UtilsLocalDataBase.C_ENDSTUDY_ID);
 
-                    //Encrypt the data
-                    EndStudyData = EncryptData(values, UtilsLocalDataBase.DB_END_STUDY, false);
+                        //Prepare the data
+                        EndStudyData = PrepareData(values, UtilsLocalDataBase.DB_END_STUDY, UtilsLocalDataBase.DB_END_STUDY_CYPHER, false);
 
-                    //Post the data
-                    rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, false);
-                    if (rc == true) {
-                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
-                        CreateNotification.StopAlarm(this);
-                        CreateTrackApp.StopAlarm(this);
+                        //Post the data
+                        rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, false);
+                        if (rc == true) {
+                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
+                            CreateNotification.StopAlarm(this);
+                            CreateTrackApp.StopAlarm(this);
+                        } else {
+                            break;
+                        }
+                    }
+                    else {
+                        rc = true;
+                        TaskDone &= ~TABLE_ENDSTUDY_TRANSFERED;
+                    }
+
+                    //GPS DATA
+                    values.clear();
+                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_GPS, true);
+                    if (0 != values.size()) {
+                        ArrayList<String>  GpsData;
+
+                        IdSql = values.getAsLong(UtilsLocalDataBase.C_GPS_ID);
+
+                        //Prepare the data
+                        GpsData = PrepareData(values, UtilsLocalDataBase.DB_GPS, UtilsLocalDataBase.DB_GPS_CYPHER, false);
+
+                        //Post the data
+                        rc = PostData(SettingsBetrack.STUDY_POSTGPSDATA, UtilsLocalDataBase.DB_GPS, GpsData, false);
+                        if (rc == true) {
+                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_GPS, IdSql);
+                        } else {
+                            break;
+                        }
                     } else {
-                        break;
+                        rc = true;
+                        TaskDone &= ~TABLE_GPS_TRANSFERED;
                     }
-                }
-                else {
-                    rc = true;
-                    TaskDone &= ~TABLE_ENDSTUDY_TRANSFERED;
-                }
-
-                //GPS DATA
-                values.clear();
-                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_GPS, true);
-                if (0 != values.size()) {
-                    ArrayList<String>  GpsData;
-
-                    IdSql = values.getAsLong(UtilsLocalDataBase.C_GPS_ID);
-
-                    //Encrypt the data
-                    GpsData = EncryptData(values, UtilsLocalDataBase.DB_GPS, false);
-
-                    //Post the data
-                    rc = PostData(SettingsBetrack.STUDY_POSTGPSDATA, UtilsLocalDataBase.DB_GPS, GpsData, false);
-                    if (rc == true) {
-                        AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_GPS, IdSql);
-                    } else {
-                        break;
-                    }
-                } else {
-                    rc = true;
-                    TaskDone &= ~TABLE_GPS_TRANSFERED;
                 }
             }
         }
+
         if (rc == true) {
             ObjSettingsStudy.setTimeLastTransfer(System.currentTimeMillis());
         }
@@ -307,9 +327,8 @@ public class IntentServicePostData extends IntentService {
         }
     }
 
-    public ArrayList<String> EncryptData(ContentValues values, ArrayList<String> Field, boolean Encrypt) {
+    public ArrayList<String> PrepareData(ContentValues values, ArrayList<String> Field, ArrayList<Boolean> Cypher, boolean Encrypt) {
         byte[] encodedBytes = null;
-        String keyString = ObjSettingsStudy.getStudyPublicKey();
         String valueToEncrypt = null;
         String Result = null;
 
@@ -319,7 +338,7 @@ public class IntentServicePostData extends IntentService {
             //Log.d(TAG, Field.get(i));
             if (values.get(Field.get(i)) != null) {
                 try {
-                    if (true == Encrypt) {
+                    if ((true == Encrypt) && (true == Cypher.get(i))) {
                         if (i!=1) {
                             valueToEncrypt += String.valueOf(Character.toChars(30)) + values.get(Field.get(i)).toString();
                         } else {
@@ -334,7 +353,7 @@ public class IntentServicePostData extends IntentService {
 
                 }
             } else {
-                if (true == Encrypt) {
+                if ((true == Encrypt) && (true == Cypher.get(i))) {
                     valueToEncrypt += String.valueOf(Character.toChars(30)) + null;
 
                 } else {
@@ -344,8 +363,8 @@ public class IntentServicePostData extends IntentService {
         }
         if (true == Encrypt) {
             try {
-                byte[] dataBytes = valueToEncrypt.getBytes("utf-8");
-                Result = UtilsCrypto.encryptSessionKeyWithPublicKey(ObjSettingsBetrack.STUDY_PUBLIC_KEY, dataBytes, this);
+                UtilsCryptoAES.CipherTextIvMac cipherTextIvMac = UtilsCryptoAES.encrypt(valueToEncrypt, ObjSettingsStudy.SessionKey);
+                Result = cipherTextIvMac.toString();
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -357,8 +376,6 @@ public class IntentServicePostData extends IntentService {
 
         return rc;
     }
-
-
 
     public boolean PostData(String WebLink, ArrayList<String> Field, ArrayList<String> Data, boolean Encrypt) {
 

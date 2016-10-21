@@ -30,8 +30,8 @@ import javax.crypto.spec.SecretKeySpec;
  * Created by cevincent on 15/10/2016.
  */
 
-public class UtilsCrypto {
-    static final String TAG = "UtilsCrypto";
+public class UtilsCryptoRSA {
+    static final String TAG = "UtilsCryptoRSA";
 
     private SecretKeySpec skeySpec;
     private Cipher cipher;
@@ -98,78 +98,5 @@ public class UtilsCrypto {
         }
 
         return key;
-    }
-
-    public UtilsCrypto(byte [] keyraw) throws Exception{
-        if(keyraw == null){
-            byte[] bytesOfMessage = "".getBytes("UTF-8");
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] bytes = md.digest(bytesOfMessage);
-
-            skeySpec = new SecretKeySpec(bytes, "AES");
-            cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        }
-        else{
-
-            skeySpec = new SecretKeySpec(keyraw, "AES");
-            cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-
-        }
-    }
-
-    public UtilsCrypto(String passphrase) throws Exception{
-        byte[] bytesOfMessage = passphrase.getBytes("UTF-8");
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] thedigest = md.digest(bytesOfMessage);
-        skeySpec = new SecretKeySpec(thedigest, "AES");
-
-
-        cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-    }
-
-    public static SecretKey generateKey() throws NoSuchAlgorithmException {
-        // Generate a 256-bit key
-        final int outputKeyLength = 256;
-
-        SecureRandom secureRandom = new SecureRandom();
-        // Do *not* seed secureRandom! Automatically seeded from system entropy.
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-        keyGenerator.init(outputKeyLength, secureRandom);
-        SecretKey key = keyGenerator.generateKey();
-        return key;
-    }
-
-    public static SecretKey generateKey(char[] passphraseOrPin, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        // Number of PBKDF2 hardening rounds to use. Larger values increase
-        // computation time. You should select a value that causes computation
-        // to take >100ms.
-        final int iterations = 1000;
-
-        // Generate a 256-bit key
-        final int outputKeyLength = 256;
-
-        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        KeySpec keySpec = new PBEKeySpec(passphraseOrPin, salt, iterations, outputKeyLength);
-        SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
-        return secretKey;
-    }
-
-    public byte[] encrypt (byte[] plaintext) throws Exception{
-        //returns byte array encrypted with key
-
-        cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-
-        byte[] ciphertext =  cipher.doFinal(plaintext);
-
-        return ciphertext;
-    }
-
-    public byte[] decrypt (byte[] ciphertext) throws Exception{
-        //returns byte array decrypted with key
-        cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-
-        byte[] plaintext = cipher.doFinal(ciphertext);
-
-        return plaintext;
     }
 }

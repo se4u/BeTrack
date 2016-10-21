@@ -1,12 +1,15 @@
 package com.app.uni.betrack;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -19,6 +22,13 @@ import java.util.concurrent.Semaphore;
 public class SettingsStudy {
 
     static final String TAG = "SettingsStudy";
+
+    private SettingsBetrack ObjSettingsBetrack = null;
+    private UtilsLocalDataBase localdatabase = null;
+    private UtilsLocalDataBase AccesLocalDB()
+    {
+        return localdatabase;
+    }
 
     public static final Semaphore SemSettingsStudy = new Semaphore(1, true);
     public static final Semaphore SemPhoneUsage = new Semaphore(1, true);
@@ -72,6 +82,8 @@ public class SettingsStudy {
     static private final String STUDY_TIME_NEXT_NOTIFICATION = "TimeNextNotification";
     static private long TimeNextNotification;
 
+    static public UtilsCryptoAES.SecretKeys SessionKey;
+    static public boolean SessionKeyHasBeenTransferred = false;
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -79,8 +91,21 @@ public class SettingsStudy {
 
     private SettingsStudy()
     {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+        SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
+
+        if (null == localdatabase) {
+            localdatabase =  new UtilsLocalDataBase(mContext);
+        }
+
+        if (null == ObjSettingsBetrack) {
+            //Read the preferences
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+            ObjSettingsBetrack.Update(mContext);
+        }
 
         //Read user id from pref
         IdUser = prefs.getString(USER_ID, null);
@@ -123,6 +148,26 @@ public class SettingsStudy {
         TimeLastGPS = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
 
         TimeNextNotification = prefs.getLong(STUDY_TIME_NEXT_NOTIFICATION, 0);
+
+        //Generate a new session key
+        try {
+            ContentValues values = new ContentValues();
+            String Result;
+            SessionKey = UtilsCryptoAES.generateKey();
+            //Encrypt the key
+            byte[] dataBytes = SessionKey.toString().getBytes("utf-8");
+            Result = UtilsCryptoRSA.encryptSessionKeyWithPublicKey(ObjSettingsBetrack.STUDY_PUBLIC_KEY, dataBytes, mContext);
+            //Save it in the local database with the date and time
+            values.clear();
+            values.put(UtilsLocalDataBase.C_SESSION_KEY_BLOB, Result);
+            values.put(UtilsLocalDataBase.C_SESSION_KEY_DATE, sdf.format(new Date()));
+            values.put(UtilsLocalDataBase.C_SESSION_KEY_TIME, shf.format(new Date()));
+
+            AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_SESSION_KEY);
+
+        } catch (Exception e) {
+            SessionKey = null;
+        }
     }
 
     private static class ConfigInfoStudyHolder

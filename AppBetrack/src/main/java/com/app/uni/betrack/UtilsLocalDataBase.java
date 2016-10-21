@@ -40,6 +40,15 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_APPWATCH_TIMESTOP);
     }};
 
+    public static final ArrayList<Boolean> DB_APPWATCH_CYPHER = new ArrayList<Boolean>() {{
+        add(false); //C_APPWATCH_PID
+        add(true);  //C_APPWATCH_APPLICATION
+        add(false); //C_APPWATCH_DATESTART
+        add(false); //C_APPWATCH_TIMESTART
+        add(false); //C_APPWATCH_DATESTOP
+        add(false); //C_APPWATCH_TIMESTOP
+    }};
+
     //Table for period, libido... follow up
     static final String TABLE_USER = "User";
     static final String C_USER_ID = BaseColumns._ID;
@@ -64,6 +73,17 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_USER_TIME);
     }};
 
+    public static final ArrayList<Boolean> DB_DAILYSTATUS_CYPHER = new ArrayList<Boolean>() {{
+        add(false); //C_USER_PID
+        add(true);  //C_USER_PERIOD
+        add(true);  //C_USER_SOCIAL1_LIFE
+        add(true);  //C_USER_SOCIAL2_LIFE
+        add(true);  //C_USER_PHONE_USAGE
+        add(true);  //C_USER_MOOD
+        add(false); //C_USER_DATE
+        add(false); //C_USER_TIME
+    }};
+
     //Table for GPS data
     static final String TABLE_GPS = "GpsFollowUp";
     static final String C_GPS_ID = BaseColumns._ID;
@@ -81,12 +101,35 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_GPS_TIME);
     }};
 
+    public static final ArrayList<Boolean> DB_GPS_CYPHER = new ArrayList<Boolean>() {{
+        add(false); //C_GPS_PID
+        add(true);  //C_GPS_LATTITUDE
+        add(true);  //C_GPS_LONGITUDE
+        add(false); //C_GPS_DATE
+        add(false); //C_GPS_TIME
+    }};
+
     //Table for Status study
-    static final String TABLE_STATUS = "StatusStudy";
-    static final String C_STATUS_ID = BaseColumns._ID;
-    static final String C_STATUS_GPS = "StatusGPS";
-    static final String C_STATUS_STUDY = "StatusStudy";
-    static final String C_STATUS_DATE = "Date";
+    static final String TABLE_SESSION_KEY = "SessionKey";
+    static final String C_SESSION_KEY_ID = BaseColumns._ID;
+    static final String C_SESSION_KEY_PID = "ParticipantID";
+    static final String C_SESSION_KEY_BLOB = "BlobSessionkey";
+    static final String C_SESSION_KEY_TIME = "Time";
+    static final String C_SESSION_KEY_DATE = "Date";
+
+    public static final ArrayList<String> DB_SESSION_KEY = new ArrayList<String>() {{
+        add(UtilsLocalDataBase.C_SESSION_KEY_PID);
+        add(UtilsLocalDataBase.C_SESSION_KEY_BLOB);
+        add(UtilsLocalDataBase.C_SESSION_KEY_DATE);
+        add(UtilsLocalDataBase.C_SESSION_KEY_TIME);
+    }};
+
+    public static final ArrayList<Boolean> DB_SESSION_KEY_CYPHER = new ArrayList<Boolean>() {{
+        add(false); //C_SESSION_KEY_PID
+        add(false); //C_SESSION_KEY_BLOB
+        add(false); //C_SESSION_KEY_DATE
+        add(false); //C_SESSION_KEY_TIME
+    }};
 
     //Table for Beginning study
     static final String TABLE_START_STUDY = "StartStudy";
@@ -112,6 +155,17 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_STARTSTUDY_TIME);
     }};
 
+    public static final ArrayList<Boolean> DB_START_STUDY_CYPHER = new ArrayList<Boolean>() {{
+        add(false); //C_STARTSTUDY_PID
+        add(true);  //C_STARTSTUDY_AGE
+        add(true);  //C_STARTSTUDY_RELATIONSHIP
+        add(true);  //C_STARTSTUDY_CONTRACEPTION
+        add(true);  //C_STARTSTUDY_AVGPERIODLENGHT
+        add(true);  //C_STARTSTUDY_AVGMENSTRUALCYCLE
+        add(false); //C_STARTSTUDY_DATE
+        add(false); //C_STARTSTUDY_TIME
+    }};
+
     //Table for End study
     static final String TABLE_END_STUDY = "EndStudy";
     static final String C_ENDSTUDY_ID = BaseColumns._ID;
@@ -131,6 +185,16 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_ENDSTUDY_USAGE);
         add(UtilsLocalDataBase.C_ENDSTUDY_DATE);
         add(UtilsLocalDataBase.C_ENDSTUDY_TIME);
+    }};
+
+    public static final ArrayList<Boolean> DB_END_STUDY_CYPHER = new ArrayList<Boolean>() {{
+        add(false); //C_ENDSTUDY_PID
+        add(true);  //C_ENDSTUDY_PERIOD
+        add(true);  //C_ENDSTUDY_RELATIONSHIP
+        add(true);  //C_ENDSTUDY_CONTRACEPTION
+        add(true);  //C_ENDSTUDY_USAGE
+        add(false); //C_ENDSTUDY_DATE
+        add(false); //C_ENDSTUDY_TIME
     }};
 
     private static final Semaphore SemUpdateDb = new Semaphore(1, true);
@@ -172,6 +236,11 @@ public class UtilsLocalDataBase {
                     + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, " + C_ENDSTUDY_USAGE + " text, " + C_ENDSTUDY_DATE +  " text, " + C_ENDSTUDY_TIME + " text)"; //
             db.execSQL(sql6);
             Log.d(TAG, "onCreated sql: " + sql6);
+
+            String sql7 = "create table " + TABLE_SESSION_KEY + " (" + C_SESSION_KEY_ID + " integer primary key autoincrement, "
+                    + C_SESSION_KEY_BLOB + " text, " + C_SESSION_KEY_DATE + " text, " + C_SESSION_KEY_TIME + " text)"; //
+            db.execSQL(sql7);
+            Log.d(TAG, "onCreated sql: " + sql7);
         }
 
         // Called whenever newVersion != oldVersion
@@ -187,6 +256,8 @@ public class UtilsLocalDataBase {
             db.execSQL("drop table if exists " + TABLE_GPS); // drops the old database
 
             db.execSQL("drop table if exists " + TABLE_END_STUDY); // drops the old database
+
+            db.execSQL("drop table if exists " + TABLE_SESSION_KEY); // drops the old database
 
             Log.d(TAG, "onUpdated");
             onCreate(db); // run onCreate to get new database

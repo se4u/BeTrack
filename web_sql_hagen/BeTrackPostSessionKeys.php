@@ -10,7 +10,7 @@ $BlobSessionkey = $_POST['BlobSessionkey'];
 $date = $_POST['Date'];
 $time = $_POST['Time'];
 
-$result = mysqli_query($con,"INSERT INTO BetrackSessionKey (UserId, BlobSessionkey, Date, Time) 
+$result = mysqli_query($con,"INSERT INTO BetrackSessionKeys (UserId, BlobSessionkey, Date, Time) 
           VALUES ('$userid', '$BlobSessionkey', '$date', '$time')");
  
 if($result == true) {
