@@ -121,7 +121,7 @@ public class IntentServicePostData extends IntentService {
                     //Prepare the data
                     StatusData = PrepareData(values, UtilsLocalDataBase.DB_SESSION_KEY, UtilsLocalDataBase.DB_SESSION_KEY_CYPHER,  false);
                     //Post the data
-                    rc = PostData(SettingsBetrack.STUDY_POSTBLOBKEY, UtilsLocalDataBase.DB_SESSION_KEY, StatusData, false);
+                    rc = PostData(SettingsBetrack.STUDY_POSTBLOBKEY, UtilsLocalDataBase.DB_SESSION_KEY, StatusData, UtilsLocalDataBase.DB_GPS_CYPHER, false);
                     if (rc == true) {
                         AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_SESSION_KEY, IdSql);
                     } else {
@@ -150,13 +150,13 @@ public class IntentServicePostData extends IntentService {
                             IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
 
                             //Prepare the data
-                            AppWatchData = PrepareData(values, UtilsLocalDataBase.DB_APPWATCH, UtilsLocalDataBase.DB_APPWATCH_CYPHER, false);
+                            AppWatchData = PrepareData(values, UtilsLocalDataBase.DB_APPWATCH, UtilsLocalDataBase.DB_APPWATCH_CYPHER, true);
                             /*mHandler.post(new UtilsDisplayToast(this,  getResources().getString(R.string.app_name)
                                 + "Post app watched: " +  AppWatchData.get(0) + " Date start:" + AppWatchData.get(1) + " Time start:" + AppWatchData.get(2)
                                 + " Date end:" + AppWatchData.get(3) + " Time end:" + AppWatchData.get(4)));*/
 
                             //Post the data
-                            rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, false);
+                            rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, UtilsLocalDataBase.DB_GPS_CYPHER, true);
                             if (rc == true) {
                                 AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
                             } else {
@@ -190,7 +190,7 @@ public class IntentServicePostData extends IntentService {
                                 " Time: " +  DailyStatusData.get(6)
                         ));
                         //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, false);
+                        rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, UtilsLocalDataBase.DB_GPS_CYPHER, false);
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
                         } else {
@@ -213,7 +213,7 @@ public class IntentServicePostData extends IntentService {
                         StartStudyData = PrepareData(values, UtilsLocalDataBase.DB_START_STUDY, UtilsLocalDataBase.DB_START_STUDY_CYPHER, true);
 
                         //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTSTARTSTUDY, UtilsLocalDataBase.DB_START_STUDY, StartStudyData, true);
+                        rc = PostData(SettingsBetrack.STUDY_POSTSTARTSTUDY, UtilsLocalDataBase.DB_START_STUDY, StartStudyData, UtilsLocalDataBase.DB_GPS_CYPHER, true);
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_START_STUDY, IdSql);
                         } else {
@@ -236,7 +236,7 @@ public class IntentServicePostData extends IntentService {
                         EndStudyData = PrepareData(values, UtilsLocalDataBase.DB_END_STUDY, UtilsLocalDataBase.DB_END_STUDY_CYPHER, false);
 
                         //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, false);
+                        rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, UtilsLocalDataBase.DB_GPS_CYPHER, false);
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
                             CreateNotification.StopAlarm(this);
@@ -262,7 +262,7 @@ public class IntentServicePostData extends IntentService {
                         GpsData = PrepareData(values, UtilsLocalDataBase.DB_GPS, UtilsLocalDataBase.DB_GPS_CYPHER, false);
 
                         //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTGPSDATA, UtilsLocalDataBase.DB_GPS, GpsData, false);
+                        rc = PostData(SettingsBetrack.STUDY_POSTGPSDATA, UtilsLocalDataBase.DB_GPS, GpsData, UtilsLocalDataBase.DB_GPS_CYPHER, false);
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_GPS, IdSql);
                         } else {
@@ -344,6 +344,7 @@ public class IntentServicePostData extends IntentService {
                         } else {
                             valueToEncrypt = values.get(Field.get(i)).toString();
                         }
+                        rc.add(null);
                     } else {
                         rc.add(values.get(Field.get(i)).toString());
                     }
@@ -377,7 +378,7 @@ public class IntentServicePostData extends IntentService {
         return rc;
     }
 
-    public boolean PostData(String WebLink, ArrayList<String> Field, ArrayList<String> Data, boolean Encrypt) {
+    public boolean PostData(String WebLink, ArrayList<String> Field, ArrayList<String> Data, ArrayList<Boolean> Cypher, boolean Encrypt) {
 
         boolean rc = false;
         HttpURLConnection urlConnection = null;
@@ -404,7 +405,9 @@ public class IntentServicePostData extends IntentService {
             Uri.Builder builder = new Uri.Builder();
 
             if (Encrypt == false) {
+                //Add the user ID to the PHP request
                 builder.appendQueryParameter(Field.get(0).toString(), ObjSettingsStudy.getIdUser());
+                //Add the different fiels to the PHP request
                 for (int i=1; i<Field.size(); i++){
                     if (Data.get(i-1) != null) {
                         builder.appendQueryParameter(Field.get(i).toString(), Data.get(i-1).toString());
@@ -413,8 +416,16 @@ public class IntentServicePostData extends IntentService {
                     }
                 }
             } else {
+                //Add the user ID to the PHP request
                 builder.appendQueryParameter(Field.get(0).toString(), ObjSettingsStudy.getIdUser());
-                builder.appendQueryParameter("encrypted", Data.get(0).toString());
+                //Add the data encrypted to the PHP request
+                builder.appendQueryParameter("encrypted", Data.get(Field.size()-2).toString());
+                //Add the field that were not encrypted to the PHP request
+                for (int i=1; i<(Field.size() - 2); i++) {
+                    if ((Data.get(i-1) != null) && (false == Cypher.get(i-1))) {
+                        builder.appendQueryParameter(Field.get(i).toString(), Data.get(i-1).toString());
+                    }
+                }
             }
 
             String query = builder.build().getEncodedQuery();
