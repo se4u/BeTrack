@@ -108,7 +108,7 @@ public class IntentServiceTrackApp extends IntentService {
                         topActivity = handleCheckActivity(intent);
                     }
 
-                    Log.d(TAG, "Foreground App " + topActivity + " ActivityOnGoing " + ActivityOnGoing);
+                    //Log.d(TAG, "Foreground App " + topActivity + " ActivityOnGoing " + ActivityOnGoing);
                     if (ReceiverScreen.StateScreen.UNKNOWN == ReceiverScreen.ScreenState) {
                         intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
                         this.sendBroadcast(intentCheckScreenStatus);

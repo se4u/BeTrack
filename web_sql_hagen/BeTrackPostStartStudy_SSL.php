@@ -10,12 +10,8 @@ if (mysqli_connect_errno($con))
    echo '{"query_result":"ERROR"}';
 }
 
-$userid = $_POST['ParticipantID'];
+$useridcypher = $_POST['ParticipantID'];
 $encrypted = $_POST['encrypted'];
-$date = $_POST['date'];
-$time = $_POST['time'];
-$SessionKey = '';
-
 
 $age = '';
 $relationship = '';
@@ -25,42 +21,84 @@ $avgmenstrualcycle = '';
 $date = '';
 $time = '';
 
-//fetch session key(s) from the database
-//$sql = "select * from BetrackSessionKeys where UserId=".$userid;
-//for test
-$sql = "select * from BetrackSessionKeys where UserId='92228206-9b2a-363f-86ed-8086d6f2746d'";
-$result = mysqli_query($con, $sql) or die("Error in Selecting " . mysqli_error($con));
-
-//fetch data and stored into variables
-while($row = mysqli_fetch_assoc($result)){
-  $BlobSessionkey = $row['BlobSessionkey'];
-}
-
-//Decrypt the session key
-$data = base64_decode(strtr($BlobSessionkey, '-_', '+/')); 
-$rc = openssl_private_decrypt($data, $SessionKey, openssl_pkey_get_private($pri, "cedric"),OPENSSL_PKCS1_PADDING);
+$data = base64_decode(strtr($useridcypher, '-_', '+/')); 
+$rc = openssl_private_decrypt($data, $userid, openssl_pkey_get_private($pri, "cedric"),OPENSSL_PKCS1_OAEP_PADDING);
 
 if ($rc === false) {
-	echo 'decrypt failed';
-	//$contraception = 'decrypt failed: ' . strtr($encrypted, '-_', '+/');
+	echo 'decrypt userid RSA failed: '.$useridcypher;
+	echo PHP_EOL;
+	$result = false;
+	goto endsession;
+}
+
+//fetch session key(s) from the database
+$sql = "select * from BetrackSessionKeys where UserId='".$userid."'";
+
+$query = mysqli_query($con, $sql) or die("Error in Selecting " . mysqli_error($con));
+if ($query === false) {
+	goto endsession;
+}
+
+//Read the session key
+$row = mysqli_fetch_assoc($query);
+$partsSessionKey = explode(':', $row["Sessionkey"]);
+$query->close();
+
+$SecretKey = base64_decode($partsSessionKey[0]); 
+
+//Decrypt the data
+$parts = explode(':', strtr($encrypted, '-_', '+/'));
+$data = base64_decode($parts[2]); 
+$iv = base64_decode($parts[0]); 
+
+$plain = openssl_decrypt($data, 'AES-128-CBC', $SecretKey, OPENSSL_RAW_DATA, $iv);
+if ($plain === false) {
+	echo 'decrypt AES failed: '.$parts[2].' Secret key: '.$partsSessionKey[0];
+	echo PHP_EOL;
+	$result = false;
+	goto endsession;
 }
 else {
-	echo 'decrypt sessionkey succesful: '.$SessionKey.'/n/r';
-	//Decrypt the data
-	$data = base64_decode($encrypted); 
-	$rc = openssl_private_decrypt($data, $SessionKey, openssl_pkey_get_private($pri, "cedric"),OPENSSL_PKCS1_PADDING);
-	list($age, $relationship, $contraception, $avgperiodlenght, $avgmenstrualcycle) = explode(chr (30), $plain);
+	list($age, $relationship, $contraception, $avgperiodlenght, $avgmenstrualcycle, $date, $time) = explode(chr (30), $plain);
 }
+
+//Check the data
+$userid = strip_tags(trim($userid));
+$userid = mysqli_real_escape_string($con, $userid);
+
+$age = strip_tags(trim($age));
+$age = mysqli_real_escape_string($con, $age);
+
+$relationship = strip_tags(trim($relationship));
+$relationship = mysqli_real_escape_string($con, $relationship);
+
+$contraception = strip_tags(trim($contraception));
+$contraception = mysqli_real_escape_string($con, $contraception);
+
+$avgperiodlenght = strip_tags(trim($avgperiodlenght));
+$avgperiodlenght = mysqli_real_escape_string($con, $avgperiodlenght);
+
+$avgmenstrualcycle = strip_tags(trim($avgmenstrualcycle));
+$avgmenstrualcycle = mysqli_real_escape_string($con, $avgmenstrualcycle);
+
+$date = strip_tags(trim($date));
+$date = mysqli_real_escape_string($con, $date);
+
+$time = strip_tags(trim($time));
+$time = mysqli_real_escape_string($con, $time);
 
 $result = mysqli_query($con,"INSERT INTO BetrackStartStudy (UserId, Age, RelationShip, Contraception, AvgPeriodLenght, AvgMenstrualCycle, Date, Time) 
           VALUES ('$userid ', '$age', '$relationship', '$contraception', '$avgperiodlenght', '$avgmenstrualcycle', '$date', '$time')");
- 
-if($result == true) {
-    echo '{"query_result":"SUCCESS"} ';
+
+endsession:		  
+if($result === true) {
+    echo 'OK';
 }
 else{
-    echo '{"query_result":"FAILURE"}';
     echo("Error description: " . mysqli_error($con));
+	echo PHP_EOL;
+	echo 'KO';
 }
+
 mysqli_close($con);
 ?>

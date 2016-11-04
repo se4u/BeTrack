@@ -553,9 +553,9 @@ public class UtilsCryptoAES {
          */
         @Override
         public String toString() {
-            String ivString = Base64.encodeToString(iv, BASE64_FLAGS);
-            String cipherTextString = Base64.encodeToString(cipherText, BASE64_FLAGS);
-            String macString = Base64.encodeToString(mac, BASE64_FLAGS);
+            String ivString = new String(Base64.encode(iv, Base64.URL_SAFE | Base64.CRLF));
+            String cipherTextString = new String(Base64.encode(cipherText, Base64.URL_SAFE | Base64.CRLF));
+            String macString = new String(Base64.encode(mac, Base64.URL_SAFE | Base64.CRLF));
             return String.format(ivString + ":" + macString + ":" + cipherTextString);
         }
 

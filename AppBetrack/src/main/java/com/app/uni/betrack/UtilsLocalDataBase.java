@@ -113,9 +113,9 @@ public class UtilsLocalDataBase {
     static final String TABLE_SESSION_KEY = "SessionKey";
     static final String C_SESSION_KEY_ID = BaseColumns._ID;
     static final String C_SESSION_KEY_PID = "ParticipantID";
-    static final String C_SESSION_KEY_BLOB = "BlobSessionkey";
-    static final String C_SESSION_KEY_TIME = "Time";
+    static final String C_SESSION_KEY_BLOB = "Sessionkey";
     static final String C_SESSION_KEY_DATE = "Date";
+    static final String C_SESSION_KEY_TIME = "Time";
 
     public static final ArrayList<String> DB_SESSION_KEY = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_SESSION_KEY_PID);
@@ -162,8 +162,8 @@ public class UtilsLocalDataBase {
         add(true);  //C_STARTSTUDY_CONTRACEPTION
         add(true);  //C_STARTSTUDY_AVGPERIODLENGHT
         add(true);  //C_STARTSTUDY_AVGMENSTRUALCYCLE
-        add(false); //C_STARTSTUDY_DATE
-        add(false); //C_STARTSTUDY_TIME
+        add(true);  //C_STARTSTUDY_DATE
+        add(true);  //C_STARTSTUDY_TIME
     }};
 
     //Table for End study

@@ -12,7 +12,9 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -190,7 +192,7 @@ public class IntentServicePostData extends IntentService {
                                 " Time: " +  DailyStatusData.get(6)
                         ));
                         //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, UtilsLocalDataBase.DB_GPS_CYPHER, false);
+                        rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, UtilsLocalDataBase.DB_DAILYSTATUS_CYPHER, false);
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
                         } else {
@@ -213,7 +215,7 @@ public class IntentServicePostData extends IntentService {
                         StartStudyData = PrepareData(values, UtilsLocalDataBase.DB_START_STUDY, UtilsLocalDataBase.DB_START_STUDY_CYPHER, true);
 
                         //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTSTARTSTUDY, UtilsLocalDataBase.DB_START_STUDY, StartStudyData, UtilsLocalDataBase.DB_GPS_CYPHER, true);
+                        rc = PostData(SettingsBetrack.STUDY_POSTSTARTSTUDY, UtilsLocalDataBase.DB_START_STUDY, StartStudyData, UtilsLocalDataBase.DB_START_STUDY_CYPHER, true);
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_START_STUDY, IdSql);
                         } else {
@@ -236,7 +238,7 @@ public class IntentServicePostData extends IntentService {
                         EndStudyData = PrepareData(values, UtilsLocalDataBase.DB_END_STUDY, UtilsLocalDataBase.DB_END_STUDY_CYPHER, false);
 
                         //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, UtilsLocalDataBase.DB_GPS_CYPHER, false);
+                        rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, UtilsLocalDataBase.DB_END_STUDY_CYPHER, false);
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
                             CreateNotification.StopAlarm(this);
@@ -356,10 +358,8 @@ public class IntentServicePostData extends IntentService {
             } else {
                 if ((true == Encrypt) && (true == Cypher.get(i))) {
                     valueToEncrypt += String.valueOf(Character.toChars(30)) + null;
-
-                } else {
-                    rc.add(null);
                 }
+                rc.add(null);
             }
         }
         if (true == Encrypt) {
@@ -406,7 +406,7 @@ public class IntentServicePostData extends IntentService {
 
             if (Encrypt == false) {
                 //Add the user ID to the PHP request
-                builder.appendQueryParameter(Field.get(0).toString(), ObjSettingsStudy.getIdUser());
+                builder.appendQueryParameter(Field.get(0).toString(), ObjSettingsStudy.getIdUserCypher());
                 //Add the different fiels to the PHP request
                 for (int i=1; i<Field.size(); i++){
                     if (Data.get(i-1) != null) {
@@ -417,12 +417,12 @@ public class IntentServicePostData extends IntentService {
                 }
             } else {
                 //Add the user ID to the PHP request
-                builder.appendQueryParameter(Field.get(0).toString(), ObjSettingsStudy.getIdUser());
+                builder.appendQueryParameter(Field.get(0).toString(), ObjSettingsStudy.getIdUserCypher());
                 //Add the data encrypted to the PHP request
-                builder.appendQueryParameter("encrypted", Data.get(Field.size()-2).toString());
+                builder.appendQueryParameter("encrypted", Data.get(Field.size()-1).toString());
                 //Add the field that were not encrypted to the PHP request
-                for (int i=1; i<(Field.size() - 2); i++) {
-                    if ((Data.get(i-1) != null) && (false == Cypher.get(i-1))) {
+                for (int i=1; i<Field.size(); i++) {
+                    if ((Data.get(i-1) != null) && (false == Cypher.get(i))) {
                         builder.appendQueryParameter(Field.get(i).toString(), Data.get(i-1).toString());
                     }
                 }
@@ -436,8 +436,24 @@ public class IntentServicePostData extends IntentService {
             writer.flush();
             writer.close();
 
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(
+                            urlConnection.getInputStream()));
+            String decodedString;
+            String decodedStringLast = null;
+            while ((decodedString = in.readLine()) != null) {
+                decodedStringLast = decodedString;
+                Log.d(TAG, decodedString);
+            }
+            in.close();
+
             if (HttpsURLConnection.HTTP_OK == urlConnection.getResponseCode()) {
-                rc= true;
+                if (!decodedStringLast.equals("OK")) {
+                    Log.d(TAG, "Error during accessing the server... ");
+                    rc = false;
+                } else {
+                    rc= true;
+                }
             }
             else {
                 Log.d(TAG, "Unable to access to server... ");

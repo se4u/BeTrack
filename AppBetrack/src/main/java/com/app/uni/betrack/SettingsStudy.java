@@ -68,6 +68,8 @@ public class SettingsStudy {
 
     static private String IdUser;
     static private final String USER_ID = "UserId";
+    static private String IdUserCypher;
+    static private final String USER_ID_CYPHER = "UserIdCypher";
 
     static private Boolean DailySurveyDone;
     static private String StartDateSurvey;
@@ -116,7 +118,19 @@ public class SettingsStudy {
             //We save it
             editor.putString(USER_ID, IdUser);
             editor.commit();
+
+            //Encrypt the user ID
+            try {
+                byte[] dataBytes = IdUser.toString().getBytes("utf-8");
+                IdUserCypher = UtilsCryptoRSA.encryptWithPublicKey(ObjSettingsBetrack.STUDY_PUBLIC_KEY, dataBytes, mContext);
+                //We save it
+                editor.putString(USER_ID_CYPHER, IdUserCypher);
+                editor.commit();
+            } catch (Exception e) {
+                IdUserCypher = null;
+            }
         }
+
         //Read app to watch
         ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new HashSet<String>());
         ApplicationsToWatchIn = new HashSet<>(ApplicationsToWatchHs);
@@ -156,7 +170,7 @@ public class SettingsStudy {
             SessionKey = UtilsCryptoAES.generateKey();
             //Encrypt the key
             byte[] dataBytes = SessionKey.toString().getBytes("utf-8");
-            Result = UtilsCryptoRSA.encryptSessionKeyWithPublicKey(ObjSettingsBetrack.STUDY_PUBLIC_KEY, dataBytes, mContext);
+            Result = UtilsCryptoRSA.encryptWithPublicKey(ObjSettingsBetrack.STUDY_PUBLIC_KEY, dataBytes, mContext);
             //Save it in the local database with the date and time
             values.clear();
             values.put(UtilsLocalDataBase.C_SESSION_KEY_BLOB, Result);
@@ -326,6 +340,20 @@ public class SettingsStudy {
             ReturnIdUser = null;
         } finally {
             return ReturnIdUser;
+        }
+    }
+
+    public String getIdUserCypher()
+    {
+        String ReturnIdUserCypher = null;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnIdUserCypher = IdUserCypher;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnIdUserCypher = null;
+        } finally {
+            return ReturnIdUserCypher;
         }
     }
 

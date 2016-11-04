@@ -37,10 +37,10 @@ public class UtilsCryptoRSA {
     private Cipher cipher;
 
 
-    public static String encryptSessionKeyWithPublicKey(String pemString, byte[] sessionKey, Context context) {
+    public static String encryptWithPublicKey(String pemString, byte[] sessionKey, Context context) {
         try {
             PublicKey publicKey = getPublicKeyFromPemFormat(pemString, context);
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] cipherData = cipher.doFinal(sessionKey);
             Log.e(TAG, new String(Base64.encode(cipherData, Base64.CRLF)));
