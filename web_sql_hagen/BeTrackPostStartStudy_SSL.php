@@ -45,21 +45,35 @@ $partsSessionKey = explode(':', $row["Sessionkey"]);
 $query->close();
 
 $SecretKey = base64_decode($partsSessionKey[0]); 
+$IntegrityKey = base64_decode($partsSessionKey[1]); 
 
 //Decrypt the data
 $parts = explode(':', strtr($encrypted, '-_', '+/'));
 $data = base64_decode($parts[2]); 
+$expected = trim(preg_replace('/\\\\r|\\\\n|\\\\t/i', ' ', $parts[1])); 
 $iv = base64_decode($parts[0]); 
 
 $plain = openssl_decrypt($data, 'AES-128-CBC', $SecretKey, OPENSSL_RAW_DATA, $iv);
+
 if ($plain === false) {
 	echo 'decrypt AES failed: '.$parts[2].' Secret key: '.$partsSessionKey[0];
 	echo PHP_EOL;
 	$result = false;
 	goto endsession;
 }
-else {
-	list($age, $relationship, $contraception, $avgperiodlenght, $avgmenstrualcycle, $date, $time) = explode(chr (30), $plain);
+else {	
+	//Check the hash key
+	$ivCipherConcat =  base64_decode($parts[0]).base64_decode($parts[2]);
+	$hashresult = base64_encode(hash_hmac('sha256', $ivCipherConcat, $IntegrityKey, true));
+	if (hash_equals($expected, $hashresult)) {
+		list($age, $relationship, $contraception, $avgperiodlenght, $avgmenstrualcycle, $date, $time) = explode(chr (30), $plain);
+	} 
+	else {
+		echo 'Validity check of data failed SHA from data: '.$expected.' Computed: '.$hashresult;
+		echo PHP_EOL;
+		$result = false;
+		goto endsession;
+	}
 }
 
 //Check the data
@@ -101,4 +115,5 @@ else{
 }
 
 mysqli_close($con);
+
 ?>
