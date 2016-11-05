@@ -120,10 +120,11 @@ public class IntentServicePostData extends IntentService {
 
                     IdSql = values.getAsLong(UtilsLocalDataBase.C_SESSION_KEY_ID);
 
+                    //Everything is encrypted with the public key for the session key that's why no need to use the AES encption
                     //Prepare the data
                     StatusData = PrepareData(values, UtilsLocalDataBase.DB_SESSION_KEY, UtilsLocalDataBase.DB_SESSION_KEY_CYPHER,  false);
                     //Post the data
-                    rc = PostData(SettingsBetrack.STUDY_POSTBLOBKEY, UtilsLocalDataBase.DB_SESSION_KEY, StatusData, UtilsLocalDataBase.DB_GPS_CYPHER, false);
+                    rc = PostData(SettingsBetrack.STUDY_POSTBLOBKEY, UtilsLocalDataBase.DB_SESSION_KEY, StatusData, UtilsLocalDataBase.DB_SESSION_KEY_CYPHER, false);
                     if (rc == true) {
                         AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_SESSION_KEY, IdSql);
                     } else {
@@ -153,12 +154,9 @@ public class IntentServicePostData extends IntentService {
 
                             //Prepare the data
                             AppWatchData = PrepareData(values, UtilsLocalDataBase.DB_APPWATCH, UtilsLocalDataBase.DB_APPWATCH_CYPHER, true);
-                            /*mHandler.post(new UtilsDisplayToast(this,  getResources().getString(R.string.app_name)
-                                + "Post app watched: " +  AppWatchData.get(0) + " Date start:" + AppWatchData.get(1) + " Time start:" + AppWatchData.get(2)
-                                + " Date end:" + AppWatchData.get(3) + " Time end:" + AppWatchData.get(4)));*/
 
                             //Post the data
-                            rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, UtilsLocalDataBase.DB_GPS_CYPHER, true);
+                            rc = PostData(SettingsBetrack.STUDY_POSTAPPWATCHED, UtilsLocalDataBase.DB_APPWATCH, AppWatchData, UtilsLocalDataBase.DB_APPWATCH_CYPHER, true);
                             if (rc == true) {
                                 AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_APPWATCH, IdSql);
                             } else {
@@ -181,16 +179,9 @@ public class IntentServicePostData extends IntentService {
 
                         IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
 
-                        //Encrypt the data
+                        //Prepare the data
                         DailyStatusData = PrepareData(values, UtilsLocalDataBase.DB_DAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS_CYPHER, false);
-                        mHandler.post(new UtilsDisplayToast(this, getResources().getString(R.string.app_name)+": Post survey status: " + DailyStatusData.get(0) +
-                                " Post social 1: " + DailyStatusData.get(1) +
-                                " Post social 2: " + DailyStatusData.get(2) +
-                                " Post phone usage: " + DailyStatusData.get(3) +
-                                " Post mood: " + DailyStatusData.get(4) +
-                                " Date: " +  DailyStatusData.get(5) +
-                                " Time: " +  DailyStatusData.get(6)
-                        ));
+
                         //Post the data
                         rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, UtilsLocalDataBase.DB_DAILYSTATUS_CYPHER, false);
                         if (rc == true) {
@@ -235,10 +226,10 @@ public class IntentServicePostData extends IntentService {
                         IdSql = values.getAsLong(UtilsLocalDataBase.C_ENDSTUDY_ID);
 
                         //Prepare the data
-                        EndStudyData = PrepareData(values, UtilsLocalDataBase.DB_END_STUDY, UtilsLocalDataBase.DB_END_STUDY_CYPHER, false);
+                        EndStudyData = PrepareData(values, UtilsLocalDataBase.DB_END_STUDY, UtilsLocalDataBase.DB_END_STUDY_CYPHER, true);
 
                         //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, UtilsLocalDataBase.DB_END_STUDY_CYPHER, false);
+                        rc = PostData(SettingsBetrack.STUDY_POSTENDSTUDY, UtilsLocalDataBase.DB_END_STUDY, EndStudyData, UtilsLocalDataBase.DB_END_STUDY_CYPHER, true);
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
                             CreateNotification.StopAlarm(this);
@@ -261,10 +252,10 @@ public class IntentServicePostData extends IntentService {
                         IdSql = values.getAsLong(UtilsLocalDataBase.C_GPS_ID);
 
                         //Prepare the data
-                        GpsData = PrepareData(values, UtilsLocalDataBase.DB_GPS, UtilsLocalDataBase.DB_GPS_CYPHER, false);
+                        GpsData = PrepareData(values, UtilsLocalDataBase.DB_GPS, UtilsLocalDataBase.DB_GPS_CYPHER, true);
 
                         //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTGPSDATA, UtilsLocalDataBase.DB_GPS, GpsData, UtilsLocalDataBase.DB_GPS_CYPHER, false);
+                        rc = PostData(SettingsBetrack.STUDY_POSTGPSDATA, UtilsLocalDataBase.DB_GPS, GpsData, UtilsLocalDataBase.DB_GPS_CYPHER, true);
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_GPS, IdSql);
                         } else {

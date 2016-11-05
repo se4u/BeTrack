@@ -43,10 +43,10 @@ public class UtilsLocalDataBase {
     public static final ArrayList<Boolean> DB_APPWATCH_CYPHER = new ArrayList<Boolean>() {{
         add(false); //C_APPWATCH_PID
         add(true);  //C_APPWATCH_APPLICATION
-        add(false); //C_APPWATCH_DATESTART
-        add(false); //C_APPWATCH_TIMESTART
-        add(false); //C_APPWATCH_DATESTOP
-        add(false); //C_APPWATCH_TIMESTOP
+        add(true); //C_APPWATCH_DATESTART
+        add(true); //C_APPWATCH_TIMESTART
+        add(true); //C_APPWATCH_DATESTOP
+        add(true); //C_APPWATCH_TIMESTOP
     }};
 
     //Table for period, libido... follow up
@@ -80,8 +80,8 @@ public class UtilsLocalDataBase {
         add(true);  //C_USER_SOCIAL2_LIFE
         add(true);  //C_USER_PHONE_USAGE
         add(true);  //C_USER_MOOD
-        add(false); //C_USER_DATE
-        add(false); //C_USER_TIME
+        add(true); //C_USER_DATE
+        add(true); //C_USER_TIME
     }};
 
     //Table for GPS data
@@ -105,8 +105,8 @@ public class UtilsLocalDataBase {
         add(false); //C_GPS_PID
         add(true);  //C_GPS_LATTITUDE
         add(true);  //C_GPS_LONGITUDE
-        add(false); //C_GPS_DATE
-        add(false); //C_GPS_TIME
+        add(true); //C_GPS_DATE
+        add(true); //C_GPS_TIME
     }};
 
     //Table for Status study
@@ -193,8 +193,8 @@ public class UtilsLocalDataBase {
         add(true);  //C_ENDSTUDY_RELATIONSHIP
         add(true);  //C_ENDSTUDY_CONTRACEPTION
         add(true);  //C_ENDSTUDY_USAGE
-        add(false); //C_ENDSTUDY_DATE
-        add(false); //C_ENDSTUDY_TIME
+        add(true); //C_ENDSTUDY_DATE
+        add(true); //C_ENDSTUDY_TIME
     }};
 
     private static final Semaphore SemUpdateDb = new Semaphore(1, true);
