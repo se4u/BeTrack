@@ -180,10 +180,10 @@ public class IntentServicePostData extends IntentService {
                         IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
 
                         //Prepare the data
-                        DailyStatusData = PrepareData(values, UtilsLocalDataBase.DB_DAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS_CYPHER, false);
+                        DailyStatusData = PrepareData(values, UtilsLocalDataBase.DB_DAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS_CYPHER, true);
 
                         //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, UtilsLocalDataBase.DB_DAILYSTATUS_CYPHER, false);
+                        rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, UtilsLocalDataBase.DB_DAILYSTATUS_CYPHER, true);
                         if (rc == true) {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
                         } else {

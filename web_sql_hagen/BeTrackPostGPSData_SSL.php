@@ -1,25 +1,47 @@
 <?php
-$con=mysqli_connect("gman.myd.infomaniak.com","gman_unihagen","mghLOzq27HwX","gman_unihagen");
-if (mysqli_connect_errno($con))
-{
-   echo '{"query_result":"ERROR"}';
+
+include './BeTrackCrypto.php';
+
+if($result === false) {
+    goto endsession;
 }
 
-$userid = $_POST['ParticipantID'];
-$lattitude = $_POST['Lattitude'];
-$longitude = $_POST['Longitude'];
-$date = $_POST['Date'];
-$time = $_POST['Time'];
+$lattitude = '';
+$longitude = '';
+$date = '';
+$time = '';
+
+list($lattitude, $longitude, $date, $time) = explode(chr (30), $plain);
+
+//Check the data
+$userid = strip_tags(trim($userid));
+$userid = mysqli_real_escape_string($con, $userid);
+
+$lattitude = strip_tags(trim($lattitude));
+$lattitude = mysqli_real_escape_string($con, $lattitude);
+
+$longitude = strip_tags(trim($longitude));
+$longitude = mysqli_real_escape_string($con, $longitude);
+
+$date = strip_tags(trim($date));
+$date = mysqli_real_escape_string($con, $date);
+
+$time = strip_tags(trim($time));
+$time = mysqli_real_escape_string($con, $time);
 
 $result = mysqli_query($con,"INSERT INTO BetrackGPS (UserId, Lattitude, Longitude, Date, Time) 
           VALUES ('$userid', '$lattitude', '$longitude', '$date', '$time')");
  
-if($result == true) {
-    echo '{"query_result":"SUCCESS"} ';
+endsession:		  
+if($result === true) {
+    echo 'OK';
 }
 else{
-    echo '{"query_result":"FAILURE"}';
     echo("Error description: " . mysqli_error($con));
+	echo PHP_EOL;
+	echo 'KO';
 }
+
 mysqli_close($con);
+
 ?>

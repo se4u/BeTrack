@@ -1,26 +1,49 @@
 <?php
-$con=mysqli_connect("gman.myd.infomaniak.com","gman_unihagen","mghLOzq27HwX","gman_unihagen");
-if (mysqli_connect_errno($con))
-{
-   echo '{"query_result":"ERROR"}';
+include './BeTrackCrypto.php';
+
+if($result === false) {
+    goto endsession;
 }
 
-$userid = $_POST['ParticipantID'];
-$application = $_POST['Application'];
-$datestart = $_POST['DateStart'];
-$datestop = $_POST['DateStop'];
-$timestart = $_POST['TimeStart'];
-$timestop = $_POST['TimeStop'];
+$application = '';
+$datestart = '';
+$datestop = '';
+$timestart = '';
+$timestop = '';
+
+list($application, $datestart, $datestop, $timestart, $timestop) = explode(chr (30), $plain);
+
+//Check the data
+$userid = strip_tags(trim($userid));
+$userid = mysqli_real_escape_string($con, $userid);
+
+$application = strip_tags(trim($application));
+$application = mysqli_real_escape_string($con, $application);
+
+$datestart = strip_tags(trim($datestart));
+$datestart = mysqli_real_escape_string($con, $datestart);
+
+$datestop = strip_tags(trim($datestop));
+$datestop = mysqli_real_escape_string($con, $datestop);
+
+$timestart = strip_tags(trim($timestart));
+$timestart = mysqli_real_escape_string($con, $timestart);
+
+$timestop = strip_tags(trim($timestop));
+$timestop = mysqli_real_escape_string($con, $timestop);
  
 $result = mysqli_query($con,"INSERT INTO BetrackStudy (UserId, Application, DateStart, DateStop, TimeStart, TimeStop) 
           VALUES ('$userid ', '$application', '$datestart', '$datestop', '$timestart', '$timestop' )");
  
-if($result == true) {
-    echo '{"query_result":"SUCCESS"} ';
+endsession:		  
+if($result === true) {
+    echo 'OK';
 }
 else{
-    echo '{"query_result":"FAILURE"}';
     echo("Error description: " . mysqli_error($con));
+	echo PHP_EOL;
+	echo 'KO';
 }
+
 mysqli_close($con);
 ?>
