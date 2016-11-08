@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
@@ -37,9 +38,6 @@ public class UtilsTimePreference extends DialogPreference {
     @Override
     protected View onCreateDialogView() {
         picker=new TimePicker(getContext());
-
-        picker.setIs24HourView(true);
-
         return(picker);
     }
 
@@ -47,7 +45,14 @@ public class UtilsTimePreference extends DialogPreference {
     protected void onBindDialogView(View v) {
         super.onBindDialogView(v);
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "20:00");
+        String time=null;
+        if (!DateFormat.is24HourFormat(getContext())) {
+            picker.setIs24HourView(false);
+        } else {
+            picker.setIs24HourView(true);
+        }
+
+        time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "20:00");
 
         lastHour=getHour(time);
         lastMinute=getMinute(time);
@@ -66,6 +71,7 @@ public class UtilsTimePreference extends DialogPreference {
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
+        String time = null;
 
         if (positiveResult) {
 
@@ -79,7 +85,7 @@ public class UtilsTimePreference extends DialogPreference {
             else
                 lastMinute=picker.getCurrentMinute();
 
-            String time=String.valueOf(lastHour)+":"+String.valueOf(lastMinute);
+            time = String.valueOf(lastHour) + ":" + String.valueOf(lastMinute);
 
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor editor = prefs.edit();

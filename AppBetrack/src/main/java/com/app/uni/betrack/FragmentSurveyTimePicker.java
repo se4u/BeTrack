@@ -52,29 +52,17 @@ public class FragmentSurveyTimePicker extends AbstractStep {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         String time = null;
-        String[] partstime = null;
         View v = inflater.inflate(R.layout.survey_timepicker, container, false);
 
         picker = (TimePicker) v.findViewById(R.id.time_picker);
 
         if (!DateFormat.is24HourFormat(getContext())) {
             picker.setIs24HourView(false);
-            time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "08:00 PM");
-            //Convert time to 24H
-            String partsTime[] = time.split(" ");
-            partsTime[1] = partsTime[1].toLowerCase();
-            if (partsTime[1].equals("am")) {
-                time = partsTime[0];
-            } else {
-                String[] pieces=partsTime[0].split(":");
-                int hour = Integer.parseInt(pieces[0]) + 12;
-                time = Integer.toString(hour) + ":" + pieces[1];
-            }
-
         } else {
             picker.setIs24HourView(true);
-            time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "20:00");
         }
+
+        time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "20:00");
         picker.setDescendantFocusability(TimePicker.FOCUS_BLOCK_DESCENDANTS);
 
         lastHour=getHour(time);
@@ -138,6 +126,7 @@ public class FragmentSurveyTimePicker extends AbstractStep {
     }
 
     private void UpdateNotificationTime() {
+        String time = null;
 
         if (ObjSettingsBetrack == null)  {
             ObjSettingsBetrack = SettingsBetrack.getInstance();
@@ -153,7 +142,7 @@ public class FragmentSurveyTimePicker extends AbstractStep {
         else
             lastMinute=picker.getCurrentMinute();
 
-        String time=String.valueOf(lastHour)+":"+String.valueOf(lastMinute);
+        time = String.valueOf(lastHour) + ":" + String.valueOf(lastMinute);
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = prefs.edit();
