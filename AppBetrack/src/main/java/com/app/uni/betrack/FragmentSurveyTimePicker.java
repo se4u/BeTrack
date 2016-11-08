@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,29 +50,44 @@ public class FragmentSurveyTimePicker extends AbstractStep {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String time = null;
+        String[] partstime = null;
         View v = inflater.inflate(R.layout.survey_timepicker, container, false);
 
         picker = (TimePicker) v.findViewById(R.id.time_picker);
 
-        picker.setIs24HourView(true);
-        picker.setDescendantFocusability(TimePicker.FOCUS_BLOCK_DESCENDANTS);
+        if (!DateFormat.is24HourFormat(getContext())) {
+            picker.setIs24HourView(false);
+            time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "08:00 PM");
+            //Convert time to 24H
+            String partsTime[] = time.split(" ");
+            partsTime[1] = partsTime[1].toLowerCase();
+            if (partsTime[1].equals("am")) {
+                time = partsTime[0];
+            } else {
+                String[] pieces=partsTime[0].split(":");
+                int hour = Integer.parseInt(pieces[0]) + 12;
+                time = Integer.toString(hour) + ":" + pieces[1];
+            }
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "20:00");
+        } else {
+            picker.setIs24HourView(true);
+            time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "20:00");
+        }
+        picker.setDescendantFocusability(TimePicker.FOCUS_BLOCK_DESCENDANTS);
 
         lastHour=getHour(time);
         lastMinute=getMinute(time);
-        if (Build.VERSION.SDK_INT >= 23 )
+
+        if (Build.VERSION.SDK_INT >= 23 )  {
             picker.setHour(lastHour);
-        else
-            picker.setCurrentHour(lastHour);
-
-        if (Build.VERSION.SDK_INT >= 23 )
             picker.setMinute(lastMinute);
-        else
+        }
+        else {
+            picker.setCurrentHour(lastHour);
             picker.setCurrentMinute(lastMinute);
-
+        }
 
         Title = (TextView) v.findViewById(R.id.survey_title);
         //Description = (TextView) v.findViewById(R.id.survey_desc);
