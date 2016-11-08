@@ -171,6 +171,9 @@ public class UtilsLocalDataBase {
     static final String C_ENDSTUDY_ID = BaseColumns._ID;
     static final String C_ENDSTUDY_PID = "ParticipantID";
     static final String C_ENDSTUDY_PERIOD = "Period";
+    static final String C_ENDSTUDY_SOCIAL1_LIFE = "SocialLife1";
+    static final String C_ENDSTUDY_SOCIAL2_LIFE = "SocialLife2";
+    static final String C_ENDSTUDY_MOOD = "Mood";
     static final String C_ENDSTUDY_RELATIONSHIP = "RelationShip";
     static final String C_ENDSTUDY_CONTRACEPTION = "Contraception";
     static final String C_ENDSTUDY_USAGE = "PhoneUsage";
@@ -180,6 +183,9 @@ public class UtilsLocalDataBase {
     public static final ArrayList<String> DB_END_STUDY = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_ENDSTUDY_PID);
         add(UtilsLocalDataBase.C_ENDSTUDY_PERIOD);
+        add(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL1_LIFE);
+        add(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL2_LIFE);
+        add(UtilsLocalDataBase.C_ENDSTUDY_MOOD);
         add(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP);
         add(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION);
         add(UtilsLocalDataBase.C_ENDSTUDY_USAGE);
@@ -190,6 +196,9 @@ public class UtilsLocalDataBase {
     public static final ArrayList<Boolean> DB_END_STUDY_CYPHER = new ArrayList<Boolean>() {{
         add(false); //C_ENDSTUDY_PID
         add(true);  //C_ENDSTUDY_PERIOD
+        add(true);  //C_ENDSTUDY_SOCIAL1_LIFE
+        add(true);  //C_ENDSTUDY_SOCIAL2_LIFE
+        add(true);  //C_ENDSTUDY_MOOD
         add(true);  //C_ENDSTUDY_RELATIONSHIP
         add(true);  //C_ENDSTUDY_CONTRACEPTION
         add(true);  //C_ENDSTUDY_USAGE
@@ -233,7 +242,7 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql4);
 
             String sql6 = "create table " + TABLE_END_STUDY + " (" + C_ENDSTUDY_ID + " integer primary key autoincrement, "
-                    + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, " + C_ENDSTUDY_USAGE + " text, " + C_ENDSTUDY_DATE +  " text, " + C_ENDSTUDY_TIME + " text)"; //
+                    + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_SOCIAL1_LIFE + " text, " + C_ENDSTUDY_SOCIAL2_LIFE + " text, " + C_ENDSTUDY_MOOD + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, "  + C_ENDSTUDY_USAGE + " text, " + C_ENDSTUDY_DATE +  " text, " + C_ENDSTUDY_TIME + " text)"; //
             db.execSQL(sql6);
             Log.d(TAG, "onCreated sql: " + sql6);
 

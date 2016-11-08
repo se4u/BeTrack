@@ -39,9 +39,6 @@ public class ActivitySurveyDaily   extends DotStepper {
     private AbstractStep Step4;
     private Bundle bundle4;
 
-    private AbstractStep Step5;
-    private Bundle bundle5;
-
     private ContentValues values = new ContentValues();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
     private SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
@@ -58,9 +55,9 @@ public class ActivitySurveyDaily   extends DotStepper {
         super.onComplete();
 
         SurveyPeriod = Step1.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveySocial1 = Step3.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveySocial2 = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveyMood = Step5.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        SurveySocial1 = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        SurveySocial2 = Step3.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        SurveyMood = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
 
         values.clear();
         values.put(UtilsLocalDataBase.C_USER_PERIOD, SurveyPeriod);
@@ -129,10 +126,10 @@ public class ActivitySurveyDaily   extends DotStepper {
         Step1.setArguments(bundle1);
         addStep(Step1);
 
-        //Step 3 (social 1/2)
-        bundle3 = new Bundle();
-        bundle3.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen3));
-        bundle3.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_DESC, getResources().getString(R.string.question_sd_screen3));
+        //Step 2 (social 1/2)
+        bundle2 = new Bundle();
+        bundle2.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen3));
+        bundle2.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_DESC, getResources().getString(R.string.question_sd_screen3));
 
         ArrayList<Integer> Icons1 = new ArrayList<Integer>() {{
             add(R.drawable.ic_work);
@@ -152,17 +149,17 @@ public class ActivitySurveyDaily   extends DotStepper {
             add(getResources().getString(R.string.answer6_sd_screen3));
         }};
 
-        bundle3.putIntegerArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON, Icons1);
-        bundle3.putStringArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON_TEXT, IconsText1);
+        bundle2.putIntegerArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON, Icons1);
+        bundle2.putStringArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON_TEXT, IconsText1);
 
-        Step3 = new FragmentSurvey6Choices();
-        Step3.setArguments(bundle3);
-        addStep(Step3);
+        Step2 = new FragmentSurvey6Choices();
+        Step2.setArguments(bundle2);
+        addStep(Step2);
 
-        //Step 4 (social 2/2)
-        bundle4 = new Bundle();
-        bundle4.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen4));
-        bundle4.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_DESC, getResources().getString(R.string.question_sd_screen4));
+        //Step 3 (social 2/2)
+        bundle3 = new Bundle();
+        bundle3.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen4));
+        bundle3.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_DESC, getResources().getString(R.string.question_sd_screen4));
 
         ArrayList<Integer> Icons2 = new ArrayList<Integer>() {{
             add(R.drawable.ic_meetfriends);
@@ -182,21 +179,21 @@ public class ActivitySurveyDaily   extends DotStepper {
             add(getResources().getString(R.string.answer6_sd_screen4));
         }};
 
-        bundle4.putIntegerArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON, Icons2);
-        bundle4.putStringArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON_TEXT, IconsText2);
+        bundle3.putIntegerArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON, Icons2);
+        bundle3.putStringArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON_TEXT, IconsText2);
 
-        Step4 = new FragmentSurvey6Choices();
+        Step3 = new FragmentSurvey6Choices();
+        Step3.setArguments(bundle3);
+        addStep(Step3);
+
+        //Step 4 (Mood)
+
+        bundle4 = new Bundle();
+        bundle4.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen5));
+        bundle4.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_sd_screen5));
+        Step4 = new FragmentSurveySeekBar();
         Step4.setArguments(bundle4);
         addStep(Step4);
-
-        //Step 5 (Mood)
-
-        bundle5 = new Bundle();
-        bundle5.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen5));
-        bundle5.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_sd_screen5));
-        Step5 = new FragmentSurveySeekBar();
-        Step5.setArguments(bundle5);
-        addStep(Step5);
 
         super.onCreate(savedInstanceState);
     }
