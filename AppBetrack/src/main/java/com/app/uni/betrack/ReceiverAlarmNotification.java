@@ -25,11 +25,15 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
             ObjSettingsBetrack.Update(context);
         }
 
-        //We enable the daily survey
-        ObjSettingsStudy.setDailySurveyDone(false);
+        if (false == ObjSettingsStudy.getEndSurveyDone()) {
+            if (UtilsTimeManager.ComputeTimeRemaing(context) > 0) {
+                //We enable the daily survey
+                ObjSettingsStudy.setDailySurveyDone(false);
 
-        //Restart for a new notification in 24 hours
-        CreateNotification.ResetAlarm(context);
+                //Restart for a new notification in 24 hours
+                CreateNotification.ResetAlarm(context);
+            }
+        }
 
         //Trigger a notification
         CreateNotification.Create(context);

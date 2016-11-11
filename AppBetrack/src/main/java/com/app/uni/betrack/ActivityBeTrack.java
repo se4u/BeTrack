@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,7 +58,8 @@ public class ActivityBeTrack extends AppCompatActivity {
 
     private Animation animTranslate;
 
-    private SettingsStudy ObjSettingsStudy;
+    private SettingsStudy ObjSettingsStudy = null;
+    private SettingsBetrack ObjSettingsBetrack = null;
 
     @Override
     public void onStop() {
@@ -70,8 +72,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         super.onResume();
         OnForeground = true;
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
-            if (ComputeTimeRemaing() > 0)
-            {
+            if ((UtilsTimeManager.ComputeTimeRemaing(this) > 0) || (UtilsTimeManager.LastDayTimeToNotification(this) > 0)) {
                 if (false == ObjSettingsStudy.getSetupBetrackDone()) {
                     Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
                     startActivity(i);
@@ -94,8 +95,6 @@ public class ActivityBeTrack extends AppCompatActivity {
             buttonSetting.setVisibility(View.GONE);
             TextView textWelcome = (TextView)findViewById(R.id.TextWelcome);
             textWelcome.setText(getResources().getString(R.string.Betrack_end));
-            //TextView textTitle = (TextView)findViewById(R.id.TextTitle);
-            //textTitle.setText(getResources().getString(R.string.Betrack_info_end));
         }
     }
 
@@ -107,6 +106,13 @@ public class ActivityBeTrack extends AppCompatActivity {
             //Read the setting of the study
             ObjSettingsStudy = SettingsStudy.getInstance(this);
         }
+
+        if (null == ObjSettingsBetrack) {
+            //Read the preferences
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+            ObjSettingsBetrack.Update(this);
+        }
+
         //Setup the action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_logo_padding);
@@ -119,7 +125,7 @@ public class ActivityBeTrack extends AppCompatActivity {
             final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(SettingsBetrack.ID_NOTIFICATION_BETRACK);
 
-            if (ComputeTimeRemaing() > 0) {
+            if ((UtilsTimeManager.ComputeTimeRemaing(this) > 0) || (UtilsTimeManager.LastDayTimeToNotification(this) > 0)) {
                 if (ObjSettingsStudy.getDailySurveyDone() == false) {
                     Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
                     startActivity(i);
@@ -142,8 +148,6 @@ public class ActivityBeTrack extends AppCompatActivity {
             buttonSetting.setVisibility(View.GONE);
             TextView textWelcome = (TextView)findViewById(R.id.TextWelcome);
             textWelcome.setText(getResources().getString(R.string.Betrack_end));
-            //TextView textTitle = (TextView)findViewById(R.id.TextTitle);
-            //textTitle.setText(getResources().getString(R.string.Betrack_info_end));
         }
     }
 
@@ -195,7 +199,7 @@ public class ActivityBeTrack extends AppCompatActivity {
 
     private SpannableString generateCenterSpannableText() {
         SpannableString s;
-        int NbrDays = ComputeTimeRemaing();
+        int NbrDays = UtilsTimeManager.ComputeTimeRemaing(this);
         if (NbrDays > 1) {
             String Desc = getResources().getString(R.string.survey_days_left);
             s = new SpannableString(NbrDays+"\n"+Desc);
@@ -301,24 +305,5 @@ public class ActivityBeTrack extends AppCompatActivity {
                 startActivity(new Intent(this, ActivitySettings.class));
                 break;
         }
-    }
-
-    private int ComputeTimeRemaing() {
-        //Compute the time remaining of the study
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-        int StudyDuration = ObjSettingsStudy.getStudyDuration();
-        try {
-            //Parse the date from preference
-            sdf.parse(ObjSettingsStudy.getStartDateSurvey());
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Calendar calendarStartDate = sdf.getCalendar();
-
-        long millisStartDate = calendarStartDate.getTimeInMillis();
-        long millisActualDate = System.currentTimeMillis();
-
-        return (StudyDuration - (int)((millisActualDate - millisStartDate) / (24*60*60*1000)));
     }
 }

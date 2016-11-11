@@ -37,10 +37,13 @@ public class SettingsStudy {
     static private final String START_SURVEY_DONE = "start_survey_done";
     static private final String SETUP_BETRACK_DONE = "setup_betrack_done";
     static private final String END_SURVEY_DONE = "end_survey_done";
+    static private final String END_SURVEY_TRANSFERRED = "end_survey_transferred";
+
     static private Boolean StudyStarted; //A study is started
     static private Boolean StartSurveyDone; //Survey for starting the study has been filled up
     static private Boolean SetupBetrackDone; //Set uo of teh phone has been done to allow betrack to start recording informations
     static private Boolean EndSurveyDone; //Survey for ending the study has been filled up
+    static private Boolean EndSurveyTransferred; //Set to true when trhe end survey has been successfully transferred
 
 
     static private final String APP_NAME_TO_WATCH = "AppNameToWatch";
@@ -91,6 +94,19 @@ public class SettingsStudy {
     SharedPreferences.Editor editor;
     static private Context mContext = null;
 
+    private void EncryptUserID(String IdUser)
+    {
+        //Encrypt the user ID
+        try {
+            byte[] dataBytes = IdUser.toString().getBytes("utf-8");
+            IdUserCypher = UtilsCryptoRSA.encryptWithPublicKey(ObjSettingsBetrack.STUDY_PUBLIC_KEY, dataBytes, mContext);
+            //We save it
+            editor.putString(USER_ID_CYPHER, IdUserCypher);
+            editor.commit();
+        } catch (Exception e) {
+            IdUserCypher = null;
+        }
+    }
     private SettingsStudy()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
@@ -118,16 +134,12 @@ public class SettingsStudy {
             //We save it
             editor.putString(USER_ID, IdUser);
             editor.commit();
+            EncryptUserID(IdUser);
 
-            //Encrypt the user ID
-            try {
-                byte[] dataBytes = IdUser.toString().getBytes("utf-8");
-                IdUserCypher = UtilsCryptoRSA.encryptWithPublicKey(ObjSettingsBetrack.STUDY_PUBLIC_KEY, dataBytes, mContext);
-                //We save it
-                editor.putString(USER_ID_CYPHER, IdUserCypher);
-                editor.commit();
-            } catch (Exception e) {
-                IdUserCypher = null;
+        } else {
+            IdUserCypher = prefs.getString(USER_ID_CYPHER, null);
+            if (IdUserCypher == null) {
+                EncryptUserID(IdUser);
             }
         }
 
@@ -143,6 +155,7 @@ public class SettingsStudy {
         StartSurveyDone = prefs.getBoolean(START_SURVEY_DONE, false);
         SetupBetrackDone = prefs.getBoolean(SETUP_BETRACK_DONE, false);
         EndSurveyDone  = prefs.getBoolean(END_SURVEY_DONE, false);
+        EndSurveyTransferred = prefs.getBoolean(END_SURVEY_TRANSFERRED, false);
 
         //Read informations about the study
         StudyId = prefs.getString(STUDY_ID, null);
@@ -163,9 +176,21 @@ public class SettingsStudy {
 
         TimeNextNotification = prefs.getLong(STUDY_TIME_NEXT_NOTIFICATION, 0);
 
+        //Delete previous session key that would not have been used
+        Long IdSql;
+        ContentValues values = new ContentValues();
+        while(true) {
+            values.clear();
+            values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_SESSION_KEY, false);
+            if (0 != values.size()) {
+                IdSql = values.getAsLong(UtilsLocalDataBase.C_SESSION_KEY_ID);
+                AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_SESSION_KEY, IdSql);
+            } else {
+                break;
+            }
+        }
         //Generate a new session key
         try {
-            ContentValues values = new ContentValues();
             String Result;
             SessionKey = UtilsCryptoAES.generateKey();
             //Encrypt the key
@@ -443,7 +468,7 @@ public class SettingsStudy {
         try {
             SemSettingsStudy.acquire();
             EndSurveyDone = status;
-            editor.putBoolean(END_SURVEY_DONE, StudyStarted);
+            editor.putBoolean(END_SURVEY_DONE, EndSurveyDone);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {
@@ -462,6 +487,33 @@ public class SettingsStudy {
             ReturnEndSurveyDone = false;
         } finally {
             return ReturnEndSurveyDone;
+        }
+    }
+
+    public void setEndSurveyTransferred(boolean status)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            EndSurveyTransferred = status;
+            editor.putBoolean(END_SURVEY_TRANSFERRED, EndSurveyTransferred);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    public boolean getEndSurveyTransferred()
+    {
+        boolean ReturnEndSurveyTransferred = false;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnEndSurveyTransferred = EndSurveyTransferred;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnEndSurveyTransferred = false;
+        } finally {
+            return ReturnEndSurveyTransferred;
         }
     }
 
