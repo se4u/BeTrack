@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="110dp"
+        android:id="@+id/disclaimer_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center|top"
+        android:paddingTop="40dp"
+        android:background="@color/colorLightGrey"
+        android:layout_margin="0dp"
+        android:text="Title test"/>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars = "vertical"
+        android:scrollbarStyle="insideInset"
+        android:paddingTop="20dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="left"
+            android:id="@+id/disclaimers"
+            android:text="@string/disclaimer"/>
+    </ScrollView>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:layout_weight="3">
+
+        <CheckBox android:id="@+id/checkbox_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I agree to terms"
+            android:onClick="onCheckboxClicked"/>
+
+    </RelativeLayout>
+</LinearLayout>

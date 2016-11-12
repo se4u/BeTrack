@@ -24,13 +24,20 @@ public class ServiceBetrack extends Service {
 
         Log.d(TAG, "onCreated");
 
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_SHUTDOWN);
-        filter.addAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
+        IntentFilter filterScreen = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filterScreen.addAction(Intent.ACTION_SCREEN_OFF);
+        filterScreen.addAction(Intent.ACTION_SHUTDOWN);
+        filterScreen.addAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
 
-        BroadcastReceiver mReceiver = new ReceiverScreen();
-        registerReceiver(mReceiver, filter);
+        BroadcastReceiver mReceiverScreen = new ReceiverScreen();
+        registerReceiver(mReceiverScreen, filterScreen);
+
+        IntentFilter filterNetworkChange = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        filterNetworkChange.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+
+        BroadcastReceiver mNetworkChange = new ReceiverNetworkChange();
+        registerReceiver(mReceiverScreen, filterNetworkChange);
+
         instance = this;
         if (startService(new Intent(this, UtilsForegroundEnablingService.class)) == null)
             throw new RuntimeException("Couldn't find " + UtilsForegroundEnablingService.class.getSimpleName());

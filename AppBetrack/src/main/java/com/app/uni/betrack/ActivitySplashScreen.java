@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 public class ActivitySplashScreen extends AppCompatActivity {
 
     // Splash screen timer
-    private static int TIME_OUT = 2000;
+    public static int TIME_OUT = 2000;
     private SettingsStudy ObjSettingsStudy;
 
     NetworkGetStudiesAvailable gsa = new NetworkGetStudiesAvailable(this, new NetworkGetStudiesAvailable.AsyncResponse(){
@@ -21,24 +21,43 @@ public class ActivitySplashScreen extends AppCompatActivity {
         public void processFinish(final String output) {
 
             new Handler().postDelayed(new Runnable() {
-
-
                 @Override
                 public void run() {
-                    Intent i = new Intent(ActivitySplashScreen.this, ActivityStartStudy.class);
                     if (null != output) {
-
-                        i.putExtra(ActivityStartStudy.STATUS_START_ACTIVITY, ActivityStartStudy.NETWORK_OK);
-
+                        gww.execute();
                     } else {
-                        i.putExtra(ActivityStartStudy.STATUS_START_ACTIVITY, ActivityStartStudy.NETWORK_ERROR);
+                        Intent iError = new Intent(ActivitySplashScreen.this, ActivityErrors.class);
+                        iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.START_STUDY);
+                        startActivity(iError);
+                        finish();
                     }
-                    startActivity(i);
-                    finish();
-
                 }
             }, TIME_OUT);
         }});
+
+    NetworkGetWhatToWatch gww = new NetworkGetWhatToWatch(this, new NetworkGetWhatToWatch.AsyncResponse(){
+
+        @Override
+        public void processFinish(final String output) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent iStartStudy = new Intent(ActivitySplashScreen.this, ActivityStartStudy.class);
+                    if (null != output) {
+                        startActivity(iStartStudy);
+                        finish();
+                    } else {
+                        Intent iError = new Intent(ActivitySplashScreen.this, ActivityErrors.class);
+                        iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.START_STUDY);
+                        startActivity(iError);
+                        finish();
+                    }
+
+                }
+            }, TIME_OUT);
+    }});
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

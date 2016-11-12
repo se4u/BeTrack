@@ -49,7 +49,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         return Color.rgb(r, g, b);
     }
     public static final int[] BETRACK_COLORS = {
-            rgb("#90caf9"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db")
+            rgb("#C5CAE9"), rgb("#7986CB"), rgb("#3F51B5"), rgb("#303F9F")
     };
 
     private PieChart mChart;
@@ -90,11 +90,18 @@ public class ActivityBeTrack extends AppCompatActivity {
                 finish();
             }
         } else {
-            prepareChart(true);
-            View buttonSetting = findViewById(R.id.FrameLayoutBetrackBtnSetting);
-            buttonSetting.setVisibility(View.GONE);
-            TextView textWelcome = (TextView)findViewById(R.id.TextWelcome);
-            textWelcome.setText(getResources().getString(R.string.Betrack_end));
+            if (ObjSettingsStudy.getEndSurveyTransferred()) {
+                prepareChart(true);
+                View buttonSetting = findViewById(R.id.FrameLayoutBetrackBtnSetting);
+                buttonSetting.setVisibility(View.GONE);
+                TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
+                textWelcome.setText(getResources().getString(R.string.Betrack_end));
+            } else {
+                Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
+                iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY);
+                startActivity(iError);
+                finish();
+            }
         }
     }
 
@@ -248,7 +255,10 @@ public class ActivityBeTrack extends AppCompatActivity {
                 }
             }
         } else {
-            entries.add(new PieEntry((float) (100), ""));
+            int Done = ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(this)) * 100) / ObjSettingsStudy.getStudyDuration();
+            int ToBeDone = (UtilsTimeManager.ComputeTimeRemaing(this) * 100) / ObjSettingsStudy.getStudyDuration();
+            entries.add(new PieEntry((float) (ToBeDone), ""));
+            entries.add(new PieEntry((float) (Done), ""));
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Days study");

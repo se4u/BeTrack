@@ -23,6 +23,7 @@ public class SettingsBetrack {
     static final public String colorDarkGrey = "#455A64";
 
     //Server access
+    static public String BROADCAST_CHECK_INTERNET = "com.app.uni.betrack.CHECK_INTERNET";
     static public String BROADCAST_START_TRACKING_NAME = "com.app.uni.betrack.START_TRACKING";
     static public String BROADCAST_ARG_MANUAL_START = "com.app.uni.betrack.BROADCAST_ARG_MANUAL_START";
 
