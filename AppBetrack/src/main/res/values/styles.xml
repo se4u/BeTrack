@@ -9,8 +9,8 @@
     </style>
 
     <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
-        <item name="colorAccent">#fff</item>
-        <item name="android:textColorSecondary">#fff</item>
+        <item name="colorAccent">#000</item>
+        <item name="android:textColorSecondary">#000</item>
     </style>
 
     <style name="CustomSeekBar" parent="android:Widget.SeekBar">
