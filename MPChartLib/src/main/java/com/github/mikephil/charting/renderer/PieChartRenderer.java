@@ -569,7 +569,7 @@ public class PieChartRenderer extends DataRenderer {
                     // draw everything, depending on settings
                     if (drawXInside && drawYInside) {
 
-                        if (value != 100) {
+                        if ((value != 100) && (mChart.isDrawHoleEnabled() != true)){
                             drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
                         }
 
