@@ -14,12 +14,12 @@ public class SettingsBetrack {
     static private final String TAG = "ConfigSettingsBetrack";
 
     //Colors should match the colors.xml file !!!
-    /*<color name="colorPrimary">#3F51B5</color>
+    /*<color name="colorPrimary">#26A69A</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorLightGrey">#ECEFF1</color>
     <color name="colorDarkGrey">#455A64</color>*/
-    static final public String colorPrimary = "#3F51B5";
+    static final public String colorPrimary = "#26A69A";
     static final public String colorDarkGrey = "#455A64";
 
     //Server access

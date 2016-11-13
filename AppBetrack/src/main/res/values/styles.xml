@@ -18,4 +18,8 @@
         <item name="android:thumb">@drawable/seek_bar_thumb</item>
         <item name="android:thumbOffset">0dip</item>
     </style>
+
+    <style name="ButtonAppTheme" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
 </resources>

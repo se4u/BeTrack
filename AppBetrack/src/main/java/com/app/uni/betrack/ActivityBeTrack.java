@@ -5,7 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -49,7 +51,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         return Color.rgb(r, g, b);
     }
     public static final int[] BETRACK_COLORS = {
-            rgb("#C5CAE9"), rgb("#7986CB"), rgb("#3F51B5"), rgb("#303F9F")
+            rgb("#B2DFDB"), rgb("#4DB6AC"), rgb("#009688"), rgb("#00796B")
     };
 
     private PieChart mChart;
@@ -60,6 +62,7 @@ public class ActivityBeTrack extends AppCompatActivity {
 
     private SettingsStudy ObjSettingsStudy = null;
     private SettingsBetrack ObjSettingsBetrack = null;
+
 
     @Override
     public void onStop() {
@@ -92,8 +95,6 @@ public class ActivityBeTrack extends AppCompatActivity {
         } else {
             if (ObjSettingsStudy.getEndSurveyTransferred()) {
                 prepareChart(true);
-                View buttonSetting = findViewById(R.id.FrameLayoutBetrackBtnSetting);
-                buttonSetting.setVisibility(View.GONE);
                 TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
                 textWelcome.setText(getResources().getString(R.string.Betrack_end));
             } else {
@@ -124,6 +125,8 @@ public class ActivityBeTrack extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_logo_padding);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)) );
         setContentView(R.layout.activity_betrack);
 
 
@@ -151,8 +154,6 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         } else {
             prepareChart(true);
-            View buttonSetting = findViewById(R.id.FrameLayoutBetrackBtnSetting);
-            buttonSetting.setVisibility(View.GONE);
             TextView textWelcome = (TextView)findViewById(R.id.TextWelcome);
             textWelcome.setText(getResources().getString(R.string.Betrack_end));
         }
@@ -294,7 +295,11 @@ public class ActivityBeTrack extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        //inflater.inflate(R.menu.settingsmenu, menu);
+        inflater.inflate(R.menu.settingsmenu, menu);
+        for (int j = 0; j < menu.size(); j++) {
+            MenuItem item = menu.getItem(j);
+            item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
         SaveMenuRef = menu;
 
         return true;
@@ -309,11 +314,4 @@ public class ActivityBeTrack extends AppCompatActivity {
         return true;
     }
 
-    public void onButtonClicked(View view) {
-        switch (view.getId()) {
-            case  R.id.ButtonSettings:
-                startActivity(new Intent(this, ActivitySettings.class));
-                break;
-        }
-    }
 }

@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 
 /**
  * Created by cevincent on 5/27/16.
@@ -62,12 +66,22 @@ public class ActivitySplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImageView LogoBetrack;
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         setContentView(R.layout.activity_splash);
 
         ObjSettingsStudy = SettingsStudy.getInstance(this);
+
+        RotateAnimation rotate = new RotateAnimation(0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+        LogoBetrack = (ImageView) findViewById(R.id.logo_betrack);
+        rotate.setDuration(4000);
+        rotate.setInterpolator(new LinearInterpolator());
+        rotate.setRepeatCount(Animation.INFINITE);
+        LogoBetrack.setAnimation(rotate);
 
         //Check if a study is already going on
         if (false == ObjSettingsStudy.getStudyStarted()) {

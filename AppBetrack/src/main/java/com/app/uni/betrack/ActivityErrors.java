@@ -10,6 +10,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -23,6 +27,7 @@ public class ActivityErrors  extends AppCompatActivity {
     public static String START_STUDY = "START_STUDY";
     public static String END_STUDY = "END_STUDY";
     private boolean isOnline = false;
+    private String NetworkError;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -55,8 +60,16 @@ public class ActivityErrors  extends AppCompatActivity {
                 activeNetwork.isConnectedOrConnecting();
         if (isConnected) {
             if (isOnline) {
+                Intent iError = null;
                 isOnline = false;
-                Intent iError = new Intent(ActivityErrors.this, ActivitySplashScreen.class);
+                if(NetworkError.equals(START_STUDY)) {
+                    iError = new Intent(ActivityErrors.this, ActivitySplashScreen.class);
+                } else if(NetworkError.equals(END_STUDY)) {
+                    Intent msgIntent = new Intent(this, IntentServicePostData.class);
+                    //Start the service for sending the data to the remote server
+                    this.startService(msgIntent);
+                    iError = new Intent(ActivityErrors.this, ActivityBeTrack.class);
+                }
                 startActivity(iError);
                 finish();
             } else {
@@ -93,18 +106,27 @@ public class ActivityErrors  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TextView Description;
+        ImageView LogoBetrack;
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         setContentView(R.layout.activity_errors);
         Bundle extras = getIntent().getExtras();
-        String data = extras.getString(STATUS_START_ACTIVITY, null);
+        NetworkError = extras.getString(STATUS_START_ACTIVITY, null);
         Description = (TextView) findViewById(R.id.network_error_text);
-        if(data.equals(START_STUDY)) {
+        if(NetworkError.equals(START_STUDY)) {
             //Start of the study
             Description.setText(getResources().getString(R.string.network_error_start_text));
-        } else if(data.equals(END_STUDY)) {
+        } else if(NetworkError.equals(END_STUDY)) {
             //End study case
             Description.setText(getResources().getString(R.string.network_error_end_text));
         }
+        RotateAnimation rotate = new RotateAnimation(0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+        LogoBetrack = (ImageView) findViewById(R.id.logo_betrack);
+        rotate.setDuration(4000);
+        rotate.setInterpolator(new LinearInterpolator());
+        rotate.setRepeatCount(Animation.INFINITE);
+        LogoBetrack.setAnimation(rotate);
     }
 }

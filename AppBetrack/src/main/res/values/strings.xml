@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">BeTrack</string>
+    <string name="splash_loading">Loading...</string>
 
     <!-- start activity_start_study -->
         <string name="disclaimer_error">You need to need to agree to go on with the study</string>
@@ -63,6 +64,7 @@
     <string name="Betrack_info_start">Days remaining:</string>
     <string name="Betrack_end">Thank you for participating in the study, you can uninstall Betrack</string>
     <string name="Betrack_info_end">Your phone usage:</string>
+    <string name="Betrack_settings">Settings</string>
 
     <!-- Your personnal ID-->
     <string name="pref_header_your_id">Your personnal ID </string>
@@ -98,7 +100,7 @@
     <!-- UsageStat enable -->
     <string name="UsageStat_enable_title">Enable Usage Stat</string>
     <string name="UsageStat_enable_text">When you will click on the OK button of that window, the setting menu of your phone will be open. In that menu please allow BeTrack to access the statistics of your phone. When you are done get back to BeTrack and you\'ll be able to start the study.</string>
-    <string name="UsageStat_ok">Usage stat</string>
+    <string name="UsageStat_ok">USAGE STAT</string>
 
 
     <!-- notification -->
@@ -109,13 +111,13 @@
     <!-- Huawei protected app -->
     <string name="huawei_title">Huawei Protected Apps</string>
     <string name="huawei_desc">requires to be enabled in Protected Apps to function properly.</string>
-    <string name="huawei_positive_button">Protected Apps</string>
+    <string name="huawei_positive_button">PROTECTED APPS</string>
     <string name="huawei_check">Do not show again</string>
 
     <!-- GPS Enable -->
     <string name="gps_enable_title">GPS Enable</string>
     <string name="gps_enable_desc">We need to have to your positioning information to function properly</string>
-    <string name="gps_enable_positive_button">Enable the GPS</string>
+    <string name="gps_enable_positive_button">ENABLE THE GPS</string>
 
     <!-- Battery white list Enable -->
     <string name="battery_enable_title">Battery Optimizations</string>

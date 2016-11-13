@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -63,14 +64,14 @@
                 android:layout_alignParentStart="true"
                 android:paddingTop="5dp"
                 android:paddingBottom="10dp"
-                android:background="@drawable/button_round_noselection">
+                android:background="@color/colorLightGrey">
                 <TextView
                     android:id="@+id/EnableUsageStatTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     android:textColor="#000"
                     android:text="@string/UsageStat_enable_title"
                     />
@@ -87,22 +88,19 @@
                     android:text="@string/UsageStat_enable_text"
                     />
 
-                <Button
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:padding="10dp"
                     android:layout_below="@+id/EnableUsageStatDesc"
                     android:layout_alignRight="@+id/EnableUsageStatDesc"
-                    android:textColor="#000"
+                    android:textColor="@color/colorPrimary"
+                    android:background="@color/colorLightGrey"
                     android:text="@string/UsageStat_ok"
                     android:onClick="onButtonClicked"
-                    android:background="@drawable/button_round_noselection"
                     android:textStyle="bold"
-                    android:id="@+id/EnableUsageStatBetrack">
-                </Button>
+                    android:id="@+id/EnableUsageStatBetrack"
+                />
 
             </RelativeLayout>
 
@@ -125,14 +123,14 @@
                 android:layout_below="@+id/ViewEnableUsageStat"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:background="@drawable/button_round_noselection">
+                android:background="@color/colorLightGrey">
                 <TextView
                     android:id="@+id/EnableHuaweiTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     android:textColor="#000"
                     android:text="@string/huawei_title"
                     />
@@ -156,26 +154,24 @@
                     android:layout_height="wrap_content"
                     android:text="@string/huawei_check"
                     android:onClick="onCheckboxClicked"
+                    android:textColor="#000"
                     android:layout_below="@+id/EnableHuaweiDesc"
                     android:layout_alignRight="@+id/EnableHuaweiDesc"
                     />
 
-                <Button
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:padding="10dp"
                     android:layout_below="@+id/CheckHuaweiWhiteList"
                     android:layout_alignRight="@+id/CheckHuaweiWhiteList"
-                    android:textColor="#000"
                     android:text="@string/huawei_positive_button"
                     android:onClick="onButtonClicked"
-                    android:background="@drawable/button_round_noselection"
+                    android:textColor="@color/colorPrimary"
+                    android:background="@color/colorLightGrey"
                     android:textStyle="bold"
-                    android:id="@+id/EnableHuaweiBetrack">
-                </Button>
+                    android:id="@+id/EnableHuaweiBetrack"
+                />
 
             </RelativeLayout>
 
@@ -198,14 +194,14 @@
                 android:layout_marginTop="15dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="10dp"
-                android:background="@drawable/button_round_noselection">
+                android:background="@color/colorLightGrey">
                 <TextView
                     android:id="@+id/EnableGPSTitle"
                     android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     android:textColor="#000"
                     android:text="@string/gps_enable_title"
                     />
@@ -222,22 +218,19 @@
                     android:text="@string/gps_enable_desc"
                     />
 
-                <Button
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:padding="10dp"
                     android:layout_below="@+id/EnableGPSDesc"
                     android:layout_alignRight="@+id/EnableGPSDesc"
-                    android:textColor="#000"
                     android:text="@string/gps_enable_positive_button"
                     android:onClick="onButtonClicked"
-                    android:background="@drawable/button_round_noselection"
+                    android:textColor="@color/colorPrimary"
+                    android:background="@color/colorLightGrey"
                     android:textStyle="bold"
-                    android:id="@+id/EnableGPSBetrack">
-                </Button>
+                    android:id="@+id/EnableGPSBetrack"
+                />
 
             </RelativeLayout>
         </RelativeLayout>
