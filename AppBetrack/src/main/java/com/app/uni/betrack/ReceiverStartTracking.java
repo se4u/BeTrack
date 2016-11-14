@@ -28,22 +28,22 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
 
         ReceiverScreen.ScreenState = ReceiverScreen.StateScreen.ON;
 
+
+        if (null == ObjSettingsStudy)  {
+            ObjSettingsStudy = SettingsStudy.getInstance(context);
+        }
+
+        if (ObjSettingsBetrack == null) {
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+            ObjSettingsBetrack.Update(context);
+        }
+
         Bundle results = getResultExtras(true);
 
         String id = intent.getStringExtra(SettingsBetrack.BROADCAST_ARG_MANUAL_START);
-
+        //The system is just started
         if(id == null) {
             Log.d(TAG, "The system is just started");
-            //The system is just started
-            if (null == ObjSettingsStudy)  {
-                ObjSettingsStudy = SettingsStudy.getInstance(context);
-            }
-
-
-            if (ObjSettingsBetrack == null) {
-                ObjSettingsBetrack = SettingsBetrack.getInstance();
-                ObjSettingsBetrack.Update(context);
-            }
 
             //Since we were off we check if we didn't miss the last notification
             if ( (true == ObjSettingsBetrack.GetStudyNotification()) && (ObjSettingsStudy.getTimeNextNotification() - System.currentTimeMillis() < 0) ) {

@@ -20,7 +20,7 @@ public class ReceiverNetworkChange  extends WakefulBroadcastReceiver {
     public void onReceive(final Context context, final Intent intent) {
         ObjSettingsStudy = SettingsStudy.getInstance(context);
 
-        if (ObjSettingsStudy.getStudyStarted()) {
+        if ((ObjSettingsStudy.getStartSurveyDone() == true) && (ObjSettingsStudy.getEndSurveyDone() == false)) {
             long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
             ConnectivityManager cm =
                     (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

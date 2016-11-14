@@ -53,8 +53,6 @@ public class ActivitySurveyStart extends DotStepper {
     }
     private SettingsStudy ObjSettingsStudy;
 
-    private AbstractStep Step0;
-    private Bundle bundle0;
     private AbstractStep Step1;
     private Bundle bundle1;
     private AbstractStep Step2;

@@ -36,7 +36,7 @@ public class ServiceBetrack extends Service {
         filterNetworkChange.addAction("android.net.wifi.WIFI_STATE_CHANGED");
 
         BroadcastReceiver mNetworkChange = new ReceiverNetworkChange();
-        registerReceiver(mReceiverScreen, filterNetworkChange);
+        registerReceiver(mNetworkChange, filterNetworkChange);
 
         instance = this;
         if (startService(new Intent(this, UtilsForegroundEnablingService.class)) == null)

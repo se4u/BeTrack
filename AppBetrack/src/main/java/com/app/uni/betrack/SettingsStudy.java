@@ -40,8 +40,8 @@ public class SettingsStudy {
     static private final String END_SURVEY_TRANSFERRED = "end_survey_transferred";
 
     static private Boolean StudyStarted; //A study is started
+    static private Boolean SetupBetrackDone; //The phone has be set up to be used by Betrack
     static private Boolean StartSurveyDone; //Survey for starting the study has been filled up
-    static private Boolean SetupBetrackDone; //Set uo of teh phone has been done to allow betrack to start recording informations
     static private Boolean EndSurveyDone; //Survey for ending the study has been filled up
     static private Boolean EndSurveyTransferred; //Set to true when trhe end survey has been successfully transferred
 
