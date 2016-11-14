@@ -35,8 +35,8 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_APPWATCH_PID);
         add(UtilsLocalDataBase.C_APPWATCH_APPLICATION);
         add(UtilsLocalDataBase.C_APPWATCH_DATESTART);
-        add(UtilsLocalDataBase.C_APPWATCH_TIMESTART);
         add(UtilsLocalDataBase.C_APPWATCH_DATESTOP);
+        add(UtilsLocalDataBase.C_APPWATCH_TIMESTART);
         add(UtilsLocalDataBase.C_APPWATCH_TIMESTOP);
     }};
 
@@ -44,8 +44,8 @@ public class UtilsLocalDataBase {
         add(false); //C_APPWATCH_PID
         add(true);  //C_APPWATCH_APPLICATION
         add(true); //C_APPWATCH_DATESTART
-        add(true); //C_APPWATCH_TIMESTART
         add(true); //C_APPWATCH_DATESTOP
+        add(true); //C_APPWATCH_TIMESTART
         add(true); //C_APPWATCH_TIMESTOP
     }};
 
