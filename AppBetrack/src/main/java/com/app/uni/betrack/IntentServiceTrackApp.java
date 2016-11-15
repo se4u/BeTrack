@@ -108,7 +108,7 @@ public class IntentServiceTrackApp extends IntentService {
                         topActivity = handleCheckActivity(intent);
                     }
 
-                    //Log.d(TAG, "Foreground App " + topActivity + " ActivityOnGoing " + ActivityOnGoing);
+                    Log.d(TAG, "Foreground App " + topActivity + " ActivityOnGoing " + ActivityOnGoing);
                     if (ReceiverScreen.StateScreen.UNKNOWN == ReceiverScreen.ScreenState) {
                         intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
                         this.sendBroadcast(intentCheckScreenStatus);
@@ -124,8 +124,7 @@ public class IntentServiceTrackApp extends IntentService {
 
                         if (null != ActivityOnGoing) {
                             //An activity was watched and should not be watched anymore
-                            if ((null != topActivity) && (!ActivityOnGoing.equals(topActivity))) {
-
+                            if ((null != topActivity) && (!topActivity.equals("android")) && (!topActivity.equals("com.android.systemui")) && (!ActivityOnGoing.equals(topActivity))) {
                                 if (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState) {
 
                                     //We save in the local database the informations about the study
