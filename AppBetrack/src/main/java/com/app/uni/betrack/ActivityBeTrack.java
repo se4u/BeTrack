@@ -131,6 +131,10 @@ public class ActivityBeTrack extends AppCompatActivity {
 
 
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
+
+            //We start the study
+            StartStudy();
+
             //Set the notification to make sure that we never got killed
             final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(SettingsBetrack.ID_NOTIFICATION_BETRACK);
@@ -143,8 +147,6 @@ public class ActivityBeTrack extends AppCompatActivity {
                 } else {
                     //Prepare the chart to be display
                     prepareChart(false);
-                    //We start the study
-                    StartStudy();
                 }
             }  else {
                 Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
