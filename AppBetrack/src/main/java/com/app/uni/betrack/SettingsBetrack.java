@@ -19,8 +19,8 @@ public class SettingsBetrack {
     <color name="colorAccent">#FF4081</color>
     <color name="colorLightGrey">#ECEFF1</color>
     <color name="colorDarkGrey">#455A64</color>*/
-    static final public String colorPrimary = "#26A69A";
-    static final public String colorDarkGrey = "#455A64";
+    static final public String colorPrimary = "#1565C0";
+    static final public String colorDarkGrey = "#90A4AE";
 
     //Server access
     static public String BROADCAST_CHECK_INTERNET = "com.app.uni.betrack.CHECK_INTERNET";

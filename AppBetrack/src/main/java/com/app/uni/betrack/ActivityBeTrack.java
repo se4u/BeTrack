@@ -51,7 +51,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         return Color.rgb(r, g, b);
     }
     public static final int[] BETRACK_COLORS = {
-            rgb("#B2DFDB"), rgb("#4DB6AC"), rgb("#009688"), rgb("#00796B")
+            rgb("#ECEFF1"), rgb("#90CAF9"), rgb("#4285F5"), rgb("#64B5F6")
     };
 
     private PieChart mChart;

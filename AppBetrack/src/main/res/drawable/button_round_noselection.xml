@@ -6,7 +6,7 @@
             android:useLevel="false">
             <stroke
                 android:width="5dp"
-                android:color="@color/colorDarkGrey" />
+                android:color="@color/colorGrey" />
             <solid
                 android:color="@android:color/transparent"/>
 
