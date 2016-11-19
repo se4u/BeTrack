@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -25,7 +26,9 @@ import java.io.IOException;
 public class ActivityErrors  extends AppCompatActivity {
     public static String STATUS_START_ACTIVITY = "STATUS_START_ACTIVITY";
     public static String START_STUDY = "START_STUDY";
+    public static String END_STUDY_IN_PROGRESS = "END_STUDY_IN_PROGRESS";
     public static String END_STUDY = "END_STUDY";
+
     private boolean isOnline = false;
     private String NetworkError;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -64,7 +67,7 @@ public class ActivityErrors  extends AppCompatActivity {
                 isOnline = false;
                 if(NetworkError.equals(START_STUDY)) {
                     iError = new Intent(ActivityErrors.this, ActivitySplashScreen.class);
-                } else if(NetworkError.equals(END_STUDY)) {
+                } else if(NetworkError.equals(END_STUDY) || NetworkError.equals(END_STUDY_IN_PROGRESS)) {
                     Intent msgIntent = new Intent(this, IntentServicePostData.class);
                     //Start the service for sending the data to the remote server
                     this.startService(msgIntent);
@@ -105,6 +108,7 @@ public class ActivityErrors  extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TextView Title;
         TextView Description;
         ImageView LogoBetrack;
         ActionBar actionBar = getSupportActionBar();
@@ -113,12 +117,22 @@ public class ActivityErrors  extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         NetworkError = extras.getString(STATUS_START_ACTIVITY, null);
         Description = (TextView) findViewById(R.id.network_error_text);
+        Title = (TextView) findViewById(R.id.network_error_title_text);
+
         if(NetworkError.equals(START_STUDY)) {
             //Start of the study
+            Title.setText(getResources().getString(R.string.network_error_title));
             Description.setText(getResources().getString(R.string.network_error_start_text));
+            Description.setVisibility(View.VISIBLE);
+        }  else if(NetworkError.equals(END_STUDY_IN_PROGRESS)) {
+            //End study case
+            Title.setText(getResources().getString(R.string.network_end_text));
+            Description.setVisibility(View.INVISIBLE);
         } else if(NetworkError.equals(END_STUDY)) {
             //End study case
+            Title.setText(getResources().getString(R.string.network_error_title));
             Description.setText(getResources().getString(R.string.network_error_end_text));
+            Description.setVisibility(View.VISIBLE);
         }
         RotateAnimation rotate = new RotateAnimation(0, 360,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,

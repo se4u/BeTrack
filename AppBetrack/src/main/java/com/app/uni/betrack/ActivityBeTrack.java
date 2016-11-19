@@ -93,15 +93,22 @@ public class ActivityBeTrack extends AppCompatActivity {
                 finish();
             }
         } else {
-            if (ObjSettingsStudy.getEndSurveyTransferred()) {
+            if (ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.DONE) {
                 prepareChart(true);
                 TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
                 textWelcome.setText(getResources().getString(R.string.Betrack_end));
             } else {
-                Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
-                iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY);
-                startActivity(iError);
-                finish();
+                if (ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.IN_PROGRESS) {
+                    Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
+                    iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY_IN_PROGRESS);
+                    startActivity(iError);
+                    finish();
+                } else {
+                    Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
+                    iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY);
+                    startActivity(iError);
+                    finish();
+                }
             }
         }
     }

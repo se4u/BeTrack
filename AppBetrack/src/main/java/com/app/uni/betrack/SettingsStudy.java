@@ -30,6 +30,10 @@ public class SettingsStudy {
         return localdatabase;
     }
 
+    public static enum EndStudyTranferState {
+        NOT_YET, IN_PROGRESS, DONE, ERROR
+    }
+
     public static final Semaphore SemSettingsStudy = new Semaphore(1, true);
     public static final Semaphore SemPhoneUsage = new Semaphore(1, true);
 
@@ -43,7 +47,7 @@ public class SettingsStudy {
     static private Boolean SetupBetrackDone; //The phone has be set up to be used by Betrack
     static private Boolean StartSurveyDone; //Survey for starting the study has been filled up
     static private Boolean EndSurveyDone; //Survey for ending the study has been filled up
-    static private Boolean EndSurveyTransferred; //Set to true when trhe end survey has been successfully transferred
+    static private EndStudyTranferState EndSurveyTransferred; //Set to true when trhe end survey has been successfully transferred
 
 
     static private final String APP_NAME_TO_WATCH = "AppNameToWatch";
@@ -88,7 +92,6 @@ public class SettingsStudy {
     static private long TimeNextNotification;
 
     static public UtilsCryptoAES.SecretKeys SessionKey;
-    static public boolean SessionKeyHasBeenTransferred = false;
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -155,8 +158,17 @@ public class SettingsStudy {
         StartSurveyDone = prefs.getBoolean(START_SURVEY_DONE, false);
         SetupBetrackDone = prefs.getBoolean(SETUP_BETRACK_DONE, false);
         EndSurveyDone  = prefs.getBoolean(END_SURVEY_DONE, false);
-        EndSurveyTransferred = prefs.getBoolean(END_SURVEY_TRANSFERRED, false);
+        int ToBeConvertedTransferState = prefs.getInt(END_SURVEY_TRANSFERRED, EndStudyTranferState.NOT_YET.ordinal());
 
+        if (ToBeConvertedTransferState == EndStudyTranferState.NOT_YET.ordinal()) {
+            EndSurveyTransferred = EndStudyTranferState.NOT_YET;
+        } else if (ToBeConvertedTransferState == EndStudyTranferState.DONE.ordinal()) {
+            EndSurveyTransferred = EndStudyTranferState.DONE;
+        } else if (ToBeConvertedTransferState == EndStudyTranferState.IN_PROGRESS.ordinal()) {
+            EndSurveyTransferred = EndStudyTranferState.IN_PROGRESS;
+        } else {
+            EndSurveyTransferred = EndStudyTranferState.ERROR;
+        }
         //Read informations about the study
         StudyId = prefs.getString(STUDY_ID, null);
         StudyName = prefs.getString(STUDY_NAME, null);
@@ -490,12 +502,12 @@ public class SettingsStudy {
         }
     }
 
-    public void setEndSurveyTransferred(boolean status)
+    public void setEndSurveyTransferred(EndStudyTranferState status)
     {
         try {
             SemSettingsStudy.acquire();
             EndSurveyTransferred = status;
-            editor.putBoolean(END_SURVEY_TRANSFERRED, EndSurveyTransferred);
+            editor.putInt(END_SURVEY_TRANSFERRED, EndSurveyTransferred.ordinal());
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {
@@ -503,15 +515,15 @@ public class SettingsStudy {
         }
     }
 
-    public boolean getEndSurveyTransferred()
+    public EndStudyTranferState getEndSurveyTransferred()
     {
-        boolean ReturnEndSurveyTransferred = false;
+        EndStudyTranferState ReturnEndSurveyTransferred = EndStudyTranferState.ERROR;
         try {
             SemSettingsStudy.acquire();
             ReturnEndSurveyTransferred = EndSurveyTransferred;
             SemSettingsStudy.release();
         } catch (Exception e) {
-            ReturnEndSurveyTransferred = false;
+            ReturnEndSurveyTransferred = EndStudyTranferState.ERROR;
         } finally {
             return ReturnEndSurveyTransferred;
         }

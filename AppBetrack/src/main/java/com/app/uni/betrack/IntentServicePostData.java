@@ -226,6 +226,7 @@ public class IntentServicePostData extends IntentService {
                         IdSql = values.getAsLong(UtilsLocalDataBase.C_ENDSTUDY_ID);
 
                         //Prepare the data
+                        ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.IN_PROGRESS);
                         EndStudyData = PrepareData(values, UtilsLocalDataBase.DB_END_STUDY, UtilsLocalDataBase.DB_END_STUDY_CYPHER, true);
 
                         //Post the data
@@ -234,7 +235,9 @@ public class IntentServicePostData extends IntentService {
                             AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_END_STUDY, IdSql);
                             CreateNotification.StopAlarm(this);
                             CreateTrackApp.StopAlarm(this);
+                            ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.DONE);
                         } else {
+                            ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.ERROR);
                             break;
                         }
                     }
