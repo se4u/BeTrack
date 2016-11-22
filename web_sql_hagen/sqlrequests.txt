@@ -42,8 +42,8 @@ CREATE TABLE `TestPeriod_applications` (
   PRIMARY KEY (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 
   COLLATE=latin1_general_ci AUTO_INCREMENT=61;
 
-INSERT INTO TestPeriod_applications (ApplicationName) 
-          VALUES ('Appcom.example.cevincent.test')
+INSERT INTO BetrackApp (ApplicationName) 
+          VALUES ('clue')
 
 DELETE FROM `BetrackStudy`
 

@@ -1,12 +1,10 @@
 <?php
-    //open connection to mysql db
-    $connection = mysqli_connect("gman.myd.infomaniak.com","gman_unihagen","mghLOzq27HwX","gman_unihagen");
-    
+	include './BeTrackDataBase.php';
     $table_name = $_GET['table_name'];
 
     //fetch table rows from mysql db
     $sql = "select * from ".$table_name;
-    $result = mysqli_query($connection, $sql) or die("Error in Selecting " . mysqli_error($connection));
+    $result = mysqli_query($con, $sql) or die("Error in Selecting " . mysqli_error($con));
 
     //create an array
     $emparray = array();
@@ -17,5 +15,5 @@
     echo json_encode($emparray);
 
     //close the db connection
-    mysqli_close($connection);
+    mysqli_close($con);
 ?>

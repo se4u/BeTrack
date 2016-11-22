@@ -3,7 +3,7 @@
 $pub = file_get_contents('./public.pem');
 $pri = file_get_contents('./private.pem');
 
-$con=mysqli_connect("gman.myd.infomaniak.com","gman_unihagen","mghLOzq27HwX","gman_unihagen");
+include './BeTrackDataBase.php';
 
 if (mysqli_connect_errno($con))
 {

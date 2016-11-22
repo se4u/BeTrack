@@ -136,15 +136,14 @@ public class ActivityBeTrack extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)) );
         setContentView(R.layout.activity_betrack);
 
+        //Set the notification to make sure that we never got killed
+        final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(SettingsBetrack.ID_NOTIFICATION_BETRACK);
 
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
 
             //We start the study
             StartStudy();
-
-            //Set the notification to make sure that we never got killed
-            final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(SettingsBetrack.ID_NOTIFICATION_BETRACK);
 
             if ((UtilsTimeManager.ComputeTimeRemaing(this) > 0) || (UtilsTimeManager.LastDayTimeToNotification(this) > 0)) {
                 if (ObjSettingsStudy.getDailySurveyDone() == false) {
