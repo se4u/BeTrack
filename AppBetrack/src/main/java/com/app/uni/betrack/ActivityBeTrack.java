@@ -215,7 +215,13 @@ public class ActivityBeTrack extends AppCompatActivity {
 
     private SpannableString generateCenterSpannableText() {
         SpannableString s;
+
         int NbrDays = UtilsTimeManager.ComputeTimeRemaing(this);
+
+        if ( (UtilsTimeManager.LastDayTimeToNotification(this) > 0) ) {
+            NbrDays += 1;
+        }
+
         if (NbrDays > 1) {
             String Desc = getResources().getString(R.string.survey_days_left);
             s = new SpannableString(NbrDays+"\n"+Desc);
