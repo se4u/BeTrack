@@ -31,40 +31,164 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal"
         android:layout_weight="1"
+        android:id="@+id/SeekBar1"
+        android:layout_marginRight="20dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
             <TextView android:layout_width="fill_parent"
                 android:layout_weight="3"
-                android:id="@+id/TextInfoLeft"
+                android:id="@+id/TextInfoLeft1"
                 android:layout_height="fill_parent"
                 android:textSize="@dimen/survey_6choices_textsize"
                 android:textColor="#000"
-                android:gravity="center|top"
-                android:text="Bad"/>
+                android:gravity="center"/>
 
 
             <SeekBar
                 android:layout_weight="1"
-                android:id="@+id/volume_bar"
+                android:id="@+id/volume_bar1"
                 android:layout_width="fill_parent"
                 android:splitTrack="false"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center"
                 android:max="100"
                 android:progress="0"
-                style="@style/CustomSeekBar"
                 android:secondaryProgress="0" />
+
 
             <TextView
                 android:layout_weight="3"
                 android:layout_width="fill_parent"
-                android:id="@+id/TextInfoRight"
+                android:id="@+id/TextInfoRight1"
                 android:layout_height="fill_parent"
                 android:textSize="@dimen/survey_6choices_textsize"
                 android:textColor="#000"
-                android:gravity="center|top"
+                android:gravity="center"
                 android:text="Good"/>
 
     </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:id="@+id/SeekBar2"
+        android:layout_marginRight="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView android:layout_width="fill_parent"
+            android:layout_weight="3"
+            android:id="@+id/TextInfoLeft2"
+            android:layout_height="fill_parent"
+            android:textSize="@dimen/survey_6choices_textsize"
+            android:textColor="#000"
+            android:gravity="center"/>
+
+
+        <SeekBar
+            android:layout_weight="1"
+            android:id="@+id/volume_bar2"
+            android:layout_width="fill_parent"
+            android:splitTrack="false"
+            android:layout_height="fill_parent"
+            android:max="100"
+            android:progress="0"
+            android:secondaryProgress="0" />
+
+
+        <TextView
+            android:layout_weight="3"
+            android:layout_width="fill_parent"
+            android:id="@+id/TextInfoRight2"
+            android:layout_height="fill_parent"
+            android:textSize="@dimen/survey_6choices_textsize"
+            android:textColor="#000"
+            android:gravity="center"
+            android:text="Good"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:id="@+id/SeekBar3"
+        android:layout_marginRight="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView android:layout_width="fill_parent"
+            android:layout_weight="3"
+            android:id="@+id/TextInfoLeft3"
+            android:layout_height="fill_parent"
+            android:textSize="@dimen/survey_6choices_textsize"
+            android:textColor="#000"
+            android:gravity="center"/>
+
+
+        <SeekBar
+            android:layout_weight="1"
+            android:id="@+id/volume_bar3"
+            android:layout_width="fill_parent"
+            android:splitTrack="false"
+            android:layout_height="fill_parent"
+            android:max="100"
+            android:progress="0"
+
+            android:secondaryProgress="0" />
+
+
+        <TextView
+            android:layout_weight="3"
+            android:layout_width="fill_parent"
+            android:id="@+id/TextInfoRight3"
+            android:layout_height="fill_parent"
+            android:textSize="@dimen/survey_6choices_textsize"
+            android:textColor="#000"
+            android:gravity="center"
+            android:text="Good"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:id="@+id/SeekBar4"
+        android:layout_marginRight="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView android:layout_width="fill_parent"
+            android:layout_weight="3"
+            android:id="@+id/TextInfoLeft4"
+            android:layout_height="fill_parent"
+            android:textSize="@dimen/survey_6choices_textsize"
+            android:textColor="#000"
+            android:gravity="center" />
+
+
+        <SeekBar
+            android:layout_weight="1"
+            android:id="@+id/volume_bar4"
+            android:layout_width="fill_parent"
+            android:splitTrack="false"
+            android:layout_height="fill_parent"
+            android:max="100"
+            android:progress="0"
+
+            android:secondaryProgress="0" />
+
+
+        <TextView
+            android:layout_weight="3"
+            android:layout_width="fill_parent"
+            android:id="@+id/TextInfoRight4"
+            android:layout_height="fill_parent"
+            android:textSize="@dimen/survey_6choices_textsize"
+            android:textColor="#000"
+            android:gravity="center"
+            android:text="Good"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>

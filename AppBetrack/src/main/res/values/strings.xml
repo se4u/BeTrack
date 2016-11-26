@@ -189,6 +189,9 @@
     <!-- Screen 5 (Mood) -->
     <string name="title_sd_screen5">MOOD</string>
     <string name="question_sd_screen5">How are you feeling right now?</string>
+    <string name="answer1_sd_screen5">Good</string>
+    <string name="answer2_sd_screen5">Relaxed</string>
+    <string name="answer3_sd_screen5">Active</string>
 
     <!-- End survey -->
     <!-- Screen 1 (period) -->

@@ -21,7 +21,9 @@ public class ActivitySurveyEnd  extends DotStepper {
     private int SurveyPeriod = -1;
     private int SurveySocial1 = 0;
     private int SurveySocial2 = 0;
-    private int SurveyMood = 0;
+    private int SurveyMood1 = 0;
+    private int SurveyMood2 = 0;
+    private int SurveyMood3 = 0;
     private int SurveyInRelation = -1;
     private String SurveyContraception = null;
     private int PhoneUsage = 0;
@@ -56,18 +58,22 @@ public class ActivitySurveyEnd  extends DotStepper {
     public void onComplete() {
         super.onComplete();
 
-        SurveyPeriod = Step1.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveySocial1 = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveySocial2 = Step3.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveyMood = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveyInRelation = Step5.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        SurveyPeriod = Step1.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
+        SurveySocial1 = Step2.getArguments().getInt(FragmentSurvey6Choices.SURVEY_STATUS, 0);
+        SurveySocial2 = Step3.getArguments().getInt(FragmentSurvey6Choices.SURVEY_STATUS, 0);
+        SurveyMood1 = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
+        SurveyMood2 = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS2, 0);
+        SurveyMood3 = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS3, 0);
+        SurveyInRelation = Step5.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
         SurveyContraception  = Step6.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
 
         values.clear();
         values.put(UtilsLocalDataBase.C_ENDSTUDY_PERIOD, SurveyPeriod);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL1_LIFE, SurveySocial1);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL2_LIFE, SurveySocial2);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD, SurveyMood);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD1, SurveyMood1);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD2, SurveyMood2);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD3, SurveyMood3);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP, SurveyInRelation);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION, SurveyContraception);
 
@@ -188,6 +194,15 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle4 = new Bundle();
         bundle4.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen5));
         bundle4.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_sd_screen5));
+
+        ArrayList<String> MoodText1 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.answer1_sd_screen5));
+            add(getResources().getString(R.string.answer2_sd_screen5));
+            add(getResources().getString(R.string.answer3_sd_screen5));
+        }};
+
+        bundle4.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS, MoodText1);
+
         Step4 = new FragmentSurveySeekBar();
         Step4.setArguments(bundle4);
         addStep(Step4);

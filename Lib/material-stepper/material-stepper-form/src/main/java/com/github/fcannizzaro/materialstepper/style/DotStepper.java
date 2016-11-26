@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.github.fcannizzaro.materialstepper.R;
 
@@ -22,6 +23,7 @@ public class DotStepper extends BaseNavigation {
 
     // views
     protected LinearLayout mDots;
+    static protected TextView mNext;
 
     // attributes
     private int unselected = Color.parseColor("#bdbdbd");
@@ -38,8 +40,23 @@ public class DotStepper extends BaseNavigation {
         init();
         onUpdate();
 
+
+        this.mNext = (TextView)this.findViewById(R.id.stepNext);
+
         if (mSteps.total() > 7)
             Log.e("MaterialStepper", "You should use progress bar with so many steps!");
+    }
+
+    public static void moveToNext(int delay) {
+
+        try {
+            Thread.sleep(delay);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //do some delay
+        mNext.performClick();
     }
 
     @Override

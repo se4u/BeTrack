@@ -1,5 +1,6 @@
 package com.app.uni.betrack;
 
+import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +22,9 @@ public class ActivitySurveyDaily   extends DotStepper {
     private int SurveyPeriod = -1;
     private int SurveySocial1 = 0;
     private int SurveySocial2 = 0;
-    private int SurveyMood = 0;
+    private int SurveyMood1 = 0;
+    private int SurveyMood2 = 0;
+    private int SurveyMood3 = 0;
     private int PhoneUsage = 0;
 
     private String DateDaily = null;
@@ -54,10 +57,12 @@ public class ActivitySurveyDaily   extends DotStepper {
     public void onComplete() {
         super.onComplete();
 
-        SurveyPeriod = Step1.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveySocial1 = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveySocial2 = Step3.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        SurveyMood = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        SurveyPeriod = Step1.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
+        SurveySocial1 = Step2.getArguments().getInt(FragmentSurvey6Choices.SURVEY_STATUS, 0);
+        SurveySocial2 = Step3.getArguments().getInt(FragmentSurvey6Choices.SURVEY_STATUS, 0);
+        SurveyMood1 = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
+        SurveyMood2 = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS2, 0);
+        SurveyMood3 = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS3, 0);
 
         values.clear();
         values.put(UtilsLocalDataBase.C_USER_PERIOD, SurveyPeriod);
@@ -75,7 +80,10 @@ public class ActivitySurveyDaily   extends DotStepper {
             SettingsStudy.SemPhoneUsage.release();
         } catch (Exception e) {}
 
-        values.put(UtilsLocalDataBase.C_USER_MOOD, SurveyMood);
+        values.put(UtilsLocalDataBase.C_USER_MOOD1, SurveyMood1);
+        values.put(UtilsLocalDataBase.C_USER_MOOD2, SurveyMood2);
+        values.put(UtilsLocalDataBase.C_USER_MOOD3, SurveyMood3);
+
         DateDaily = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_USER_DATE, DateDaily);
         TimeDaily = shf.format(new Date());
@@ -87,7 +95,9 @@ public class ActivitySurveyDaily   extends DotStepper {
                 + " SurveySocial1: " + SurveySocial1
                 + " SurveySocial2: " + SurveySocial2
                 + " PhoneUsage: " + PhoneUsage
-                + " SurveyMood: " + SurveyMood
+                + " SurveyMood1: " + SurveyMood1
+                + " SurveyMood2: " + SurveyMood2
+                + " SurveyMood3: " + SurveyMood3
                 + " Date: " + DateDaily
                 + " Time: " + TimeDaily);
 
@@ -191,6 +201,15 @@ public class ActivitySurveyDaily   extends DotStepper {
         bundle4 = new Bundle();
         bundle4.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen5));
         bundle4.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_sd_screen5));
+
+        ArrayList<String> MoodText1 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.answer1_sd_screen5));
+            add(getResources().getString(R.string.answer2_sd_screen5));
+            add(getResources().getString(R.string.answer3_sd_screen5));
+        }};
+
+        bundle4.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS, MoodText1);
+
         Step4 = new FragmentSurveySeekBar();
         Step4.setArguments(bundle4);
         addStep(Step4);

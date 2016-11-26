@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.github.fcannizzaro.materialstepper.interfaces.Nextable;
 import com.github.fcannizzaro.materialstepper.style.BaseStyle;
+import com.github.fcannizzaro.materialstepper.style.DotStepper;
 
 /**
  * Created by Francesco Cannizzaro on 23/12/2015.
@@ -60,6 +61,11 @@ public abstract class AbstractStep extends Fragment implements Nextable {
     @Override
     public void onPrevious() {
 
+    }
+
+    //call this method to move to next screen
+    public void moveToNext() {
+        DotStepper.moveToNext(500);
     }
 
     @Override

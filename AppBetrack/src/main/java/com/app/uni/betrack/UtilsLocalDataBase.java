@@ -57,7 +57,10 @@ public class UtilsLocalDataBase {
     static final String C_USER_SOCIAL1_LIFE = "SocialLife1";
     static final String C_USER_SOCIAL2_LIFE = "SocialLife2";
     static final String C_USER_PHONE_USAGE = "PhoneUsage";
-    static final String C_USER_MOOD = "Mood";
+    static final String C_USER_MOOD1 = "Mood1";
+    static final String C_USER_MOOD2 = "Mood2";
+    static final String C_USER_MOOD3 = "Mood3";
+    static final String C_USER_MOOD4 = "Mood4";
     static final String C_USER_DATE = "Date";
     static final String C_USER_TIME = "Time";
 
@@ -68,7 +71,10 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_USER_SOCIAL1_LIFE);
         add(UtilsLocalDataBase.C_USER_SOCIAL2_LIFE);
         add(UtilsLocalDataBase.C_USER_PHONE_USAGE);
-        add(UtilsLocalDataBase.C_USER_MOOD);
+        add(UtilsLocalDataBase.C_USER_MOOD1);
+        add(UtilsLocalDataBase.C_USER_MOOD2);
+        add(UtilsLocalDataBase.C_USER_MOOD3);
+        add(UtilsLocalDataBase.C_USER_MOOD4);
         add(UtilsLocalDataBase.C_USER_DATE);
         add(UtilsLocalDataBase.C_USER_TIME);
     }};
@@ -79,7 +85,10 @@ public class UtilsLocalDataBase {
         add(true);  //C_USER_SOCIAL1_LIFE
         add(true);  //C_USER_SOCIAL2_LIFE
         add(true);  //C_USER_PHONE_USAGE
-        add(true);  //C_USER_MOOD
+        add(true);  //C_USER_MOOD1
+        add(true);  //C_USER_MOOD2
+        add(true);  //C_USER_MOOD3
+        add(true);  //C_USER_MOOD4
         add(true); //C_USER_DATE
         add(true); //C_USER_TIME
     }};
@@ -173,7 +182,10 @@ public class UtilsLocalDataBase {
     static final String C_ENDSTUDY_PERIOD = "Period";
     static final String C_ENDSTUDY_SOCIAL1_LIFE = "SocialLife1";
     static final String C_ENDSTUDY_SOCIAL2_LIFE = "SocialLife2";
-    static final String C_ENDSTUDY_MOOD = "Mood";
+    static final String C_ENDSTUDY_MOOD1 = "Mood1";
+    static final String C_ENDSTUDY_MOOD2 = "Mood2";
+    static final String C_ENDSTUDY_MOOD3 = "Mood3";
+    static final String C_ENDSTUDY_MOOD4 = "Mood4";
     static final String C_ENDSTUDY_RELATIONSHIP = "RelationShip";
     static final String C_ENDSTUDY_CONTRACEPTION = "Contraception";
     static final String C_ENDSTUDY_USAGE = "PhoneUsage";
@@ -185,7 +197,10 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_ENDSTUDY_PERIOD);
         add(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL1_LIFE);
         add(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL2_LIFE);
-        add(UtilsLocalDataBase.C_ENDSTUDY_MOOD);
+        add(UtilsLocalDataBase.C_ENDSTUDY_MOOD1);
+        add(UtilsLocalDataBase.C_ENDSTUDY_MOOD2);
+        add(UtilsLocalDataBase.C_ENDSTUDY_MOOD3);
+        add(UtilsLocalDataBase.C_ENDSTUDY_MOOD4);
         add(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP);
         add(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION);
         add(UtilsLocalDataBase.C_ENDSTUDY_USAGE);
@@ -198,7 +213,10 @@ public class UtilsLocalDataBase {
         add(true);  //C_ENDSTUDY_PERIOD
         add(true);  //C_ENDSTUDY_SOCIAL1_LIFE
         add(true);  //C_ENDSTUDY_SOCIAL2_LIFE
-        add(true);  //C_ENDSTUDY_MOOD
+        add(true);  //C_ENDSTUDY_MOOD1
+        add(true);  //C_ENDSTUDY_MOOD2
+        add(true);  //C_ENDSTUDY_MOOD3
+        add(true);  //C_ENDSTUDY_MOOD4
         add(true);  //C_ENDSTUDY_RELATIONSHIP
         add(true);  //C_ENDSTUDY_CONTRACEPTION
         add(true);  //C_ENDSTUDY_USAGE
@@ -227,7 +245,7 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql);
 
             String sql2 = "create table " + TABLE_USER + " (" + C_USER_ID + " integer primary key autoincrement, "
-                    + C_USER_PERIOD + " text, " + C_USER_SOCIAL1_LIFE + " text, " + C_USER_SOCIAL2_LIFE + " text, " + C_USER_PHONE_USAGE + " text, " + C_USER_MOOD + " text, " + C_USER_DATE + " text, " + C_USER_TIME + " text)"; //
+                    + C_USER_PERIOD + " text, " + C_USER_SOCIAL1_LIFE + " text, " + C_USER_SOCIAL2_LIFE + " text, " + C_USER_PHONE_USAGE + " text, " + C_USER_MOOD1 + " text, " + C_USER_MOOD2 + " text, " + C_USER_MOOD3 + " text, " + C_USER_MOOD4 + " text, " + C_USER_DATE + " text, " + C_USER_TIME + " text)"; //
             db.execSQL(sql2);
             Log.d(TAG, "onCreated sql: " + sql2);
 
@@ -242,7 +260,7 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql4);
 
             String sql6 = "create table " + TABLE_END_STUDY + " (" + C_ENDSTUDY_ID + " integer primary key autoincrement, "
-                    + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_SOCIAL1_LIFE + " text, " + C_ENDSTUDY_SOCIAL2_LIFE + " text, " + C_ENDSTUDY_MOOD + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, "  + C_ENDSTUDY_USAGE + " text, " + C_ENDSTUDY_DATE +  " text, " + C_ENDSTUDY_TIME + " text)"; //
+                    + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_SOCIAL1_LIFE + " text, " + C_ENDSTUDY_SOCIAL2_LIFE + " text, " + C_ENDSTUDY_MOOD1 + " text, " + C_ENDSTUDY_MOOD2 + " text, " + C_ENDSTUDY_MOOD3 + " text, " + C_ENDSTUDY_MOOD4 + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, "  + C_ENDSTUDY_USAGE + " text, " + C_ENDSTUDY_DATE +  " text, " + C_ENDSTUDY_TIME + " text)"; //
             db.execSQL(sql6);
             Log.d(TAG, "onCreated sql: " + sql6);
 

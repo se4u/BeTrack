@@ -35,6 +35,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
     private TextView Title;
     private TextView Description;
 
+
     private static Drawable BackgroundNoSelection;
     private static Drawable BackgroundSelected;
 
@@ -105,9 +106,14 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 InternalSetBackground(BackgroundNoSelection, button2);
                 imgbutton1.setColorFilter(tintPrimary, mode);
                 imgbutton2.setColorFilter(tintGray, mode);
+                if (SurveyStatus == -1) {
+                    SurveyStatus = 1;
+                    moveToNext();
+                }
                 SurveyStatus = 1;
                 mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
                 bundle.putInt(SURVEY_STATUS, SurveyStatus);
+
             }
         });
 
@@ -122,9 +128,14 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 InternalSetBackground(BackgroundSelected, button2);
                 imgbutton1.setColorFilter(tintGray, mode);
                 imgbutton2.setColorFilter(tintPrimary, mode);
+                if (SurveyStatus == -1) {
+                    SurveyStatus = 0;
+                    moveToNext();
+                }
                 SurveyStatus = 0;
                 mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
                 bundle.putInt(SURVEY_STATUS, SurveyStatus);
+
             }
         });
 
