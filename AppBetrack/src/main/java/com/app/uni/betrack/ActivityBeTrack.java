@@ -54,6 +54,11 @@ public class ActivityBeTrack extends AppCompatActivity {
             rgb("#ECEFF1"), rgb("#90CAF9"), rgb("#4285F5"), rgb("#64B5F6")
     };
 
+    public static final int[] BETRACK_COLORS_END = {
+            rgb("#673AB7"), rgb("#3F51B5"), rgb("#2196F3"), rgb("#03A9F4"),
+            rgb("#009688"), rgb("#4CAF50"), rgb("#8BC34A"), rgb("#CDDC39")
+    };
+
     private PieChart mChart;
 
     private ContentValues values = new ContentValues();
@@ -280,8 +285,11 @@ public class ActivityBeTrack extends AppCompatActivity {
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
 
-        dataSet.setColors(BETRACK_COLORS);
-
+        if (endStudy == false) {
+            dataSet.setColors(BETRACK_COLORS);
+        } else {
+            dataSet.setColors(BETRACK_COLORS_END);
+        }
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
