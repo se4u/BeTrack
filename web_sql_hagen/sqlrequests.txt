@@ -85,6 +85,12 @@ CREATE TABLE `BetrackDailyStatus` (
   `Contraception` varchar(255) COLLATE latin1_general_ci NOT NULL,
   `AvgPeriodLenght` varchar(4) COLLATE latin1_general_ci NOT NULL,
   `AvgMenstrualCycle` varchar(4) COLLATE latin1_general_ci NOT NULL,
+  `SocialLife1` varchar(10) COLLATE latin1_general_ci NOT NULL,
+  `SocialLife2` varchar(10) COLLATE latin1_general_ci NOT NULL,
+  `Mood1` varchar(10) COLLATE latin1_general_ci NOT NULL,
+  `Mood2` varchar(10) COLLATE latin1_general_ci NOT NULL,
+  `Mood3` varchar(10) COLLATE latin1_general_ci NOT NULL,
+  `Mood4` varchar(10) COLLATE latin1_general_ci NOT NULL,  
   `Date` varchar(15) COLLATE latin1_general_ci NOT NULL,
   `Time` varchar(15) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`)) ENGINE=MyISAM  

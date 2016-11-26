@@ -150,6 +150,12 @@ public class UtilsLocalDataBase {
     static final String C_STARTSTUDY_CONTRACEPTION = "Contraception";
     static final String C_STARTSTUDY_AVGPERIODLENGHT = "AvgPeriodLenght";
     static final String C_STARTSTUDY_AVGMENSTRUALCYCLE = "AvgMenstrualCycle";
+    static final String C_STARTSTUDY_SOCIAL1_LIFE = "SocialLife1";
+    static final String C_STARTSTUDY_SOCIAL2_LIFE = "SocialLife2";
+    static final String C_STARTSTUDY_MOOD1 = "Mood1";
+    static final String C_STARTSTUDY_MOOD2 = "Mood2";
+    static final String C_STARTSTUDY_MOOD3 = "Mood3";
+    static final String C_STARTSTUDY_MOOD4 = "Mood4";
     static final String C_STARTSTUDY_DATE = "Date";
     static final String C_STARTSTUDY_TIME = "Time";
 
@@ -160,6 +166,12 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_STARTSTUDY_CONTRACEPTION);
         add(UtilsLocalDataBase.C_STARTSTUDY_AVGPERIODLENGHT);
         add(UtilsLocalDataBase.C_STARTSTUDY_AVGMENSTRUALCYCLE);
+        add(UtilsLocalDataBase.C_STARTSTUDY_SOCIAL1_LIFE);
+        add(UtilsLocalDataBase.C_STARTSTUDY_SOCIAL2_LIFE);
+        add(UtilsLocalDataBase.C_STARTSTUDY_MOOD1);
+        add(UtilsLocalDataBase.C_STARTSTUDY_MOOD2);
+        add(UtilsLocalDataBase.C_STARTSTUDY_MOOD3);
+        add(UtilsLocalDataBase.C_STARTSTUDY_MOOD4);
         add(UtilsLocalDataBase.C_STARTSTUDY_DATE);
         add(UtilsLocalDataBase.C_STARTSTUDY_TIME);
     }};
@@ -171,6 +183,12 @@ public class UtilsLocalDataBase {
         add(true);  //C_STARTSTUDY_CONTRACEPTION
         add(true);  //C_STARTSTUDY_AVGPERIODLENGHT
         add(true);  //C_STARTSTUDY_AVGMENSTRUALCYCLE
+        add(true);  //C_STARTSTUDY_SOCIAL1_LIFE
+        add(true);  //C_STARTSTUDY_SOCIAL2_LIFE
+        add(true);  //C_STARTSTUDY_MOOD1
+        add(true);  //C_STARTSTUDY_MOOD2
+        add(true);  //C_STARTSTUDY_MOOD3
+        add(true);  //C_STARTSTUDY_MOOD4
         add(true);  //C_STARTSTUDY_DATE
         add(true);  //C_STARTSTUDY_TIME
     }};
@@ -240,32 +258,73 @@ public class UtilsLocalDataBase {
         @Override
         public void onCreate(SQLiteDatabase db) {
             String sql = "create table " + TABLE_APPWATCH + " (" + C_APPWATCH_ID + " integer primary key autoincrement, "
-                    + C_APPWATCH_APPLICATION + " text, " + C_APPWATCH_DATESTART + " text, " + C_APPWATCH_DATESTOP + " text, " + C_APPWATCH_TIMESTART + " text, " + C_APPWATCH_TIMESTOP + " text)"; //
+                    + C_APPWATCH_APPLICATION + " text, "
+                    + C_APPWATCH_DATESTART + " text, "
+                    + C_APPWATCH_DATESTOP + " text, "
+                    + C_APPWATCH_TIMESTART + " text, "
+                    + C_APPWATCH_TIMESTOP + " text)"; //
             db.execSQL(sql);
             Log.d(TAG, "onCreated sql: " + sql);
 
             String sql2 = "create table " + TABLE_USER + " (" + C_USER_ID + " integer primary key autoincrement, "
-                    + C_USER_PERIOD + " text, " + C_USER_SOCIAL1_LIFE + " text, " + C_USER_SOCIAL2_LIFE + " text, " + C_USER_PHONE_USAGE + " text, " + C_USER_MOOD1 + " text, " + C_USER_MOOD2 + " text, " + C_USER_MOOD3 + " text, " + C_USER_MOOD4 + " text, " + C_USER_DATE + " text, " + C_USER_TIME + " text)"; //
+                    + C_USER_PERIOD + " text, "
+                    + C_USER_SOCIAL1_LIFE + " text, "
+                    + C_USER_SOCIAL2_LIFE + " text, "
+                    + C_USER_PHONE_USAGE + " text, "
+                    + C_USER_MOOD1 + " text, "
+                    + C_USER_MOOD2 + " text, "
+                    + C_USER_MOOD3 + " text, "
+                    + C_USER_MOOD4 + " text, "
+                    + C_USER_DATE + " text, "
+                    + C_USER_TIME + " text)"; //
             db.execSQL(sql2);
             Log.d(TAG, "onCreated sql: " + sql2);
 
             String sql3 = "create table " + TABLE_START_STUDY + " (" + C_STARTSTUDY_ID + " integer primary key autoincrement, "
-                    +  C_STARTSTUDY_AGE + " text, " + C_STARTSTUDY_RELATIONSHIP + " text, " + C_STARTSTUDY_CONTRACEPTION + " text, " + C_STARTSTUDY_AVGPERIODLENGHT + " text, " + C_STARTSTUDY_AVGMENSTRUALCYCLE + " text, " + C_STARTSTUDY_DATE + " text, " + C_STARTSTUDY_TIME + " text)"; //
+                    +  C_STARTSTUDY_AGE + " text, "
+                    + C_STARTSTUDY_RELATIONSHIP + " text, "
+                    + C_STARTSTUDY_CONTRACEPTION + " text, "
+                    + C_STARTSTUDY_AVGPERIODLENGHT + " text, "
+                    + C_STARTSTUDY_AVGMENSTRUALCYCLE + " text, "
+                    + C_STARTSTUDY_SOCIAL1_LIFE + " text, "
+                    + C_STARTSTUDY_SOCIAL2_LIFE + " text, "
+                    + C_STARTSTUDY_MOOD1 + " text, "
+                    + C_STARTSTUDY_MOOD2 + " text, "
+                    + C_STARTSTUDY_MOOD3 + " text, "
+                    + C_STARTSTUDY_MOOD4 + " text, "
+                    + C_STARTSTUDY_DATE + " text, "
+                    + C_STARTSTUDY_TIME + " text)"; //
             db.execSQL(sql3);
             Log.d(TAG, "onCreated sql: " + sql3);
 
             String sql4 = "create table " + TABLE_GPS + " (" + C_GPS_ID + " integer primary key autoincrement, "
-                    +  C_GPS_LATTITUDE + " text, " + C_GPS_LONGITUDE + " text, " + C_GPS_DATE + " text, " + C_GPS_TIME + " text)"; //
+                    +  C_GPS_LATTITUDE + " text, "
+                    + C_GPS_LONGITUDE + " text, "
+                    + C_GPS_DATE + " text, "
+                    + C_GPS_TIME + " text)"; //
             db.execSQL(sql4);
             Log.d(TAG, "onCreated sql: " + sql4);
 
             String sql6 = "create table " + TABLE_END_STUDY + " (" + C_ENDSTUDY_ID + " integer primary key autoincrement, "
-                    + C_ENDSTUDY_PERIOD + " text, " + C_ENDSTUDY_SOCIAL1_LIFE + " text, " + C_ENDSTUDY_SOCIAL2_LIFE + " text, " + C_ENDSTUDY_MOOD1 + " text, " + C_ENDSTUDY_MOOD2 + " text, " + C_ENDSTUDY_MOOD3 + " text, " + C_ENDSTUDY_MOOD4 + " text, " + C_ENDSTUDY_RELATIONSHIP + " text, " + C_ENDSTUDY_CONTRACEPTION + " text, "  + C_ENDSTUDY_USAGE + " text, " + C_ENDSTUDY_DATE +  " text, " + C_ENDSTUDY_TIME + " text)"; //
+                    + C_ENDSTUDY_PERIOD + " text, "
+                    + C_ENDSTUDY_SOCIAL1_LIFE + " text, "
+                    + C_ENDSTUDY_SOCIAL2_LIFE + " text, "
+                    + C_ENDSTUDY_MOOD1 + " text, "
+                    + C_ENDSTUDY_MOOD2 + " text, "
+                    + C_ENDSTUDY_MOOD3 + " text, "
+                    + C_ENDSTUDY_MOOD4 + " text, "
+                    + C_ENDSTUDY_RELATIONSHIP + " text, "
+                    + C_ENDSTUDY_CONTRACEPTION + " text, "
+                    + C_ENDSTUDY_USAGE + " text, "
+                    + C_ENDSTUDY_DATE +  " text, "
+                    + C_ENDSTUDY_TIME + " text)"; //
             db.execSQL(sql6);
             Log.d(TAG, "onCreated sql: " + sql6);
 
             String sql7 = "create table " + TABLE_SESSION_KEY + " (" + C_SESSION_KEY_ID + " integer primary key autoincrement, "
-                    + C_SESSION_KEY_BLOB + " text, " + C_SESSION_KEY_DATE + " text, " + C_SESSION_KEY_TIME + " text)"; //
+                    + C_SESSION_KEY_BLOB + " text, "
+                    + C_SESSION_KEY_DATE + " text, "
+                    + C_SESSION_KEY_TIME + " text)"; //
             db.execSQL(sql7);
             Log.d(TAG, "onCreated sql: " + sql7);
         }
