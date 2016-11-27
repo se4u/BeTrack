@@ -1,5 +1,0 @@
-http://www.ricphoto.fr/testtine.php?application=Tinder&date=11051980&timestart=1245&timestop=1255
-
-http://www.ricphoto.fr/read_data.php
-
-http://www.ricphoto.fr/BeTrackGetAppToWatch.php?table_name=TestPeriod_applications
