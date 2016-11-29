@@ -314,12 +314,14 @@ public class ActivityBeTrack extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.settingsmenu, menu);
-        for (int j = 0; j < menu.size(); j++) {
-            MenuItem item = menu.getItem(j);
-            item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        if (false == ObjSettingsStudy.getEndSurveyDone()) {
+            inflater.inflate(R.menu.settingsmenu, menu);
+            for (int j = 0; j < menu.size(); j++) {
+                MenuItem item = menu.getItem(j);
+                item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            }
+            SaveMenuRef = menu;
         }
-        SaveMenuRef = menu;
 
         return true;
     }
