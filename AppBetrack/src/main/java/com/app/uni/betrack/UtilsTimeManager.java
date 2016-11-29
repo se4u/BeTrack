@@ -34,9 +34,8 @@ public class UtilsTimeManager {
         long millisActualDate = System.currentTimeMillis();
 
         TimeRemaining =  (StudyDuration  - (int)((millisActualDate - millisStartDate) / (24*60*60*1000)));
-        if (TimeToNotification(context) > 0) {
-            TimeRemaining += 1;
-        }
+        TimeRemaining += 1; // Add one day for the set up of the study
+
         return TimeRemaining;
     }
 

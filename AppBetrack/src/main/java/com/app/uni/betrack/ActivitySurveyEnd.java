@@ -95,6 +95,8 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_END_STUDY);
 
+        ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.IN_PROGRESS);
+
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
         //Start the service for sending the data to the remote server
         startService(msgIntent);

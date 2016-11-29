@@ -10,11 +10,11 @@
         android:fragment="com.app.uni.betrack.ActivitySettings$GeneralPreferenceFragment"
         android:icon="@drawable/ic_build_black_24dp"
         android:title="@string/pref_header_general" />
-    <!-- notifications to be commented out
+    <!-- notifications to be commented out-->
     <header
         android:fragment="com.app.uni.betrack.ActivitySettings$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/pref_header_notifications" />-->
+        android:title="@string/pref_header_notifications" />
 
     <header
         android:fragment="com.app.uni.betrack.ActivitySettings$DataSyncPreferenceFragment"

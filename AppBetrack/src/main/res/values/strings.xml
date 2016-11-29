@@ -155,7 +155,7 @@
 
     <!-- Screen 6 (Reminder) -->
     <string name="title_ss_screen6">REMINDER</string>
-    <string name="question_ss_screen6">From tomorrow on you will be notified every day at this selected time to fill up a survey </string>
+    <string name="question_ss_screen6">From tomorrow on you will be notified every day to fill up a survey </string>
 
     <!-- Daily survey -->
     <!-- Screen 1 (Period) -->
