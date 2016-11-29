@@ -11,11 +11,9 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.widget.TextView;
 
@@ -27,9 +25,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class ActivityBeTrack extends AppCompatActivity {
@@ -80,7 +76,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         super.onResume();
         OnForeground = true;
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
-            if ((UtilsTimeManager.ComputeTimeRemaing(this) > 0) || (UtilsTimeManager.LastDayTimeToNotification(this) > 0)) {
+            if ((UtilsTimeManager.ComputeTimeRemaing(this) > 0) || (UtilsTimeManager.TimeToNotification(this) > 0)) {
                 if (false == ObjSettingsStudy.getSetupBetrackDone()) {
                     Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
                     startActivity(i);
@@ -150,7 +146,7 @@ public class ActivityBeTrack extends AppCompatActivity {
             //We start the study
             StartStudy();
 
-            if ((UtilsTimeManager.ComputeTimeRemaing(this) > 0) || (UtilsTimeManager.LastDayTimeToNotification(this) > 0)) {
+            if ((UtilsTimeManager.ComputeTimeRemaing(this) > 0) || (UtilsTimeManager.TimeToNotification(this) > 0)) {
                 if (ObjSettingsStudy.getDailySurveyDone() == false) {
                     Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
                     startActivity(i);
@@ -223,10 +219,6 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         int NbrDays = UtilsTimeManager.ComputeTimeRemaing(this);
 
-        if ( (UtilsTimeManager.LastDayTimeToNotification(this) > 0) ) {
-            NbrDays += 1;
-        }
-
         if (NbrDays > 1) {
             String Desc = getResources().getString(R.string.survey_days_left);
             s = new SpannableString(NbrDays+"\n"+Desc);
@@ -258,7 +250,7 @@ public class ActivityBeTrack extends AppCompatActivity {
 
     private void setData(boolean endStudy) {
         int[] UsagePerApp = new int[ObjSettingsStudy.getApplicationsToWatch().size()];
-
+        int Done = 0;
         int sumUsage = 0;
         float mult = 100;
 
@@ -275,8 +267,13 @@ public class ActivityBeTrack extends AppCompatActivity {
                 }
             }
         } else {
-            int Done = ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(this)) * 100) / ObjSettingsStudy.getStudyDuration();
+            if (ObjSettingsStudy.getStudyDuration() > UtilsTimeManager.ComputeTimeRemaing(this)) {
+                Done = ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(this)) * 100) / ObjSettingsStudy.getStudyDuration();
+            } else {
+                Done = 0;
+            }
             int ToBeDone = (UtilsTimeManager.ComputeTimeRemaing(this) * 100) / ObjSettingsStudy.getStudyDuration();
+
             entries.add(new PieEntry((float) (ToBeDone), ""));
             entries.add(new PieEntry((float) (Done), ""));
         }

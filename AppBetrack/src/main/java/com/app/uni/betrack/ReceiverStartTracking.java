@@ -70,7 +70,8 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
 
             CreateNotification.CreateAlarm(context,
                     ObjSettingsBetrack.GetStudyNotification(),
-                    ObjSettingsBetrack.GetStudyNotificationTime());
+                    ObjSettingsBetrack.GetStudyNotificationTime(),
+                    false);
 
             CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
 

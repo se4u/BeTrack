@@ -61,7 +61,7 @@ public class CreateNotification {
         mNotification.notify(SettingsBetrack.ID_NOTIFICATION_BETRACK, builder.getNotification());
     }
 
-    static public void CreateAlarm(Context context, boolean StudyNotification, String StudyNotificationTime)
+    static public void CreateAlarm(Context context, boolean StudyNotification, String StudyNotificationTime, boolean fromPreference)
     {
         long TimeToSet;
         Date time = null;
@@ -93,7 +93,11 @@ public class CreateNotification {
         Log.d(TAG, "Time to set " + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.YEAR)
                 + " " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND));
 
-        if ((cal.getTimeInMillis() - System.currentTimeMillis()) < 0) {
+        if ( (fromPreference == false) && ((UtilsTimeManager.ComputeTimeRemaing(context) - ObjSettingsStudy.getStudyDuration()) >= 1) ) {
+            //if it has been set up with the start survey the notification is set for the next day
+            //If the phone is restarted it should not be done except if it's the first day of the study
+            cal.add(Calendar.DATE, 1);
+        } else if ((cal.getTimeInMillis() - System.currentTimeMillis()) < 0) {
             cal.add(Calendar.DATE, 1);
         }
 

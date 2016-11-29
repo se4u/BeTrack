@@ -272,7 +272,8 @@ public class ActivitySettings extends ActivityAppCompatPreference {
                     if (key.equals(mContext.getString(R.string.pref_key_study_notification_time))) {
                         CreateNotification.CreateAlarm(mContext,
                                 ObjSettingsBetrack.GetStudyNotification(),
-                                ObjSettingsBetrack.GetStudyNotificationTime());
+                                ObjSettingsBetrack.GetStudyNotificationTime(),
+                                true);
                     }
 
                 }

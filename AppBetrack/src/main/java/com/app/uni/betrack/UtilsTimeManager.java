@@ -13,6 +13,7 @@ public class UtilsTimeManager {
 
     public static int ComputeTimeRemaing(Context context) {
         SettingsStudy ObjSettingsStudy = null;
+        int TimeRemaining = 0;
         //Read the setting of the study
         ObjSettingsStudy = SettingsStudy.getInstance(context);
 
@@ -32,10 +33,14 @@ public class UtilsTimeManager {
         long millisStartDate = calendarStartDate.getTimeInMillis();
         long millisActualDate = System.currentTimeMillis();
 
-        return (StudyDuration  - (int)((millisActualDate - millisStartDate) / (24*60*60*1000)));
+        TimeRemaining =  (StudyDuration  - (int)((millisActualDate - millisStartDate) / (24*60*60*1000)));
+        if (TimeToNotification(context) > 0) {
+            TimeRemaining += 1;
+        }
+        return TimeRemaining;
     }
 
-    public static long LastDayTimeToNotification(Context context) {
+    public static long TimeToNotification(Context context) {
 
 
         SettingsBetrack ObjSettingsBetrack = null;
