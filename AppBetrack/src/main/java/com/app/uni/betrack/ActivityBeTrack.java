@@ -74,6 +74,15 @@ public class ActivityBeTrack extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+
+        try {
+            SettingsStudy.SemPhoneUsage.acquire();
+            if (ReceiverScreen.ScreenOnStartTime == 0) {
+                ReceiverScreen.ScreenOnStartTime = System.currentTimeMillis();
+            }
+            SettingsStudy.SemPhoneUsage.release();
+        } catch (Exception e) {}
+
         OnForeground = true;
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
             if (((UtilsTimeManager.ComputeTimeRemaing(this) - 1)  > 0) || (UtilsTimeManager.TimeToNotification(this) > 0)) {
@@ -117,6 +126,15 @@ public class ActivityBeTrack extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+            SettingsStudy.SemPhoneUsage.acquire();
+            if (ReceiverScreen.ScreenOnStartTime == 0) {
+                ReceiverScreen.ScreenOnStartTime = System.currentTimeMillis();
+            }
+            SettingsStudy.SemPhoneUsage.release();
+        } catch (Exception e) {}
+
         OnForeground = true;
         if (null == ObjSettingsStudy) {
             //Read the setting of the study

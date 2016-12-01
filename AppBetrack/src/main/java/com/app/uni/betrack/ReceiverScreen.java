@@ -21,7 +21,7 @@ import java.util.Date;
 public class ReceiverScreen extends WakefulBroadcastReceiver {
 
     Handler mHandler;
-
+    public static long ScreenOnStartTime;
     public enum StateScreen {
         UNKNOWN, OFF, ON
     }
@@ -119,11 +119,13 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 CreateTrackApp.CreateAlarm(context,SettingsBetrack.SAMPLING_RATE_SCREEN_OFF);
                 try {
                     SettingsStudy.SemPhoneUsage.acquire();
-                    if (IntentServiceTrackApp.ScreenOnStartTime != 0) {
+                    if (ScreenOnStartTime != 0) {
                         int PhoneUsage = ObjSettingsStudy.getPhoneUsage();
-                        Log.d(TAG, "Screen is off previous phone usage: " + PhoneUsage + " we add : " + (int) ((System.currentTimeMillis() - IntentServiceTrackApp.ScreenOnStartTime) / 1000));
-                        ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - IntentServiceTrackApp.ScreenOnStartTime) / 1000));
-                        IntentServiceTrackApp.ScreenOnStartTime = 0;
+                        Log.d(TAG, "Screen is off previous phone usage: " + PhoneUsage + " we add : " + (int) ((System.currentTimeMillis() - ScreenOnStartTime) / 1000));
+                        if (ScreenOnStartTime != 0) {
+                            ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - ScreenOnStartTime) / 1000));
+                            ScreenOnStartTime = 0;
+                        }
                     }
                      SettingsStudy.SemPhoneUsage.release();
                 } catch (Exception e) {}

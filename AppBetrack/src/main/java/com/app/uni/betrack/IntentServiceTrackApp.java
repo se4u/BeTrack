@@ -32,7 +32,6 @@ public class IntentServiceTrackApp extends IntentService {
     public static String ActivityStartTime = null;
     public static String ActivityStopDate = null;
     public static String ActivityStopTime=null;
-    public static long ScreenOnStartTime;
 
 
     private SettingsBetrack ObjSettingsBetrack = null;
@@ -55,8 +54,7 @@ public class IntentServiceTrackApp extends IntentService {
     protected void onHandleIntent(Intent intent) {
         KeyguardManager km = (KeyguardManager) getBaseContext().getSystemService(Context.KEYGUARD_SERVICE);
         boolean locked = km.inKeyguardRestrictedInputMode();
-        String topActivity = null;
-        String ActualTime = null;
+        String topActivity;
         boolean StudyOnGoing;
 
         ContentValues values = new ContentValues();
@@ -82,8 +80,8 @@ public class IntentServiceTrackApp extends IntentService {
             if (!locked) {
                 try {
                     SettingsStudy.SemPhoneUsage.acquire();
-                    if (ScreenOnStartTime == 0) {
-                        ScreenOnStartTime = System.currentTimeMillis();
+                    if (ReceiverScreen.ScreenOnStartTime == 0) {
+                        ReceiverScreen.ScreenOnStartTime = System.currentTimeMillis();
                     }
                     SettingsStudy.SemPhoneUsage.release();
                 } catch (Exception e) {}
