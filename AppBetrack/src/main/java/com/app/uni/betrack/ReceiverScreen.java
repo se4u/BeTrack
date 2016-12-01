@@ -1,6 +1,7 @@
 package com.app.uni.betrack;
 
 import android.annotation.TargetApi;
+import android.app.KeyguardManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -93,11 +94,17 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                     CheckScreenStatusFromIceCream(context);
                 }
             }
+
             if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
                 Log.d(TAG, "ACTION_SCREEN_ON");
                 ScreenState = StateScreen.ON;
-
             }
+
+            if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
+                Log.d(TAG, "ACTION_USER_PRESENT");
+                ScreenState = StateScreen.ON;
+            }
+
             if ((intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) ||
                     (intent.getAction().equals(Intent.ACTION_SHUTDOWN))){
 
@@ -105,6 +112,7 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 ScreenState = StateScreen.OFF;
 
             }
+
 
             if (ScreenState == StateScreen.OFF) {
 
@@ -162,6 +170,20 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
             }
             else
             {
+                KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+                boolean locked = km.inKeyguardRestrictedInputMode();
+
+
+                if (!locked) {
+                    try {
+                        SettingsStudy.SemPhoneUsage.acquire();
+                        if (ScreenOnStartTime == 0) {
+                            ScreenOnStartTime = System.currentTimeMillis();
+                        }
+                        SettingsStudy.SemPhoneUsage.release();
+                    } catch (Exception e) {}
+                }
+
                 CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
                 long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
                 if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {

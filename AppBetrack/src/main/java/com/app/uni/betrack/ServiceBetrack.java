@@ -25,6 +25,7 @@ public class ServiceBetrack extends Service {
         Log.d(TAG, "onCreated");
 
         IntentFilter filterScreen = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filterScreen.addAction(Intent.ACTION_USER_PRESENT);
         filterScreen.addAction(Intent.ACTION_SCREEN_OFF);
         filterScreen.addAction(Intent.ACTION_SHUTDOWN);
         filterScreen.addAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
