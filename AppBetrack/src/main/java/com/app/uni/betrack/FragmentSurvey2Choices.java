@@ -1,10 +1,12 @@
 package com.app.uni.betrack;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +110,12 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 imgbutton2.setColorFilter(tintGray, mode);
                 if (SurveyStatus == -1) {
                     SurveyStatus = 1;
-                    moveToNext();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            moveToNext();
+                        }
+                    }, 500);
                 }
                 SurveyStatus = 1;
                 mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
@@ -130,7 +137,12 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 imgbutton2.setColorFilter(tintPrimary, mode);
                 if (SurveyStatus == -1) {
                     SurveyStatus = 0;
-                    moveToNext();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            moveToNext();
+                        }
+                    }, 500);
                 }
                 SurveyStatus = 0;
                 mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
