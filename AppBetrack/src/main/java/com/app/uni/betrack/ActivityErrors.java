@@ -85,7 +85,12 @@ public class ActivityErrors  extends AppCompatActivity {
                     Title.setText(getResources().getString(R.string.network_error_title));
                     Description.setText(getResources().getString(R.string.network_error_start_text));
                     Description.setVisibility(View.VISIBLE);
-                } else if(NetworkError.equals(END_STUDY) || NetworkError.equals(END_STUDY_IN_PROGRESS)) {
+                }  else if(NetworkError.equals(END_STUDY_IN_PROGRESS)) {
+                    //End study case
+                    NetworkError = END_STUDY;
+                    Title.setText(getResources().getString(R.string.network_end_text));
+                    Description.setVisibility(View.INVISIBLE);
+                } else if(NetworkError.equals(END_STUDY)) {
                     //End study case
                     Title.setText(getResources().getString(R.string.network_error_title));
                     Description.setText(getResources().getString(R.string.network_error_end_text));
