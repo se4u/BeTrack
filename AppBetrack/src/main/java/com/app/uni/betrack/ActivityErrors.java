@@ -31,6 +31,9 @@ public class ActivityErrors  extends AppCompatActivity {
 
     private boolean isOnline = false;
     private String NetworkError;
+    private NetworkGetStudiesAvailable gsa = null;
+    private TextView Title;
+    private TextView Description;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -57,6 +60,7 @@ public class ActivityErrors  extends AppCompatActivity {
     private void receivedBroadcast(Intent i) {
         ConnectivityManager cm =
                 (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final Context context = this;
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
@@ -76,40 +80,43 @@ public class ActivityErrors  extends AppCompatActivity {
                 startActivity(iError);
                 finish();
             } else {
-                new Handler().postDelayed(new Runnable() {
+                if(NetworkError.equals(START_STUDY)) {
+                    //Start of the study
+                    Title.setText(getResources().getString(R.string.network_error_title));
+                    Description.setText(getResources().getString(R.string.network_error_start_text));
+                    Description.setVisibility(View.VISIBLE);
+                } else if(NetworkError.equals(END_STUDY) || NetworkError.equals(END_STUDY_IN_PROGRESS)) {
+                    //End study case
+                    Title.setText(getResources().getString(R.string.network_error_title));
+                    Description.setText(getResources().getString(R.string.network_error_end_text));
+                    Description.setVisibility(View.VISIBLE);
+                }
+
+                if (gsa != null) {
+                    gsa.cancel(true);
+                }
+
+                gsa = new NetworkGetStudiesAvailable(context, new NetworkGetStudiesAvailable.AsyncResponse(){
                     @Override
-                    public void run() {
-                        gsa.execute();
+                    public void processFinish(final String output) {
+                        if (null != output) {
+                            isOnline = true;
+                        } else {
+                            isOnline = false;
+                        }
+                        Intent intent = new Intent();
+                        intent.setAction(SettingsBetrack.BROADCAST_CHECK_INTERNET);
+                        sendBroadcast(intent);
                     }
-                }, ReceiverNetworkChange.TIME_OUT);
+                });
+
+                gsa.execute();
             }
         }
     }
 
-    NetworkGetStudiesAvailable gsa = new NetworkGetStudiesAvailable(this, new NetworkGetStudiesAvailable.AsyncResponse(){
-
-        @Override
-        public void processFinish(final String output) {
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (null != output) {
-                        isOnline = true;
-                    } else {
-                        isOnline = false;
-                    }
-                    Intent intent = new Intent();
-                    intent.setAction(SettingsBetrack.BROADCAST_CHECK_INTERNET);
-                    sendBroadcast(intent);
-                }
-            }, ActivitySplashScreen.TIME_OUT);
-        }});
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TextView Title;
-        TextView Description;
         ImageView LogoBetrack;
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
