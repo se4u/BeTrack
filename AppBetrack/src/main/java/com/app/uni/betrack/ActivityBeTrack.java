@@ -221,7 +221,7 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         int NbrDays = UtilsTimeManager.ComputeTimeRemaing(this);
 
-        if ( (UtilsTimeManager.TimeToNotification(this) <= 0) ) {
+        if ( (UtilsTimeManager.TimeToNotification(this) <= 0) && (NbrDays <=  ObjSettingsStudy.getStudyDuration()) ) {
                 NbrDays -= 1;
         }
 
