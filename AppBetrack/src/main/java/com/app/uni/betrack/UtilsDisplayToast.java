@@ -16,7 +16,8 @@ public class UtilsDisplayToast implements Runnable {
     }
 
     public void run(){
-        Toast.makeText(mContext, mText, Toast.LENGTH_SHORT).show();
+
+        //Toast.makeText(mContext, mText, Toast.LENGTH_SHORT).show();
     }
 }
 
