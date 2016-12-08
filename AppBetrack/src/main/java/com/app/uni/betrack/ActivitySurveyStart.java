@@ -57,7 +57,8 @@ public class ActivitySurveyStart extends DotStepper {
     {
         return localdatabase;
     }
-    private SettingsStudy ObjSettingsStudy;
+    private SettingsStudy ObjSettingsStudy = null;
+    private SettingsBetrack ObjSettingsBetrack = null;
 
     private AbstractStep Step1;
     private Bundle bundle1;
@@ -140,6 +141,9 @@ public class ActivitySurveyStart extends DotStepper {
         //We don't to trigger directly the daily survey so we fake it
         ObjSettingsStudy.setDailySurveyDone(true);
 
+        //Save the number of notification for the study (match the number of day of the study)
+        ObjSettingsStudy.setNbrOfNotificationToDo(ObjSettingsStudy.getStudyDuration());
+
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
         //Start the service for sending the data to the remote server
         startService(msgIntent);
@@ -162,6 +166,12 @@ public class ActivitySurveyStart extends DotStepper {
 
         if (null == ObjSettingsStudy) {
             ObjSettingsStudy = SettingsStudy.getInstance(this);
+        }
+
+        if (null == ObjSettingsBetrack) {
+            //Read the preferences
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+            ObjSettingsBetrack.Update(this);
         }
 
         //Step 1 RELATIONSHIP

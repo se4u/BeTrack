@@ -11,6 +11,7 @@ import java.util.Calendar;
 
 public class UtilsTimeManager {
 
+    //Return the number remaining day(s) of the study + 1 day (Start day of the study)
     public static int ComputeTimeRemaing(Context context) {
         SettingsStudy ObjSettingsStudy = null;
         int TimeRemaining = 0;
@@ -34,11 +35,13 @@ public class UtilsTimeManager {
         long millisActualDate = System.currentTimeMillis();
 
         TimeRemaining =  (StudyDuration  - (int)((millisActualDate - millisStartDate) / (24*60*60*1000)));
-        TimeRemaining += 1; // Add one day for the set up of the study
+
+        TimeRemaining += 1;
 
         return TimeRemaining;
     }
 
+    //Return the time to the next notification in ms or 0 if he notifictaion of the day was already triggered
     public static long TimeToNotification(Context context) {
 
 

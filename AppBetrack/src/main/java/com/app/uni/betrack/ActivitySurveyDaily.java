@@ -1,6 +1,5 @@
 package com.app.uni.betrack;
 
-import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -100,8 +99,7 @@ public class ActivitySurveyDaily   extends DotStepper {
                 + " SurveyMood3: " + SurveyMood3
                 + " Date: " + DateDaily
                 + " Time: " + TimeDaily);
-
-
+        
         ObjSettingsStudy.setDailySurveyDone(true);
 
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);

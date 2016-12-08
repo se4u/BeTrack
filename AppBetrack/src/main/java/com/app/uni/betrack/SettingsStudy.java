@@ -81,9 +81,11 @@ public class SettingsStudy {
     static private Boolean DailySurveyDone;
     static private String StartDateSurvey;
     static private int PhoneUsage;
+    static private int NbrOfNotificationToDo;
     static private final String STUDY_DAILY_SURVEY_DONE = "DailySurveyDone";
     static private final String STUDY_STARTDATE_SURVEY = "StartDateSurvey";
     static private final String STUDY_PHONEUSAGE_SURVEY = "PhoneUsageSurvey";
+    static private final String STUDY_NBR_OF_NOTIFICATION_TO_DO = "NumberOfNotificationDone";
 
     static private long TimeLastTransfer;
     static private long TimeLastGPS;
@@ -182,6 +184,8 @@ public class SettingsStudy {
         DailySurveyDone = prefs.getBoolean(STUDY_DAILY_SURVEY_DONE, false);
         StartDateSurvey = prefs.getString(STUDY_STARTDATE_SURVEY, null);
         PhoneUsage = prefs.getInt(STUDY_PHONEUSAGE_SURVEY, 0);
+        NbrOfNotificationToDo = prefs.getInt(STUDY_NBR_OF_NOTIFICATION_TO_DO, 0);
+
 
         TimeLastTransfer = System.currentTimeMillis();
         TimeLastGPS = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
@@ -734,6 +738,33 @@ public class SettingsStudy {
             SemSettingsStudy.acquire();
             StudyVersionApp = studyversionapp;
             editor.putString(STUDY_VERSIONAPP, StudyVersionApp);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    public int getNbrOfNotificationToDo()
+    {
+        int ReturnNbrOfNotificationToDo = 0;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnNbrOfNotificationToDo = NbrOfNotificationToDo;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnNbrOfNotificationToDo = 0;
+        } finally {
+            return ReturnNbrOfNotificationToDo;
+        }
+    }
+
+    public void setNbrOfNotificationToDo(int nbrofnotification)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            NbrOfNotificationToDo = nbrofnotification;
+            editor.putInt(STUDY_NBR_OF_NOTIFICATION_TO_DO, NbrOfNotificationToDo);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {

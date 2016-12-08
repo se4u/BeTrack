@@ -93,7 +93,7 @@ public class CreateNotification {
         Log.d(TAG, "Time to set " + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.YEAR)
                 + " " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND));
 
-        if ( (fromPreference == false) && ((UtilsTimeManager.ComputeTimeRemaing(context) - ObjSettingsStudy.getStudyDuration()) >= 1) ) {
+        if ( (fromPreference == false) && ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(context)) < 0) ) {
             //if it has been set up with the start survey the notification is set for the next day
             //If the phone is restarted it should not be done except if it's the first day of the study
             cal.add(Calendar.DATE, 1);

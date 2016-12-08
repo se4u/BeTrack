@@ -14,7 +14,9 @@ import android.text.style.RelativeSizeSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -75,61 +77,63 @@ public class ActivityBeTrack extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+        TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
+        ImageView betrackLogo = (ImageView) findViewById(R.id.logo_activity_betrack);
+
+        if (mChart == null) {
+            mChart = (PieChart) findViewById(R.id.chart1);
+        }
+
         OnForeground = true;
-        if (false == ObjSettingsStudy.getEndSurveyDone()) {
-            if (((UtilsTimeManager.ComputeTimeRemaing(this) - 1)  > 0) || (UtilsTimeManager.TimeToNotification(this) > 0)) {
-                if (false == ObjSettingsStudy.getSetupBetrackDone()) {
-                    Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
+        if ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(this)) >= 0)
+        {
+            betrackLogo.setVisibility(View.GONE);
+            mChart.setVisibility(View.VISIBLE);
+            if (false == ObjSettingsStudy.getEndSurveyDone()) {
+                if (ObjSettingsStudy.getNbrOfNotificationToDo() >= 1) {
+                    if (false == ObjSettingsStudy.getSetupBetrackDone()) {
+                        Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
+                        startActivity(i);
+                        finish();
+                    } else if (ObjSettingsStudy.getDailySurveyDone() == false) {
+                        Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
+                        startActivity(i);
+                        finish();
+                    }
+                    mChart.setCenterText(generateCenterSpannableText());
+                } else {
+                    Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
                     startActivity(i);
                     finish();
                 }
-                else if (ObjSettingsStudy.getDailySurveyDone() == false) {
-                    Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
-                    startActivity(i);
-                    finish();
-                }
-                mChart.setCenterText(generateCenterSpannableText());
             } else {
-                Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
-                startActivity(i);
-                finish();
+                if (ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.DONE) {
+                    prepareChart(true);
+                    textWelcome.setText(getResources().getString(R.string.Betrack_end));
+                } else {
+                    if (ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.IN_PROGRESS) {
+                        Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
+                        iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY_IN_PROGRESS);
+                        startActivity(iError);
+                        finish();
+                    } else {
+                        Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
+                        iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY);
+                        startActivity(iError);
+                        finish();
+                    }
+                }
             }
         } else {
-            if (ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.DONE) {
-                prepareChart(true);
-                TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
-                textWelcome.setText(getResources().getString(R.string.Betrack_end));
-            } else {
-                if (ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.IN_PROGRESS) {
-                    Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
-                    iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY_IN_PROGRESS);
-                    startActivity(iError);
-                    finish();
-                } else {
-                    Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
-                    iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY);
-                    startActivity(iError);
-                    finish();
-                }
-            }
+            betrackLogo.setVisibility(View.VISIBLE);
+            mChart.setVisibility(View.GONE);
+            textWelcome.setText(getResources().getString(R.string.Betrack_start));
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        OnForeground = true;
-        if (null == ObjSettingsStudy) {
-            //Read the setting of the study
-            ObjSettingsStudy = SettingsStudy.getInstance(this);
-        }
-
-        if (null == ObjSettingsBetrack) {
-            //Read the preferences
-            ObjSettingsBetrack = SettingsBetrack.getInstance();
-            ObjSettingsBetrack.Update(this);
-        }
 
         //Setup the action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -139,40 +143,71 @@ public class ActivityBeTrack extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)) );
         setContentView(R.layout.activity_betrack);
 
-        //Set the notification to make sure that we never got killed
-        final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(SettingsBetrack.ID_NOTIFICATION_BETRACK);
+        TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
+        ImageView betrackLogo = (ImageView) findViewById(R.id.logo_activity_betrack);
 
-        if (false == ObjSettingsStudy.getEndSurveyDone()) {
+        if (mChart == null) {
+            mChart = (PieChart) findViewById(R.id.chart1);
+        }
 
-            //We start the study
-            StartStudy();
+        if (null == ObjSettingsStudy) {
+            //Read the setting of the study
+            ObjSettingsStudy = SettingsStudy.getInstance(this);
+        }
 
-            if (((UtilsTimeManager.ComputeTimeRemaing(this) - 1) > 0) || (UtilsTimeManager.TimeToNotification(this) > 0)) {
-                if (ObjSettingsStudy.getDailySurveyDone() == false) {
-                    Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
-                    startActivity(i);
-                    finish();
-                } else {
-                    //Prepare the chart to be display
-                    prepareChart(false);
-                }
-            }  else {
-                Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
-                startActivity(i);
-                finish();
+
+        OnForeground = true;
+        if ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(this)) >= 0)
+        {
+            betrackLogo.setVisibility(View.GONE);
+            mChart.setVisibility(View.VISIBLE);
+
+            if (null == ObjSettingsBetrack) {
+                //Read the preferences
+                ObjSettingsBetrack = SettingsBetrack.getInstance();
+                ObjSettingsBetrack.Update(this);
             }
 
+            //Set the notification to make sure that we never got killed
+            final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(SettingsBetrack.ID_NOTIFICATION_BETRACK);
+
+            if (false == ObjSettingsStudy.getEndSurveyDone()) {
+
+                //We start the study
+                StartStudy();
+
+                if (ObjSettingsStudy.getNbrOfNotificationToDo() >= 1) {
+                    if (ObjSettingsStudy.getDailySurveyDone() == false) {
+                        Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
+                        startActivity(i);
+                        finish();
+                    } else {
+                        //Prepare the chart to be display
+                        prepareChart(false);
+                    }
+                }  else {
+                    Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
+                    startActivity(i);
+                    finish();
+                }
+
+            } else {
+                prepareChart(true);
+                textWelcome.setText(getResources().getString(R.string.Betrack_end));
+            }
         } else {
-            prepareChart(true);
-            TextView textWelcome = (TextView)findViewById(R.id.TextWelcome);
-            textWelcome.setText(getResources().getString(R.string.Betrack_end));
+            //We start the study
+            StartStudy();
+            betrackLogo.setVisibility(View.VISIBLE);
+            mChart.setVisibility(View.GONE);
+            textWelcome.setText(getResources().getString(R.string.Betrack_start));
         }
     }
 
     private void prepareChart(boolean endStudy) {
         //Set up the chart
-        mChart = (PieChart) findViewById(R.id.chart1);
+
         mChart.setUsePercentValues(true);
         mChart.setDescription("");
         mChart.setExtraOffsets(5, 10, 5, 5);
@@ -219,13 +254,7 @@ public class ActivityBeTrack extends AppCompatActivity {
     private SpannableString generateCenterSpannableText() {
         SpannableString s;
 
-        int NbrDays = UtilsTimeManager.ComputeTimeRemaing(this);
-
-        if ( (UtilsTimeManager.TimeToNotification(this) <= 0) && (NbrDays <=  ObjSettingsStudy.getStudyDuration()) ) {
-                NbrDays -= 1;
-        }
-
-        if (NbrDays == 0) NbrDays = 1;
+        int NbrDays = ObjSettingsStudy.getNbrOfNotificationToDo();
 
         if (NbrDays > 1) {
             String Desc = getResources().getString(R.string.survey_days_left);
@@ -259,7 +288,7 @@ public class ActivityBeTrack extends AppCompatActivity {
     private void setData(boolean endStudy) {
         int[] UsagePerApp = new int[ObjSettingsStudy.getApplicationsToWatch().size()];
         int Done = 0;
-        int NbrDays = UtilsTimeManager.ComputeTimeRemaing(this);
+        int NbrDays  = ObjSettingsStudy.getNbrOfNotificationToDo();
         int sumUsage = 0;
         float mult = 100;
 
@@ -277,15 +306,12 @@ public class ActivityBeTrack extends AppCompatActivity {
             }
         } else {
 
-            if ( (UtilsTimeManager.TimeToNotification(this) <= 0) ) {
-                NbrDays -= 1;
-            }
-
             if (ObjSettingsStudy.getStudyDuration() > NbrDays) {
                 Done = ((ObjSettingsStudy.getStudyDuration() - NbrDays) * 100) / ObjSettingsStudy.getStudyDuration();
             } else {
                 Done = 0;
             }
+
             int ToBeDone = (NbrDays * 100) / ObjSettingsStudy.getStudyDuration();
 
             entries.add(new PieEntry((float) (ToBeDone), ""));

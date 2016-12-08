@@ -25,8 +25,13 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
             ObjSettingsBetrack.Update(context);
         }
 
+
+        int NbrOfNotificationDone = ObjSettingsStudy.getNbrOfNotificationToDo();
+        NbrOfNotificationDone--;
+        ObjSettingsStudy.setNbrOfNotificationToDo(NbrOfNotificationDone);
+
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
-            if (UtilsTimeManager.ComputeTimeRemaing(context) > 0) {
+            if (ObjSettingsStudy.getNbrOfNotificationToDo() > 0) {
                 //We enable the daily survey
                 ObjSettingsStudy.setDailySurveyDone(false);
 

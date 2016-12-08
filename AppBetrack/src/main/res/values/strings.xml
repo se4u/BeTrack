@@ -63,6 +63,7 @@
     <!-- Study main screen -->
     <string name="Betrack_welcome">Thank you for participating, see you later !</string>
     <string name="Betrack_info_start">Days remaining:</string>
+    <string name="Betrack_start">Thank you for registering ! The study will start from tomorrow on</string>
     <string name="Betrack_end">Thank you for participating in the study, you can uninstall Betrack</string>
     <string name="Betrack_info_end">Your phone usage:</string>
     <string name="Betrack_settings">Settings</string>
