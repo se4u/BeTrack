@@ -142,7 +142,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
                         public void run() {
                             moveToNext();
                         }
-                    }, 500);
+                    }, 200);
                 }
                 SurveyStatus = 0;
                 mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
