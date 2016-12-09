@@ -100,7 +100,8 @@ public class ActivityBeTrack extends AppCompatActivity {
                         startActivity(i);
                         finish();
                     }
-                    mChart.setCenterText(generateCenterSpannableText());
+                    prepareChart(false);
+                    textWelcome.setText(getResources().getString(R.string.Betrack_welcome));
                 } else {
                     Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
                     startActivity(i);
