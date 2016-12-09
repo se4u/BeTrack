@@ -37,6 +37,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
 
     private static SettingsBetrack ObjSettingsBetrack;
     private static SettingsStudy ObjSettingsStudy;
+    private static int cntAppearanceNotifMenu = 0;
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -146,6 +147,14 @@ public class ActivitySettings extends ActivityAppCompatPreference {
 
         loadHeadersFromResource(R.xml.pref_headers, target);
 
+        if (cntAppearanceNotifMenu == 5) {
+            Header headerNotification = new Header();
+            headerNotification.fragment = "com.app.uni.betrack.ActivitySettings$NotificationPreferenceFragment";
+            headerNotification.title = getResources().getString(R.string.pref_header_notifications);
+            headerNotification.iconRes = R.drawable.ic_notifications_black_24dp;
+            target.add(headerNotification);
+            cntAppearanceNotifMenu = 0;
+        }
     }
 
     /**
@@ -239,6 +248,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
+                cntAppearanceNotifMenu++;
                 startActivity(new Intent(getActivity(), ActivitySettings.class));
                 return true;
             }
