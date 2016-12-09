@@ -92,6 +92,17 @@
     <string name="pref_title_new_message_notifications">Study notifications</string>
     <string name="pref_notification_time">Time of the notification</string>
 
+    <!-- Credits-->
+    <string name="pref_header_credits">Credits </string>
+    <string name="pref_header_credits_title1">Thanks to Philipp Jahoda</string>
+    <string name="pref_header_credits_text1">for MPChartLib</string>
+    <string name="pref_header_credits_title2">Thanks to Mark Murphy</string>
+    <string name="pref_header_credits_text2">for location poller</string>
+    <string name="pref_header_credits_title3">Thanks to Francesco Cannizzaro</string>
+    <string name="pref_header_credits_text3">for material stepper form</string>
+    <string name="pref_header_credits_title4">Thanks to http://www.flaticon.com/</string>
+    <string name="pref_header_credits_text4">for their awesome sets of icons</string>
+
     <!-- Informations about the study-->
     <string name="pref_header_info">Informations about the study </string>
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="pref_info"
+        android:selectable="false"
+        android:summary="@string/pref_header_credits_text1"
+        android:title="@string/pref_header_credits_title1"/>
+    <Preference
+        android:key="pref_info"
+        android:selectable="false"
+        android:summary="@string/pref_header_credits_text2"
+        android:title="@string/pref_header_credits_title2"/>
+    <Preference
+        android:key="pref_info"
+        android:selectable="false"
+        android:summary="@string/pref_header_credits_text3"
+        android:title="@string/pref_header_credits_title3"/>
+    <Preference
+        android:key="pref_info"
+        android:selectable="false"
+        android:summary="@string/pref_header_credits_text4"
+        android:title="@string/pref_header_credits_title4"/>
+
+</PreferenceScreen>

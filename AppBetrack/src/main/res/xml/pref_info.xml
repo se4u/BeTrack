@@ -5,7 +5,6 @@
         android:key="pref_info"
         android:selectable="false"
         android:summary="No user ID found"
-        android:title="@string/pref_header_info"
-        android:onClick="showTimePickerDialog"/>
+        android:title="@string/pref_header_info"/>
 
 </PreferenceScreen>
