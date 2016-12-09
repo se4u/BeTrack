@@ -24,7 +24,6 @@ public class ActivitySurveyDaily   extends DotStepper {
     private int SurveyMood1 = 0;
     private int SurveyMood2 = 0;
     private int SurveyMood3 = 0;
-    private int PhoneUsage = 0;
 
     private String DateDaily = null;
     private String TimeDaily = null;
@@ -64,36 +63,23 @@ public class ActivitySurveyDaily   extends DotStepper {
         SurveyMood3 = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS3, 0);
 
         values.clear();
-        values.put(UtilsLocalDataBase.C_USER_PERIOD, SurveyPeriod);
-        values.put(UtilsLocalDataBase.C_USER_SOCIAL1_LIFE, SurveySocial1);
-        values.put(UtilsLocalDataBase.C_USER_SOCIAL2_LIFE, SurveySocial2);
-
-        try {
-            SettingsStudy.SemPhoneUsage.acquire();
-            PhoneUsage = ObjSettingsStudy.getPhoneUsage();
-            ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - ReceiverScreen.ScreenOnStartTime) / 1000));
-            ReceiverScreen.ScreenOnStartTime = System.currentTimeMillis();
-            PhoneUsage = ObjSettingsStudy.getPhoneUsage();
-            values.put(UtilsLocalDataBase.C_USER_PHONE_USAGE, PhoneUsage);
-            ObjSettingsStudy.setPhoneUsage(0);
-            SettingsStudy.SemPhoneUsage.release();
-        } catch (Exception e) {}
-
-        values.put(UtilsLocalDataBase.C_USER_MOOD1, SurveyMood1);
-        values.put(UtilsLocalDataBase.C_USER_MOOD2, SurveyMood2);
-        values.put(UtilsLocalDataBase.C_USER_MOOD3, SurveyMood3);
+        values.put(UtilsLocalDataBase.C_DAILYSTATUS_PERIOD, SurveyPeriod);
+        values.put(UtilsLocalDataBase.C_DAILYSTATUS_SOCIAL1_LIFE, SurveySocial1);
+        values.put(UtilsLocalDataBase.C_DAILYSTATUS_SOCIAL2_LIFE, SurveySocial2);
+        values.put(UtilsLocalDataBase.C_DAILYSTATUS_MOOD1, SurveyMood1);
+        values.put(UtilsLocalDataBase.C_DAILYSTATUS_MOOD2, SurveyMood2);
+        values.put(UtilsLocalDataBase.C_DAILYSTATUS_MOOD3, SurveyMood3);
 
         DateDaily = sdf.format(new Date());
-        values.put(UtilsLocalDataBase.C_USER_DATE, DateDaily);
+        values.put(UtilsLocalDataBase.C_DAILYSTATUS_DATE, DateDaily);
         TimeDaily = shf.format(new Date());
-        values.put(UtilsLocalDataBase.C_USER_TIME, TimeDaily);
+        values.put(UtilsLocalDataBase.C_DAILYSTATUS_TIME, TimeDaily);
 
-        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_USER);
+        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_DAILYSTATUS);
         Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser()
                 + " Period: " + SurveyPeriod
                 + " SurveySocial1: " + SurveySocial1
                 + " SurveySocial2: " + SurveySocial2
-                + " PhoneUsage: " + PhoneUsage
                 + " SurveyMood1: " + SurveyMood1
                 + " SurveyMood2: " + SurveyMood2
                 + " SurveyMood3: " + SurveyMood3

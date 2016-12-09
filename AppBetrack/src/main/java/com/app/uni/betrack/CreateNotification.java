@@ -27,6 +27,7 @@ public class CreateNotification {
     private static NotificationManager mNotification;
 
     private static SettingsStudy ObjSettingsStudy;
+    private static SettingsBetrack ObjSettingsBetrack;
 
     public final static void Create(Context context){
 
@@ -142,27 +143,68 @@ public class CreateNotification {
 
     static public void ResetAlarm(Context context)
     {
-        long TimeToSet = 24 * 60 * 60 * 1000;
+        Date time = null;
+        long TimeToSet = 0;
+
 
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(context);
         }
 
-        ObjSettingsStudy.setTimeNextNotification(System.currentTimeMillis() + TimeToSet);
+
+        if (ObjSettingsBetrack == null) {
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+            ObjSettingsBetrack.Update(context);
+        }
+
+
+        //Read the time from the preference
+        SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+
 
         try {
-            Log.d(TAG, "Reset alarm in 24 hours");
+            //Parse the time from preference
+            time = shf.parse(ObjSettingsBetrack.GetStudyNotificationTime());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Prepare a new calendar
+        Calendar calendarpref = new GregorianCalendar();
+        calendarpref.setTime(time);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(System.currentTimeMillis());
+        cal.set(Calendar.SECOND, calendarpref.get(calendarpref.SECOND));
+        cal.set(Calendar.HOUR_OF_DAY, calendarpref.get(calendarpref.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE, calendarpref.get(calendarpref.MINUTE));
+
+
+        if ((cal.getTimeInMillis() - System.currentTimeMillis()) < 0) {
+            cal.add(Calendar.DATE, 1);
+        }
+
+        TimeToSet = cal.getTimeInMillis();
+
+        if ((TimeToSet - System.currentTimeMillis()) <= 0) {
+            TimeToSet = (24 *60 *60 *1000) + System.currentTimeMillis();
+        }
+
+        ObjSettingsStudy.setTimeNextNotification(TimeToSet);
+
+        try {
+            Log.d(TAG, "Reset alarm for next notification: " + (TimeToSet - System.currentTimeMillis()));
 
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                SetAlarmFromM(System.currentTimeMillis() + TimeToSet);
+                SetAlarmFromM(TimeToSet);
             }
             else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
             {
-                SetAlarmFromKitKat(System.currentTimeMillis() + TimeToSet);
+                SetAlarmFromKitKat(TimeToSet);
             }
             else
             {
-                alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TimeToSet, alarmIntent);
+                alarmMgr.set(AlarmManager.RTC_WAKEUP, TimeToSet, alarmIntent);
             }
 
         }catch (Exception e) {

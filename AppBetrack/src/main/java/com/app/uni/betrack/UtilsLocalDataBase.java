@@ -50,47 +50,44 @@ public class UtilsLocalDataBase {
     }};
 
     //Table for period, libido... follow up
-    static final String TABLE_USER = "User";
-    static final String C_USER_ID = BaseColumns._ID;
-    static final String C_USER_PID = "ParticipantID";
-    static final String C_USER_PERIOD = "Period";
-    static final String C_USER_SOCIAL1_LIFE = "SocialLife1";
-    static final String C_USER_SOCIAL2_LIFE = "SocialLife2";
-    static final String C_USER_PHONE_USAGE = "PhoneUsage";
-    static final String C_USER_MOOD1 = "Mood1";
-    static final String C_USER_MOOD2 = "Mood2";
-    static final String C_USER_MOOD3 = "Mood3";
-    static final String C_USER_MOOD4 = "Mood4";
-    static final String C_USER_DATE = "Date";
-    static final String C_USER_TIME = "Time";
+    static final String TABLE_DAILYSTATUS = "DailyStatus";
+    static final String C_DAILYSTATUS_ID = BaseColumns._ID;
+    static final String C_DAILYSTATUS_PID = "ParticipantID";
+    static final String C_DAILYSTATUS_PERIOD = "Period";
+    static final String C_DAILYSTATUS_SOCIAL1_LIFE = "SocialLife1";
+    static final String C_DAILYSTATUS_SOCIAL2_LIFE = "SocialLife2";
+    static final String C_DAILYSTATUS_MOOD1 = "Mood1";
+    static final String C_DAILYSTATUS_MOOD2 = "Mood2";
+    static final String C_DAILYSTATUS_MOOD3 = "Mood3";
+    static final String C_DAILYSTATUS_MOOD4 = "Mood4";
+    static final String C_DAILYSTATUS_DATE = "Date";
+    static final String C_DAILYSTATUS_TIME = "Time";
 
 
     public static final ArrayList<String> DB_DAILYSTATUS = new ArrayList<String>() {{
-        add(UtilsLocalDataBase.C_USER_PID);
-        add(UtilsLocalDataBase.C_USER_PERIOD);
-        add(UtilsLocalDataBase.C_USER_SOCIAL1_LIFE);
-        add(UtilsLocalDataBase.C_USER_SOCIAL2_LIFE);
-        add(UtilsLocalDataBase.C_USER_PHONE_USAGE);
-        add(UtilsLocalDataBase.C_USER_MOOD1);
-        add(UtilsLocalDataBase.C_USER_MOOD2);
-        add(UtilsLocalDataBase.C_USER_MOOD3);
-        add(UtilsLocalDataBase.C_USER_MOOD4);
-        add(UtilsLocalDataBase.C_USER_DATE);
-        add(UtilsLocalDataBase.C_USER_TIME);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_PID);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_PERIOD);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_SOCIAL1_LIFE);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_SOCIAL2_LIFE);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_MOOD1);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_MOOD2);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_MOOD3);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_MOOD4);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_DATE);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_TIME);
     }};
 
     public static final ArrayList<Boolean> DB_DAILYSTATUS_CYPHER = new ArrayList<Boolean>() {{
-        add(false); //C_USER_PID
-        add(true);  //C_USER_PERIOD
-        add(true);  //C_USER_SOCIAL1_LIFE
-        add(true);  //C_USER_SOCIAL2_LIFE
-        add(true);  //C_USER_PHONE_USAGE
-        add(true);  //C_USER_MOOD1
-        add(true);  //C_USER_MOOD2
-        add(true);  //C_USER_MOOD3
-        add(true);  //C_USER_MOOD4
-        add(true); //C_USER_DATE
-        add(true); //C_USER_TIME
+        add(false); //C_DAILYSTATUS_PID
+        add(true);  //C_DAILYSTATUS_PERIOD
+        add(true);  //C_DAILYSTATUS_SOCIAL1_LIFE
+        add(true);  //C_DAILYSTATUS_SOCIAL2_LIFE
+        add(true);  //C_DAILYSTATUS_MOOD1
+        add(true);  //C_DAILYSTATUS_MOOD2
+        add(true);  //C_DAILYSTATUS_MOOD3
+        add(true);  //C_DAILYSTATUS_MOOD4
+        add(true); //C_DAILYSTATUS_DATE
+        add(true); //C_DAILYSTATUS_TIME
     }};
 
     //Table for GPS data
@@ -242,6 +239,28 @@ public class UtilsLocalDataBase {
         add(true); //C_ENDSTUDY_TIME
     }};
 
+    //Table for phone usage follow up every 24 hours
+    static final String TABLE_PHONE_USAGE = "PhoneUsage";
+    static final String C_PHONE_USAGE_ID = BaseColumns._ID;
+    static final String C_PHONE_USAGE_PID = "ParticipantID";
+    static final String C_PHONE_USAGE = "PhoneUsage";
+    static final String C_PHONE_USAGE_DATE = "Date";
+    static final String C_PHONE_USAGE_TIME = "Time";
+
+    public static final ArrayList<String> DB_PHONE_USAGE = new ArrayList<String>() {{
+        add(UtilsLocalDataBase.C_PHONE_USAGE_PID);
+        add(UtilsLocalDataBase.C_PHONE_USAGE);
+        add(UtilsLocalDataBase.C_PHONE_USAGE_DATE);
+        add(UtilsLocalDataBase.C_PHONE_USAGE_TIME);
+    }};
+
+    public static final ArrayList<Boolean> DB_PHONE_USAGE_CYPHER = new ArrayList<Boolean>() {{
+        add(false); //C_PHONE_USAGE_PID
+        add(true);  //C_PHONE_USAGE
+        add(true);  //C_PHONE_USAGE_DATE
+        add(true);  //C_PHONE_USAGE_TIME
+    }};
+
     private static final Semaphore SemUpdateDb = new Semaphore(1, true);
 
 
@@ -266,17 +285,16 @@ public class UtilsLocalDataBase {
             db.execSQL(sql);
             Log.d(TAG, "onCreated sql: " + sql);
 
-            String sql2 = "create table " + TABLE_USER + " (" + C_USER_ID + " integer primary key autoincrement, "
-                    + C_USER_PERIOD + " text, "
-                    + C_USER_SOCIAL1_LIFE + " text, "
-                    + C_USER_SOCIAL2_LIFE + " text, "
-                    + C_USER_PHONE_USAGE + " text, "
-                    + C_USER_MOOD1 + " text, "
-                    + C_USER_MOOD2 + " text, "
-                    + C_USER_MOOD3 + " text, "
-                    + C_USER_MOOD4 + " text, "
-                    + C_USER_DATE + " text, "
-                    + C_USER_TIME + " text)"; //
+            String sql2 = "create table " + TABLE_DAILYSTATUS + " (" + C_DAILYSTATUS_ID + " integer primary key autoincrement, "
+                    + C_DAILYSTATUS_PERIOD + " text, "
+                    + C_DAILYSTATUS_SOCIAL1_LIFE + " text, "
+                    + C_DAILYSTATUS_SOCIAL2_LIFE + " text, "
+                    + C_DAILYSTATUS_MOOD1 + " text, "
+                    + C_DAILYSTATUS_MOOD2 + " text, "
+                    + C_DAILYSTATUS_MOOD3 + " text, "
+                    + C_DAILYSTATUS_MOOD4 + " text, "
+                    + C_DAILYSTATUS_DATE + " text, "
+                    + C_DAILYSTATUS_TIME + " text)"; //
             db.execSQL(sql2);
             Log.d(TAG, "onCreated sql: " + sql2);
 
@@ -327,6 +345,13 @@ public class UtilsLocalDataBase {
                     + C_SESSION_KEY_TIME + " text)"; //
             db.execSQL(sql7);
             Log.d(TAG, "onCreated sql: " + sql7);
+
+            String sql8 = "create table " + TABLE_PHONE_USAGE + " (" + C_PHONE_USAGE_ID + " integer primary key autoincrement, "
+                    + C_PHONE_USAGE + " text, "
+                    + C_PHONE_USAGE_DATE + " text, "
+                    + C_PHONE_USAGE_TIME + " text)"; //
+            db.execSQL(sql8);
+            Log.d(TAG, "onCreated sql: " + sql8);
         }
 
         // Called whenever newVersion != oldVersion
@@ -335,7 +360,7 @@ public class UtilsLocalDataBase {
 
             db.execSQL("drop table if exists " + TABLE_APPWATCH); // drops the old database
 
-            db.execSQL("drop table if exists " + TABLE_USER); // drops the old database
+            db.execSQL("drop table if exists " + TABLE_DAILYSTATUS); // drops the old database
 
             db.execSQL("drop table if exists " + TABLE_START_STUDY); // drops the old database
 
@@ -344,6 +369,8 @@ public class UtilsLocalDataBase {
             db.execSQL("drop table if exists " + TABLE_END_STUDY); // drops the old database
 
             db.execSQL("drop table if exists " + TABLE_SESSION_KEY); // drops the old database
+
+            db.execSQL("drop table if exists " + TABLE_PHONE_USAGE); // drops the old database
 
             Log.d(TAG, "onUpdated");
             onCreate(db); // run onCreate to get new database

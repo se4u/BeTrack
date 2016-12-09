@@ -53,6 +53,7 @@ public class IntentServicePostData extends IntentService {
     private static final char TABLE_STARTSTUDY_TRANSFERED = 4;
     private static final char TABLE_ENDSTUDY_TRANSFERED = 8;
     private static final char TABLE_GPS_TRANSFERED = 16;
+    private static final char TABLE_PHONE_USAGE_TRANSFERED = 32;
 
     Handler mHandler;
 
@@ -84,7 +85,7 @@ public class IntentServicePostData extends IntentService {
 
         char TaskDone = TABLE_APPWATCH_TRANSFERED | TABLE_DAILYSTATUS_TRANSFERED |
                         TABLE_STARTSTUDY_TRANSFERED | TABLE_ENDSTUDY_TRANSFERED |
-                        TABLE_GPS_TRANSFERED;
+                        TABLE_GPS_TRANSFERED | TABLE_PHONE_USAGE_TRANSFERED;
 
         //Check if there is a data connection
         NetworkState = hasNetworkConnection();
@@ -173,11 +174,11 @@ public class IntentServicePostData extends IntentService {
 
                     //DAILY STATUS
                     values.clear();
-                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_USER, true);
+                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_DAILYSTATUS, true);
                     if (0 != values.size()) {
                         ArrayList<String>  DailyStatusData;
 
-                        IdSql = values.getAsLong(UtilsLocalDataBase.C_USER_ID);
+                        IdSql = values.getAsLong(UtilsLocalDataBase.C_DAILYSTATUS_ID);
 
                         //Prepare the data
                         DailyStatusData = PrepareData(values, UtilsLocalDataBase.DB_DAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS_CYPHER, true);
@@ -185,7 +186,7 @@ public class IntentServicePostData extends IntentService {
                         //Post the data
                         rc = PostData(SettingsBetrack.STUDY_POSTDAILYSTATUS, UtilsLocalDataBase.DB_DAILYSTATUS, DailyStatusData, UtilsLocalDataBase.DB_DAILYSTATUS_CYPHER, true);
                         if (rc == true) {
-                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_USER, IdSql);
+                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_DAILYSTATUS, IdSql);
                         } else {
                             break;
                         }
@@ -267,6 +268,29 @@ public class IntentServicePostData extends IntentService {
                     } else {
                         rc = true;
                         TaskDone &= ~TABLE_GPS_TRANSFERED;
+                    }
+
+                    //PHONE USAGE DATA
+                    values.clear();
+                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_PHONE_USAGE, true);
+                    if (0 != values.size()) {
+                        ArrayList<String>  GpsData;
+
+                        IdSql = values.getAsLong(UtilsLocalDataBase.C_PHONE_USAGE_ID);
+
+                        //Prepare the data
+                        GpsData = PrepareData(values, UtilsLocalDataBase.DB_PHONE_USAGE, UtilsLocalDataBase.DB_PHONE_USAGE_CYPHER, true);
+
+                        //Post the data
+                        rc = PostData(SettingsBetrack.STUDY_POSTPHONEUSAGEDATA, UtilsLocalDataBase.DB_PHONE_USAGE, GpsData, UtilsLocalDataBase.DB_PHONE_USAGE_CYPHER, true);
+                        if (rc == true) {
+                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_PHONE_USAGE, IdSql);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        rc = true;
+                        TaskDone &= ~TABLE_PHONE_USAGE_TRANSFERED;
                     }
                 }
             }

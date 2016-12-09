@@ -40,39 +40,4 @@ public class UtilsTimeManager {
 
         return TimeRemaining;
     }
-
-    //Return the time to the next notification in ms or 0 if he notifictaion of the day was already triggered
-    public static long TimeToNotification(Context context) {
-
-
-        SettingsBetrack ObjSettingsBetrack = null;
-        //Read the preferences
-        ObjSettingsBetrack = SettingsBetrack.getInstance();
-        ObjSettingsBetrack.Update(context);
-
-        SimpleDateFormat shfNotification = new SimpleDateFormat("HH:mm:ss");
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-
-        try {
-            shfNotification.parse(ObjSettingsBetrack.GetStudyNotificationTime());
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Calendar calendarNotification = shfNotification.getCalendar();
-        long millisNotification = (int)calendarNotification.getTimeInMillis() + 1000 * 60 * 60;
-        long millisActualDate = System.currentTimeMillis() - cal.getTimeInMillis();
-        if (millisActualDate < 0) millisActualDate = 0;
-
-        if ((millisNotification - millisActualDate) > 0) {
-            return (millisNotification - millisActualDate);
-        } else {
-            return 0;
-        }
-
-    }
 }
