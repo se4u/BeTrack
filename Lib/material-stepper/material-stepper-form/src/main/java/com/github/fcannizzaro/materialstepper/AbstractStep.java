@@ -65,7 +65,7 @@ public abstract class AbstractStep extends Fragment implements Nextable {
 
     //call this method to move to next screen
     public void moveToNext() {
-        DotStepper.moveToNext(500);
+        DotStepper.moveToNext();
     }
 
     @Override

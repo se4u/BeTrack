@@ -22,11 +22,13 @@
 			<img class="img-responsive" src="img/BeTrack.png" height="42" width="42"/>
 		</div>
 
-		<label for="inputEmail" class="sr-only">Email address</label>
-		<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+		<label for="inputEmail" class="sr-only">Username</label>
+		<input name="myusername" id="myusername" type="text" class="form-control" placeholder="Username" required autofocus>
 		<label for="inputPassword" class="sr-only">Password</label>
-		<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+		<input name="mypassword" id="mypassword" type="password" class="form-control" placeholder="Password" required>
+
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+		<div id="message"></div>
 	</form>
 
 	</div> <!-- /container -->
@@ -35,5 +37,6 @@
 	<script src="js/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/ie10-viewport-bug-workaround.js"></script>
+	<script src="js/login.js"></script>
 	</body>
 </html>

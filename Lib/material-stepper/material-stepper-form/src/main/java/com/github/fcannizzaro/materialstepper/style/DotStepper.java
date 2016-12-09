@@ -47,15 +47,7 @@ public class DotStepper extends BaseNavigation {
             Log.e("MaterialStepper", "You should use progress bar with so many steps!");
     }
 
-    public static void moveToNext(int delay) {
-
-        try {
-            Thread.sleep(delay);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //do some delay
+    public static void moveToNext() {
         mNext.performClick();
     }
 

@@ -9,7 +9,6 @@ if($result === false) {
 $periodstatus = '';
 $sociallife1 = '';
 $sociallife2 = '';
-$phoneusage = '';
 $mood1 = '';
 $mood2 = '';
 $mood3 = '';
@@ -17,7 +16,7 @@ $mood4 = '';
 $date = '';
 $time = '';
 
-list($periodstatus, $sociallife1, $sociallife2, $phoneusage, $mood1, $mood2, $mood3, $mood4, $date, $time) = explode(chr (30), $plain);
+list($periodstatus, $sociallife1, $sociallife2, $mood1, $mood2, $mood3, $mood4, $date, $time) = explode(chr (30), $plain);
 
 //Check the data
 $userid = strip_tags(trim($userid));
@@ -31,9 +30,6 @@ $sociallife1 = mysqli_real_escape_string($con, $sociallife1);
 
 $sociallife2 = strip_tags(trim($sociallife2));
 $sociallife2 = mysqli_real_escape_string($con, $sociallife2);
-
-$phoneusage = strip_tags(trim($phoneusage));
-$phoneusage = mysqli_real_escape_string($con, $phoneusage);
 
 $mood1 = strip_tags(trim($mood1));
 $mood1 = mysqli_real_escape_string($con, $mood1);
@@ -53,8 +49,8 @@ $date = mysqli_real_escape_string($con, $date);
 $time = strip_tags(trim($time));
 $time = mysqli_real_escape_string($con, $time);
 
-$result = mysqli_query($con,"INSERT INTO BetrackDailyStatus (UserId, PeriodStatus, SocialLife1, SocialLife2, PhoneUsage, Mood1, Mood2, Mood3, Mood4, Date, Time) 
-          VALUES ('$userid ', '$periodstatus', '$sociallife1', '$sociallife2', '$phoneusage', '$mood1', '$mood2', '$mood3', '$mood4', '$date', '$time')");
+$result = mysqli_query($con,"INSERT INTO BetrackDailyStatus (UserId, PeriodStatus, SocialLife1, SocialLife2, Mood1, Mood2, Mood3, Mood4, Date, Time) 
+          VALUES ('$userid ', '$periodstatus', '$sociallife1', '$sociallife2', '$mood1', '$mood2', '$mood3', '$mood4', '$date', '$time')");
  
 endsession:		  
 if($result === true) {

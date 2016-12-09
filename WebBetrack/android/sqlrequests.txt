@@ -67,7 +67,6 @@ CREATE TABLE `BetrackDailyStatus` (
   `PeriodStatus` varchar(2) COLLATE latin1_general_ci NOT NULL,
   `SocialLife1` varchar(10) COLLATE latin1_general_ci NOT NULL,
   `SocialLife2` varchar(10) COLLATE latin1_general_ci NOT NULL,
-  `PhoneUsage` varchar(10) COLLATE latin1_general_ci NOT NULL,
   `Mood1` varchar(10) COLLATE latin1_general_ci NOT NULL,
   `Mood2` varchar(10) COLLATE latin1_general_ci NOT NULL,
   `Mood3` varchar(10) COLLATE latin1_general_ci NOT NULL,
@@ -128,6 +127,15 @@ CREATE TABLE `BetrackDailyStatus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` varchar(255) COLLATE latin1_general_ci NOT NULL,
   `Sessionkey` varchar(512) COLLATE latin1_general_ci NOT NULL,
+  `Date` varchar(15) COLLATE latin1_general_ci NOT NULL,
+  `Time` varchar(15) COLLATE latin1_general_ci NOT NULL,
+  PRIMARY KEY (`id`)) ENGINE=MyISAM  
+  COLLATE=latin1_general_ci AUTO_INCREMENT=61;
+  
+  CREATE TABLE `BetrackPhoneUsage` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `UserId` varchar(255) COLLATE latin1_general_ci NOT NULL,
+  `PhoneUsage` varchar(10) COLLATE latin1_general_ci NOT NULL,
   `Date` varchar(15) COLLATE latin1_general_ci NOT NULL,
   `Time` varchar(15) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`)) ENGINE=MyISAM  
