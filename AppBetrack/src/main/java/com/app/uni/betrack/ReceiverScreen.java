@@ -1,7 +1,6 @@
 package com.app.uni.betrack;
 
 import android.annotation.TargetApi;
-import android.app.KeyguardManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +21,6 @@ import java.util.Date;
 public class ReceiverScreen extends WakefulBroadcastReceiver {
 
     Handler mHandler;
-    public static long ScreenOnStartTime;
     public enum StateScreen {
         UNKNOWN, OFF, ON
     }
@@ -72,8 +70,13 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        String ActivityStartDate = "";
+        String ActivityStartTime = "";
         String ActivityStopDate = "";
         String ActivityStopTime = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+        SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+
         ContentValues values = new ContentValues();
         ObjSettingsStudy = SettingsStudy.getInstance(context);
 
@@ -103,6 +106,7 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
             if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
                 Log.d(TAG, "ACTION_USER_PRESENT");
                 ScreenState = StateScreen.ON;
+
             }
 
             if ((intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) ||
@@ -113,32 +117,35 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
 
             }
 
-
             if (ScreenState == StateScreen.OFF) {
 
                 Log.d(TAG, "Screen is off we save the data to the local database");
                 //Save the end time
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-                SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+
 
                 // We should never stop the alarm or from marshallow at some point the whole service goes into a kind of sleep mode
                 //CreateTrackApp.StopAlarm(context);
                 //Instead we decrease the frequency
                 CreateTrackApp.CreateAlarm(context,SettingsBetrack.SAMPLING_RATE_SCREEN_OFF);
+
+                //Save when the screen was switched off
+                values.clear();
+
+                //Save the date
+                ActivityStopDate = sdf.format(new Date());
+                //Save the time
+                ActivityStopTime = shf.format(new Date());
+
+                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 0);
+                values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStopDate);
+                values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStopTime);
                 try {
-                    SettingsStudy.SemPhoneUsage.acquire();
-                    if (ScreenOnStartTime != 0) {
-                        int PhoneUsage = ObjSettingsStudy.getPhoneUsage();
-                        Log.d(TAG, "Screen is off previous phone usage: " + PhoneUsage + " we add : " + (int) ((System.currentTimeMillis() - ScreenOnStartTime) / 1000));
-                        if (ScreenOnStartTime != 0) {
-                            ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - ScreenOnStartTime) / 1000));
-                            ScreenOnStartTime = 0;
-                        }
-                    }
-                     SettingsStudy.SemPhoneUsage.release();
-                } catch (Exception e) {}
+                    AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
+                } catch (Exception f) {
+                    Log.d(TAG, "Nothing to update in the database");
+                }
 
-
+                //Save in the database if needed when we stop monitoring an application
                 values.clear();
                 values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
                 try {
@@ -170,18 +177,20 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
             }
             else
             {
-                KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-                boolean locked = km.inKeyguardRestrictedInputMode();
-
-
-                if (!locked) {
-                    try {
-                        SettingsStudy.SemPhoneUsage.acquire();
-                        if (ScreenOnStartTime == 0) {
-                            ScreenOnStartTime = System.currentTimeMillis();
-                        }
-                        SettingsStudy.SemPhoneUsage.release();
-                    } catch (Exception e) {}
+                //Screen is on and not locked we save this status in the databse
+                //Save when the screen was switched off
+                values.clear();
+                //Save the date
+                ActivityStartDate = sdf.format(new Date());
+                //Save the time
+                ActivityStartTime = shf.format(new Date());
+                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 1);
+                values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
+                values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
+                try {
+                    AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
+                } catch (Exception f) {
+                    Log.d(TAG, "Nothing to update in the database");
                 }
 
                 CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);

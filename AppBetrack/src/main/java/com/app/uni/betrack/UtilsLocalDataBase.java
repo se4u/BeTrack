@@ -203,7 +203,6 @@ public class UtilsLocalDataBase {
     static final String C_ENDSTUDY_MOOD4 = "Mood4";
     static final String C_ENDSTUDY_RELATIONSHIP = "RelationShip";
     static final String C_ENDSTUDY_CONTRACEPTION = "Contraception";
-    static final String C_ENDSTUDY_USAGE = "PhoneUsage";
     static final String C_ENDSTUDY_DATE = "Date";
     static final String C_ENDSTUDY_TIME = "Time";
 
@@ -218,7 +217,6 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_ENDSTUDY_MOOD4);
         add(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP);
         add(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION);
-        add(UtilsLocalDataBase.C_ENDSTUDY_USAGE);
         add(UtilsLocalDataBase.C_ENDSTUDY_DATE);
         add(UtilsLocalDataBase.C_ENDSTUDY_TIME);
     }};
@@ -234,7 +232,6 @@ public class UtilsLocalDataBase {
         add(true);  //C_ENDSTUDY_MOOD4
         add(true);  //C_ENDSTUDY_RELATIONSHIP
         add(true);  //C_ENDSTUDY_CONTRACEPTION
-        add(true);  //C_ENDSTUDY_USAGE
         add(true); //C_ENDSTUDY_DATE
         add(true); //C_ENDSTUDY_TIME
     }};
@@ -243,20 +240,21 @@ public class UtilsLocalDataBase {
     static final String TABLE_PHONE_USAGE = "PhoneUsage";
     static final String C_PHONE_USAGE_ID = BaseColumns._ID;
     static final String C_PHONE_USAGE_PID = "ParticipantID";
-    static final String C_PHONE_USAGE = "PhoneUsage";
+    static final String C_PHONE_USAGE_STATE = "ScreenState";
     static final String C_PHONE_USAGE_DATE = "Date";
     static final String C_PHONE_USAGE_TIME = "Time";
 
+
     public static final ArrayList<String> DB_PHONE_USAGE = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_PHONE_USAGE_PID);
-        add(UtilsLocalDataBase.C_PHONE_USAGE);
+        add(UtilsLocalDataBase.C_PHONE_USAGE_STATE);
         add(UtilsLocalDataBase.C_PHONE_USAGE_DATE);
         add(UtilsLocalDataBase.C_PHONE_USAGE_TIME);
     }};
 
     public static final ArrayList<Boolean> DB_PHONE_USAGE_CYPHER = new ArrayList<Boolean>() {{
         add(false); //C_PHONE_USAGE_PID
-        add(true);  //C_PHONE_USAGE
+        add(true);  //C_PHONE_USAGE_STATE
         add(true);  //C_PHONE_USAGE_DATE
         add(true);  //C_PHONE_USAGE_TIME
     }};
@@ -333,7 +331,6 @@ public class UtilsLocalDataBase {
                     + C_ENDSTUDY_MOOD4 + " text, "
                     + C_ENDSTUDY_RELATIONSHIP + " text, "
                     + C_ENDSTUDY_CONTRACEPTION + " text, "
-                    + C_ENDSTUDY_USAGE + " text, "
                     + C_ENDSTUDY_DATE +  " text, "
                     + C_ENDSTUDY_TIME + " text)"; //
             db.execSQL(sql6);
@@ -347,8 +344,8 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql7);
 
             String sql8 = "create table " + TABLE_PHONE_USAGE + " (" + C_PHONE_USAGE_ID + " integer primary key autoincrement, "
-                    + C_PHONE_USAGE + " text, "
-                    + C_PHONE_USAGE_DATE + " text, "
+                    + C_PHONE_USAGE_STATE + " text, "
+                    + C_PHONE_USAGE_DATE +  " text, "
                     + C_PHONE_USAGE_TIME + " text)"; //
             db.execSQL(sql8);
             Log.d(TAG, "onCreated sql: " + sql8);

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by cedoctet on 21/08/2016.
@@ -57,25 +56,6 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
             }
         }
 
-        values.clear();
-        //Save the usage of the phone for the last 24 hours
-        try {
-            SettingsStudy.SemPhoneUsage.acquire();
-            PhoneUsage = ObjSettingsStudy.getPhoneUsage();
-            ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - ReceiverScreen.ScreenOnStartTime) / 1000));
-            ReceiverScreen.ScreenOnStartTime = System.currentTimeMillis();
-            PhoneUsage = ObjSettingsStudy.getPhoneUsage();
-            values.put(UtilsLocalDataBase.C_PHONE_USAGE, PhoneUsage);
-            ObjSettingsStudy.setPhoneUsage(0);
-            SettingsStudy.SemPhoneUsage.release();
-        } catch (Exception e) {}
-
-        DateDaily = sdf.format(new Date());
-        values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, DateDaily);
-        TimeDaily = shf.format(new Date());
-        values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, TimeDaily);
-
-        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
         //Trigger a notification
         CreateNotification.Create(context);
 

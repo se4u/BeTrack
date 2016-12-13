@@ -75,19 +75,6 @@ public class IntentServiceTrackApp extends IntentService {
             ObjSettingsStudy = SettingsStudy.getInstance(this);
         }
 
-        //Check the status of the screen
-        if (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState) {
-            if (!locked) {
-                try {
-                    SettingsStudy.SemPhoneUsage.acquire();
-                    if (ReceiverScreen.ScreenOnStartTime == 0) {
-                        ReceiverScreen.ScreenOnStartTime = System.currentTimeMillis();
-                    }
-                    SettingsStudy.SemPhoneUsage.release();
-                } catch (Exception e) {}
-            }
-        }
-
         if (intent != null) {
 
             //Check if a study is going on

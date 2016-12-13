@@ -135,7 +135,7 @@ CREATE TABLE `BetrackDailyStatus` (
   CREATE TABLE `BetrackPhoneUsage` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` varchar(255) COLLATE latin1_general_ci NOT NULL,
-  `PhoneUsage` varchar(10) COLLATE latin1_general_ci NOT NULL,
+  `ScreenState` varchar(1) COLLATE latin1_general_ci NOT NULL,
   `Date` varchar(15) COLLATE latin1_general_ci NOT NULL,
   `Time` varchar(15) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`)) ENGINE=MyISAM  

@@ -6,18 +6,18 @@ if($result === false) {
     goto endsession;
 }
 
-$phoneusage = '';
+$screenstate = '';
 $date = '';
 $time = '';
 
-list($phoneusage, $date, $time) = explode(chr (30), $plain);
+list($screenstate, $date, $time) = explode(chr (30), $plain);
 
 //Check the data
 $userid = strip_tags(trim($userid));
 $userid = mysqli_real_escape_string($con, $userid);
 
-$phoneusage = strip_tags(trim($phoneusage));
-$phoneusage = mysqli_real_escape_string($con, $phoneusage);
+$screenstate = strip_tags(trim($screenstate));
+$screenstate = mysqli_real_escape_string($con, $screenstate);
 
 $date = strip_tags(trim($date));
 $date = mysqli_real_escape_string($con, $date);
@@ -25,8 +25,8 @@ $date = mysqli_real_escape_string($con, $date);
 $time = strip_tags(trim($time));
 $time = mysqli_real_escape_string($con, $time);
 
-$result = mysqli_query($con,"INSERT INTO BetrackPhoneUsage (UserId, PhoneUsage, Date, Time) 
-          VALUES ('$userid', '$phoneusage', '$date', '$time')");
+$result = mysqli_query($con,"INSERT INTO BetrackPhoneUsage (UserId, ScreenState, Date, Time) 
+          VALUES ('$userid', '$screenstate', '$date', '$time')");
  
 endsession:		  
 if($result === true) {

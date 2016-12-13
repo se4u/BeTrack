@@ -3,7 +3,6 @@ package com.app.uni.betrack;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.DotStepper;
@@ -76,17 +75,6 @@ public class ActivitySurveyEnd  extends DotStepper {
         values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD3, SurveyMood3);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP, SurveyInRelation);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION, SurveyContraception);
-
-        try {
-            SettingsStudy.SemPhoneUsage.acquire();
-            PhoneUsage = ObjSettingsStudy.getPhoneUsage();
-            ObjSettingsStudy.setPhoneUsage(PhoneUsage + (int) ((System.currentTimeMillis() - ReceiverScreen.ScreenOnStartTime) / 1000));
-            ReceiverScreen.ScreenOnStartTime = System.currentTimeMillis();
-            PhoneUsage = ObjSettingsStudy.getPhoneUsage();
-            values.put(UtilsLocalDataBase.C_ENDSTUDY_USAGE, PhoneUsage);
-            ObjSettingsStudy.setPhoneUsage(0);
-            SettingsStudy.SemPhoneUsage.release();
-        } catch (Exception e) {}
 
         DateStudyEnd = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_DATE, DateStudyEnd);
