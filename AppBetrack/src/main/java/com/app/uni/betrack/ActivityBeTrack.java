@@ -11,6 +11,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 
 
 public class ActivityBeTrack extends AppCompatActivity {
-
+    static final String TAG = "ActivityBeTrack";
     private Menu SaveMenuRef = null;
     public static boolean OnForeground = false;
 
@@ -113,18 +114,27 @@ public class ActivityBeTrack extends AppCompatActivity {
                     finish();
                 }
             } else {
-                if (ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.DONE) {
+                SettingsStudy.EndStudyTranferState endStudyTranferState = ObjSettingsStudy.getEndSurveyTransferred();
+                if (endStudyTranferState == SettingsStudy.EndStudyTranferState.DONE) {
+                    Log.d(TAG, "getEndSurveyTransferred = DONE");
                     prepareChart(true);
                     textWelcome.setText(getResources().getString(R.string.Betrack_end));
                 } else {
-                    if (ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.IN_PROGRESS) {
+                    if (endStudyTranferState == SettingsStudy.EndStudyTranferState.IN_PROGRESS) {
+                        Log.d(TAG, "getEndSurveyTransferred = IN_PROGRESS");
                         Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
                         iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY_IN_PROGRESS);
                         startActivity(iError);
                         finish();
                     } else {
+                        if (endStudyTranferState == SettingsStudy.EndStudyTranferState.NOT_YET) {
+                            Log.d(TAG, "getEndSurveyTransferred = NOT_YET");
+                        } else {
+                            Log.d(TAG, "getEndSurveyTransferred = ERROR");
+                        }
+
                         Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
-                        iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY);
+                        iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY_IN_ERROR);
                         startActivity(iError);
                         finish();
                     }

@@ -3,6 +3,7 @@ package com.app.uni.betrack;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.DotStepper;
@@ -83,6 +84,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_END_STUDY);
 
+        Log.d(TAG, "setEndSurveyTransferred = IN_PROGRESS");
         ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.IN_PROGRESS);
 
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
