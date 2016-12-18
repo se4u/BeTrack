@@ -85,11 +85,16 @@ public class ActivityBeTrack extends AppCompatActivity {
         }
 
         OnForeground = true;
+
         if ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(this)) >= 0)
         {
             betrackLogo.setVisibility(View.GONE);
             mChart.setVisibility(View.VISIBLE);
             if (false == ObjSettingsStudy.getEndSurveyDone()) {
+
+                //We start the study if not started yet
+                StartStudy();
+
                 if (ObjSettingsStudy.getNbrOfNotificationToDo() >= 1) {
                     if (false == ObjSettingsStudy.getSetupBetrackDone()) {
                         Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
@@ -126,6 +131,9 @@ public class ActivityBeTrack extends AppCompatActivity {
                 }
             }
         } else {
+            //We start the study if not started yet
+            StartStudy();
+
             betrackLogo.setVisibility(View.VISIBLE);
             mChart.setVisibility(View.GONE);
             textWelcome.setText(getResources().getString(R.string.Betrack_start));
@@ -144,65 +152,22 @@ public class ActivityBeTrack extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)) );
         setContentView(R.layout.activity_betrack);
 
-        TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
-        ImageView betrackLogo = (ImageView) findViewById(R.id.logo_activity_betrack);
-
-        if (mChart == null) {
-            mChart = (PieChart) findViewById(R.id.chart1);
-        }
-
         if (null == ObjSettingsStudy) {
             //Read the setting of the study
             ObjSettingsStudy = SettingsStudy.getInstance(this);
         }
 
+        if (null == ObjSettingsBetrack) {
+            //Read the preferences
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+            ObjSettingsBetrack.Update(this);
+        }
 
-        OnForeground = true;
         if ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(this)) >= 0)
         {
-            betrackLogo.setVisibility(View.GONE);
-            mChart.setVisibility(View.VISIBLE);
-
-            if (null == ObjSettingsBetrack) {
-                //Read the preferences
-                ObjSettingsBetrack = SettingsBetrack.getInstance();
-                ObjSettingsBetrack.Update(this);
-            }
-
             //Set the notification to make sure that we never got killed
             final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(SettingsBetrack.ID_NOTIFICATION_BETRACK);
-
-            if (false == ObjSettingsStudy.getEndSurveyDone()) {
-
-                //We start the study
-                StartStudy();
-
-                if (ObjSettingsStudy.getNbrOfNotificationToDo() >= 1) {
-                    if (ObjSettingsStudy.getDailySurveyDone() == false) {
-                        Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
-                        startActivity(i);
-                        finish();
-                    } else {
-                        //Prepare the chart to be display
-                        prepareChart(false);
-                    }
-                }  else {
-                    Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
-                    startActivity(i);
-                    finish();
-                }
-
-            } else {
-                prepareChart(true);
-                textWelcome.setText(getResources().getString(R.string.Betrack_end));
-            }
-        } else {
-            //We start the study
-            StartStudy();
-            betrackLogo.setVisibility(View.VISIBLE);
-            mChart.setVisibility(View.GONE);
-            textWelcome.setText(getResources().getString(R.string.Betrack_start));
         }
     }
 
