@@ -99,8 +99,30 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
             }
 
             if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+                long DeltaLastTransfer;
                 Log.d(TAG, "ACTION_SCREEN_ON");
                 ScreenState = StateScreen.ON;
+                //Screen is on and not locked we save this status in the databse
+                //Save when the screen was switched off
+                values.clear();
+                //Save the date
+                ActivityStartDate = sdf.format(new Date());
+                //Save the time
+                ActivityStartTime = shf.format(new Date());
+                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 1);
+                values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
+                values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
+                try {
+                    AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
+                    Log.d(TAG, "Screen On saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                } catch (Exception f) {
+                    Log.d(TAG, "Nothing to update in the database");
+                }
+                
+                DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastGPS();
+                if ((DeltaLastTransfer >= SettingsBetrack.TRACKGPS_DELTA) || (DeltaLastTransfer < 0))  {
+                    ReceiverGPSChange.StartGPS(context);
+                }
             }
 
             if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
@@ -141,6 +163,7 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStopTime);
                 try {
                     AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
+                    Log.d(TAG, "Screen Off saved in database " + ActivityStopDate + " " + ActivityStopTime);
                 } catch (Exception f) {
                     Log.d(TAG, "Nothing to update in the database");
                 }
@@ -177,22 +200,6 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
             }
             else
             {
-                //Screen is on and not locked we save this status in the databse
-                //Save when the screen was switched off
-                values.clear();
-                //Save the date
-                ActivityStartDate = sdf.format(new Date());
-                //Save the time
-                ActivityStartTime = shf.format(new Date());
-                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 1);
-                values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
-                values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
-                try {
-                    AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
-                } catch (Exception f) {
-                    Log.d(TAG, "Nothing to update in the database");
-                }
-
                 CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
                 long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
                 if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {
@@ -201,11 +208,6 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                         //Start the service for sending the data to the remote server
                         context.startService(msgIntent);
                     }
-                }
-
-                DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastGPS();
-                if ((DeltaLastTransfer >= SettingsBetrack.TRACKGPS_DELTA) || (DeltaLastTransfer < 0))  {
-                    ReceiverGPSChange.StartGPS(context);
                 }
             }
         }
