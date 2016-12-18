@@ -14,11 +14,10 @@ $mood3 = '';
 $mood4 = '';
 $relationship = '';
 $contraception = '';
-$phoneusage = '';
 $date = '';
 $time = '';
 
-list($periodstatus, $sociallife1, $sociallife2, $mood1, $mood2, $mood3, $mood4, $relationship, $contraception, $phoneusage, $date, $time) = explode(chr (30), $plain);
+list($periodstatus, $sociallife1, $sociallife2, $mood1, $mood2, $mood3, $mood4, $relationship, $contraception, $date, $time) = explode(chr (30), $plain);
 
 //Check the data
 $userid = strip_tags(trim($userid));
@@ -51,17 +50,14 @@ $relationship = mysqli_real_escape_string($con, $relationship);
 $contraception = strip_tags(trim($contraception));
 $contraception = mysqli_real_escape_string($con, $contraception);
 
-$phoneusage = strip_tags(trim($phoneusage));
-$phoneusage = mysqli_real_escape_string($con, $phoneusage);
-
 $date = strip_tags(trim($date));
 $date = mysqli_real_escape_string($con, $date);
 
 $time = strip_tags(trim($time));
 $time = mysqli_real_escape_string($con, $time);
 
-$result = mysqli_query($con,"INSERT INTO BetrackEndStudy (UserId, Period, SocialLife1, SocialLife2, Mood1, Mood2, Mood3, Mood4, RelationShip, Contraception, PhoneUsage, Date, Time) 
-          VALUES ('$userid ', '$periodstatus', '$sociallife1', '$sociallife2', '$mood1', '$mood2', '$mood3', '$mood4', '$relationship', '$contraception', '$phoneusage', '$date', '$time')");
+$result = mysqli_query($con,"INSERT INTO BetrackEndStudy (UserId, Period, SocialLife1, SocialLife2, Mood1, Mood2, Mood3, Mood4, RelationShip, Contraception, Date, Time) 
+          VALUES ('$userid ', '$periodstatus', '$sociallife1', '$sociallife2', '$mood1', '$mood2', '$mood3', '$mood4', '$relationship', '$contraception', '$date', '$time')");
  
 endsession:		  
 if($result === true) {

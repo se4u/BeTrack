@@ -107,7 +107,6 @@ CREATE TABLE `BetrackDailyStatus` (
   `Mood4` varchar(10) COLLATE latin1_general_ci NOT NULL,
   `RelationShip` varchar(2) COLLATE latin1_general_ci NOT NULL,
   `Contraception` varchar(255) COLLATE latin1_general_ci NOT NULL,
-  `PhoneUsage` varchar(10) COLLATE latin1_general_ci NOT NULL,
   `Date` varchar(15) COLLATE latin1_general_ci NOT NULL,
   `Time` varchar(15) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`)) ENGINE=MyISAM  
