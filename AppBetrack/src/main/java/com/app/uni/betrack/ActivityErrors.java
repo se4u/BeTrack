@@ -133,20 +133,17 @@ public class ActivityErrors  extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + NetworkError);
 
         if(NetworkError.equals(START_STUDY)) {
-            //Start of the study
+            //Start of the study in error
             Title.setText(getResources().getString(R.string.network_error_title));
             Description.setText(getResources().getString(R.string.network_error_start_text));
-            Description.setVisibility(View.VISIBLE);
         }  else if(NetworkError.equals(END_STUDY_IN_PROGRESS)) {
             //End study case
-            Title.setText(getResources().getString(R.string.network_end_text));
-            Description.setVisibility(View.INVISIBLE);
+            Title.setText(getResources().getString(R.string.network_title_in_progress));
+            Description.setText(getResources().getString(R.string.network_end_text));
         } else if(NetworkError.equals(END_STUDY_IN_ERROR)) {
-            //End study case
-            Log.d(TAG, "NetworkError.equals(END_STUDY_IN_ERROR)");
+            //End study case in error
             Title.setText(getResources().getString(R.string.network_error_title));
             Description.setText(getResources().getString(R.string.network_error_end_text));
-            Description.setVisibility(View.VISIBLE);
         }
         RotateAnimation rotate = new RotateAnimation(0, 360,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
