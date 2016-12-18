@@ -46,13 +46,12 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
             Log.d(TAG, "The system is just started");
 
             //Since we were off we check if we didn't miss the last notification
-            if ( (true == ObjSettingsBetrack.GetStudyNotification()) && (ObjSettingsStudy.getTimeNextNotification() - System.currentTimeMillis() < 0) ) {
+            if ( (true == ObjSettingsBetrack.GetStudyNotification())
+                    && (ObjSettingsStudy.getTimeNextNotification() - System.currentTimeMillis() < 0)) {
                 Log.d(TAG, "We missed the notification so we trigger it manually");
-                //We enable the daily survey
-                ObjSettingsStudy.setDailySurveyDone(false);
-
-                //Trigger a notification
-                CreateNotification.Create(context);
+                Intent intentNotif = new Intent();
+                intentNotif.setAction(SettingsBetrack.BROADCAST_TRIGGER_NOTIFICATION);
+                context.sendBroadcast(intentNotif);
             } else {
                 Log.d(TAG, "notification was not missed we go on with the startup");
             }

@@ -30,7 +30,13 @@
                 <action android:name="com.app.uni.betrack.START_TRACKING" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".ReceiverAlarmNotification"/>
+
+        <receiver android:name=".ReceiverAlarmNotification">
+            <intent-filter>
+                <action android:name="com.app.uni.betrack.TRIGGER_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".ReceiverGPSChange">
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED" />

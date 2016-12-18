@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 
@@ -11,7 +12,7 @@ import java.text.SimpleDateFormat;
  * Created by cedoctet on 21/08/2016.
  */
 public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
-
+    static final String TAG = "ReceiverAlarmNotif";
     private SettingsStudy ObjSettingsStudy;
     private SettingsBetrack ObjSettingsBetrack = null;
     private int PhoneUsage = 0;
@@ -43,9 +44,14 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
             localdatabase =  new UtilsLocalDataBase(context);
         }
 
-        int NbrOfNotificationDone = ObjSettingsStudy.getNbrOfNotificationToDo();
-        NbrOfNotificationDone--;
-        ObjSettingsStudy.setNbrOfNotificationToDo(NbrOfNotificationDone);
+        Log.d(TAG, "Received ");
+        if ((ObjSettingsStudy.getDailySurveyDone() == true) ||
+                ( (ObjSettingsStudy.getNbrOfNotificationToDo() == 0) && (ObjSettingsStudy.getEndSurveyDone() == true) ) ){
+            int NbrOfNotificationDone = ObjSettingsStudy.getNbrOfNotificationToDo();
+            NbrOfNotificationDone--;
+            Log.d(TAG, "NbrOfNotificationDone = " + NbrOfNotificationDone);
+            ObjSettingsStudy.setNbrOfNotificationToDo(NbrOfNotificationDone);
+        }
 
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
             if (ObjSettingsStudy.getNbrOfNotificationToDo() > 0) {
