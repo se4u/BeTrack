@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.service.notification.StatusBarNotification;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -37,6 +38,10 @@ public class CreateNotification {
                 PendingIntent.FLAG_UPDATE_CURRENT);
         mNotification = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        //Cancel the last pending notification
+        mNotification.cancel(SettingsBetrack.ID_NOTIFICATION_BETRACK);
+
+        //Create a new notification
         builder = new NotificationCompat.Builder(context)
                 .setWhen(System.currentTimeMillis())
                 .setTicker(context.getString(R.string.notification_title))
