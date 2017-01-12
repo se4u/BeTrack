@@ -36,6 +36,10 @@ public class ReceiverGPSChange  extends WakefulBroadcastReceiver {
 
     public static void StartGPS(Context context) {
 
+        if (!SettingsBetrack.STUDY_ENABLE_GPS) {
+            return;
+        }
+
         if (!SemGPS.tryAcquire()) {
             return;
         }

@@ -68,6 +68,8 @@ public class SettingsBetrack {
 
     static public String STUDY_PUBLIC_KEY = "public.pem";
 
+    static public boolean STUDY_ENABLE_GPS = false;
+
     public static final Semaphore SemSettingsBetrack = new Semaphore(1, true);
 
     private Boolean StudyEnable;

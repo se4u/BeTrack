@@ -74,7 +74,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
             EnableHuaweiProtMode = true;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) && (SettingsBetrack.STUDY_ENABLE_GPS)) {
             // Here, thisActivity is the current activity
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
