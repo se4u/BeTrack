@@ -184,16 +184,13 @@ public class CreateNotification {
         cal.set(Calendar.HOUR_OF_DAY, calendarpref.get(calendarpref.HOUR_OF_DAY));
         cal.set(Calendar.MINUTE, calendarpref.get(calendarpref.MINUTE));
 
-
-        if ((cal.getTimeInMillis() - System.currentTimeMillis()) < 0) {
+        //If the delta between 2 notification is below one hour or even negative (should never happen)
+        //the next notification is the next day
+        if ((cal.getTimeInMillis() - System.currentTimeMillis()) < 60 * 60 * 1000) {
             cal.add(Calendar.DATE, 1);
         }
 
         TimeToSet = cal.getTimeInMillis();
-
-        if ((TimeToSet - System.currentTimeMillis()) <= 0) {
-            TimeToSet = (24 *60 *60 *1000) + System.currentTimeMillis();
-        }
 
         ObjSettingsStudy.setTimeNextNotification(TimeToSet);
 
