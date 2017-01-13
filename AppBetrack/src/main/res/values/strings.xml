@@ -3,7 +3,7 @@
     <string name="splash_loading">Loading...</string>
 
     <!-- start activity_start_study -->
-        <string name="disclaimer_error">You need to need to agree to go on with the study</string>
+        <string name="disclaimer_error">You need to agree to go on with the study</string>
 
         <!-- Disclaimer to accept to participate the study -->
         <string name="disclaimer_title">Disclaimer</string>
@@ -18,10 +18,10 @@
             Haec et huius modi quaedam innumerabilia ultrix facinorum impiorum bonorumque praemiatrix aliquotiens operatur Adrastia atque utinam semper quam vocabulo duplici etiam Nemesim appellamus: ius quoddam sublime numinis efficacis, humanarum mentium opinione lunari circulo superpositum, vel ut definiunt alii, substantialis tutela generali potentia partilibus praesidens fatis, quam theologi veteres fingentes Iustitiae filiam ex abdita quadam aeternitate tradunt omnia despectare terrena.
             Ac ne quis a nobis hoc ita dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur.
         </string>
-        <string name="disclaimer_agree">I agree to terms</string>
+        <string name="disclaimer_agree">I agree to these terms</string>
 
         <!-- Study informations -->
-        <string name="study_title">Dummy Title</string>
+        <string name="study_title">Phone Use Study</string>
         <string name="study_description">Utque aegrum corpus quassari etiam levibus solet offensis, ita animus eius angustus et tener, quicquid increpuisset, ad salutis suae dispendium existimans factum aut cogitatum, insontium caedibus fecit victoriam luctuosam.
             Pandente itaque viam fatorum sorte tristissima, qua praestitutum erat eum vita et imperio spoliari, itineribus interiectis permutatione iumentorum emensis venit Petobionem oppidum Noricorum, ubi reseratae sunt insidiarum latebrae omnes, et Barbatio repente apparuit comes, qui sub eo domesticis praefuit, cum Apodemio agente in rebus milites ducens, quos beneficiis suis oppigneratos elegerat imperator certus nec praemiis nec miseratione ulla posse deflecti.
             Rogatus ad ultimum admissusque in consistorium ambage nulla praegressa inconsiderate et leviter proficiscere inquit ut praeceptum est, Caesar sciens quod si cessaveris, et tuas et palatii tui auferri iubebo prope diem annonas. hocque solo contumaciter dicto subiratus abscessit nec in conspectum eius postea venit saepius arcessitus.
@@ -33,7 +33,7 @@
             Haec et huius modi quaedam innumerabilia ultrix facinorum impiorum bonorumque praemiatrix aliquotiens operatur Adrastia atque utinam semper quam vocabulo duplici etiam Nemesim appellamus: ius quoddam sublime numinis efficacis, humanarum mentium opinione lunari circulo superpositum, vel ut definiunt alii, substantialis tutela generali potentia partilibus praesidens fatis, quam theologi veteres fingentes Iustitiae filiam ex abdita quadam aeternitate tradunt omnia despectare terrena.
             Ac ne quis a nobis hoc ita dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur.
         </string>
-        <string name="study_agree">I agree to participate to that study</string>
+        <string name="study_agree">I agree to participate in this study</string>
 
         <!-- Network error -->
         <string name="network_error_title">Network connection error</string>
@@ -148,7 +148,7 @@
     <!-- Start survey -->
     <!-- Screen 1 (relation) -->
         <string name="title_ss_screen1">RELATIONSHIP</string>
-        <string name="question_ss_screen1">Are you in a relationship ?</string>
+        <string name="question_ss_screen1">Are you in an exclusive  relationship ?</string>
     <!-- Screen 2 (age) -->
         <string name="title_ss_screen2">AGE</string>
         <string name="question_ss_screen2">How old are you ?</string>
@@ -173,31 +173,31 @@
     <!-- Daily survey -->
     <!-- Screen 1 (Period) -->
     <string name="title_sd_screen1">PERIOD</string>
-    <string name="question_sd_screen1">Are you on period ?</string>
+    <string name="question_sd_screen1">Are you on your period today?</string>
 
     <!-- Screen 2 (Clothes) -->
     <string name="title_sd_screen2">CLOTHES</string>
     <string name="question_sd_screen2">Which are the dominant colors of the shirt/ dress you are wearing (max. 3)?</string>
 
-    <!-- Screen 3 (Social) -->
-    <string name="title_sd_screen3">SOCIAL (1/2)</string>
-    <string name="question_sd_screen3">In which of these activities did you engage in the last 24 hours?</string>
-    <string name="answer1_sd_screen3">work</string>
-    <string name="answer2_sd_screen3">study</string>
-    <string name="answer3_sd_screen3">read</string>
-    <string name="answer4_sd_screen3">watch tv</string>
+    <!-- Screen 3 (ACTIVITIES) -->
+    <string name="title_sd_screen3">ACTIVITIES (1/2)</string>
+    <string name="question_sd_screen3">Which of the following activities did you engage in yesterday?</string>
+    <string name="answer1_sd_screen3">working</string>
+    <string name="answer2_sd_screen3">studying</string>
+    <string name="answer3_sd_screen3">reading</string>
+    <string name="answer4_sd_screen3">watching tv</string>
     <string name="answer5_sd_screen3">sports</string>
     <string name="answer6_sd_screen3">shopping</string>
 
-    <!-- Screen 4 (Social 2/2) -->
-    <string name="title_sd_screen4">SOCIAL (2/2)</string>
-    <string name="question_sd_screen4">In which of these activities did you engage in the last 24 hours?</string>
-    <string name="answer1_sd_screen4">meet friends</string>
-    <string name="answer2_sd_screen4">go out</string>
+    <!-- Screen 4 (ACTIVITIES 2/2) -->
+    <string name="title_sd_screen4">ACTIVITIES (2/2)</string>
+    <string name="question_sd_screen4">Which of the following activities did you engage in yesterday?</string>
+    <string name="answer1_sd_screen4">meeting friends</string>
+    <string name="answer2_sd_screen4">having drinks</string>
     <string name="answer3_sd_screen4">clubbing</string>
-    <string name="answer4_sd_screen4">date</string>
+    <string name="answer4_sd_screen4">dating</string>
     <string name="answer5_sd_screen4">sex</string>
-    <string name="answer6_sd_screen4">kiss</string>
+    <string name="answer6_sd_screen4">kissing</string>
 
     <!-- Screen 5 (Mood) -->
     <string name="title_sd_screen5">MOOD</string>
@@ -209,7 +209,7 @@
     <!-- End survey -->
     <!-- Screen 1 (period) -->
     <string name="title_se_screen1">PERIOD</string>
-    <string name="question_se_screen1">Are you on period ?</string>
+    <string name="question_se_screen1">Are you on your period today ?</string>
 
     <!-- Screen 2 (relation) -->
     <string name="title_se_screen2">RELATIONSHIP</string>

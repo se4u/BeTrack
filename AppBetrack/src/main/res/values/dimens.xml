@@ -15,9 +15,9 @@
 
     <!-- 6 choices specific dimensions -->
     <dimen name="survey_6choices_margin_top_2_line">130dp</dimen>
-    <dimen name="survey_6choices_button_width">100dp</dimen>
-    <dimen name="survey_6choices_button_height">100dp</dimen>
-    <dimen name="survey_6choices_textsize">15sp</dimen>
+    <dimen name="survey_6choices_button_width">105dp</dimen>
+    <dimen name="survey_6choices_button_height">105dp</dimen>
+    <dimen name="survey_6choices_textsize">12sp</dimen>
     <dimen name="survey_6choices_padding_image">22dp</dimen>
     <dimen name="survey_6choices_margin_bottom_image">10dp</dimen>
 </resources>

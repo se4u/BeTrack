@@ -45,7 +45,7 @@
                 android:id="@+id/RelativeLayoutBtn1"
                 android:layout_width="@dimen/survey_6choices_button_width"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="5dp">
 
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/FrameLayoutBtn1"
@@ -172,7 +172,7 @@
                 android:id="@+id/RelativeLayoutBtn4"
                 android:layout_width="@dimen/survey_6choices_button_width"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="5dp">
 
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/FrameLayoutBtn4"
