@@ -148,7 +148,7 @@ public class IntentServicePostData extends IntentService {
                     values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, true);
                     if (0 != values.size()) {
                         //Check if the time end is different of null which means that the entry is complete
-                        if (values.get(UtilsLocalDataBase.DB_APPWATCH.get(4)) != null) {
+                        if (values.get(UtilsLocalDataBase.DB_APPWATCH.get(5)) != null) {
                             ArrayList<String>  AppWatchData;
 
                             IdSql = values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID);
