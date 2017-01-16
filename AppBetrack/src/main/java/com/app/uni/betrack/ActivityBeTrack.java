@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,6 +30,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
+
+import static android.view.Gravity.CENTER_VERTICAL;
 
 
 public class ActivityBeTrack extends AppCompatActivity {
@@ -77,9 +80,7 @@ public class ActivityBeTrack extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-
         TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
-        ImageView betrackLogo = (ImageView) findViewById(R.id.logo_activity_betrack);
 
         if (mChart == null) {
             mChart = (PieChart) findViewById(R.id.chart1);
@@ -89,7 +90,7 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         if ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(this)) >= 0)
         {
-            betrackLogo.setVisibility(View.GONE);
+            textWelcome.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
             mChart.setVisibility(View.VISIBLE);
             if (false == ObjSettingsStudy.getEndSurveyDone()) {
 
@@ -143,9 +144,8 @@ public class ActivityBeTrack extends AppCompatActivity {
         } else {
             //We start the study if not started yet
             StartStudy();
-
-            betrackLogo.setVisibility(View.VISIBLE);
             mChart.setVisibility(View.GONE);
+            textWelcome.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
             textWelcome.setText(getResources().getString(R.string.Betrack_start));
         }
     }
@@ -158,6 +158,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_logo_padding);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setTitle("");
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)) );
         setContentView(R.layout.activity_betrack);

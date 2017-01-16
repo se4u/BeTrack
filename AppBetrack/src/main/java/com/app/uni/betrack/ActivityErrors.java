@@ -11,10 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -121,7 +117,6 @@ public class ActivityErrors  extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImageView LogoBetrack;
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         setContentView(R.layout.activity_errors);
@@ -145,13 +140,5 @@ public class ActivityErrors  extends AppCompatActivity {
             Title.setText(getResources().getString(R.string.network_error_title));
             Description.setText(getResources().getString(R.string.network_error_end_text));
         }
-        RotateAnimation rotate = new RotateAnimation(0, 360,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-                0.5f);
-        LogoBetrack = (ImageView) findViewById(R.id.logo_betrack);
-        rotate.setDuration(4000);
-        rotate.setInterpolator(new LinearInterpolator());
-        rotate.setRepeatCount(Animation.INFINITE);
-        LogoBetrack.setAnimation(rotate);
     }
 }

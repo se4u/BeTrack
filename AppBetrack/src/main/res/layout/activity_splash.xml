@@ -4,27 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="fill_parent" android:layout_weight="1"
-        android:textSize="60sp"
-        android:textColor="#000"
-        android:layout_margin="10dp" android:text="@string/app_name"
-        android:gravity="center_vertical|center_horizontal"/>
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="25dp"
+        android:padding="20sp"
+        android:layout_weight="2"
+        android:gravity="center_vertical|center_horizontal"
+        android:src="@drawable/ic_betrack" />`
 
     <ImageView
         android:id="@+id/logo_betrack"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
+        android:layout_marginTop="40dp"
+        android:padding="30sp"
         android:gravity="center_vertical|center_horizontal"
-        android:src="@mipmap/ic_launcher" />`
+        android:src="@drawable/ic_ubc_logo" />`
 
 
     <TextView android:layout_width="fill_parent"
-        android:layout_height="fill_parent" android:layout_weight="1"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
         android:textSize="20sp"
         android:textColor="#000"
-        android:layout_margin="10dp" android:text="@string/splash_loading"
+        android:layout_margin="10dp"
+        android:text="@string/splash_loading"
         android:gravity="center_vertical|center_horizontal"/>
 
 </LinearLayout>

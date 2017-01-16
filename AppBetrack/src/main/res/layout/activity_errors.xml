@@ -20,24 +20,28 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="right|top">
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="fill_parent" android:layout_weight="1"
-                android:textSize="60sp"
-                android:textColor="#000"
-                android:layout_margin="10dp" android:text="@string/app_name"
-                android:gravity="center_vertical|center_horizontal"/>
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="15dp"
+                android:padding="10sp"
+                android:layout_weight="2"
+                android:gravity="center_vertical|center_horizontal"
+                android:src="@drawable/ic_betrack" />`
 
             <ImageView
                 android:id="@+id/logo_betrack"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:layout_marginTop="40dp"
+                android:padding="30sp"
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
                 android:src="@mipmap/ic_launcher" />`
 
 
             <TextView android:layout_width="fill_parent"
-                android:layout_height="fill_parent" android:layout_weight="1"
+                android:layout_height="fill_parent" android:layout_weight="2"
                 android:id="@+id/network_error_title_text"
                 android:textSize="20sp"
                 android:textColor="#000"
@@ -50,7 +54,7 @@
                 android:textColor="#000"
                 android:scrollbars = "vertical"
                 android:gravity="left"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:id="@+id/network_error_text"
                 android:text="@string/network_error_start_text"/>
 
