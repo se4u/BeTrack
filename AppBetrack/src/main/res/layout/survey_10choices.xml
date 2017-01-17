@@ -32,7 +32,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="2"
-        android:gravity="center_vertical"
+        android:gravity="top"
         android:layout_marginLeft="10dp"
         android:orientation="vertical">
         <RadioButton android:id="@+id/radio_1"
