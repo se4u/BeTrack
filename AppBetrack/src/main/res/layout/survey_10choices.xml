@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="110dp"
+        android:id="@+id/survey_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center|top"
+        android:paddingTop="40dp"
+        android:background="@color/colorLightGrey"
+        android:layout_margin="0dp"
+        android:text="Title test"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:id="@+id/survey_desc"
+        android:layout_height="fill_parent"
+        android:layout_weight="5"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:gravity="center"
+        android:text="Description test"/>
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/radio_group"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
+        <RadioButton android:id="@+id/radio_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Caucasian"/>
+        <RadioButton android:id="@+id/radio_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hispanic/Latino"/>
+        <RadioButton android:id="@+id/radio_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="African"/>
+        <RadioButton android:id="@+id/radio_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="East Asian (e.g., Chinese, Japanese, or Korean)"/>
+        <RadioButton android:id="@+id/radio_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Southeast Asian (e.g., Vietnamese, Filipino)"/>
+        <RadioButton android:id="@+id/radio_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="South Asian (e.g., Indian)"/>
+        <RadioButton android:id="@+id/radio_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Middle Eastern (e.g., Persian)"/>
+        <RadioButton android:id="@+id/radio_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aboriginal"/>
+        <RadioButton android:id="@+id/radio_9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other"/>
+        <RadioButton android:id="@+id/radio_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other"/>
+    </RadioGroup>
+
+</LinearLayout>
