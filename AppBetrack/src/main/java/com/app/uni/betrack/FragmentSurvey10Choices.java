@@ -75,10 +75,6 @@ public class FragmentSurvey10Choices extends AbstractStep {
             NbrRbVisible++;
         }
 
-        if (savedInstanceState != null) {
-            SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
-        }
-
         if (SurveyStatus != -1) {
             radiobutton[SurveyStatus].setChecked(true);
         }

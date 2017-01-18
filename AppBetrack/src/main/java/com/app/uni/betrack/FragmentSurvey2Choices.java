@@ -29,7 +29,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
     public static final String SURVEY_2_CHOICES_TITLE = "SURVEY_2_CHOICES_TITLE";
     public static final String SURVEY_2_CHOICES_DESC = "SURVEY_2_CHOICES_DESC";
 
-
+    private Bundle bundle;
     private Button button1;
     private Button button2;
     private ImageView imgbutton1;
@@ -67,14 +67,11 @@ public class FragmentSurvey2Choices extends AbstractStep {
         Title = (TextView) v.findViewById(R.id.survey_title);
         Description = (TextView) v.findViewById(R.id.survey_desc);
 
-        final Bundle bundle = this.getArguments();
+        bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_2_CHOICES_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_2_CHOICES_DESC, null);
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
-
-        if (savedInstanceState != null)
-            SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BackgroundNoSelection = (Drawable)getResources().getDrawable(R.drawable.button_round_noselection, getContext().getTheme());

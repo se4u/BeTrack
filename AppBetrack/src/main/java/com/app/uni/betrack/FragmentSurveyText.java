@@ -73,8 +73,6 @@ public class FragmentSurveyText extends AbstractStep {
                 }
             }
         });
-        if (savedInstanceState != null)
-            SurveyStatus = savedInstanceState.getString(SURVEY_STATUS, null);
 
         return v;
     }

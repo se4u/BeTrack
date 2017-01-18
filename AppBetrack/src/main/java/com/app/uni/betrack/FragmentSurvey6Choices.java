@@ -40,6 +40,7 @@ public class FragmentSurvey6Choices extends AbstractStep {
     public static final String SURVEY_6_CHOICES_ICON = "SURVEY_6_CHOICES_ICON";
     public static final String SURVEY_6_CHOICES_ICON_TEXT = "SURVEY_6_CHOICES_ICON_TEXT";
 
+    private Bundle bundle;
     private TextView IconText1;
     private TextView IconText2;
     private TextView IconText3;
@@ -105,7 +106,7 @@ public class FragmentSurvey6Choices extends AbstractStep {
         Title = (TextView) v.findViewById(R.id.survey_title);
         Description = (TextView) v.findViewById(R.id.survey_desc);
 
-        final Bundle bundle = this.getArguments();
+        bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_6_CHOICES_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_6_CHOICES_DESC, null);
         ArrayList<String> IconsText = bundle.getStringArrayList(SURVEY_6_CHOICES_ICON_TEXT);
@@ -145,9 +146,6 @@ public class FragmentSurvey6Choices extends AbstractStep {
         IconText6.setText(IconsText.get(5));
         imgbutton6.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                 Icons.get(5), height, width));
-
-        if (savedInstanceState != null)
-            SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BackgroundNoSelection = (Drawable)getResources().getDrawable(R.drawable.button_round_noselection, getContext().getTheme());

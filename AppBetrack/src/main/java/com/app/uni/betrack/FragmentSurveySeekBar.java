@@ -43,6 +43,7 @@ public class FragmentSurveySeekBar extends AbstractStep {
     private SeekBar seekBar3;
     private SeekBar seekBar4;
 
+    private Bundle bundle;
     TextView[] seekBarText = new TextView[SURVEY_SEEKBAR_MAX];
     View[] seekBarView = new View[SURVEY_SEEKBAR_MAX];
 
@@ -83,7 +84,7 @@ public class FragmentSurveySeekBar extends AbstractStep {
         seekBarView[2] = (View) v.findViewById(R.id.SeekBar3);
         seekBarView[3] = (View) v.findViewById(R.id.SeekBar4);
 
-        final Bundle bundle = this.getArguments();
+        bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_SEEKBAR_CHOICES_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_SEEKBAR_CHOICES_DESC, null);
         ArrayList<String> SeekBarText = bundle.getStringArrayList(SURVEY_SEEKBAR_ANSWERS);
@@ -102,12 +103,6 @@ public class FragmentSurveySeekBar extends AbstractStep {
             NbrTextVisible++;
         }
 
-        if (savedInstanceState != null) {
-            SurveyStatus1 = savedInstanceState.getInt(SURVEY_STATUS1, -1);
-            SurveyStatus2 = savedInstanceState.getInt(SURVEY_STATUS2, -1);
-            SurveyStatus3 = savedInstanceState.getInt(SURVEY_STATUS3, -1);
-            SurveyStatus4 = savedInstanceState.getInt(SURVEY_STATUS4, -1);
-        }
 
         if (SurveyStatus1 != -1) {
             seekBar1.setProgress(SurveyStatus1);

@@ -24,6 +24,7 @@ public class FragmentDisclaimers  extends AbstractStep {
     public static final String ACTIVITY_DISCLAIMER_DESC = "ACTIVITY_DISCLAIMER_DESC";
     public static final String ACTIVITY_DISCLAIMER_AGREE = "ACTIVITY_DISCLAIMER_AGREE";
 
+    private Bundle bundle;
     private CheckBox Checkbox;
     private TextView Title;
     private TextView Description;
@@ -37,7 +38,7 @@ public class FragmentDisclaimers  extends AbstractStep {
         Title = (TextView) v.findViewById(R.id.disclaimer_title);
         Description = (TextView) v.findViewById(R.id.disclaimers);
 
-        final Bundle bundle = this.getArguments();
+        bundle = this.getArguments();
         String ActivityTitle = bundle.getString(ACTIVITY_DISCLAIMER_TITLE, null);
         String ActivityDescription = bundle.getString(ACTIVITY_DISCLAIMER_DESC, null);
         String ActivityAgreement = bundle.getString(ACTIVITY_DISCLAIMER_AGREE, null);
@@ -45,15 +46,6 @@ public class FragmentDisclaimers  extends AbstractStep {
         Title.setText(ActivityTitle);
         Description.setText(ActivityDescription);
         Checkbox.setText(ActivityAgreement);
-
-        if (savedInstanceState != null)
-            DisclaimerAgreed = savedInstanceState.getInt(ACTIVITY_DISCLAIMER, -1);
-
-        if (DisclaimerAgreed == 1) {
-
-        } else if (DisclaimerAgreed == -1) {
-
-        }
 
         Checkbox.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -45,9 +45,6 @@ public class FragmentSurveyScrolling extends AbstractStep {
         int SurveyEndRange = bundle.getInt(SURVEY_SCROLLING_END_RANGE, 0);
         int SurveyDefaultValue = bundle.getInt(SURVEY_SCROLLING_DEFAULT_VALUE, 0);
 
-        if (savedInstanceState != null)
-            SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
-
         String[] arrayPicker= new String[SurveyEndRange-SurveyStartRange];
         for(int i=SurveyStartRange;i<SurveyEndRange;i++) {
             arrayPicker[i-SurveyStartRange] = i + " " +  SurveyUnit;
