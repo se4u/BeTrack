@@ -21,6 +21,7 @@ public class PageAdapter extends FragmentPagerAdapter implements Pageable {
         super(fm);
     }
 
+
     @Override
     public void add(AbstractStep fragment) {
         fragments.add(fragment);

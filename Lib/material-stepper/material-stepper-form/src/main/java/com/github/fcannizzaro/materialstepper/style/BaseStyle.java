@@ -84,6 +84,9 @@ public class BaseStyle extends AppCompatActivity implements Stepable {
         return mExtras;
     }
 
+    public boolean getVisibilityNextStep() {return mSteps.nextVisible();}
+    public void setVisibilityNextStep(boolean state) {mSteps.setNextVisibility(state);}
+
     // setters
 
     protected void setTitle(String mTitle) {
@@ -100,8 +103,8 @@ public class BaseStyle extends AppCompatActivity implements Stepable {
 
     // steps utils
 
-    protected void addStep(AbstractStep step) {
-        mSteps.add(wrap(step));
+    protected void addStep(AbstractStep step, boolean state) {
+        mSteps.add(wrap(step), state);
     }
 
     protected void addSteps(List<AbstractStep> steps) {
@@ -145,15 +148,23 @@ public class BaseStyle extends AppCompatActivity implements Stepable {
 
     @Override
     public void onPrevious() {
+        int previousStepInc = 1;
+
         if (mSteps.current() <= 0)
             return;
 
-        mSteps.current(mSteps.current() - 1);
+        if (mSteps.previousVisible() == false) {
+            previousStepInc++;
+        }
+
+        mSteps.current(mSteps.current() - previousStepInc);
         onUpdate();
     }
 
     @Override
     public void onNext() {
+
+        int nextStepInc = 1;
 
         AbstractStep step = mSteps.getCurrent();
 
@@ -170,12 +181,18 @@ public class BaseStyle extends AppCompatActivity implements Stepable {
             onComplete();
             onComplete(getExtras());
             return;
+        } else {
+            if (mSteps.nextVisible() == false) {
+                nextStepInc++;
+            }
         }
 
         if (mSteps.current() > mSteps.total() - 1)
             return;
 
-        mSteps.current(mSteps.current() + 1);
+
+
+        mSteps.current(mSteps.current() + nextStepInc);
         onUpdate();
     }
 

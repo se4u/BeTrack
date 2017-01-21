@@ -16,8 +16,10 @@ import com.github.fcannizzaro.materialstepper.util.TintUtils;
 public class BaseNavigation extends BasePager implements View.OnClickListener {
 
     // view
-    protected TextView mPrev, mNext, mEnd, mError;
+    protected TextView mPrev, mEnd, mError;
+    static protected TextView mNext;
     protected ViewSwitcher mSwitch;
+
 
     @Override
     protected void init() {
@@ -45,6 +47,10 @@ public class BaseNavigation extends BasePager implements View.OnClickListener {
         mNext.setOnClickListener(this);
         mEnd.setOnClickListener(this);
 
+    }
+
+    public static void moveToNext() {
+        mNext.performClick();
     }
 
     @Override

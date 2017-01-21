@@ -13,7 +13,9 @@ public class StepUtils {
 
     private ArrayList<AbstractStep> mSteps = new ArrayList<>();
     private ArrayList<Boolean> mActiveDots = new ArrayList<>();
+    private ArrayList<Boolean> mVisibleStep = new ArrayList<>();
     private int mCurrent;
+
 
 
     public ArrayList<AbstractStep> getSteps() {
@@ -36,12 +38,14 @@ public class StepUtils {
         return get(mCurrent);
     }
 
+
     public int total() {
         return mSteps.size();
     }
 
-    public void add(AbstractStep step) {
+    public void add(AbstractStep step, boolean state) {
         mSteps.add(step);
+        mVisibleStep.add(state);
         mActiveDots.add(false);
     }
 
@@ -56,6 +60,22 @@ public class StepUtils {
 
     public int current() {
         return mCurrent;
+    }
+
+    public boolean nextVisible() {
+        return mVisibleStep.get(mCurrent+1);
+    }
+
+    public void setNextVisibility(boolean state) {
+        mVisibleStep.set(mCurrent+1, state);
+    }
+
+    public boolean previousVisible() {
+        int current = 0;
+        if (mCurrent > 0) {
+            current = mCurrent-1;
+        }
+        return mVisibleStep.get(current);
     }
 
 }

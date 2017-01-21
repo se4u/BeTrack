@@ -23,7 +23,6 @@ public class DotStepper extends BaseNavigation {
 
     // views
     protected LinearLayout mDots;
-    static protected TextView mNext;
 
     // attributes
     private int unselected = Color.parseColor("#bdbdbd");
@@ -40,15 +39,8 @@ public class DotStepper extends BaseNavigation {
         init();
         onUpdate();
 
-
-        this.mNext = (TextView)this.findViewById(R.id.stepNext);
-
         if (mSteps.total() > 7)
             Log.e("MaterialStepper", "You should use progress bar with so many steps!");
-    }
-
-    public static void moveToNext() {
-        mNext.performClick();
     }
 
     @Override

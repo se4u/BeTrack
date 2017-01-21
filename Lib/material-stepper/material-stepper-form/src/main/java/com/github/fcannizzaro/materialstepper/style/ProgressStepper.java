@@ -4,6 +4,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.github.fcannizzaro.materialstepper.R;
 
@@ -30,8 +31,8 @@ public class ProgressStepper extends BaseNavigation {
         mProgress.getProgressDrawable().setColorFilter(primaryColor, PorterDuff.Mode.SRC_ATOP);
 
         onUpdate();
-
     }
+
 
     @Override
     public void onUpdate() {

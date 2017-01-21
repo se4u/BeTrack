@@ -16,6 +16,7 @@
         <RelativeLayout
             android:id="@+id/navigation"
             android:layout_width="match_parent"
+            android:background="#ECEFF1"
             android:layout_height="wrap_content">
 
             <TextView
@@ -94,6 +95,7 @@
     <com.github.fcannizzaro.materialstepper.widget.LockedViewPager
         android:id="@+id/stepPager"
         android:layout_width="match_parent"
+        android:background="#FFFFFF"
         android:layout_height="match_parent"
         android:layout_above="@id/stepSwitcher" />
 

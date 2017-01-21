@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.github.fcannizzaro.materialstepper.interfaces.Nextable;
+import com.github.fcannizzaro.materialstepper.style.BaseNavigation;
 import com.github.fcannizzaro.materialstepper.style.BaseStyle;
 import com.github.fcannizzaro.materialstepper.style.DotStepper;
 
@@ -65,7 +66,17 @@ public abstract class AbstractStep extends Fragment implements Nextable {
 
     //call this method to move to next screen
     public void moveToNext() {
-        DotStepper.moveToNext();
+        BaseNavigation.moveToNext();
+    }
+
+    public boolean getVisibilityNextStep()
+    {
+        return mStepper.getVisibilityNextStep();
+    }
+
+    public void setVisibilityNextStep(boolean state)
+    {
+        mStepper.setVisibilityNextStep(state);
     }
 
     @Override
