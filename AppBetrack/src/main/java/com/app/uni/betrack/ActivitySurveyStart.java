@@ -79,7 +79,30 @@ public class ActivitySurveyStart extends ProgressStepper {
     private Bundle bundle8;
     private AbstractStep Step9;
     private Bundle bundle9;
-
+    private AbstractStep Step10;
+    private Bundle bundle10;
+    private AbstractStep Step11;
+    private Bundle bundle11;
+    private AbstractStep Step12;
+    private Bundle bundle12;
+    private AbstractStep Step13;
+    private Bundle bundle13;
+    private AbstractStep Step14;
+    private Bundle bundle14;
+    private AbstractStep Step15;
+    private Bundle bundle15;
+    private AbstractStep Step16;
+    private Bundle bundle16;
+    private AbstractStep Step17;
+    private Bundle bundle17;
+    private AbstractStep Step18;
+    private Bundle bundle18;
+    private AbstractStep Step19;
+    private Bundle bundle19;
+    private AbstractStep Step20;
+    private Bundle bundle20;
+    private AbstractStep Step21;
+    private Bundle bundle21;
 
     @Override
     public void onComplete() {
@@ -175,55 +198,35 @@ public class ActivitySurveyStart extends ProgressStepper {
             ObjSettingsBetrack.Update(this);
         }
 
-        //Step 1 RELATIONSHIP
+        //Step 1 AGE
         bundle1 = new Bundle();
-        bundle1.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen1));
-        bundle1.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_ss_screen1));
-        Step1 = new FragmentSurvey2Choices();
+        bundle1.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen1));
+        bundle1.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen1));
+        bundle1.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_age));
+        bundle1.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_AGE_START);
+        bundle1.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_AGE_END);
+        bundle1.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_AGE);
+        Step1 = new FragmentSurveyScrolling();
         Step1.setArguments(bundle1);
         addStep(Step1, true);
 
-        //Step 2 AGE
+        //Step 2 ETHNICITY 1
         bundle2 = new Bundle();
-        bundle2.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen2));
-        bundle2.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen2));
-        bundle2.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_age));
-        bundle2.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_AGE_START);
-        bundle2.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_AGE_END);
-        bundle2.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_AGE);
-        Step2 = new FragmentSurveyScrolling();
-        Step2.setArguments(bundle2);
-        addStep(Step2, true);
-
-        //Step 3 PERIOD
-        bundle3 = new Bundle();
-        bundle3.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen3));
-        bundle3.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen3));
-        bundle3.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_days));
-        bundle3.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_PERIOD_MIN);
-        bundle3.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_PEIORD_MAX);
-        bundle3.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_PERIOD);
-        Step3 = new FragmentSurveyScrolling();
-        Step3.setArguments(bundle3);
-        addStep(Step3, true);
-
-        //Step 4 TEST
-        bundle4 = new Bundle();
-        bundle4.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, "Basic Demographics");
-        bundle4.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, "What is your ethnicity/ethnic background?");
-        ArrayList<String> RbText1 = new ArrayList<String>() {{
-            add("Caucasian");
-            add("Hispanic/Latino");
-            add("African");
-            add("East Asian (e.g., Chinese, Japanese, or Korean)");
-            add("Southeast Asian (e.g., Vietnamese, Filipino)");
-            add("South Asian (e.g., Indian)");
-            add("Middle Eastern (e.g., Persian)");
-            add("Aboriginal");
-            add("Other");
+        bundle2.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen2));
+        bundle2.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, getResources().getString(R.string.question_ss_screen2));
+        ArrayList<String> RbText2 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.option1_ss_screen2));
+            add(getResources().getString(R.string.option2_ss_screen2));
+            add(getResources().getString(R.string.option3_ss_screen2));
+            add(getResources().getString(R.string.option4_ss_screen2));
+            add(getResources().getString(R.string.option5_ss_screen2));
+            add(getResources().getString(R.string.option6_ss_screen2));
+            add(getResources().getString(R.string.option7_ss_screen2));
+            add(getResources().getString(R.string.option8_ss_screen2));
+            add(getResources().getString(R.string.option9_ss_screen2));
         }};
 
-        ArrayList<Integer> NextStep = new ArrayList<Integer>() {{
+        ArrayList<Integer> NextStep2 = new ArrayList<Integer>() {{
             add(0); //Optional step hidden
             add(0); //Optional step hidden
             add(0); //Optional step hidden
@@ -235,87 +238,242 @@ public class ActivitySurveyStart extends ProgressStepper {
             add(1); //Optional step visible
         }};
 
-        bundle4.putStringArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_RB_TEXT, RbText1);
-        bundle4.putIntegerArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_ENABLE_NEXT_STEP, NextStep);
+        bundle2.putStringArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_RB_TEXT, RbText2);
+        bundle2.putIntegerArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_ENABLE_NEXT_STEP, NextStep2);
 
-        Step4 = new FragmentSurvey10Choices();
+        Step2 = new FragmentSurvey10Choices();
+        Step2.setArguments(bundle2);
+        addStep(Step2, true);
+
+        //Step 3 ETHNICITY 2
+        bundle3 = new Bundle();
+        bundle3.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen3));
+        bundle3.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen3));
+        bundle3.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
+        bundle3.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        Step3 = new FragmentSurveyText();
+        Step3.setArguments(bundle3);
+        addStep(Step3, false);
+
+        //Step 4 STUDENT
+        bundle4 = new Bundle();
+        bundle4.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen4));
+        bundle4.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.title_ss_screen4));
+        Step4 = new FragmentSurvey2Choices();
         Step4.setArguments(bundle4);
         addStep(Step4, true);
 
-        //Step 5 CONTRACEPTION
+        //Step 5 ENGLISH LEVEL 1
         bundle5 = new Bundle();
-        bundle5.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, "Basic Demographics");
-        bundle5.putString(FragmentSurveyText.SURVEY_TEXT_DESC, "Please specify your ethnicity");
-        bundle5.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
-        bundle5.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
-        Step5 = new FragmentSurveyText();
+        bundle5.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen5));
+        bundle5.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.title_ss_screen5));
+        Step5 = new FragmentSurvey2Choices();
         Step5.setArguments(bundle5);
-        addStep(Step5, false);
+        addStep(Step5, true);
 
-        //Step 6 TEST2
+        //Step 6 ENGLISH LEVEL 2
         bundle6 = new Bundle();
-        bundle6.putString(FragmentSurveyDatePicker.SURVEY_DATEPICKER_CHOICES_TITLE, "Pre-Screening");
-        bundle6.putString(FragmentSurveyDatePicker.SURVEY_DATEPICKER_CHOICES_DESC, "When did your current/last period start ? Please provide an exact date if possible");
-        Step6 = new FragmentSurveyDatePicker();
+        bundle6.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen6));
+        bundle6.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, getResources().getString(R.string.question_ss_screen6));
+        ArrayList<String> RbText6 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.option1_ss_screen6));
+            add(getResources().getString(R.string.option2_ss_screen6));
+            add(getResources().getString(R.string.option3_ss_screen6));
+            add(getResources().getString(R.string.option4_ss_screen6));
+        }};
+
+        ArrayList<Integer> NextStep6 = new ArrayList<Integer>() {{
+            add(1); //Optional step visible
+            add(1); //Optional step visible
+            add(1); //Optional step visible
+            add(1); //Optional step visible
+        }};
+
+        bundle6.putStringArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_RB_TEXT, RbText6);
+        bundle6.putIntegerArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_ENABLE_NEXT_STEP, NextStep6);
+
+        Step6 = new FragmentSurvey10Choices();
         Step6.setArguments(bundle6);
         addStep(Step6, true);
 
-
-        //Step 7 (social 2/2)
+        //Step 7 ENGLISH LEVEL 3
         bundle7 = new Bundle();
-        bundle7.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen4));
-        bundle7.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_DESC, getResources().getString(R.string.question_sd_screen4));
-
-        ArrayList<Integer> Icons2 = new ArrayList<Integer>() {{
-            add(R.drawable.ic_meetfriends);
-            add(R.drawable.ic_goout);
-            add(R.drawable.ic_clubbing);
-            add(R.drawable.ic_date);
-            add(R.drawable.ic_sex);
-            add(R.drawable.ic_kiss);
-        }};
-
-        ArrayList<String> IconsText2 = new ArrayList<String>() {{
-            add(getResources().getString(R.string.answer1_sd_screen4));
-            add(getResources().getString(R.string.answer2_sd_screen4));
-            add(getResources().getString(R.string.answer3_sd_screen4));
-            add(getResources().getString(R.string.answer4_sd_screen4));
-            add(getResources().getString(R.string.answer5_sd_screen4));
-            add(getResources().getString(R.string.answer6_sd_screen4));
-        }};
-
-        bundle7.putIntegerArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON, Icons2);
-        bundle7.putStringArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON_TEXT, IconsText2);
-
-        Step7 = new FragmentSurvey6Choices();
+        bundle7.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen7));
+        bundle7.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.title_ss_screen7));
+        Step7 = new FragmentSurvey2Choices();
         Step7.setArguments(bundle7);
         addStep(Step7, true);
 
-        //Step 8 (Mood)
-
+        //Step 8 ENGLISH LEVEL 4
         bundle8 = new Bundle();
-        bundle8.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen5));
-        bundle8.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_sd_screen5));
-
-        ArrayList<String> MoodText1 = new ArrayList<String>() {{
-            add(getResources().getString(R.string.answer1_sd_screen5));
-            add(getResources().getString(R.string.answer2_sd_screen5));
-            add(getResources().getString(R.string.answer3_sd_screen5));
+        bundle8.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen8));
+        bundle8.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, getResources().getString(R.string.question_ss_screen8));
+        ArrayList<String> RbText8 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.option1_ss_screen8));
+            add(getResources().getString(R.string.option2_ss_screen8));
         }};
 
-        bundle8.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS, MoodText1);
+        ArrayList<Integer> NextStep8 = new ArrayList<Integer>() {{
+            add(1); //Optional step visible
+            add(1); //Optional step visible
+        }};
 
-        Step8 = new FragmentSurveySeekBar();
+        bundle8.putStringArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_RB_TEXT, RbText8);
+        bundle8.putIntegerArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_ENABLE_NEXT_STEP, NextStep8);
+
+        Step8 = new FragmentSurvey10Choices();
         Step8.setArguments(bundle8);
         addStep(Step8, true);
 
-        //Step 9 NOTIFICATION TIME
+        //Step 9 ENGLISH LEVEL 5
         bundle9 = new Bundle();
-        bundle9.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen6));
-        bundle9.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_DESC, getResources().getString(R.string.question_ss_screen6));
-        Step9 = new FragmentSurveyTimePicker();
+        bundle9.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen9));
+        bundle9.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen9));
+        bundle9.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
+        bundle9.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        Step9 = new FragmentSurveyText();
         Step9.setArguments(bundle9);
-        addStep(Step9, true);
+        addStep(Step9, false);
+
+        //Step 10 ENGLISH LEVEL 6
+        bundle10 = new Bundle();
+        bundle10.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen10));
+        bundle10.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen10));
+        bundle10.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
+        bundle10.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        Step10 = new FragmentSurveyText();
+        Step10.setArguments(bundle10);
+        addStep(Step10, false);
+
+        //Step 11 UNIVERSITY 1
+        bundle11 = new Bundle();
+        bundle11.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen11));
+        bundle11.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, getResources().getString(R.string.question_ss_screen11));
+        ArrayList<String> RbText11 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.option1_ss_screen11));
+            add(getResources().getString(R.string.option2_ss_screen11));
+            add(getResources().getString(R.string.option3_ss_screen11));
+            add(getResources().getString(R.string.option4_ss_screen11));
+        }};
+
+        ArrayList<Integer> NextStep11 = new ArrayList<Integer>() {{
+            add(1); //Optional step visible
+            add(1); //Optional step visible
+            add(1); //Optional step visible
+            add(1); //Optional step visible
+        }};
+
+        bundle11.putStringArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_RB_TEXT, RbText11);
+        bundle11.putIntegerArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_ENABLE_NEXT_STEP, NextStep11);
+
+        Step11 = new FragmentSurvey10Choices();
+        Step11.setArguments(bundle11);
+        addStep(Step11, true);
+
+        //Step 12 UNIVERSITY 2
+        bundle12 = new Bundle();
+        bundle12.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen12));
+        bundle12.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.title_ss_screen12));
+        Step12 = new FragmentSurvey2Choices();
+        Step12.setArguments(bundle12);
+        addStep(Step12, true);
+
+        //Step 13 UNIVERSITY 3
+        bundle13 = new Bundle();
+        bundle13.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen13));
+        bundle13.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen13));
+        bundle13.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
+        bundle13.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        Step13 = new FragmentSurveyText();
+        Step13.setArguments(bundle13);
+        addStep(Step13, false);
+
+        //Step 14 RELATIONSHIP
+        bundle14 = new Bundle();
+        bundle14.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen14));
+        bundle14.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, getResources().getString(R.string.question_ss_screen14));
+        ArrayList<String> RbText14 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.option1_ss_screen14));
+            add(getResources().getString(R.string.option2_ss_screen14));
+            add(getResources().getString(R.string.option3_ss_screen14));
+        }};
+
+        ArrayList<Integer> NextStep14 = new ArrayList<Integer>() {{
+            add(1); //Optional step visible
+            add(1); //Optional step visible
+            add(1); //Optional step visible
+        }};
+
+        bundle14.putStringArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_RB_TEXT, RbText14);
+        bundle14.putIntegerArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_ENABLE_NEXT_STEP, NextStep14);
+
+        Step14 = new FragmentSurvey10Choices();
+        Step14.setArguments(bundle14);
+        addStep(Step14, true);
+
+        //Step 15 CONTRACEPTION
+        bundle15 = new Bundle();
+        bundle15.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen15));
+        bundle15.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.title_ss_screen15));
+        Step15 = new FragmentSurvey2Choices();
+        Step15.setArguments(bundle15);
+        addStep(Step15, true);
+
+        //Step 16 BABY
+        bundle16 = new Bundle();
+        bundle16.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen16));
+        bundle16.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.title_ss_screen16));
+        Step16 = new FragmentSurvey2Choices();
+        Step16.setArguments(bundle16);
+        addStep(Step16, true);
+
+        //Step 17 PERIOD 1
+        bundle17 = new Bundle();
+        bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen17));
+        bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen17));
+        bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_days));
+        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_PERIOD_MIN);
+        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_PEIORD_MAX);
+        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_PERIOD);
+        Step17 = new FragmentSurveyScrolling();
+        Step17.setArguments(bundle17);
+        addStep(Step17, true);
+
+        //Step 18 PERIOD 2
+        bundle18 = new Bundle();
+        bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen18));
+        bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen18));
+        bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_days));
+        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_PERIOD_MIN);
+        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_PEIORD_MAX);
+        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_PERIOD);
+        Step18 = new FragmentSurveyScrolling();
+        Step18.setArguments(bundle18);
+        addStep(Step18, true);
+
+        //Step 19 PERIOD 3
+        bundle19 = new Bundle();
+        bundle19.putString(FragmentSurveyDatePicker.SURVEY_DATEPICKER_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen19));
+        bundle19.putString(FragmentSurveyDatePicker.SURVEY_DATEPICKER_CHOICES_DESC, getResources().getString(R.string.title_ss_screen19));
+        Step19 = new FragmentSurveyDatePicker();
+        Step19.setArguments(bundle19);
+        addStep(Step19, true);
+
+        //Step 20 PERIOD 4
+        bundle20 = new Bundle();
+        bundle20.putString(FragmentSurveyDatePicker.SURVEY_DATEPICKER_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen20));
+        bundle20.putString(FragmentSurveyDatePicker.SURVEY_DATEPICKER_CHOICES_DESC, getResources().getString(R.string.title_ss_screen20));
+        Step20 = new FragmentSurveyDatePicker();
+        Step20.setArguments(bundle20);
+        addStep(Step20, true);
+
+        //Step 21 NOTIFICATION TIME
+        bundle21 = new Bundle();
+        bundle21.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen21));
+        bundle21.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_DESC, getResources().getString(R.string.question_ss_screen21));
+        Step21 = new FragmentSurveyTimePicker();
+        Step21.setArguments(bundle21);
+        addStep(Step21, true);
 
 
         super.onCreate(savedInstanceState);
