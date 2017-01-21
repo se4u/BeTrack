@@ -27,10 +27,13 @@ public class FragmentSurveyText extends AbstractStep {
     public static final String SURVEY_TEXT_TITLE = "SURVEY_TEXT_TITLE";
     public static final String SURVEY_TEXT_DESC = "SURVEY_TEXT_DESC";
     public static final String SURVEY_TEXT_COMMENT = "SURVEY_TEXT_COMMENT";
+    public static final String SURVEY_TEXT_IS_OPTIONAL = "SURVEY_TEXT_IS_OPTIONAL";
 
     private TextView Title;
     private TextView Description;
     private EditText Comment;
+
+    private boolean isOptional = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public class FragmentSurveyText extends AbstractStep {
         String SurveyTitle = bundle.getString(SURVEY_TEXT_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_TEXT_DESC, null);
         String SurveyComment = bundle.getString(SURVEY_TEXT_COMMENT, null);
+        isOptional = bundle.getBoolean(SURVEY_TEXT_IS_OPTIONAL, true);
+
 
         Comment = (EditText) v.findViewById(R.id.survey_comment);
         Comment.setHint(SurveyComment);
@@ -90,7 +95,7 @@ public class FragmentSurveyText extends AbstractStep {
 
     @Override
     public boolean isOptional() {
-        return true;
+        return isOptional;
     }
 
 

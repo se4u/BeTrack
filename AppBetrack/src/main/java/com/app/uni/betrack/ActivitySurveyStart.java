@@ -247,6 +247,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle5.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, "Basic Demographics");
         bundle5.putString(FragmentSurveyText.SURVEY_TEXT_DESC, "Please specify your ethnicity");
         bundle5.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
+        bundle5.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
         Step5 = new FragmentSurveyText();
         Step5.setArguments(bundle5);
         addStep(Step5, false);
