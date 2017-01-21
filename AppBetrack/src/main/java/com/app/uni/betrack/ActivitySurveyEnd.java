@@ -119,7 +119,7 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle1.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_se_screen1));
         Step1 = new FragmentSurvey2Choices();
         Step1.setArguments(bundle1);
-        addStep(Step1);
+        addStep(Step1, true);
 
         //Step 2 (social 1/2)
         bundle2 = new Bundle();
@@ -149,7 +149,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         Step2 = new FragmentSurvey6Choices();
         Step2.setArguments(bundle2);
-        addStep(Step2);
+        addStep(Step2, true);
 
         //Step 3 (social 2/2)
         bundle3 = new Bundle();
@@ -179,7 +179,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         Step3 = new FragmentSurvey6Choices();
         Step3.setArguments(bundle3);
-        addStep(Step3);
+        addStep(Step3, true);
 
         //Step 4 (Mood)
 
@@ -197,7 +197,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         Step4 = new FragmentSurveySeekBar();
         Step4.setArguments(bundle4);
-        addStep(Step4);
+        addStep(Step4, true);
 
         //Step 5 RELATIONSHIP
         bundle5 = new Bundle();
@@ -205,7 +205,7 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle5.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_se_screen2));
         Step5 = new FragmentSurvey2Choices();
         Step5.setArguments(bundle5);
-        addStep(Step5);
+        addStep(Step5, true);
 
         //Step 6 CONTRACEPTION
         bundle6 = new Bundle();
@@ -214,7 +214,7 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle6.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, getResources().getString(R.string.yourtext_se_screen3));
         Step6 = new FragmentSurveyText();
         Step6.setArguments(bundle6);
-        addStep(Step6);
+        addStep(Step6, true);
 
         super.onCreate(savedInstanceState);
     }

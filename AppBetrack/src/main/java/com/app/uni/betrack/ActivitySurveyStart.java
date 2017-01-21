@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.DotStepper;
+import com.github.fcannizzaro.materialstepper.style.ProgressStepper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.Date;
 /**
  * Created by cevincent on 13/07/2016.
  */
-public class ActivitySurveyStart extends DotStepper {
+public class ActivitySurveyStart extends ProgressStepper {
 
     private static final String TAG = "ActivitySurveyStart";
 
@@ -97,11 +98,11 @@ public class ActivitySurveyStart extends DotStepper {
         if (resultInt != 0) {
             SurveyLengthPeriod = resultInt;
         }
-        resultInt = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        resultInt = Step4.getArguments().getInt(FragmentSurvey10Choices.SURVEY_STATUS, 0);
         if (resultInt != 0) {
             SurveyLenghCycle = resultInt;
         }
-        resultString  = Step5.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
+        resultString  = Step5.getArguments().getString(FragmentSurveyDatePicker.SURVEY_STATUS, null);
         if (resultString != null) {
             SurveyContraception = resultString;
         }
@@ -180,7 +181,7 @@ public class ActivitySurveyStart extends DotStepper {
         bundle1.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_ss_screen1));
         Step1 = new FragmentSurvey2Choices();
         Step1.setArguments(bundle1);
-        addStep(Step1);
+        addStep(Step1, true);
 
         //Step 2 AGE
         bundle2 = new Bundle();
@@ -192,7 +193,7 @@ public class ActivitySurveyStart extends DotStepper {
         bundle2.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_AGE);
         Step2 = new FragmentSurveyScrolling();
         Step2.setArguments(bundle2);
-        addStep(Step2);
+        addStep(Step2, true);
 
         //Step 3 PERIOD
         bundle3 = new Bundle();
@@ -204,58 +205,60 @@ public class ActivitySurveyStart extends DotStepper {
         bundle3.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_PERIOD);
         Step3 = new FragmentSurveyScrolling();
         Step3.setArguments(bundle3);
-        addStep(Step3);
+        addStep(Step3, true);
 
-        //Step 4 CYCLE
+        //Step 4 TEST
         bundle4 = new Bundle();
-        bundle4.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen4));
-        bundle4.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen4));
-        bundle4.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_days));
-        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_CYCLE_MIN);
-        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_CYCLE_MAX);
-        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_CYCLE);
-        Step4 = new FragmentSurveyScrolling();
+        bundle4.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, "Basic Demographics");
+        bundle4.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, "What is your ethnicity/ethnic background?");
+        ArrayList<String> RbText1 = new ArrayList<String>() {{
+            add("Caucasian");
+            add("Hispanic/Latino");
+            add("African");
+            add("East Asian (e.g., Chinese, Japanese, or Korean)");
+            add("Southeast Asian (e.g., Vietnamese, Filipino)");
+            add("South Asian (e.g., Indian)");
+            add("Middle Eastern (e.g., Persian)");
+            add("Aboriginal");
+            add("Other");
+        }};
+
+        ArrayList<Integer> NextStep = new ArrayList<Integer>() {{
+            add(0); //Optional step hidden
+            add(0); //Optional step hidden
+            add(0); //Optional step hidden
+            add(0); //Optional step hidden
+            add(0); //Optional step hidden
+            add(0); //Optional step hidden
+            add(0); //Optional step hidden
+            add(0); //Optional step hidden
+            add(1); //Optional step visible
+        }};
+
+        bundle4.putStringArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_RB_TEXT, RbText1);
+        bundle4.putIntegerArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_ENABLE_NEXT_STEP, NextStep);
+
+        Step4 = new FragmentSurvey10Choices();
         Step4.setArguments(bundle4);
-        addStep(Step4);
+        addStep(Step4, true);
 
         //Step 5 CONTRACEPTION
         bundle5 = new Bundle();
-        bundle5.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen5));
-        bundle5.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen5));
-        bundle5.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, getResources().getString(R.string.yourtext_ss_screen5));
+        bundle5.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, "Basic Demographics");
+        bundle5.putString(FragmentSurveyText.SURVEY_TEXT_DESC, "Please specify your ethnicity");
+        bundle5.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         Step5 = new FragmentSurveyText();
         Step5.setArguments(bundle5);
-        addStep(Step5);
+        addStep(Step5, false);
 
-        //Step 6 (social 1/2)
+        //Step 6 TEST2
         bundle6 = new Bundle();
-        bundle6.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen3));
-        bundle6.putString(FragmentSurvey6Choices.SURVEY_6_CHOICES_DESC, getResources().getString(R.string.question_sd_screen3));
-
-        ArrayList<Integer> Icons1 = new ArrayList<Integer>() {{
-            add(R.drawable.ic_work);
-            add(R.drawable.ic_study);
-            add(R.drawable.ic_read);
-            add(R.drawable.ic_watchtv);
-            add(R.drawable.ic_sports);
-            add(R.drawable.ic_shopping);
-        }};
-
-        ArrayList<String> IconsText1 = new ArrayList<String>() {{
-            add(getResources().getString(R.string.answer1_sd_screen3));
-            add(getResources().getString(R.string.answer2_sd_screen3));
-            add(getResources().getString(R.string.answer3_sd_screen3));
-            add(getResources().getString(R.string.answer4_sd_screen3));
-            add(getResources().getString(R.string.answer5_sd_screen3));
-            add(getResources().getString(R.string.answer6_sd_screen3));
-        }};
-
-        bundle6.putIntegerArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON, Icons1);
-        bundle6.putStringArrayList(FragmentSurvey6Choices.SURVEY_6_CHOICES_ICON_TEXT, IconsText1);
-
-        Step6 = new FragmentSurvey6Choices();
+        bundle6.putString(FragmentSurveyDatePicker.SURVEY_DATEPICKER_CHOICES_TITLE, "Pre-Screening");
+        bundle6.putString(FragmentSurveyDatePicker.SURVEY_DATEPICKER_CHOICES_DESC, "When did your current/last period start ? Please provide an exact date if possible");
+        Step6 = new FragmentSurveyDatePicker();
         Step6.setArguments(bundle6);
-        addStep(Step6);
+        addStep(Step6, true);
+
 
         //Step 7 (social 2/2)
         bundle7 = new Bundle();
@@ -285,7 +288,7 @@ public class ActivitySurveyStart extends DotStepper {
 
         Step7 = new FragmentSurvey6Choices();
         Step7.setArguments(bundle7);
-        addStep(Step7);
+        addStep(Step7, true);
 
         //Step 8 (Mood)
 
@@ -303,7 +306,7 @@ public class ActivitySurveyStart extends DotStepper {
 
         Step8 = new FragmentSurveySeekBar();
         Step8.setArguments(bundle8);
-        addStep(Step8);
+        addStep(Step8, true);
 
         //Step 9 NOTIFICATION TIME
         bundle9 = new Bundle();
@@ -311,7 +314,7 @@ public class ActivitySurveyStart extends DotStepper {
         bundle9.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_DESC, getResources().getString(R.string.question_ss_screen6));
         Step9 = new FragmentSurveyTimePicker();
         Step9.setArguments(bundle9);
-        addStep(Step9);
+        addStep(Step9, true);
 
 
         super.onCreate(savedInstanceState);

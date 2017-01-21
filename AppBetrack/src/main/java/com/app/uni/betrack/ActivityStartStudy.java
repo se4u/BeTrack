@@ -50,7 +50,7 @@ public class ActivityStartStudy extends DotStepper {
         bundle1.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_AGREE, getResources().getString(R.string.disclaimer_agree));
         Step1 = new FragmentDisclaimers();
         Step1.setArguments(bundle1);
-        addStep(Step1);
+        addStep(Step1, true);
         //Step 2 Study details
         bundle2 = new Bundle();
         bundle2.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_TITLE, ObjSettingsStudy.getStudyName());
@@ -58,7 +58,7 @@ public class ActivityStartStudy extends DotStepper {
         bundle2.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_AGREE, getResources().getString(R.string.study_agree));
         Step2 = new FragmentDisclaimers();
         Step2.setArguments(bundle2);
-        addStep(Step2);
+        addStep(Step2, true);
 
         super.onCreate(savedInstanceState);
     }
