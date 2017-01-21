@@ -26,6 +26,8 @@ public class FragmentSurvey10Choices extends AbstractStep {
     public static final String SURVEY_10_CHOICES_TITLE = "SURVEY_10_CHOICES_TITLE";
     public static final String SURVEY_10_CHOICES_DESC = "SURVEY_10_CHOICES_DESC";
     public static final String SURVEY_10_CHOICES_RB_TEXT = "SURVEY_10_CHOICES_RB_TEXT";
+    public static final String SURVEY_10_CHOICES_ENABLE_NEXT_STEP = "SURVEY_10_CHOICES_ENABLE_NEXT_STEP";
+
     private static final int SURVEY_RB_MAX = 10;
 
     RadioButton[] radiobutton = new RadioButton[SURVEY_RB_MAX];
@@ -60,6 +62,7 @@ public class FragmentSurvey10Choices extends AbstractStep {
         String SurveyTitle = bundle.getString(SURVEY_10_CHOICES_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_10_CHOICES_DESC, null);
         ArrayList<String> RbText = bundle.getStringArrayList(SURVEY_10_CHOICES_RB_TEXT);
+        final ArrayList<Integer>  NextStep = bundle.getIntegerArrayList(SURVEY_10_CHOICES_ENABLE_NEXT_STEP);
 
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
@@ -118,6 +121,24 @@ public class FragmentSurvey10Choices extends AbstractStep {
                         SurveyStatus = 9;
                         break;
                 }
+
+                if (NextStep != null) {
+                    if (NextStep.get(SurveyStatus) == 1) {
+                        //Check if the next step is invisible
+                        if (getVisibilityNextStep() == false) {
+                            //Make it visible
+                            setVisibilityNextStep(true);
+                        }
+
+                    } else {
+                        //Check if the next step is visible
+                        if (getVisibilityNextStep() == true) {
+                            //Make it visible
+                            setVisibilityNextStep(false);
+                        }
+                    }
+                }
+
                 bundle.putInt(SURVEY_STATUS, SurveyStatus);
             }
         });
@@ -149,6 +170,7 @@ public class FragmentSurvey10Choices extends AbstractStep {
     public void onNext() {
         System.out.println("onNext");
     }
+
 
     @Override
     public void onPrevious() {
