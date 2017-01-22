@@ -101,8 +101,6 @@ public class ActivitySurveyStart extends ProgressStepper {
     private Bundle bundle19;
     private AbstractStep Step20;
     private Bundle bundle20;
-    private AbstractStep Step21;
-    private Bundle bundle21;
 
     @Override
     public void onComplete() {
@@ -470,15 +468,6 @@ public class ActivitySurveyStart extends ProgressStepper {
         Step20 = new FragmentSurveyDatePicker();
         Step20.setArguments(bundle20);
         addStep(Step20, true);
-
-        //Step 21 NOTIFICATION TIME
-        bundle21 = new Bundle();
-        bundle21.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen21));
-        bundle21.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_DESC, getResources().getString(R.string.question_ss_screen21));
-        Step21 = new FragmentSurveyTimePicker();
-        Step21.setArguments(bundle21);
-        addStep(Step21, true);
-
 
         super.onCreate(savedInstanceState);
     }
