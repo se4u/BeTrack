@@ -20,4 +20,7 @@
     <dimen name="survey_6choices_textsize">12sp</dimen>
     <dimen name="survey_6choices_padding_image">22dp</dimen>
     <dimen name="survey_6choices_margin_bottom_image">10dp</dimen>
+
+    <!-- 10 choices specific dimensions -->
+    <dimen name="survey_10choices_rbSize">17dp</dimen>
 </resources>

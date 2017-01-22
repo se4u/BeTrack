@@ -183,11 +183,7 @@
 
     <!-- Screen 6 -->
     <string name="title_ss_screen6">ENGLISH LEVEL</string>
-    <string name="question_ss_screen6">How long have you been speaking English ?</string>
-    <string name="option1_ss_screen6">less than a year</string>
-    <string name="option2_ss_screen6">between 1 year and 2 years</string>
-    <string name="option3_ss_screen6">between 2 years and 3 years</string>
-    <string name="option4_ss_screen6">more than 3 years</string>
+    <string name="question_ss_screen6">How long have you been speaking English (in years) ?</string>
 
     <!-- Screen 7 -->
     <string name="title_ss_screen7">ENGLISH LEVEL</string>

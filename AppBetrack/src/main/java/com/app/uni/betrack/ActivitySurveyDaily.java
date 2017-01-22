@@ -118,7 +118,7 @@ public class ActivitySurveyDaily   extends DotStepper {
         bundle1.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_sd_screen1));
         Step1 = new FragmentSurvey2Choices();
         Step1.setArguments(bundle1);
-        addStep(Step1, true);
+        addStep(Step1, true, false);
 
         //Step 2 (social 1/2)
         bundle2 = new Bundle();
@@ -148,7 +148,7 @@ public class ActivitySurveyDaily   extends DotStepper {
 
         Step2 = new FragmentSurvey6Choices();
         Step2.setArguments(bundle2);
-        addStep(Step2, true);
+        addStep(Step2, true, false);
 
         //Step 3 (social 2/2)
         bundle3 = new Bundle();
@@ -178,7 +178,7 @@ public class ActivitySurveyDaily   extends DotStepper {
 
         Step3 = new FragmentSurvey6Choices();
         Step3.setArguments(bundle3);
-        addStep(Step3, true);
+        addStep(Step3, true, false);
 
         //Step 4 (Mood)
 
@@ -196,7 +196,7 @@ public class ActivitySurveyDaily   extends DotStepper {
 
         Step4 = new FragmentSurveySeekBar();
         Step4.setArguments(bundle4);
-        addStep(Step4, true);
+        addStep(Step4, true, false);
 
         super.onCreate(savedInstanceState);
     }
