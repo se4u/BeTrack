@@ -108,54 +108,6 @@ public class ActivitySurveyStart extends ProgressStepper {
         int resultInt =0;
         String resultString = null;
 
-        //get data from the different steps
-        SurveyInRelation = Step1.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
-
-        resultInt = Step2.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        if (resultInt != 0) {
-            SurveyAge = resultInt;
-        }
-        resultInt = Step3.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
-        if (resultInt != 0) {
-            SurveyLengthPeriod = resultInt;
-        }
-        resultInt = Step4.getArguments().getInt(FragmentSurvey10Choices.SURVEY_STATUS, 0);
-        if (resultInt != 0) {
-            SurveyLenghCycle = resultInt;
-        }
-        resultString  = Step5.getArguments().getString(FragmentSurveyDatePicker.SURVEY_STATUS, null);
-        if (resultString != null) {
-            SurveyContraception = resultString;
-        }
-
-        SurveySocial1 = Step6.getArguments().getInt(FragmentSurvey6Choices.SURVEY_STATUS, 0);
-        SurveySocial2 = Step7.getArguments().getInt(FragmentSurvey6Choices.SURVEY_STATUS, 0);
-        SurveyMood1 = Step8.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
-        SurveyMood2 = Step8.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS2, 0);
-        SurveyMood3 = Step8.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS3, 0);
-
-        //Save those data in the local database
-        values.clear();
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_AGE, SurveyAge);
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_RELATIONSHIP, SurveyInRelation);
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_AVGPERIODLENGHT, SurveyLengthPeriod);
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_AVGMENSTRUALCYCLE, SurveyLenghCycle);
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_CONTRACEPTION, SurveyContraception);
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_SOCIAL1_LIFE, SurveySocial1);
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_SOCIAL2_LIFE, SurveySocial2);
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_MOOD1, SurveyMood1);
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_MOOD2, SurveyMood2);
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_MOOD3, SurveyMood3);
-
-        DateStudyStart = sdf.format(new Date());
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_DATE, DateStudyStart);
-        TimeStudyStart = shf.format(new Date());
-        values.put(UtilsLocalDataBase.C_STARTSTUDY_TIME, TimeStudyStart);
-
-        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_START_STUDY);
-        Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Participant age: " + SurveyAge + " In a relationship: " + SurveyInRelation
-        + " period lenght: " + SurveyLengthPeriod + " cycle lenght: " + SurveyLenghCycle + " Contraception used: " + SurveyContraception
-        + " date start: " + DateStudyStart + " time start: " + TimeStudyStart);
 
         ObjSettingsStudy.setStartDateSurvey(DateStudyStart);
         ObjSettingsStudy.setStartSurveyDone(true);
@@ -285,6 +237,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle6.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen6));
         bundle6.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle6.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        bundle6.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_NUMBER_INPUT, true);
         Step6 = new FragmentSurveyText();
         Step6.setArguments(bundle6);
         addStep(Step6, false, true);
@@ -341,6 +294,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle10.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen10));
         bundle10.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle10.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        bundle10.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_NUMBER_INPUT, true);
         Step10 = new FragmentSurveyText();
         Step10.setArguments(bundle10);
         addStep(Step10, false, true);

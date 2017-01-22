@@ -64,32 +64,6 @@ public class ActivitySurveyEnd  extends DotStepper {
     public void onComplete() {
         super.onComplete();
 
-        SurveyPeriod = Step1.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
-        SurveySocial1 = Step2.getArguments().getInt(FragmentSurvey6Choices.SURVEY_STATUS, 0);
-        SurveySocial2 = Step3.getArguments().getInt(FragmentSurvey6Choices.SURVEY_STATUS, 0);
-        SurveyMood1 = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
-        SurveyMood2 = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS2, 0);
-        SurveyMood3 = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS3, 0);
-        SurveyInRelation = Step5.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
-        SurveyContraception  = Step6.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
-
-        values.clear();
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_PERIOD, SurveyPeriod);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL1_LIFE, SurveySocial1);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL2_LIFE, SurveySocial2);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD1, SurveyMood1);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD2, SurveyMood2);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD3, SurveyMood3);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP, SurveyInRelation);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION, SurveyContraception);
-
-        DateStudyEnd = sdf.format(new Date());
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_DATE, DateStudyEnd);
-        TimeStudyEnd = shf.format(new Date());
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_TIME, TimeStudyEnd);
-
-        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_END_STUDY);
-
         Log.d(TAG, "setEndSurveyTransferred = IN_PROGRESS");
         ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.IN_PROGRESS);
 
@@ -127,9 +101,11 @@ public class ActivitySurveyEnd  extends DotStepper {
             add(getResources().getString(R.string.option1_se_screen1));
             add(getResources().getString(R.string.option2_se_screen1));
             add(getResources().getString(R.string.option3_se_screen1));
+            add(getResources().getString(R.string.option4_se_screen1));
         }};
 
         ArrayList<Integer> NextStep1 = new ArrayList<Integer>() {{
+            add(1); //Optional step visible
             add(1); //Optional step visible
             add(1); //Optional step visible
             add(1); //Optional step visible
@@ -179,37 +155,29 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         //Step 4 PHONE USAGE
         bundle4 = new Bundle();
-        bundle4.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, getResources().getString(R.string.title_se_screen4));
-        bundle4.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, getResources().getString(R.string.question_se_screen4));
-        ArrayList<String> RbText4 = new ArrayList<String>() {{
-            add(getResources().getString(R.string.option1_se_screen4));
-            add(getResources().getString(R.string.option2_se_screen4));
-            add(getResources().getString(R.string.option3_se_screen4));
-        }};
-
-        ArrayList<Integer> NextStep4 = new ArrayList<Integer>() {{
-            add(1); //Optional step visible
-            add(1); //Optional step visible
-            add(1); //Optional step visible
-        }};
-
-        bundle4.putStringArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_RB_TEXT, RbText4);
-        bundle4.putIntegerArrayList(FragmentSurvey10Choices.SURVEY_10_CHOICES_ENABLE_NEXT_STEP, NextStep4);
-
-        Step4 = new FragmentSurvey10Choices();
+        bundle4.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_se_screen4));
+        bundle4.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_se_screen4));
+        bundle4.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
+        bundle4.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        bundle4.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_NUMBER_INPUT, true);
+        Step4 = new FragmentSurveyText();
         Step4.setArguments(bundle4);
-        addStep(Step4, true, false);
+        addStep(Step4, false, true);
 
         //Step 5 STUDY 1
         bundle5 = new Bundle();
         bundle5.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_se_screen5));
         bundle5.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_se_screen5));
 
-        ArrayList<String> ChoiceText1 = new ArrayList<String>() {{
+        ArrayList<String> ChoiceTextRightStep5 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.option2_se_screen5));
+        }};
+        ArrayList<String> ChoiceTextLeftStep5 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option1_se_screen5));
         }};
 
-        bundle5.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS, ChoiceText1);
+        bundle5.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, ChoiceTextRightStep5);
+        bundle5.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_LEFT, ChoiceTextLeftStep5);
 
         Step5 = new FragmentSurveySeekBar();
         Step5.setArguments(bundle5);
@@ -220,11 +188,15 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle6.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_se_screen6));
         bundle6.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_se_screen6));
 
-        ArrayList<String> ChoiceText2 = new ArrayList<String>() {{
+        ArrayList<String> ChoiceTextRightStep6 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.option2_se_screen6));
+        }};
+        ArrayList<String> ChoiceTextLeftStep6 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option1_se_screen6));
         }};
 
-        bundle6.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS, ChoiceText2);
+        bundle6.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, ChoiceTextRightStep6);
+        bundle6.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_LEFT, ChoiceTextLeftStep6);
 
         Step6 = new FragmentSurveySeekBar();
         Step6.setArguments(bundle6);
@@ -235,11 +207,15 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle7.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_se_screen7));
         bundle7.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_se_screen7));
 
-        ArrayList<String> ChoiceText3 = new ArrayList<String>() {{
+        ArrayList<String> ChoiceTextRightStep7 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.option2_se_screen7));
+        }};
+        ArrayList<String> ChoiceTextLeftStep7 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option1_se_screen7));
         }};
 
-        bundle7.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS, ChoiceText3);
+        bundle7.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, ChoiceTextRightStep7);
+        bundle7.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_LEFT, ChoiceTextLeftStep7);
 
         Step7 = new FragmentSurveySeekBar();
         Step7.setArguments(bundle7);
@@ -250,11 +226,15 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle8.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_se_screen8));
         bundle8.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_se_screen8));
 
-        ArrayList<String> ChoiceText4 = new ArrayList<String>() {{
-            add(getResources().getString(R.string.option1_se_screen8));
+        ArrayList<String> ChoiceTextRightStep8 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.option2_se_screen5));
+        }};
+        ArrayList<String> ChoiceTextLeftStep8 = new ArrayList<String>() {{
+            add(getResources().getString(R.string.option1_se_screen5));
         }};
 
-        bundle8.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS, ChoiceText4);
+        bundle8.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, ChoiceTextRightStep8);
+        bundle8.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_LEFT, ChoiceTextLeftStep8);
 
         Step8 = new FragmentSurveySeekBar();
         Step8.setArguments(bundle8);
@@ -262,8 +242,8 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         //Step 9 RESEARCH APP 2
         bundle9 = new Bundle();
-        bundle9.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen9));
-        bundle9.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen9));
+        bundle9.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_se_screen9));
+        bundle9.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_se_screen9));
         bundle9.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle9.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, true);
         Step9 = new FragmentSurveyText();

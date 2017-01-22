@@ -313,9 +313,6 @@
     <!-- Screen 4 -->
     <string name="title_se_screen4">PHONE USAGE</string>
     <string name="question_se_screen4">On average, how many hours/minutes per day do you think you spent using your phone in general throughout the study ?</string>
-    <string name="option1_se_screen4">less than 30 minutes</string>
-    <string name="option2_se_screen4">between 30 minutes and 1 hour</string>
-    <string name="option3_se_screen4">more than 1 hour</string>
 
     <!-- Screen 5 -->
     <string name="title_se_screen5">STUDY</string>

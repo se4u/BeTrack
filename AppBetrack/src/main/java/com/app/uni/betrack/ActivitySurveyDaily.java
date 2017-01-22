@@ -192,7 +192,7 @@ public class ActivitySurveyDaily   extends DotStepper {
             add(getResources().getString(R.string.answer3_sd_screen5));
         }};
 
-        bundle4.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS, MoodText1);
+        bundle4.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, MoodText1);
 
         Step4 = new FragmentSurveySeekBar();
         Step4.setArguments(bundle4);
