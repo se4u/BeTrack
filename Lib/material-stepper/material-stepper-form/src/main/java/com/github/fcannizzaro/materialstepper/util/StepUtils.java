@@ -68,23 +68,19 @@ public class StepUtils {
         return mVisibleStep.get(mCurrent+stepNumber);
     }
 
-    public boolean previousOptional() {
-        if ((mCurrent - 1) > 0) {
-            return mOptionalStep.get(mCurrent - 1);
-        } else {
-            return false;
-        }
+    public boolean isOptional() {
+        return mOptionalStep.get(mCurrent);
     }
 
-    public void setNextVisibility(boolean state) {
-        if ( (mCurrent + 1) < mSteps.size() ) {
-            mVisibleStep.set(mCurrent + 1, state);
-        }
+    public void setVisibility(boolean state) {
+        System.out.println("setVisibility mCurrent: " + mCurrent + " state : " + state);
+        mVisibleStep.set(mCurrent, state);
     }
 
-    public void setPreviousVisibility(boolean state) {
-        if ((mCurrent - 1) > 0) {
-            mVisibleStep.set(mCurrent - 1, state);
+    public void setNextVisibility(boolean state, int valInc) {
+        if ( (mCurrent + valInc) < mSteps.size() ) {
+            System.out.println("setNextVisibility mCurrent: " + mCurrent + " valInc : " + valInc + " state : " + state);
+            mVisibleStep.set(mCurrent + valInc, state);
         }
     }
 

@@ -69,14 +69,14 @@ public abstract class AbstractStep extends Fragment implements Nextable {
         BaseNavigation.moveToNext();
     }
 
-    public boolean getVisibilityNextStep()
+    public boolean getVisibilityNextStep(int valInc)
     {
-        return mStepper.getVisibilityNextStep();
+        return mStepper.getVisibilityNextStep(valInc);
     }
 
-    public void setVisibilityNextStep(boolean state)
+    public void setVisibilityNextStep(boolean state, int valInc)
     {
-        mStepper.setVisibilityNextStep(state);
+        mStepper.setVisibilityNextStep(state, valInc);
     }
 
     @Override
