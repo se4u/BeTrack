@@ -106,7 +106,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
         mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
         bundle.putInt(SURVEY_STATUS, SurveyStatus);
         System.out.println("onNext");
-        setVisibilityNextStep(true);
+        setVisibilityNextStep(true, 1);
     }
 
     @Override

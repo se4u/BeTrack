@@ -88,7 +88,7 @@ public class FragmentDisclaimers  extends AbstractStep {
     @Override
     public void onNext() {
         System.out.println("onNext");
-        setVisibilityNextStep(true);
+        setVisibilityNextStep(true, 1);
     }
 
     @Override

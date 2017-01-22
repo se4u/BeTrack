@@ -35,7 +35,7 @@ public class FragmentSurvey10Choices extends AbstractStep {
     private TextView Title;
     private TextView Description;
     private Bundle bundle;
-
+    private ArrayList<Integer>  NextStep;
     private View v;
 
     @Override
@@ -62,7 +62,7 @@ public class FragmentSurvey10Choices extends AbstractStep {
         String SurveyTitle = bundle.getString(SURVEY_10_CHOICES_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_10_CHOICES_DESC, null);
         ArrayList<String> RbText = bundle.getStringArrayList(SURVEY_10_CHOICES_RB_TEXT);
-        final ArrayList<Integer>  NextStep = bundle.getIntegerArrayList(SURVEY_10_CHOICES_ENABLE_NEXT_STEP);
+        NextStep = bundle.getIntegerArrayList(SURVEY_10_CHOICES_ENABLE_NEXT_STEP);
 
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
@@ -122,23 +122,6 @@ public class FragmentSurvey10Choices extends AbstractStep {
                         break;
                 }
 
-                if (NextStep != null) {
-                    if (NextStep.get(SurveyStatus) == 1) {
-                        //Check if the next step is invisible
-                        if (getVisibilityNextStep() == false) {
-                            //Make it visible
-                            setVisibilityNextStep(true);
-                        }
-
-                    } else {
-                        //Check if the next step is visible
-                        if (getVisibilityNextStep() == true) {
-                            //Make it visible
-                            setVisibilityNextStep(false);
-                        }
-                    }
-                }
-
                 bundle.putInt(SURVEY_STATUS, SurveyStatus);
             }
         });
@@ -168,6 +151,22 @@ public class FragmentSurvey10Choices extends AbstractStep {
 
     @Override
     public void onNext() {
+        if (NextStep != null) {
+            if (NextStep.get(SurveyStatus) >= 1) {
+                //Check if the next step is invisible
+                if (getVisibilityNextStep(NextStep.get(SurveyStatus)) == false) {
+                    //Make it visible
+                    setVisibilityNextStep(true, NextStep.get(SurveyStatus));
+                }
+
+            } else {
+                //Check if the next step is visible
+                if (getVisibilityNextStep(NextStep.get(SurveyStatus)) == true) {
+                    //Make it visible
+                    setVisibilityNextStep(false, 1);
+                }
+            }
+        }
         System.out.println("onNext");
     }
 
