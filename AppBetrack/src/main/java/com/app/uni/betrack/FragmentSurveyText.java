@@ -48,7 +48,7 @@ public class FragmentSurveyText extends AbstractStep {
         String SurveyDescription = bundle.getString(SURVEY_TEXT_DESC, null);
         String SurveyComment = bundle.getString(SURVEY_TEXT_COMMENT, null);
         isOptional = bundle.getBoolean(SURVEY_TEXT_IS_OPTIONAL, true);
-        isNumberInput = bundle.getBoolean(SURVEY_TEXT_IS_OPTIONAL, false);
+        isNumberInput = bundle.getBoolean(SURVEY_TEXT_IS_NUMBER_INPUT, false);
 
         Comment = (EditText) v.findViewById(R.id.survey_comment);
         Comment.setHint(SurveyComment);
