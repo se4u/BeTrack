@@ -151,7 +151,7 @@ public class FragmentSurvey10Choices extends AbstractStep {
 
     @Override
     public void onNext() {
-        if (NextStep != null) {
+        if ((NextStep != null) && (SurveyStatus != -1)) {
             if (NextStep.get(SurveyStatus) >= 1) {
                 //Check if the next step is invisible
                 if (getVisibilityNextStep(NextStep.get(SurveyStatus)) == false) {
