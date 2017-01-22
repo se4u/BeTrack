@@ -2,6 +2,7 @@ package com.app.uni.betrack;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,12 +29,14 @@ public class FragmentSurveyText extends AbstractStep {
     public static final String SURVEY_TEXT_DESC = "SURVEY_TEXT_DESC";
     public static final String SURVEY_TEXT_COMMENT = "SURVEY_TEXT_COMMENT";
     public static final String SURVEY_TEXT_IS_OPTIONAL = "SURVEY_TEXT_IS_OPTIONAL";
+    public static final String SURVEY_TEXT_IS_NUMBER_INPUT = "SURVEY_TEXT_IS_NUMBER_INPUT";
 
     private TextView Title;
     private TextView Description;
     private EditText Comment;
 
     private boolean isOptional = true;
+    private boolean isNumberInput = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,10 +48,13 @@ public class FragmentSurveyText extends AbstractStep {
         String SurveyDescription = bundle.getString(SURVEY_TEXT_DESC, null);
         String SurveyComment = bundle.getString(SURVEY_TEXT_COMMENT, null);
         isOptional = bundle.getBoolean(SURVEY_TEXT_IS_OPTIONAL, true);
-
+        isNumberInput = bundle.getBoolean(SURVEY_TEXT_IS_OPTIONAL, false);
 
         Comment = (EditText) v.findViewById(R.id.survey_comment);
         Comment.setHint(SurveyComment);
+        if (isNumberInput == true) {
+            Comment.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }
         Title = (TextView) v.findViewById(R.id.survey_title);
         Description = (TextView) v.findViewById(R.id.survey_desc);
         Title.setText(SurveyTitle);
