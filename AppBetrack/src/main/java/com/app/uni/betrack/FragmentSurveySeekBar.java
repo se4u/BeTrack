@@ -250,6 +250,7 @@ public class FragmentSurveySeekBar extends AbstractStep {
     @Override
     public void onNext() {
         System.out.println("onNext");
+        setVisibilityNextStep(true);
     }
 
     @Override

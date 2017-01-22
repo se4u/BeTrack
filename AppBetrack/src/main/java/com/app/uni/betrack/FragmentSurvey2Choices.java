@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
+import java.util.ArrayList;
+
 /**
  * Created by cedoctet on 12/09/2016.
  */
@@ -28,6 +30,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
     //Input
     public static final String SURVEY_2_CHOICES_TITLE = "SURVEY_2_CHOICES_TITLE";
     public static final String SURVEY_2_CHOICES_DESC = "SURVEY_2_CHOICES_DESC";
+    public static final String SURVEY_2_CHOICES_ENABLE_NEXT_STEP = "SURVEY_2_CHOICES_ENABLE_NEXT_STEP";
 
     private Bundle bundle;
     private Button button1;
@@ -36,7 +39,6 @@ public class FragmentSurvey2Choices extends AbstractStep {
     private ImageView imgbutton2;
     private TextView Title;
     private TextView Description;
-
 
     private static Drawable BackgroundNoSelection;
     private static Drawable BackgroundSelected;
@@ -70,6 +72,8 @@ public class FragmentSurvey2Choices extends AbstractStep {
         bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_2_CHOICES_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_2_CHOICES_DESC, null);
+        final ArrayList<Integer> NextStep = bundle.getIntegerArrayList(SURVEY_2_CHOICES_ENABLE_NEXT_STEP);
+
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
 
@@ -105,6 +109,24 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 InternalSetBackground(BackgroundNoSelection, button2);
                 imgbutton1.setColorFilter(tintPrimary, mode);
                 imgbutton2.setColorFilter(tintGray, mode);
+
+                if (NextStep != null) {
+                    if (NextStep.get(0) == 1) {
+                        //Check if the next step is invisible
+                        if (getVisibilityNextStep() == false) {
+                            //Make it visible
+                            setVisibilityNextStep(true);
+                        }
+
+                    } else {
+                        //Check if the next step is visible
+                        if (getVisibilityNextStep() == true) {
+                            //Make it visible
+                            setVisibilityNextStep(false);
+                        }
+                    }
+                }
+
                 if (SurveyStatus == -1) {
                     SurveyStatus = 1;
                     new Handler().postDelayed(new Runnable() {
@@ -132,6 +154,24 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 InternalSetBackground(BackgroundSelected, button2);
                 imgbutton1.setColorFilter(tintGray, mode);
                 imgbutton2.setColorFilter(tintPrimary, mode);
+
+                if (NextStep != null) {
+                    if (NextStep.get(1) == 1) {
+                        //Check if the next step is invisible
+                        if (getVisibilityNextStep() == false) {
+                            //Make it visible
+                            setVisibilityNextStep(true);
+                        }
+
+                    } else {
+                        //Check if the next step is visible
+                        if (getVisibilityNextStep() == true) {
+                            //Make it visible
+                            setVisibilityNextStep(false);
+                        }
+                    }
+                }
+
                 if (SurveyStatus == -1) {
                     SurveyStatus = 0;
                     new Handler().postDelayed(new Runnable() {
