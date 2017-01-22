@@ -14,6 +14,7 @@ public class StepUtils {
     private ArrayList<AbstractStep> mSteps = new ArrayList<>();
     private ArrayList<Boolean> mActiveDots = new ArrayList<>();
     private ArrayList<Boolean> mVisibleStep = new ArrayList<>();
+    private ArrayList<Boolean> mOptionalStep = new ArrayList<>();
     private int mCurrent;
 
 
@@ -43,9 +44,10 @@ public class StepUtils {
         return mSteps.size();
     }
 
-    public void add(AbstractStep step, boolean state) {
+    public void add(AbstractStep step, boolean stateVisibility, boolean stateOptional) {
         mSteps.add(step);
-        mVisibleStep.add(state);
+        mVisibleStep.add(stateVisibility);
+        mOptionalStep.add(stateOptional);
         mActiveDots.add(false);
     }
 
@@ -62,18 +64,34 @@ public class StepUtils {
         return mCurrent;
     }
 
-    public boolean nextVisible() {
-        return mVisibleStep.get(mCurrent+1);
+    public boolean nextVisible(int stepNumber) {
+        return mVisibleStep.get(mCurrent+stepNumber);
+    }
+
+    public boolean previousOptional() {
+        if ((mCurrent - 1) > 0) {
+            return mOptionalStep.get(mCurrent - 1);
+        } else {
+            return false;
+        }
     }
 
     public void setNextVisibility(boolean state) {
-        mVisibleStep.set(mCurrent+1, state);
+        if ( (mCurrent + 1) < mSteps.size() ) {
+            mVisibleStep.set(mCurrent + 1, state);
+        }
     }
 
-    public boolean previousVisible() {
+    public void setPreviousVisibility(boolean state) {
+        if ((mCurrent - 1) > 0) {
+            mVisibleStep.set(mCurrent - 1, state);
+        }
+    }
+
+    public boolean previousVisible(int stepNumber) {
         int current = 0;
-        if (mCurrent > 0) {
-            current = mCurrent-1;
+        if ( (mCurrent - stepNumber) >= 0) {
+            current = mCurrent-stepNumber;
         }
         return mVisibleStep.get(current);
     }
