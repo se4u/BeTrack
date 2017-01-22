@@ -32,7 +32,8 @@ public class FragmentSurveySeekBar extends AbstractStep {
     //Input
     public static final String SURVEY_SEEKBAR_CHOICES_TITLE = "SURVEY_SEEKBAR_CHOICES_TITLE";
     public static final String SURVEY_SEEKBAR_CHOICES_DESC = "SURVEY_SEEKBAR_CHOICES_DESC";
-    public static final String SURVEY_SEEKBAR_ANSWERS = "SURVEY_SEEKBAR_ANSWERS";
+    public static final String SURVEY_SEEKBAR_ANSWERS_RIGHT = "SURVEY_SEEKBAR_ANSWERS_RIGHT";
+    public static final String SURVEY_SEEKBAR_ANSWERS_LEFT = "SURVEY_SEEKBAR_ANSWERS_LEFT";
 
     private static final int SURVEY_SEEKBAR_MAX = 4;
 
@@ -44,7 +45,8 @@ public class FragmentSurveySeekBar extends AbstractStep {
     private SeekBar seekBar4;
 
     private Bundle bundle;
-    TextView[] seekBarText = new TextView[SURVEY_SEEKBAR_MAX];
+    TextView[] seekBarTextRight = new TextView[SURVEY_SEEKBAR_MAX];
+    TextView[] seekBarTextLeft = new TextView[SURVEY_SEEKBAR_MAX];
     View[] seekBarView = new View[SURVEY_SEEKBAR_MAX];
 
 
@@ -74,10 +76,15 @@ public class FragmentSurveySeekBar extends AbstractStep {
         seekBar3 = (SeekBar) v.findViewById(R.id.volume_bar3);
         seekBar4 = (SeekBar) v.findViewById(R.id.volume_bar4);
 
-        seekBarText[0] = (TextView) v.findViewById(R.id.TextInfoRight1);
-        seekBarText[1] = (TextView) v.findViewById(R.id.TextInfoRight2);
-        seekBarText[2] = (TextView) v.findViewById(R.id.TextInfoRight3);
-        seekBarText[3] = (TextView) v.findViewById(R.id.TextInfoRight4);
+        seekBarTextRight[0] = (TextView) v.findViewById(R.id.TextInfoRight1);
+        seekBarTextRight[1] = (TextView) v.findViewById(R.id.TextInfoRight2);
+        seekBarTextRight[2] = (TextView) v.findViewById(R.id.TextInfoRight3);
+        seekBarTextRight[3] = (TextView) v.findViewById(R.id.TextInfoRight4);
+
+        seekBarTextLeft[0] = (TextView) v.findViewById(R.id.TextInfoLeft1);
+        seekBarTextLeft[1] = (TextView) v.findViewById(R.id.TextInfoLeft2);
+        seekBarTextLeft[2] = (TextView) v.findViewById(R.id.TextInfoLeft3);
+        seekBarTextLeft[3] = (TextView) v.findViewById(R.id.TextInfoLeft4);
 
         seekBarView[0] = (View) v.findViewById(R.id.SeekBar1);
         seekBarView[1] = (View) v.findViewById(R.id.SeekBar2);
@@ -87,14 +94,21 @@ public class FragmentSurveySeekBar extends AbstractStep {
         bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_SEEKBAR_CHOICES_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_SEEKBAR_CHOICES_DESC, null);
-        ArrayList<String> SeekBarText = bundle.getStringArrayList(SURVEY_SEEKBAR_ANSWERS);
+        ArrayList<String> SeekBarTextRight = bundle.getStringArrayList(SURVEY_SEEKBAR_ANSWERS_RIGHT);
+        ArrayList<String> SeekBarTextLeft = bundle.getStringArrayList(SURVEY_SEEKBAR_ANSWERS_LEFT);
 
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
 
-        for (NbrTextVisible = 0; NbrTextVisible < SeekBarText.size(); NbrTextVisible++)
+        for (NbrTextVisible = 0; NbrTextVisible < SeekBarTextRight.size(); NbrTextVisible++)
         {
-            seekBarText[NbrTextVisible].setText(SeekBarText.get(NbrTextVisible));
+            seekBarTextRight[NbrTextVisible].setText(SeekBarTextRight.get(NbrTextVisible));
+            if (SeekBarTextLeft != null) {
+                if (NbrTextVisible < SeekBarTextLeft.size()) {
+                    seekBarTextLeft[NbrTextVisible].setText(SeekBarTextLeft.get(NbrTextVisible));
+                }
+            }
+
         }
 
         while (NbrTextVisible < SURVEY_SEEKBAR_MAX)
