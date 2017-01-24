@@ -6,19 +6,25 @@
     <string name="disclaimer_error">You need to agree to go on with the study</string>
 
     <!-- Disclaimer to accept to participate the study -->
-    <string name="disclaimer_title">Disclaimer</string>
-    <string name="disclaimer">Utque aegrum corpus quassari etiam levibus solet offensis, ita animus eius angustus et tener, quicquid increpuisset, ad salutis suae dispendium existimans factum aut cogitatum, insontium caedibus fecit victoriam luctuosam.
-        Pandente itaque viam fatorum sorte tristissima, qua praestitutum erat eum vita et imperio spoliari, itineribus interiectis permutatione iumentorum emensis venit Petobionem oppidum Noricorum, ubi reseratae sunt insidiarum latebrae omnes, et Barbatio repente apparuit comes, qui sub eo domesticis praefuit, cum Apodemio agente in rebus milites ducens, quos beneficiis suis oppigneratos elegerat imperator certus nec praemiis nec miseratione ulla posse deflecti.
-        Rogatus ad ultimum admissusque in consistorium ambage nulla praegressa inconsiderate et leviter proficiscere inquit ut praeceptum est, Caesar sciens quod si cessaveris, et tuas et palatii tui auferri iubebo prope diem annonas. hocque solo contumaciter dicto subiratus abscessit nec in conspectum eius postea venit saepius arcessitus.
-        Quaestione igitur per multiplices dilatata fortunas cum ambigerentur quaedam, non nulla levius actitata constaret, post multorum clades Apollinares ambo pater et filius in exilium acti cum ad locum Crateras nomine pervenissent, villam scilicet suam quae ab Antiochia vicensimo et quarto disiungitur lapide, ut mandatum est, fractis cruribus occiduntur.
-        Harum trium sententiarum nulli prorsus assentior. Nec enim illa prima vera est, ut, quem ad modum in se quisque sit, sic in amicum sit animatus. Quam multa enim, quae nostra causa numquam faceremus, facimus causa amicorum! precari ab indigno, supplicare, tum acerbius in aliquem invehi insectarique vehementius, quae in nostris rebus non satis honeste, in amicorum fiunt honestissime; multaeque res sunt in quibus de suis commodis viri boni multa detrahunt detrahique patiuntur, ut iis amici potius quam ipsi fruantur.
-        Quam ob rem cave Catoni anteponas ne istum quidem ipsum, quem Apollo, ut ais, sapientissimum iudicavit; huius enim facta, illius dicta laudantur. De me autem, ut iam cum utroque vestrum loquar, sic habetote.
-        Horum adventum praedocti speculationibus fidis rectores militum tessera data sollemni armatos omnes celeri eduxere procursu et agiliter praeterito Calycadni fluminis ponte, cuius undarum magnitudo murorum adluit turres, in speciem locavere pugnandi. neque tamen exiluit quisquam nec permissus est congredi. formidabatur enim flagrans vesania manus et superior numero et ruitura sine respectu salutis in ferrum.
-        Huic Arabia est conserta, ex alio latere Nabataeis contigua; opima varietate conmerciorum castrisque oppleta validis et castellis, quae ad repellendos gentium vicinarum excursus sollicitudo pervigil veterum per oportunos saltus erexit et cautos. haec quoque civitates habet inter oppida quaedam ingentes Bostram et Gerasam atque Philadelphiam murorum firmitate cautissimas. hanc provinciae inposito nomine rectoreque adtributo obtemperare legibus nostris Traianus conpulit imperator incolarum tumore saepe contunso cum glorioso marte Mediam urgeret et Parthos.
-        Haec et huius modi quaedam innumerabilia ultrix facinorum impiorum bonorumque praemiatrix aliquotiens operatur Adrastia atque utinam semper quam vocabulo duplici etiam Nemesim appellamus: ius quoddam sublime numinis efficacis, humanarum mentium opinione lunari circulo superpositum, vel ut definiunt alii, substantialis tutela generali potentia partilibus praesidens fatis, quam theologi veteres fingentes Iustitiae filiam ex abdita quadam aeternitate tradunt omnia despectare terrena.
-        Ac ne quis a nobis hoc ita dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur.
+    <string name="disclaimer_title">Participant Consent Form</string>
+    <string name="disclaimer">
+        Principal Investigator: Dr. Frances Chen, UBC Department of Psychology (Tel: 604-822-2549)
+        Co-Investigator: Dr. Christine Anderl, FernUniversität in Hagen (Tel: +49 2331-987-2195)
+        1. Introduction: In this study we are interested in whether smartphone use varies across the natural female menstrual cycle. This consent form describes what will happen to you during the study; it will also describe any possible benefits, risks, and discomforts. Before making a decision whether to participate or not, please read the following information carefully.
+        2. What is the purpose of the study?: The purpose of this study is to examine whether smartphone use varies across the menstrual cycle.
+        3. What procedures does the study involve?: In this study you will be invited to the Social Health Lab for an initial 30-minute lab session where you will be introduced to the study by a research assistant, asked to complete some questionnaires, and install and set up a research application on your smartphone with the help of the research assistant.
+        You will then be asked to fill in a daily 1-minute questionnaire asking about the activities you engaged in that day directly on your smartphone for 35 days. Throughout these 35 days, the application will also record information about your phone usage such as how long and how often you use your phone in general and how long and how often you use several specific applications (but no content-related information about what you do when using these applications will be recorded).
+        Finally, you will be invited back to the Social Health Lab so that the research assistant can explain the study to you and answer any questions that you might have.
+        4. Your participation is voluntary: Your participation is entirely voluntary; it is up to you to decide whether or not to take part in this study. If you wish to participate, you will be asked to install and set up the application. If you do decide to take part in this study, you are free to withdraw at any time and without giving any reasons for your decision. If you do not wish to participate, you do not have to provide any reason for your decision not to participate.
+        5. What are the possible risks or discomforts?: We do not foresee any risks in participating in this study. Still, please be reminded that you may choose not to answer any questions that you do not wish to answer, and that you are free to withdraw at any time. (If any issues do arise as a result of your participation, please contact Dr. Chen. Her telephone number is listed above.)
+        6. What are the benefits of participating in this study?: As a result of participating in this research, you will be given the opportunity to learn more about your individual smartphone use. More specifically, upon completion of the study, we will provide you with individual feedback on how much time you spend per day using your smartphone in general and a number of social media applications in particular.
+        7. Will I receive any tangible rewards for participating in this study?: Through UBC’s Human Subjects Pool, you will receive 2 HSP credits for your participation in this study.
+        8. Your responses will be kept strictly confidential: All of the information you provide will be kept strictly confidential. All electronic study data will be encrypted before being sent from your smartphone to a password-protected server and then stored on encrypted and password-protected computers and/or locked laboratory facilities in the Department of Psychology at the University of British Columbia. Access to all data collected during the study will be restricted to Dr. Chen and her research team. All data (both online and paper formats) will be kept for at least five years and destroyed when it is no longer needed. In line with current best practices in psychological research, electronic data will be preserved for future use in open science initiatives. Open science initiatives allow for researchers from different universities to share their data upon completion of studies, in an effort to stimulate further use and exploration of existing data sets. Data is uploaded to an online form in the form of a computer software file (e.g., SPSS), and these files are stripped of any information that could identify you (e.g., names) to ensure confidentiality and anonymity.
+        9. Who do I contact if I have questions about the study?: If you have any concerns or complaints about your rights as a research participant and/or your experiences while participating in this study, contact the Research Participant Complaint Line in the UBC Office of Research Ethics at 604-822-8598 or if long distance e-mail RSIL@ors.ubc.ca or call toll free 1-877-822-8598. If you have general questions about the study, you can call Dr. Frances Chen, the principal investigator of this study. Dr. Frances Chen may be reached at 604-822-2549.
+        10. Subject consent to participate: I have read and understood the consent form. I have had the time and opportunity to ask questions and have had satisfactory responses to my questions. I understand that my participation in this study is voluntary and that I am completely free to refuse to participate or to withdraw from this study at any time. I freely consent to participate in this study. By installing and setting up the application on your personal smartphone, you are indicating that you agree to participate in the study.
+        By installing and setting up the application on your personal smartphone, you are consenting to participate in this research.
     </string>
-    <string name="disclaimer_agree">I agree to these terms</string>
+    <string name="disclaimer_agree">I agree to participate in this research.</string>
 
     <!-- Study informations -->
     <string name="study_title">Phone Use Study</string>
@@ -33,7 +39,7 @@
         Haec et huius modi quaedam innumerabilia ultrix facinorum impiorum bonorumque praemiatrix aliquotiens operatur Adrastia atque utinam semper quam vocabulo duplici etiam Nemesim appellamus: ius quoddam sublime numinis efficacis, humanarum mentium opinione lunari circulo superpositum, vel ut definiunt alii, substantialis tutela generali potentia partilibus praesidens fatis, quam theologi veteres fingentes Iustitiae filiam ex abdita quadam aeternitate tradunt omnia despectare terrena.
         Ac ne quis a nobis hoc ita dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur.
     </string>
-    <string name="study_agree">I agree to participate in this study</string>
+    <string name="study_agree">I agree to participate in this research.</string>
 
     <!-- reminder study -->
     <string name="study_reminder">REMINDER</string>
@@ -67,9 +73,9 @@
     <string name="welcome_wait">Please wait...</string>
 
     <!-- Study main screen -->
-    <string name="Betrack_welcome">Thank you for participating, see you later !</string>
+    <string name="Betrack_welcome">Thank you for participating, see you again tomorrow !</string>
     <string name="Betrack_info_start">Days remaining:</string>
-    <string name="Betrack_start">Thank you for registering ! The study will start from tomorrow on</string>
+    <string name="Betrack_start">Thank you for registering ! The study will start tomorrow</string>
     <string name="Betrack_end">Thank you for participating in the study, you can uninstall Betrack</string>
     <string name="Betrack_info_end">Your phone usage:</string>
     <string name="Betrack_settings">Settings</string>
@@ -312,7 +318,7 @@
 
     <!-- Screen 4 -->
     <string name="title_se_screen4">PHONE USAGE</string>
-    <string name="question_se_screen4">On average, how many hours/minutes per day do you think you spent using your phone in general throughout the study ?</string>
+    <string name="question_se_screen4">On average, how many minutes per day do you think you spent using your phone in general throughout the study ?</string>
 
     <!-- Screen 5 -->
     <string name="title_se_screen5">STUDY</string>
