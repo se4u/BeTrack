@@ -204,11 +204,11 @@
 
     <!-- Screen 9 -->
     <string name="title_ss_screen9">ENGLISH LEVEL</string>
-    <string name="question_ss_screen9">Please specify the english test you took:</string>
+    <string name="question_ss_screen9">Please specify the English test you took:</string>
 
     <!-- Screen 10 -->
     <string name="title_ss_screen10">ENGLISH LEVEL</string>
-    <string name="question_ss_screen10">Please report your score:</string>
+    <string name="question_ss_screen10">If possible, please report your score:</string>
 
     <!-- Screen 11 -->
     <string name="title_ss_screen11">UNIVERSITY</string>

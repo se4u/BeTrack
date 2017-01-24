@@ -315,7 +315,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle10.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen10));
         bundle10.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen10));
         bundle10.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
-        bundle10.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        bundle10.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, true);
         bundle10.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_NUMBER_INPUT, true);
         Step10 = new FragmentSurveyText();
         Step10.setArguments(bundle10);
