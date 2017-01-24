@@ -64,6 +64,23 @@ public class ActivitySurveyEnd  extends DotStepper {
     public void onComplete() {
         super.onComplete();
 
+        values.clear();
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_PERIOD, SurveyPeriod);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL1_LIFE, SurveySocial1);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL2_LIFE, SurveySocial2);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD1, SurveyMood1);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD2, SurveyMood2);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD3, SurveyMood3);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP, SurveyInRelation);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION, SurveyContraception);
+
+        DateStudyEnd = sdf.format(new Date());
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_DATE, DateStudyEnd);
+        TimeStudyEnd = shf.format(new Date());
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_TIME, TimeStudyEnd);
+
+        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_END_STUDY);
+
         Log.d(TAG, "setEndSurveyTransferred = IN_PROGRESS");
         ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.IN_PROGRESS);
 

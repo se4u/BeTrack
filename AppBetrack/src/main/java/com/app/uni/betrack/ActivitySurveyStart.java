@@ -25,7 +25,7 @@ public class ActivitySurveyStart extends ProgressStepper {
     private int SurveyInRelation = -1;
     private static int SurveyAge = 24;
     private static int SurveyLengthPeriod = 4;
-    private static int SurveyLenghCycle = 29;
+    private static int SurveyLenghCycle = 28;
     private String SurveyContraception;
     private int SurveySocial1 = 0;
     private int SurveySocial2 = 0;
@@ -41,8 +41,8 @@ public class ActivitySurveyStart extends ProgressStepper {
     private static final int SURVEY_PEIORD_MAX = 10;
     private static final int SURVEY_DEFAULT_PERIOD = SurveyLengthPeriod - SURVEY_PERIOD_MIN + 1;
 
-    private static final int SURVEY_CYCLE_MIN = 10;
-    private static final int SURVEY_CYCLE_MAX = 90;
+    private static final int SURVEY_CYCLE_MIN = 18;
+    private static final int SURVEY_CYCLE_MAX = 52;
     private static final int SURVEY_DEFAULT_CYCLE = SurveyLenghCycle - SURVEY_CYCLE_MIN + 1;
 
     private String DateStudyStart = null;
@@ -107,6 +107,28 @@ public class ActivitySurveyStart extends ProgressStepper {
         super.onComplete();
         int resultInt =0;
         String resultString = null;
+
+        //Save those data in the local database
+        values.clear();
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_AGE, SurveyAge);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_RELATIONSHIP, SurveyInRelation);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_AVGPERIODLENGHT, SurveyLengthPeriod);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_AVGMENSTRUALCYCLE, SurveyLenghCycle);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_CONTRACEPTION, SurveyContraception);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_SOCIAL1_LIFE, SurveySocial1);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_SOCIAL2_LIFE, SurveySocial2);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_MOOD1, SurveyMood1);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_MOOD2, SurveyMood2);
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_MOOD3, SurveyMood3);
+        DateStudyStart = sdf.format(new Date());
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_DATE, DateStudyStart);
+        TimeStudyStart = shf.format(new Date());
+        values.put(UtilsLocalDataBase.C_STARTSTUDY_TIME, TimeStudyStart);
+
+        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_START_STUDY);
+        Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser() + "Participant age: " + SurveyAge + " In a relationship: " + SurveyInRelation
+                + " period lenght: " + SurveyLengthPeriod + " cycle lenght: " + SurveyLenghCycle + " Contraception used: " + SurveyContraception
+                + " date start: " + DateStudyStart + " time start: " + TimeStudyStart);
 
 
         ObjSettingsStudy.setStartDateSurvey(DateStudyStart);
@@ -403,9 +425,9 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen17));
         bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen17));
         bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_days));
-        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_PERIOD_MIN);
-        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_PEIORD_MAX);
-        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_PERIOD);
+        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_CYCLE_MIN);
+        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_CYCLE_MAX);
+        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_CYCLE);
         Step17 = new FragmentSurveyScrolling();
         Step17.setArguments(bundle17);
         addStep(Step17, true, false);
@@ -415,9 +437,9 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen18));
         bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen18));
         bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_days));
-        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_PERIOD_MIN);
-        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_PEIORD_MAX);
-        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_PERIOD);
+        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_CYCLE_MIN);
+        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_CYCLE_MAX);
+        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_CYCLE);
         Step18 = new FragmentSurveyScrolling();
         Step18.setArguments(bundle18);
         addStep(Step18, true, false);
