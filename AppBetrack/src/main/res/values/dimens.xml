@@ -22,5 +22,5 @@
     <dimen name="survey_6choices_margin_bottom_image">10dp</dimen>
 
     <!-- 10 choices specific dimensions -->
-    <dimen name="survey_10choices_rbSize">17dp</dimen>
+    <dimen name="survey_10choices_rbSize">15dp</dimen>
 </resources>
