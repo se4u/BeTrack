@@ -19,7 +19,7 @@
 
 		<div class="text-xs-center">
 			<h2 class="form-signin-heading">BeTrack</h2>
-			<img class="img-responsive" src="img/BeTrack.png" height="42" width="42"/>
+			<img class="img-responsive" src="img/ic_launcher-web.png" height="42" width="42"/>
 		</div>
 
 		<label for="inputEmail" class="sr-only">Username</label>
