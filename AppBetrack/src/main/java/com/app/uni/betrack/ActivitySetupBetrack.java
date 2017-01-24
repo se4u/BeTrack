@@ -150,11 +150,6 @@ public class ActivitySetupBetrack extends AppCompatActivity {
             case  R.id.EnableHuaweiBetrack:
                 huaweiProtectedApps();
                 EnableHuaweiProtModeClicked = true;
-                if (ObjSettingsStudy.getSetupBetrackDone()) {
-                    i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
-                    startActivity(i);
-                    finish();
-                }
                 break;
             case  R.id.EnableGPSBetrack:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
