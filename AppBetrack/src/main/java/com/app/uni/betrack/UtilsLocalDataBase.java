@@ -141,34 +141,51 @@ public class UtilsLocalDataBase {
     static final String TABLE_START_STUDY = "StartStudy";
     static final String C_STARTSTUDY_ID = BaseColumns._ID;
     static final String C_STARTSTUDY_PID = "ParticipantID";
-    static final String C_STARTSTUDY_AGE = "Age";
-    static final String C_STARTSTUDY_SEX = "Sex";
-    static final String C_STARTSTUDY_RELATIONSHIP = "RelationShip";
-    static final String C_STARTSTUDY_CONTRACEPTION = "Contraception";
-    static final String C_STARTSTUDY_AVGPERIODLENGHT = "AvgPeriodLenght";
-    static final String C_STARTSTUDY_AVGMENSTRUALCYCLE = "AvgMenstrualCycle";
-    static final String C_STARTSTUDY_SOCIAL1_LIFE = "SocialLife1";
-    static final String C_STARTSTUDY_SOCIAL2_LIFE = "SocialLife2";
-    static final String C_STARTSTUDY_MOOD1 = "Mood1";
-    static final String C_STARTSTUDY_MOOD2 = "Mood2";
-    static final String C_STARTSTUDY_MOOD3 = "Mood3";
-    static final String C_STARTSTUDY_MOOD4 = "Mood4";
+    static final String C_STARTSTUDY_AGE = "age";
+    static final String C_STARTSTUDY_ETHNICITY1 = "ethnicity1";
+    static final String C_STARTSTUDY_ETHNICITY2 = "ethnicity2";
+    static final String C_STARTSTUDY_STUDENT = "student";
+    static final String C_STARTSTUDY_ENGLISH_LEVEL1 = "englishlevel1";
+    static final String C_STARTSTUDY_ENGLISH_LEVEL2 = "englishlevel2";
+    static final String C_STARTSTUDY_ENGLISH_LEVEL3 = "englishlevel3";
+    static final String C_STARTSTUDY_ENGLISH_LEVEL4 = "englishlevel4";
+    static final String C_STARTSTUDY_ENGLISH_LEVEL5 = "englishlevel5";
+    static final String C_STARTSTUDY_ENGLISH_LEVEL6 = "englishlevel6";
+    static final String C_STARTSTUDY_UNIVERSITY1 = "university1";
+    static final String C_STARTSTUDY_UNIVERSITY2 = "university2";
+    static final String C_STARTSTUDY_UNIVERSITY3 = "university3";
+    static final String C_STARTSTUDY_RELATIONSHIP = "relationship";
+    static final String C_STARTSTUDY_CONTRACEPTION = "contraception";
+    static final String C_STARTSTUDY_MATERNITY = "maternity";
+    static final String C_STARTSTUDY_PERIOD1 = "period1";
+    static final String C_STARTSTUDY_PERIOD2 = "period2";
+    static final String C_STARTSTUDY_PERIOD3 = "period3";
+    static final String C_STARTSTUDY_PERIOD4 = "period4";
     static final String C_STARTSTUDY_DATE = "Date";
     static final String C_STARTSTUDY_TIME = "Time";
 
     public static final ArrayList<String> DB_START_STUDY = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_STARTSTUDY_PID);
         add(UtilsLocalDataBase.C_STARTSTUDY_AGE);
+        add(UtilsLocalDataBase.C_STARTSTUDY_ETHNICITY1);
+        add(UtilsLocalDataBase.C_STARTSTUDY_ETHNICITY2);
+        add(UtilsLocalDataBase.C_STARTSTUDY_STUDENT);
+        add(UtilsLocalDataBase.C_STARTSTUDY_ENGLISH_LEVEL1);
+        add(UtilsLocalDataBase.C_STARTSTUDY_ENGLISH_LEVEL2);
+        add(UtilsLocalDataBase.C_STARTSTUDY_ENGLISH_LEVEL3);
+        add(UtilsLocalDataBase.C_STARTSTUDY_ENGLISH_LEVEL4);
+        add(UtilsLocalDataBase.C_STARTSTUDY_ENGLISH_LEVEL5);
+        add(UtilsLocalDataBase.C_STARTSTUDY_ENGLISH_LEVEL6);
+        add(UtilsLocalDataBase.C_STARTSTUDY_UNIVERSITY1);
+        add(UtilsLocalDataBase.C_STARTSTUDY_UNIVERSITY2);
+        add(UtilsLocalDataBase.C_STARTSTUDY_UNIVERSITY3);
         add(UtilsLocalDataBase.C_STARTSTUDY_RELATIONSHIP);
         add(UtilsLocalDataBase.C_STARTSTUDY_CONTRACEPTION);
-        add(UtilsLocalDataBase.C_STARTSTUDY_AVGPERIODLENGHT);
-        add(UtilsLocalDataBase.C_STARTSTUDY_AVGMENSTRUALCYCLE);
-        add(UtilsLocalDataBase.C_STARTSTUDY_SOCIAL1_LIFE);
-        add(UtilsLocalDataBase.C_STARTSTUDY_SOCIAL2_LIFE);
-        add(UtilsLocalDataBase.C_STARTSTUDY_MOOD1);
-        add(UtilsLocalDataBase.C_STARTSTUDY_MOOD2);
-        add(UtilsLocalDataBase.C_STARTSTUDY_MOOD3);
-        add(UtilsLocalDataBase.C_STARTSTUDY_MOOD4);
+        add(UtilsLocalDataBase.C_STARTSTUDY_MATERNITY);
+        add(UtilsLocalDataBase.C_STARTSTUDY_PERIOD1);
+        add(UtilsLocalDataBase.C_STARTSTUDY_PERIOD2);
+        add(UtilsLocalDataBase.C_STARTSTUDY_PERIOD3);
+        add(UtilsLocalDataBase.C_STARTSTUDY_PERIOD4);
         add(UtilsLocalDataBase.C_STARTSTUDY_DATE);
         add(UtilsLocalDataBase.C_STARTSTUDY_TIME);
     }};
@@ -176,16 +193,25 @@ public class UtilsLocalDataBase {
     public static final ArrayList<Boolean> DB_START_STUDY_CYPHER = new ArrayList<Boolean>() {{
         add(false); //C_STARTSTUDY_PID
         add(true);  //C_STARTSTUDY_AGE
+        add(true);  //C_STARTSTUDY_ETHNICITY1
+        add(true);  //C_STARTSTUDY_ETHNICITY2
+        add(true);  //C_STARTSTUDY_STUDENT
+        add(true);  //C_STARTSTUDY_ENGLISH_LEVEL1
+        add(true);  //C_STARTSTUDY_ENGLISH_LEVEL2
+        add(true);  //C_STARTSTUDY_ENGLISH_LEVEL3
+        add(true);  //C_STARTSTUDY_ENGLISH_LEVEL4
+        add(true);  //C_STARTSTUDY_ENGLISH_LEVEL5
+        add(true);  //C_STARTSTUDY_ENGLISH_LEVEL6
+        add(true);  //C_STARTSTUDY_UNIVERSITY1
+        add(true);  //C_STARTSTUDY_UNIVERSITY2
+        add(true);  //C_STARTSTUDY_UNIVERSITY3
         add(true);  //C_STARTSTUDY_RELATIONSHIP
         add(true);  //C_STARTSTUDY_CONTRACEPTION
-        add(true);  //C_STARTSTUDY_AVGPERIODLENGHT
-        add(true);  //C_STARTSTUDY_AVGMENSTRUALCYCLE
-        add(true);  //C_STARTSTUDY_SOCIAL1_LIFE
-        add(true);  //C_STARTSTUDY_SOCIAL2_LIFE
-        add(true);  //C_STARTSTUDY_MOOD1
-        add(true);  //C_STARTSTUDY_MOOD2
-        add(true);  //C_STARTSTUDY_MOOD3
-        add(true);  //C_STARTSTUDY_MOOD4
+        add(true);  //C_STARTSTUDY_MATERNITY
+        add(true);  //C_STARTSTUDY_PERIOD1
+        add(true);  //C_STARTSTUDY_PERIOD2
+        add(true);  //C_STARTSTUDY_PERIOD3
+        add(true);  //C_STARTSTUDY_PERIOD4
         add(true);  //C_STARTSTUDY_DATE
         add(true);  //C_STARTSTUDY_TIME
     }};
@@ -194,44 +220,44 @@ public class UtilsLocalDataBase {
     static final String TABLE_END_STUDY = "EndStudy";
     static final String C_ENDSTUDY_ID = BaseColumns._ID;
     static final String C_ENDSTUDY_PID = "ParticipantID";
-    static final String C_ENDSTUDY_PERIOD = "Period";
-    static final String C_ENDSTUDY_SOCIAL1_LIFE = "SocialLife1";
-    static final String C_ENDSTUDY_SOCIAL2_LIFE = "SocialLife2";
-    static final String C_ENDSTUDY_MOOD1 = "Mood1";
-    static final String C_ENDSTUDY_MOOD2 = "Mood2";
-    static final String C_ENDSTUDY_MOOD3 = "Mood3";
-    static final String C_ENDSTUDY_MOOD4 = "Mood4";
-    static final String C_ENDSTUDY_RELATIONSHIP = "RelationShip";
-    static final String C_ENDSTUDY_CONTRACEPTION = "Contraception";
+    static final String C_ENDSTUDY_RELATIONSHIP = "relationship";
+    static final String C_ENDSTUDY_CONTRACEPTION = "contraception";
+    static final String C_ENDSTUDY_TINDER = "tinder";
+    static final String C_ENDSTUDY_PHONE_USAGE = "phoneusage";
+    static final String C_ENDSTUDY_STUDY1 = "study1";
+    static final String C_ENDSTUDY_STUDY2 = "study2";
+    static final String C_ENDSTUDY_STUDY3 = "study3";
+    static final String C_ENDSTUDY_RESEARCHAPP1 = "researchapp1";
+    static final String C_ENDSTUDY_RESEARCHAPP2 = "researchapp2";
     static final String C_ENDSTUDY_DATE = "Date";
     static final String C_ENDSTUDY_TIME = "Time";
 
     public static final ArrayList<String> DB_END_STUDY = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_ENDSTUDY_PID);
-        add(UtilsLocalDataBase.C_ENDSTUDY_PERIOD);
-        add(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL1_LIFE);
-        add(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL2_LIFE);
-        add(UtilsLocalDataBase.C_ENDSTUDY_MOOD1);
-        add(UtilsLocalDataBase.C_ENDSTUDY_MOOD2);
-        add(UtilsLocalDataBase.C_ENDSTUDY_MOOD3);
-        add(UtilsLocalDataBase.C_ENDSTUDY_MOOD4);
         add(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP);
         add(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION);
+        add(UtilsLocalDataBase.C_ENDSTUDY_TINDER);
+        add(UtilsLocalDataBase.C_ENDSTUDY_PHONE_USAGE);
+        add(UtilsLocalDataBase.C_ENDSTUDY_STUDY1);
+        add(UtilsLocalDataBase.C_ENDSTUDY_STUDY2);
+        add(UtilsLocalDataBase.C_ENDSTUDY_STUDY3);
+        add(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP1);
+        add(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP2);
         add(UtilsLocalDataBase.C_ENDSTUDY_DATE);
         add(UtilsLocalDataBase.C_ENDSTUDY_TIME);
     }};
 
     public static final ArrayList<Boolean> DB_END_STUDY_CYPHER = new ArrayList<Boolean>() {{
         add(false); //C_ENDSTUDY_PID
-        add(true);  //C_ENDSTUDY_PERIOD
-        add(true);  //C_ENDSTUDY_SOCIAL1_LIFE
-        add(true);  //C_ENDSTUDY_SOCIAL2_LIFE
-        add(true);  //C_ENDSTUDY_MOOD1
-        add(true);  //C_ENDSTUDY_MOOD2
-        add(true);  //C_ENDSTUDY_MOOD3
-        add(true);  //C_ENDSTUDY_MOOD4
         add(true);  //C_ENDSTUDY_RELATIONSHIP
         add(true);  //C_ENDSTUDY_CONTRACEPTION
+        add(true);  //C_ENDSTUDY_TINDER
+        add(true);  //C_ENDSTUDY_PHONE_USAGE
+        add(true);  //C_ENDSTUDY_STUDY1
+        add(true);  //C_ENDSTUDY_STUDY2
+        add(true);  //C_ENDSTUDY_STUDY3
+        add(true);  //C_ENDSTUDY_RESEARCHAPP1
+        add(true);  //C_ENDSTUDY_RESEARCHAPP2
         add(true); //C_ENDSTUDY_DATE
         add(true); //C_ENDSTUDY_TIME
     }};
@@ -298,16 +324,25 @@ public class UtilsLocalDataBase {
 
             String sql3 = "create table " + TABLE_START_STUDY + " (" + C_STARTSTUDY_ID + " integer primary key autoincrement, "
                     +  C_STARTSTUDY_AGE + " text, "
+                    + C_STARTSTUDY_ETHNICITY1 + " text, "
+                    + C_STARTSTUDY_ETHNICITY2 + " text, "
+                    + C_STARTSTUDY_STUDENT + " text, "
+                    + C_STARTSTUDY_ENGLISH_LEVEL1 + " text, "
+                    + C_STARTSTUDY_ENGLISH_LEVEL2 + " text, "
+                    + C_STARTSTUDY_ENGLISH_LEVEL3 + " text, "
+                    + C_STARTSTUDY_ENGLISH_LEVEL4 + " text, "
+                    + C_STARTSTUDY_ENGLISH_LEVEL5 + " text, "
+                    + C_STARTSTUDY_ENGLISH_LEVEL6 + " text, "
+                    + C_STARTSTUDY_UNIVERSITY1 + " text, "
+                    + C_STARTSTUDY_UNIVERSITY2 + " text, "
+                    + C_STARTSTUDY_UNIVERSITY3 + " text, "
                     + C_STARTSTUDY_RELATIONSHIP + " text, "
                     + C_STARTSTUDY_CONTRACEPTION + " text, "
-                    + C_STARTSTUDY_AVGPERIODLENGHT + " text, "
-                    + C_STARTSTUDY_AVGMENSTRUALCYCLE + " text, "
-                    + C_STARTSTUDY_SOCIAL1_LIFE + " text, "
-                    + C_STARTSTUDY_SOCIAL2_LIFE + " text, "
-                    + C_STARTSTUDY_MOOD1 + " text, "
-                    + C_STARTSTUDY_MOOD2 + " text, "
-                    + C_STARTSTUDY_MOOD3 + " text, "
-                    + C_STARTSTUDY_MOOD4 + " text, "
+                    + C_STARTSTUDY_MATERNITY + " text, "
+                    + C_STARTSTUDY_PERIOD1 + " text, "
+                    + C_STARTSTUDY_PERIOD2 + " text, "
+                    + C_STARTSTUDY_PERIOD3 + " text, "
+                    + C_STARTSTUDY_PERIOD4 + " text, "
                     + C_STARTSTUDY_DATE + " text, "
                     + C_STARTSTUDY_TIME + " text)"; //
             db.execSQL(sql3);
@@ -322,15 +357,15 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql4);
 
             String sql6 = "create table " + TABLE_END_STUDY + " (" + C_ENDSTUDY_ID + " integer primary key autoincrement, "
-                    + C_ENDSTUDY_PERIOD + " text, "
-                    + C_ENDSTUDY_SOCIAL1_LIFE + " text, "
-                    + C_ENDSTUDY_SOCIAL2_LIFE + " text, "
-                    + C_ENDSTUDY_MOOD1 + " text, "
-                    + C_ENDSTUDY_MOOD2 + " text, "
-                    + C_ENDSTUDY_MOOD3 + " text, "
-                    + C_ENDSTUDY_MOOD4 + " text, "
                     + C_ENDSTUDY_RELATIONSHIP + " text, "
                     + C_ENDSTUDY_CONTRACEPTION + " text, "
+                    + C_ENDSTUDY_TINDER + " text, "
+                    + C_ENDSTUDY_PHONE_USAGE + " text, "
+                    + C_ENDSTUDY_STUDY1 + " text, "
+                    + C_ENDSTUDY_STUDY2 + " text, "
+                    + C_ENDSTUDY_STUDY3 + " text, "
+                    + C_ENDSTUDY_RESEARCHAPP1 + " text, "
+                    + C_ENDSTUDY_RESEARCHAPP2 + " text, "
                     + C_ENDSTUDY_DATE +  " text, "
                     + C_ENDSTUDY_TIME + " text)"; //
             db.execSQL(sql6);

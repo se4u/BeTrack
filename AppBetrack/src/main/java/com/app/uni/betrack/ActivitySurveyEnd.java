@@ -18,15 +18,15 @@ import java.util.Date;
 public class ActivitySurveyEnd  extends DotStepper {
     private static final String TAG = "ActivitySurveyEnd";
 
-    private int SurveyPeriod = -1;
-    private int SurveySocial1 = 0;
-    private int SurveySocial2 = 0;
-    private int SurveyMood1 = 0;
-    private int SurveyMood2 = 0;
-    private int SurveyMood3 = 0;
-    private int SurveyInRelation = -1;
-    private String SurveyContraception = null;
-    private int PhoneUsage = 0;
+    private int SurveyRelationShip = 0;
+    private int SurveyContraception = 0;
+    private int SurveyTinder = 0;
+    private String SurveyPhoneUsage = null;
+    private int SurveyStudy1 = 0;
+    private int SurveyStudy2 = 0;
+    private int SurveyStudy3 = 0;
+    private int SurveyResearchApp1 = 0;
+    private String SurveyResearchApp2 = null;
     private String DateStudyEnd = null;
     private String TimeStudyEnd = null;
 
@@ -63,16 +63,73 @@ public class ActivitySurveyEnd  extends DotStepper {
     @Override
     public void onComplete() {
         super.onComplete();
+        int resultInt =0;
+        String resultString = null;
+
+        //Step 1 RELATIONSHIP
+        resultInt = Step1.getArguments().getInt(FragmentSurvey10Choices.SURVEY_STATUS, 0);
+        if (resultInt != 0) {
+            SurveyRelationShip = resultInt;
+        }
+
+        //Step 2 CONTRACEPTION
+        resultInt = Step2.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
+        if (resultInt != 0) {
+            SurveyContraception = resultInt;
+        }
+
+        //Step 3 TINDER
+        resultInt = Step3.getArguments().getInt(FragmentSurvey10Choices.SURVEY_STATUS, 0);
+        if (resultInt != 0) {
+            SurveyTinder = resultInt;
+        }
+
+        //Step 4 PHONE USAGE
+        resultString = Step4.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
+        if (resultString != null) {
+            SurveyPhoneUsage = resultString;
+        }
+
+        //Step 5 STUDY 1
+        resultInt = Step5.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
+        if (resultInt != 0) {
+            SurveyStudy1 = resultInt;
+        }
+
+        //Step 6 STUDY 2
+        resultInt = Step6.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
+        if (resultInt != 0) {
+            SurveyStudy2 = resultInt;
+        }
+
+        //Step 7 STUDY 3
+        resultInt = Step7.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
+        if (resultInt != 0) {
+            SurveyStudy3 = resultInt;
+        }
+
+        //Step 8 RESEARCH APP 1
+        resultInt = Step8.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
+        if (resultInt != 0) {
+            SurveyResearchApp1 = resultInt;
+        }
+
+        //Step 9 RESEARCH APP 2
+        resultString = Step9.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
+        if (resultString != null) {
+            SurveyResearchApp2 = resultString;
+        }
 
         values.clear();
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_PERIOD, SurveyPeriod);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL1_LIFE, SurveySocial1);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_SOCIAL2_LIFE, SurveySocial2);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD1, SurveyMood1);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD2, SurveyMood2);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_MOOD3, SurveyMood3);
-        values.put(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP, SurveyInRelation);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP, SurveyRelationShip);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION, SurveyContraception);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_TINDER, SurveyTinder);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_PHONE_USAGE, SurveyPhoneUsage);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_STUDY1, SurveyStudy1);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_STUDY2, SurveyStudy2);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_STUDY3, SurveyStudy3);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP1, SurveyResearchApp1);
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP2, SurveyResearchApp2);
 
         DateStudyEnd = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_DATE, DateStudyEnd);
