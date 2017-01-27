@@ -4,6 +4,26 @@ body {
   padding-bottom: 1.5rem;
 }
 
+#lean_overlay {
+    position: fixed;
+    z-index:100;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}
+
+#signin {
+    width: 350px;
+	padding: 30px; 
+    display:none;
+    background: #FFF;
+    border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.7); -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.7); -moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);      
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .footer {
@@ -21,17 +41,6 @@ body {
   margin-top: 0;
   margin-bottom: 0;
 }
-
-/* Custom page footer */
-.footer {
-    height: 50px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 100%;
-	border-top: .05rem solid #e5e5e5;
-}
-
 
 /* Main marketing message and sign up button */
 .jumbotron {

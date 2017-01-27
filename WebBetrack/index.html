@@ -6,23 +6,28 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<title>BeTrack</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" href="img/ic_launcher-web.png">
+		 
 		<!-- Bootstrap -->
-		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="css/bootstrap.min.a6.css" rel="stylesheet" media="screen">
 		<link href="css/index.css" rel="stylesheet" media="screen">
+		<link href="css/signin.css" rel="stylesheet" media="screen">
 		<link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet" media="screen">
 	</head>
 	<body>
   <div class="container">
 	
 	<div class="header clearfix">
-		<nav class="navbar navbar-fixed-top navbar-dark bg-primary">
-		<button class="navbar-toggler hidden-sm-up navbar-right" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header" aria-expanded="false" aria-label="Toggle navigation"></button>
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-primary">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 		<a class="navbar-brand" href="#">
 			<img src="img/ic_launcher-web.png" width="30" height="30" class="d-inline-block align-top" alt="">
 			BeTrack
 		</a>
-			<div class="collapse navbar-toggleable-xs" id="navbar-header">
-			  <ul class="nav navbar-nav">
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+			  <ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
 				  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
 				</li>
@@ -33,30 +38,52 @@
 				  <a class="nav-link" href="contact.html">Contact</a>
 				</li>
 			  </ul>
-			  <form class="form-inline float-lg-right">
-			    <a class="btn btn-outline-success" href="https://h2-phpmyadmin.infomaniak.ch/MySQLAdmin/index.php" role="button">Sign in</a>
+			  <form class="form-inline mt-2 mt-md-0">
+			    <a class="btn btn-outline-success mr-sm-2" href="https://h2-phpmyadmin.infomaniak.ch/MySQLAdmin/index.php" role="button">Sign in</a>
 			  </form>
 			</div>
 		</nav>
 	</div>
-	
+
 	  <!-- Main component for a primary marketing message or call to action -->
 	<div class="jumbotron">
 		<h1>BeTrack for UBC</h1>
 		<p>Before you start the installation of BeTrack please make sure that you have enabled  "install apps from unknown sources" on your phone. If you need help please check the FAQ.</p>
 		<p>
-		  <a class="btn btn-lg btn-primary" href="AppBetrack-release.apk" role="button">Download</a>
+		  <a class="btn btn-lg btn-primary" rel="leanModal" href="#signin" role="button">Download</a>
 		</p>
 	</div>
 
-	<footer class="footer">
-        <p>&copy; BeTrack 2017</p>
-    </footer>
+			
+	<div id="signin">
+		<form class="form-signin" id="download" method="post" action="download.php">
+
+		<div class="row">
+			<p class="navbar-brand" href="#">
+				<img src="img/ic_launcher-web.png" width="30" height="30" class="d-inline-block align-top" alt="">
+				Please enter your password
+			</p>
+		</div>
 	  
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input name="password" id="password" type="password" class="form-control" placeholder="Password" required>
+		<button class="btn btn-lg btn-primary btn-block modal_close" type="submit">Download</button>
+		<div id="message"></div>
+		</form>
+	</div>
+	
+
     </div> <!-- /container -->
 
     <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.leanModal.min.js"></script>
+			<script type="text/javascript">
+			$(function() {
+    			$('a[rel*=leanModal]').leanModal({ top : 100, closeButton: ".modal_close" });		
+			});
+	</script>
+    <script src="js/bootstrap.min.a6.js"></script>
 	<script src="js/ie10-viewport-bug-workaround.js"></script>
+	
 	</body>
 </html>
