@@ -27,19 +27,19 @@ public class ActivitySurveyStart extends ProgressStepper {
     private String SurveyEthnicity2 = null;
     private int SurveyStudent = 0;
     private int SurveyEnglishLevel1 = 0;
-    private String SurveyEnglishLevel2 = null;
+    private int SurveyEnglishLevel2 = 0;
     private int SurveyEnglishLevel3 = 0;
     private int SurveyEnglishLevel4 = 0;
     private String SurveyEnglishLevel5 = null;
-    private String SurveyEnglishLevel6 = null;
+    private int SurveyEnglishLevel6 = 0;
     private int SurveyUniversity1 = 0;
     private String SurveyUniversity2 = null;
     private int SurveyUniversity3 = 0;
     private int SurveyRelationShip = 0;
     private int SurveyContraception = 0;
     private int SurveyMaternity = 0;
-    private static int SurveyPeriod1 = 29;
-    private static int SurveyPeriod2 = 29;
+    private static int SurveyPeriod1 = 28;
+    private static int SurveyPeriod2 = 28;
     private String SurveyPeriod3 = null;
     private String SurveyPeriod4 = null;
 
@@ -153,7 +153,9 @@ public class ActivitySurveyStart extends ProgressStepper {
         //Step 6 ENGLISH LEVEL 2
         resultString = Step6.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
         if (resultString != null) {
-            SurveyEnglishLevel2 = resultString;
+            SurveyEnglishLevel2 = Integer.parseInt(resultString);
+        } else {
+            SurveyEnglishLevel2 = 0;
         }
 
         //Step 7 ENGLISH LEVEL 3
@@ -177,7 +179,9 @@ public class ActivitySurveyStart extends ProgressStepper {
         //Step 10 ENGLISH LEVEL 6
         resultString = Step10.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
         if (resultString != null) {
-            SurveyEnglishLevel6 = resultString;
+            SurveyEnglishLevel6 = Integer.parseInt(resultString);
+        } else {
+            SurveyEnglishLevel6 = 0;
         }
 
         //Step 11 UNIVERSITY 1

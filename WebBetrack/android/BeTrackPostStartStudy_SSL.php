@@ -29,7 +29,13 @@ $period4 = '';
 $Date = '';
 $Time = '';
 
-list($age, $relationship, $contraception, $avgperiodlenght, $avgmenstrualcycle, $sociallife1, $sociallife2, $mood1, $mood2, $mood3, $mood4, $date, $time) = explode(chr (30), $plain);
+list($age, $ethnicity1, $ethnicity2, 
+	 $student, $englishlevel1, $englishlevel2,
+	 $englishlevel3, $englishlevel4, $englishlevel5,
+	 $englishlevel6, $university1, $university2,
+	 $university3, $relationship, $contraception,
+	 $maternity, $period1, $period2,
+	 $period3, $period4, $date, $time) = explode(chr (30), $plain);
 
 //Check the data
 $userid = strip_tags(trim($userid));
