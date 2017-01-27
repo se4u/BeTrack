@@ -72,6 +72,8 @@ public class FragmentSurveyDatePicker  extends AbstractStep {
         } else {
             myCal = Calendar.getInstance();
             myCal.setTimeInMillis(System.currentTimeMillis());
+            SurveyStatus=myCal.get(Calendar.DAY_OF_MONTH) + "/" + (myCal.get(Calendar.MONTH) + 1) + "/" + myCal.get(Calendar.YEAR);
+            bundle.putString(SURVEY_STATUS, SurveyStatus);
         }
 
         picker.init(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH), myCal.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
