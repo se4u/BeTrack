@@ -30,7 +30,7 @@ public class SettingsBetrack {
 
     static public String BROADCAST_CHECK_SCREEN_STATUS = "com.app.uni.betrack.CHECK_SCREEN_STATUS";
 
-    static public String STUDY_WEBSITE = "http://www.ricphoto.fr/betrack/android/";
+    static public String STUDY_WEBSITE = "https://www.ricphoto.fr/betrack/android/";
 
     static public String STUDY_GETSTUDIESAVAILABLE = "BeTrackGetStudiesAvailable.php";
     static public String STUDY_GETAPPTOWATCH = "BeTrackGetAppToWatch.php?table_name=BetrackApp";
