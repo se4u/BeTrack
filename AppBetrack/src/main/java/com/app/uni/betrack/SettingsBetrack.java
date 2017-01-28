@@ -43,6 +43,7 @@ public class SettingsBetrack {
     static public String STUDY_POSTENDSTUDY = "BeTrackPostEndStudy";
     static public String STUDY_POSTGPSDATA = "BeTrackPostGPSData";
     static public String STUDY_POSTPHONEUSAGEDATA = "BeTrackPostPhoneUsageData";
+    static public String STUDY_POSTNOTIFICATIONTIME = "BeTrackPostNotifTimeData";
     static public String STUDY_POSTBLOBKEY = "BeTrackPostSessionKeys";
 
     static final String C_STARTSTUDY_PID = "ParticipantID";

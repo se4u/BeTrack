@@ -262,7 +262,7 @@ public class UtilsLocalDataBase {
         add(true); //C_ENDSTUDY_TIME
     }};
 
-    //Table for phone usage follow up every 24 hours
+    //Table for phone usage follow up
     static final String TABLE_PHONE_USAGE = "PhoneUsage";
     static final String C_PHONE_USAGE_ID = BaseColumns._ID;
     static final String C_PHONE_USAGE_PID = "ParticipantID";
@@ -283,6 +283,29 @@ public class UtilsLocalDataBase {
         add(true);  //C_PHONE_USAGE_STATE
         add(true);  //C_PHONE_USAGE_DATE
         add(true);  //C_PHONE_USAGE_TIME
+    }};
+
+    //Table for notification follow up
+    static final String TABLE_NOTIFICATION_TIME = "NotificationTimeTable";
+    static final String C_NOTIFICATION_TIME_ID = BaseColumns._ID;
+    static final String C_NOTIFICATION_TIME_PID = "ParticipantID";
+    static final String C_NOTIFICATION_TIME = "NotificationTime";
+    static final String C_NOTIFICATION_TIME_DATE = "Date";
+    static final String C_NOTIFICATION_TIME_TIME = "Time";
+
+
+    public static final ArrayList<String> DB_NOTIFICATION_TIME = new ArrayList<String>() {{
+        add(UtilsLocalDataBase.C_NOTIFICATION_TIME_PID);
+        add(UtilsLocalDataBase.C_NOTIFICATION_TIME);
+        add(UtilsLocalDataBase.C_NOTIFICATION_TIME_DATE);
+        add(UtilsLocalDataBase.C_NOTIFICATION_TIME_TIME);
+    }};
+
+    public static final ArrayList<Boolean> DB_NOTIFICATION_TIME_CYPHER = new ArrayList<Boolean>() {{
+        add(false); //C_NOTIFICATION_TIME_PID
+        add(true);  //C_NOTIFICATION_TIME
+        add(true);  //C_NOTIFICATION_TIME_DATE
+        add(true);  //C_NOTIFICATION_TIME_TIME
     }};
 
     private static final Semaphore SemUpdateDb = new Semaphore(1, true);
@@ -384,6 +407,13 @@ public class UtilsLocalDataBase {
                     + C_PHONE_USAGE_TIME + " text)"; //
             db.execSQL(sql8);
             Log.d(TAG, "onCreated sql: " + sql8);
+
+            String sql9 = "create table " + TABLE_NOTIFICATION_TIME + " (" + C_NOTIFICATION_TIME_ID + " integer primary key autoincrement, "
+                    + C_NOTIFICATION_TIME + " text, "
+                    + C_NOTIFICATION_TIME_DATE +  " text, "
+                    + C_NOTIFICATION_TIME_TIME + " text)"; //
+            db.execSQL(sql9);
+            Log.d(TAG, "onCreated sql: " + sql9);
         }
 
         // Called whenever newVersion != oldVersion
@@ -403,6 +433,8 @@ public class UtilsLocalDataBase {
             db.execSQL("drop table if exists " + TABLE_SESSION_KEY); // drops the old database
 
             db.execSQL("drop table if exists " + TABLE_PHONE_USAGE); // drops the old database
+
+            db.execSQL("drop table if exists " + TABLE_NOTIFICATION_TIME); // drops the old database
 
             Log.d(TAG, "onUpdated");
             onCreate(db); // run onCreate to get new database
