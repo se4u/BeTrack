@@ -320,6 +320,7 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle9.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_se_screen9));
         bundle9.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle9.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, true);
+        bundle9.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_LINE, 10);
         Step9 = new FragmentSurveyText();
         Step9.setArguments(bundle9);
         addStep(Step9, true, false);
