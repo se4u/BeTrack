@@ -1,14 +1,22 @@
 package com.app.uni.betrack;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,6 +38,7 @@ public class FragmentSurveyText extends AbstractStep {
     public static final String SURVEY_TEXT_COMMENT = "SURVEY_TEXT_COMMENT";
     public static final String SURVEY_TEXT_IS_OPTIONAL = "SURVEY_TEXT_IS_OPTIONAL";
     public static final String SURVEY_TEXT_IS_NUMBER_INPUT = "SURVEY_TEXT_IS_NUMBER_INPUT";
+    public static final String SURVEY_TEXT_MAX_NBR_LINE = "SURVEY_TEXT_MAX_NBR_LINE";
 
     private TextView Title;
     private TextView Description;
@@ -37,6 +46,18 @@ public class FragmentSurveyText extends AbstractStep {
 
     private boolean isOptional = true;
     private boolean isNumberInput = false;
+    private int maxNbrLines = 2;
+
+    private static void InternalSetBackground(Drawable Background, EditText eText)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            eText.setBackground(Background);
+        }
+        else
+        {
+            eText.setBackgroundDrawable(Background);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,12 +70,27 @@ public class FragmentSurveyText extends AbstractStep {
         String SurveyComment = bundle.getString(SURVEY_TEXT_COMMENT, null);
         isOptional = bundle.getBoolean(SURVEY_TEXT_IS_OPTIONAL, true);
         isNumberInput = bundle.getBoolean(SURVEY_TEXT_IS_NUMBER_INPUT, false);
+        maxNbrLines = bundle.getInt(SURVEY_TEXT_MAX_NBR_LINE, 1);
 
         Comment = (EditText) v.findViewById(R.id.survey_comment);
         Comment.setHint(SurveyComment);
         if (isNumberInput == true) {
             Comment.setInputType(InputType.TYPE_CLASS_NUMBER);
         }
+        if (maxNbrLines > 1) {
+            Comment.setSingleLine(false);
+            Comment.setLines(maxNbrLines);
+            Comment.setGravity(Gravity.TOP);
+            // Create a border programmatically
+            ShapeDrawable shape = new ShapeDrawable(new RectShape());
+            shape.getPaint().setColor(Color.parseColor(SettingsBetrack.colorPrimary));
+            shape.getPaint().setStyle(Paint.Style.STROKE);
+            shape.getPaint().setStrokeWidth(3);
+
+            // Assign the created border to EditText widget
+            InternalSetBackground(shape, Comment);
+        }
+
         Title = (TextView) v.findViewById(R.id.survey_title);
         Description = (TextView) v.findViewById(R.id.survey_desc);
         Title.setText(SurveyTitle);
