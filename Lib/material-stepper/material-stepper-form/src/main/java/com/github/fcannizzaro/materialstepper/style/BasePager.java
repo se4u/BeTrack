@@ -42,7 +42,7 @@ public class BasePager extends BaseStyle {
     }
 
     @Override
-    public void addStep(AbstractStep step, boolean stateVisibility, boolean stateOptional) {
+    public void addStep(AbstractStep step, boolean stateVisibility, int stateOptional) {
         super.addStep(step, stateVisibility, stateOptional);
         initAdapter();
         mPagerAdapter.add(step);

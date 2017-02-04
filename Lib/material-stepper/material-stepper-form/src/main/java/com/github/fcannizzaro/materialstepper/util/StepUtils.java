@@ -14,7 +14,7 @@ public class StepUtils {
     private ArrayList<AbstractStep> mSteps = new ArrayList<>();
     private ArrayList<Boolean> mActiveDots = new ArrayList<>();
     private ArrayList<Boolean> mVisibleStep = new ArrayList<>();
-    private ArrayList<Boolean> mOptionalStep = new ArrayList<>();
+    private ArrayList<Integer> mOptionalStep = new ArrayList<>();
     private int mCurrent;
 
 
@@ -44,7 +44,7 @@ public class StepUtils {
         return mSteps.size();
     }
 
-    public void add(AbstractStep step, boolean stateVisibility, boolean stateOptional) {
+    public void add(AbstractStep step, boolean stateVisibility, int stateOptional) {
         mSteps.add(step);
         mVisibleStep.add(stateVisibility);
         mOptionalStep.add(stateOptional);
@@ -68,7 +68,7 @@ public class StepUtils {
         return mVisibleStep.get(mCurrent+stepNumber);
     }
 
-    public boolean isOptional() {
+    public int isOptional() {
         return mOptionalStep.get(mCurrent);
     }
 
@@ -80,7 +80,9 @@ public class StepUtils {
     public void setNextVisibility(boolean state, int valInc) {
         if ( (mCurrent + valInc) < mSteps.size() ) {
             System.out.println("setNextVisibility mCurrent: " + mCurrent + " valInc : " + valInc + " state : " + state);
-            mVisibleStep.set(mCurrent + valInc, state);
+            if ( (mOptionalStep.get(mCurrent) == mOptionalStep.get(mCurrent + 1)) || (mOptionalStep.get(mCurrent) == 0)) {
+                mVisibleStep.set(mCurrent + valInc, state);
+            }
         }
     }
 
