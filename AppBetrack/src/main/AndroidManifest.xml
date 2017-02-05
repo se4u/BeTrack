@@ -12,10 +12,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SET_ALARM" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="false"
@@ -37,16 +34,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".ReceiverGPSChange">
-            <intent-filter>
-                <action android:name="android.location.PROVIDERS_CHANGED" />
-            </intent-filter>
-        </receiver>
         <receiver android:name=".ReceiverAlarmTrackApp" />
-        <receiver android:name=".ReceiverAlarmTrackGPS" />
-        <receiver android:name="com.commonsware.cwac.locpoll.LocationPoller" />
-
-        <service android:name="com.commonsware.cwac.locpoll.LocationPollerService" />
         <service
             android:name=".JobSchedulerBetrack"
             android:permission="android.permission.BIND_JOB_SERVICE" />
