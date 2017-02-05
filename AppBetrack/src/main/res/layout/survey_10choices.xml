@@ -17,12 +17,12 @@
         android:layout_margin="0dp"
         android:text="Title test"/>
 
-    <TextView
+    <com.app.uni.betrack.UtilsFitTextView
         android:layout_width="fill_parent"
         android:id="@+id/survey_desc"
         android:layout_height="fill_parent"
         android:layout_weight="5"
-        android:textSize="20sp"
+        android:textSize="@dimen/test_description_font_size"
         android:textColor="#000"
         android:gravity="center"
         android:text="Description test"/>
