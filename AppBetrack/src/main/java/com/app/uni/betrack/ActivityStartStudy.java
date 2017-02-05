@@ -97,14 +97,14 @@ public class ActivityStartStudy extends DotStepper {
         bundle2.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_AGREE, getResources().getString(R.string.study_agree));
         Step2 = new FragmentDisclaimers();
         Step2.setArguments(bundle2);
-        addStep(Step2, true, false);
+        addStep(Step2, true, 0, false);
         //Step 3 NOTIFICATION TIME
         bundle3 = new Bundle();
         bundle3.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_TITLE, getResources().getString(R.string.study_reminder));
         bundle3.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_DESC, getResources().getString(R.string.study_reminder_question));
         Step3 = new FragmentSurveyTimePicker();
         Step3.setArguments(bundle3);
-        addStep(Step3, true, false);
+        addStep(Step3, true, 0, false);
 
         super.onCreate(savedInstanceState);
     }

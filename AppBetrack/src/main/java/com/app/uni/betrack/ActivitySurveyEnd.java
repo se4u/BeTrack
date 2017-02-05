@@ -190,7 +190,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         Step1 = new FragmentSurvey10Choices();
         Step1.setArguments(bundle1);
-        addStep(Step1, true, false);
+        addStep(Step1, true, 0, false);
 
         //Step 2 CONTRACEPTION
         bundle2 = new Bundle();
@@ -198,7 +198,7 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle2.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_se_screen2));
         Step2 = new FragmentSurvey2Choices();
         Step2.setArguments(bundle2);
-        addStep(Step2, true, false);
+        addStep(Step2, true, 0, false);
 
         //Step 3 TINDER
         bundle3 = new Bundle();
@@ -225,7 +225,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         Step3 = new FragmentSurvey10Choices();
         Step3.setArguments(bundle3);
-        addStep(Step3, true, false);
+        addStep(Step3, true, 0, false);
 
         //Step 4 PHONE USAGE
         bundle4 = new Bundle();
@@ -236,7 +236,7 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle4.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_NUMBER_INPUT, true);
         Step4 = new FragmentSurveyText();
         Step4.setArguments(bundle4);
-        addStep(Step4, false, true);
+        addStep(Step4, true, 0, false);
 
         //Step 5 STUDY 1
         bundle5 = new Bundle();
@@ -255,7 +255,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         Step5 = new FragmentSurveySeekBar();
         Step5.setArguments(bundle5);
-        addStep(Step5, true, false);
+        addStep(Step5, true, 0, false);
 
         //Step 6 STUDY 2
         bundle6 = new Bundle();
@@ -274,7 +274,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         Step6 = new FragmentSurveySeekBar();
         Step6.setArguments(bundle6);
-        addStep(Step6, true, false);
+        addStep(Step6, true, 0, false);
 
         //Step 7 STUDY 3
         bundle7 = new Bundle();
@@ -293,7 +293,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         Step7 = new FragmentSurveySeekBar();
         Step7.setArguments(bundle7);
-        addStep(Step7, true, false);
+        addStep(Step7, true, 0, false);
 
         //Step 8 RESEARCH APP 1
         bundle8 = new Bundle();
@@ -312,7 +312,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         Step8 = new FragmentSurveySeekBar();
         Step8.setArguments(bundle8);
-        addStep(Step8, true, false);
+        addStep(Step8, true, 0, false);
 
         //Step 9 RESEARCH APP 2
         bundle9 = new Bundle();
@@ -323,7 +323,7 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle9.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_LINE, 10);
         Step9 = new FragmentSurveyText();
         Step9.setArguments(bundle9);
-        addStep(Step9, true, false);
+        addStep(Step9, true, 0, false);
 
         super.onCreate(savedInstanceState);
     }
