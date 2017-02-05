@@ -104,8 +104,8 @@ public class BaseStyle extends AppCompatActivity implements Stepable {
 
     // steps utils
 
-    protected void addStep(AbstractStep step, boolean stateVisibility, int stateOptional) {
-        mSteps.add(wrap(step), stateVisibility, stateOptional);
+    protected void addStep(AbstractStep step, boolean stateVisibility, int stateOptional, boolean startGroupOption) {
+        mSteps.add(wrap(step), stateVisibility, stateOptional, startGroupOption);
     }
 
     protected void addSteps(List<AbstractStep> steps) {
