@@ -160,11 +160,11 @@
 
     <!-- Screen 1 -->
     <string name="title_ss_screen1">AGE</string>
-    <string name="question_ss_screen1">How old are you ?</string>
+    <string name="question_ss_screen1">How old are you?</string>
 
     <!-- Screen 2 -->
     <string name="title_ss_screen2">ETHNICITY</string>
-    <string name="question_ss_screen2">What is your ethnicity/ethnic background ?</string>
+    <string name="question_ss_screen2">What is your ethnicity/ethnic background?</string>
     <string name="option1_ss_screen2">Caucasian</string>
     <string name="option2_ss_screen2">Hispanic/Latino</string>
     <string name="option3_ss_screen2">African</string>
@@ -181,23 +181,23 @@
 
     <!-- Screen 4 -->
     <string name="title_ss_screen4">STUDENT</string>
-    <string name="question_ss_screen4">Are you classified as an international student by our university ?</string>
+    <string name="question_ss_screen4">Are you classified as an international student by our university?</string>
 
     <!-- Screen 5 -->
     <string name="title_ss_screen5">ENGLISH LEVEL</string>
-    <string name="question_ss_screen5">Are you a native speaker of English ?</string>
+    <string name="question_ss_screen5">Are you a native speaker of English?</string>
 
     <!-- Screen 6 -->
     <string name="title_ss_screen6">ENGLISH LEVEL</string>
-    <string name="question_ss_screen6">How long have you been speaking English (in years) ?</string>
+    <string name="question_ss_screen6">How long have you been speaking English (in years)?</string>
 
     <!-- Screen 7 -->
     <string name="title_ss_screen7">ENGLISH LEVEL</string>
-    <string name="question_ss_screen7">Do you consider yourself fluent in English ?</string>
+    <string name="question_ss_screen7">Do you consider yourself fluent in English?</string>
 
     <!-- Screen 8 -->
     <string name="title_ss_screen8">ENGLISH LEVEL</string>
-    <string name="question_ss_screen8">If English is not your first language, what test did you take to satisfy the UBC English Language Admission Requirement ?</string>
+    <string name="question_ss_screen8">If English is not your first language, what test did you take to satisfy the UBC English Language Admission Requirement?</string>
     <string name="option1_ss_screen8">TOEFL</string>
     <string name="option2_ss_screen8">IELTS</string>
     <string name="option3_ss_screen8">other</string>
@@ -208,11 +208,11 @@
 
     <!-- Screen 10 -->
     <string name="title_ss_screen10">ENGLISH LEVEL</string>
-    <string name="question_ss_screen10">If possible, please report your score:</string>
+    <string name="question_ss_screen10">Please report your score:</string>
 
     <!-- Screen 11 -->
     <string name="title_ss_screen11">UNIVERSITY</string>
-    <string name="question_ss_screen11">What year are you in university ?</string>
+    <string name="question_ss_screen11">What year are you in university?</string>
     <string name="option1_ss_screen11">I am a first year student at UBC</string>
     <string name="option2_ss_screen11">I am a second year student at UBC</string>
     <string name="option3_ss_screen11">I am a third year student at UBC</string>
@@ -221,15 +221,15 @@
 
     <!-- Screen 12 -->
     <string name="title_ss_screen12">UNIVERSITY</string>
-    <string name="question_ss_screen12">Did you transfer to UBC from another post-secondary institution ?</string>
+    <string name="question_ss_screen12">Did you transfer to UBC from another post-secondary institution?</string>
 
     <!-- Screen 13 -->
     <string name="title_ss_screen13">UNIVERSITY</string>
-    <string name="question_ss_screen13">Please specify ?</string>
+    <string name="question_ss_screen13">Please specify?</string>
 
     <!-- Screen 14 -->
     <string name="title_ss_screen14">RELATIONSHIP</string>
-    <string name="question_ss_screen14">Are you currently in a romantic/sexual relationship ?</string>
+    <string name="question_ss_screen14">Are you currently in a romantic/sexual relationship?</string>
     <string name="option1_ss_screen14">Yes, I am in an exclusive romantic/sexual relationship</string>
     <string name="option2_ss_screen14">Yes, I am in a non-exclusive romantic/sexual relationship</string>
     <string name="option3_ss_screen14">No</string>
@@ -240,15 +240,15 @@
 
     <!-- Screen 16 -->
     <string name="title_ss_screen16">MATERNITY</string>
-    <string name="question_ss_screen16">Are you currently pregnant or breastfeeding ?</string>
+    <string name="question_ss_screen16">Are you currently pregnant or breastfeeding?</string>
 
     <!-- Screen 17 -->
     <string name="title_ss_screen17">PERIOD</string>
-    <string name="question_ss_screen17">How long does your menstrual cycle (i.e., the number of days between the first day of your period until the last day before the onset of your next period) last on average ?</string>
+    <string name="question_ss_screen17">How long does your menstrual cycle (i.e., the number of days between the first day of your period until the last day before the onset of your next period) last on average?</string>
 
     <!-- Screen 18 -->
     <string name="title_ss_screen18">PERIOD</string>
-    <string name="question_ss_screen18">How long did your last menstrual cycle (i.e., the number of days between the first day of your period until the last day before the onset of your next period) last ?</string>
+    <string name="question_ss_screen18">How long did your last menstrual cycle (i.e., the number of days between the first day of your period until the last day before the onset of your next period) last?</string>
 
     <!-- Screen 19 -->
     <string name="title_ss_screen19">PERIOD</string>
@@ -297,19 +297,19 @@
     <!-- End survey -->
     <!-- Screen 1 -->
     <string name="title_se_screen1">RELATIONSHIP</string>
-    <string name="question_se_screen1">Has your relationship status changed throughout the study ?</string>
-    <string name="option1_se_screen1">Yes, I am in an exclusive romantic/sexual relationship</string>
-    <string name="option2_se_screen1">Yes, I am in a non-exclusive romantic/sexual relationship</string>
+    <string name="question_se_screen1">Has your relationship status changed throughout the study?</string>
+    <string name="option1_se_screen1">Yes, I am now in an exclusive romantic/sexual relationship</string>
+    <string name="option2_se_screen1">Yes, I am now in a non-exclusive romantic/sexual relationship</string>
     <string name="option3_se_screen1">Yes, I am no longer in a romantic/sexual relationship</string>
     <string name="option4_se_screen1">No</string>
 
     <!-- Screen 2 -->
     <string name="title_se_screen2">CONTRACEPTION</string>
-    <string name="question_se_screen2">Have you started being on any form of hormonal birth control throughout the study ?</string>
+    <string name="question_se_screen2">Have you started being on any form of hormonal birth control throughout the study?</string>
 
     <!-- Screen 3 -->
     <string name="title_se_screen3">TINDER</string>
-    <string name="question_se_screen3">How often do you think you used Tinder throughout the study ?</string>
+    <string name="question_se_screen3">How often do you think you used Tinder throughout the study?</string>
     <string name="option1_se_screen3">Every day</string>
     <string name="option2_se_screen3">Several days a week</string>
     <string name="option3_se_screen3">At least once a week</string>
@@ -318,34 +318,34 @@
 
     <!-- Screen 4 -->
     <string name="title_se_screen4">PHONE USAGE</string>
-    <string name="question_se_screen4">On average, how many minutes per day do you think you spent using your phone in general throughout the study ?</string>
+    <string name="question_se_screen4">On average, how many minutes per day do you think you spent using your phone in general throughout the study?</string>
 
     <!-- Screen 5 -->
     <string name="title_se_screen5">STUDY</string>
-    <string name="question_se_screen5">How interesting and engaging was it for you to participate in this study ?</string>
+    <string name="question_se_screen5">How interesting and engaging was it for you to participate in this study?</string>
     <string name="option1_se_screen5">not at all</string>
     <string name="option2_se_screen5">extremely</string>
 
     <!-- Screen 6 -->
     <string name="title_se_screen6">STUDY</string>
-    <string name="question_se_screen6">How much did the daily survey interfere with your activities at the time of the alarm ?</string>
+    <string name="question_se_screen6">How much did the daily survey interfere with your activities at the time of the alarm?</string>
     <string name="option1_se_screen6">not at all</string>
     <string name="option2_se_screen6">extremely</string>
 
     <!-- Screen 7 -->
     <string name="title_se_screen7">STUDY</string>
-    <string name="question_se_screen7">Would you have minded if the study period had been longer than 35 days (e.g., two full months) ?</string>
+    <string name="question_se_screen7">Would you have minded if the study period had been longer than 35 days (e.g., two full months)?</string>
     <string name="option1_se_screen7">not at all</string>
     <string name="option2_se_screen7">very much so</string>
 
     <!-- Screen 8 -->
     <string name="title_se_screen8">RESEARCH APP</string>
-    <string name="question_se_screen8">How easy/difficult was it for you to use the research app ?</string>
+    <string name="question_se_screen8">How easy/difficult was it for you to use the research app?</string>
     <string name="option1_se_screen8">very easy</string>
     <string name="option2_se_screen8">very difficult</string>
 
     <!-- Screen 9 -->
     <string name="title_se_screen9">RESEARCH APP</string>
-    <string name="question_se_screen9">Is there anything in particular you would change about the research app ?</string>
+    <string name="question_se_screen9">Is there anything in particular you would change about the research app?</string>
 
 </resources>

@@ -301,10 +301,10 @@ public class ActivitySurveyEnd  extends DotStepper {
         bundle8.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_se_screen8));
 
         ArrayList<String> ChoiceTextRightStep8 = new ArrayList<String>() {{
-            add(getResources().getString(R.string.option2_se_screen5));
+            add(getResources().getString(R.string.option2_se_screen8));
         }};
         ArrayList<String> ChoiceTextLeftStep8 = new ArrayList<String>() {{
-            add(getResources().getString(R.string.option1_se_screen5));
+            add(getResources().getString(R.string.option1_se_screen8));
         }};
 
         bundle8.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, ChoiceTextRightStep8);
