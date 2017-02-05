@@ -3,6 +3,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Common dimensions to all surveys -->
+    <dimen name="test_description_font_size">18sp</dimen>
+
     <!-- start study specific dimensions -->
     <dimen name="start_study_button_width">75dp</dimen>
     <dimen name="start_study_button_height">75dp</dimen>
@@ -22,5 +25,5 @@
     <dimen name="survey_6choices_margin_bottom_image">10dp</dimen>
 
     <!-- 10 choices specific dimensions -->
-    <dimen name="survey_10choices_rbSize">15dp</dimen>
+    <dimen name="survey_10choices_rbSize">13dp</dimen>
 </resources>
