@@ -30,7 +30,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="40dp"
-        android:textColor="#000"
+        android:textColor="@color/colorPrimary"
         android:textSize="23sp"
         android:text="@string/Betrack_welcome"
         />
