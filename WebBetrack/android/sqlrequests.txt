@@ -55,6 +55,18 @@ CREATE TABLE `BetrackApp` (
 
 INSERT INTO BetrackApp (ApplicationName) 
           VALUES ('whatsapp')
+INSERT INTO BetrackApp (ApplicationName) 
+          VALUES ('instagram')
+INSERT INTO BetrackApp (ApplicationName) 
+          VALUES ('tinder')
+INSERT INTO BetrackApp (ApplicationName) 
+          VALUES ('snapchat')
+//Facebook
+INSERT INTO BetrackApp (ApplicationName) 
+          VALUES ('katana')
+//Messenger
+INSERT INTO BetrackApp (ApplicationName) 
+          VALUES ('orca')
 		  
 **** For test ***
 INSERT INTO BetrackApp (ApplicationName) 

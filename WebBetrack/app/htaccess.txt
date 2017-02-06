@@ -1,1 +1,2 @@
+AddType application/vnd.android.package-archive .apk
 Deny from all
