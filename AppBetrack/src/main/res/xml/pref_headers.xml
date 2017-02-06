@@ -15,11 +15,11 @@
         android:fragment="com.app.uni.betrack.ActivitySettings$DataSyncPreferenceFragment"
         android:icon="@drawable/ic_sync_black_24dp"
         android:title="@string/pref_header_data_sync" />
-
-    <header
+    <!-- Hide the information menu since it's not working properly
         android:fragment="com.app.uni.betrack.ActivitySettings$InfoPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_info" />
+    -->
 
     <header
         android:fragment="com.app.uni.betrack.ActivitySettings$CreditsPreferenceFragment"
