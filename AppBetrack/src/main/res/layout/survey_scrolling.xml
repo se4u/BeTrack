@@ -17,7 +17,7 @@
         android:layout_margin="0dp"
         android:text="Title test"/>
 
-    <com.app.uni.betrack.UtilsFitTextView android:layout_width="fill_parent"
+    <TextView android:layout_width="fill_parent"
         android:id="@+id/survey_desc"
         android:layout_height="fill_parent"
         android:layout_weight="5"
