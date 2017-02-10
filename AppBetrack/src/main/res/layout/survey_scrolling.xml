@@ -34,14 +34,32 @@
         android:layout_height="fill_parent"
         android:gravity="center|top">
 
-        <NumberPicker
-            android:id="@+id/genericPicker"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <NumberPicker
+                    android:id="@+id/genericPicker1"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:scaleX="1.4"
+                    android:scaleY="1.4"
+                    android:layout_marginRight="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+
+                <NumberPicker
+                    android:id="@+id/genericPicker2"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:scaleX="1.4"
+                    android:scaleY="1.4"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+
+            </LinearLayout>
 
     </RelativeLayout>
 

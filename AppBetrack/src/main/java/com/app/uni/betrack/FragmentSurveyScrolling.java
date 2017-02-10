@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -15,23 +16,45 @@ import com.github.fcannizzaro.materialstepper.AbstractStep;
 public class FragmentSurveyScrolling extends AbstractStep {
     private TextView Title;
     private TextView Description;
-    private NumberPicker pickers;
+    private NumberPicker pickers1;
+    private NumberPicker pickers2;
     private Bundle bundle;
-    private int SurveyStartRange;
+    private int SurveyStartRange1;
+    private int SurveyStartRange2;
+    private int SurveyEndRange2;
 
 
     //Output
-    public  static final String SURVEY_STATUS = "SURVEY_STATUS";
-    public int SurveyStatus = -1;
+    public  static final String SURVEY_STATUS1 = "SURVEY_STATUS1";
+    public  static final String SURVEY_STATUS2 = "SURVEY_STATUS2";
+
+    private int SurveyStatus1 = -1;
+    private String SurveyPreUnit1 = null;
+    private String SurveyPostUnit1 = null;
+
+    private int SurveyStatus2 = -1;
+    private String SurveyPreUnit2 = null;
+    private String SurveyPostUnit2 = null;
 
     //Input
     public static final String SURVEY_SCROLLING_TITLE = "SURVEY_SCROLLING_TITLE";
     public static final String SURVEY_SCROLLING_DESC = "SURVEY_SCROLLING_DESC";
-    public static final String SURVEY_SCROLLING_UNIT = "SURVEY_SCROLLING_UNIT";
-    public static final String SURVEY_SCROLLING_START_RANGE = "SURVEY_SCROLLING_START_RANGE";
-    public static final String SURVEY_SCROLLING_END_RANGE = "SURVEY_SCROLLING_END_RANGE";
-    public static final String SURVEY_SCROLLING_DEFAULT_VALUE = "SURVEY_SCROLLING_DEFAULT_VALUE";
 
+    public static final String SURVEY_SCROLLING_PRE_UNIT_1 = "SURVEY_SCROLLING_PRE_UNIT_1";
+    public static final String SURVEY_SCROLLING_POST_UNIT_1 = "SURVEY_SCROLLING_POST_UNIT_1";
+    public static final String SURVEY_SCROLLING_START_RANGE_1 = "SURVEY_SCROLLING_START_RANGE_1";
+    public static final String SURVEY_SCROLLING_END_RANGE_1 = "SURVEY_SCROLLING_END_RANGE_1";
+    public static final String SURVEY_SCROLLING_MIN_TXT_VALUE_1 = "SURVEY_SCROLLING_MIN_TXT_VALUE_1";
+    public static final String SURVEY_SCROLLING_MAX_TXT_VALUE_1 = "SURVEY_SCROLLING_MAX_TXT_VALUE_1";
+    public static final String SURVEY_SCROLLING_DEFAULT_VALUE_1 = "SURVEY_SCROLLING_DEFAULT_VALUE_1";
+
+    public static final String SURVEY_SCROLLING_PRE_UNIT_2 = "SURVEY_SCROLLING_PRE_UNIT_2";
+    public static final String SURVEY_SCROLLING_POST_UNIT_2 = "SURVEY_SCROLLING_POST_UNIT_2";
+    public static final String SURVEY_SCROLLING_START_RANGE_2 = "SURVEY_SCROLLING_START_RANGE_2";
+    public static final String SURVEY_SCROLLING_END_RANGE_2 = "SURVEY_SCROLLING_END_RANGE_2";
+    public static final String SURVEY_SCROLLING_MIN_TXT_VALUE_2 = "SURVEY_SCROLLING_MIN_TXT_VALUE_2";
+    public static final String SURVEY_SCROLLING_MAX_TXT_VALUE_2 = "SURVEY_SCROLLING_MAX_TXT_VALUE_2";
+    public static final String SURVEY_SCROLLING_DEFAULT_VALUE_2 = "SURVEY_SCROLLING_DEFAULT_VALUE_2";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,14 +63,61 @@ public class FragmentSurveyScrolling extends AbstractStep {
         bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_SCROLLING_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_SCROLLING_DESC, null);
-        String SurveyUnit = bundle.getString(SURVEY_SCROLLING_UNIT, null);
-        SurveyStartRange = bundle.getInt(SURVEY_SCROLLING_START_RANGE, 0);
-        int SurveyEndRange = bundle.getInt(SURVEY_SCROLLING_END_RANGE, 0);
-        int SurveyDefaultValue = bundle.getInt(SURVEY_SCROLLING_DEFAULT_VALUE, 0);
 
-        String[] arrayPicker= new String[SurveyEndRange-SurveyStartRange];
-        for(int i=SurveyStartRange;i<SurveyEndRange;i++) {
-            arrayPicker[i-SurveyStartRange] = i + " " +  SurveyUnit;
+        SurveyPreUnit1 = bundle.getString(SURVEY_SCROLLING_PRE_UNIT_1, "");
+        SurveyPostUnit1 = bundle.getString(SURVEY_SCROLLING_POST_UNIT_1, "");
+        SurveyStartRange1 = bundle.getInt(SURVEY_SCROLLING_START_RANGE_1, 0);
+        int SurveyEndRange1 = bundle.getInt(SURVEY_SCROLLING_END_RANGE_1, 0);
+        String SurveyMinTxt1 = bundle.getString(SURVEY_SCROLLING_MIN_TXT_VALUE_1, null);
+        String SurveyMaxTxt1 = bundle.getString(SURVEY_SCROLLING_MAX_TXT_VALUE_1, null);
+        int SurveyDefaultValue1 = bundle.getInt(SURVEY_SCROLLING_DEFAULT_VALUE_1, 0);
+        int OffsetSurveyMin1 = 0;
+        int AdditionnalSpace1 = 0;
+        if (SurveyMinTxt1 != null) {AdditionnalSpace1++;}
+        if (SurveyMaxTxt1 != null) {AdditionnalSpace1++;}
+
+        SurveyPreUnit2 = bundle.getString(SURVEY_SCROLLING_PRE_UNIT_2, "");
+        SurveyPostUnit2 = bundle.getString(SURVEY_SCROLLING_POST_UNIT_2, "");
+        SurveyStartRange2 = bundle.getInt(SURVEY_SCROLLING_START_RANGE_2, 0);
+        SurveyEndRange2 = bundle.getInt(SURVEY_SCROLLING_END_RANGE_2, 0);
+        String SurveyMinTxt2 = bundle.getString(SURVEY_SCROLLING_MIN_TXT_VALUE_2, null);
+        String SurveyMaxTxt2 = bundle.getString(SURVEY_SCROLLING_MAX_TXT_VALUE_2, null);
+        int SurveyDefaultValue2 = bundle.getInt(SURVEY_SCROLLING_DEFAULT_VALUE_2, 0);
+        int OffsetSurveyMin2 = 0;
+        int AdditionnalSpace2 = 0;
+        if (SurveyMinTxt2 != null) {AdditionnalSpace2++;}
+        if (SurveyMaxTxt2 != null) {AdditionnalSpace2++;}
+
+        String[] arrayPicker1= new String[SurveyEndRange1-SurveyStartRange1 + AdditionnalSpace1];
+
+        if (SurveyMinTxt1 != null) {
+            OffsetSurveyMin1 = 1;
+            arrayPicker1[0] = SurveyMinTxt1;
+        }
+
+        for(int i=SurveyStartRange1;i<SurveyEndRange1;i++) {
+            arrayPicker1[i-SurveyStartRange1+OffsetSurveyMin1] = SurveyPreUnit1 + i + SurveyPostUnit1;
+        }
+
+        if (SurveyMaxTxt1 != null) {
+            arrayPicker1[SurveyEndRange1-SurveyStartRange1+OffsetSurveyMin1] = SurveyMaxTxt1;
+        }
+
+        String[] arrayPicker2= new String[SurveyEndRange2-SurveyStartRange2 + AdditionnalSpace2];
+
+        if (SurveyEndRange2 != SurveyStartRange2) {
+            if (SurveyMinTxt2 != null) {
+                OffsetSurveyMin2 = 1;
+                arrayPicker2[0] = SurveyMinTxt2;
+            }
+
+            for(int i=SurveyStartRange2;i<SurveyEndRange2;i++) {
+                arrayPicker2[i-SurveyStartRange2+OffsetSurveyMin2] = SurveyPreUnit2 + i + SurveyPostUnit2;
+            }
+
+            if (SurveyMaxTxt2 != null) {
+                arrayPicker2[SurveyEndRange2-SurveyStartRange2+OffsetSurveyMin2] = SurveyMaxTxt2;
+            }
         }
 
         Title = (TextView) v.findViewById(R.id.survey_title);
@@ -55,24 +125,58 @@ public class FragmentSurveyScrolling extends AbstractStep {
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
 
-        pickers = (NumberPicker) v.findViewById(R.id.genericPicker);
+        pickers1 = (NumberPicker) v.findViewById(R.id.genericPicker1);
 
         //set min value zero
-        pickers.setMinValue(0);
+        pickers1.setMinValue(0);
         //set max value from length array string reduced 1
-        pickers.setMaxValue(arrayPicker.length - 1);
+        pickers1.setMaxValue(arrayPicker1.length - 1);
         //implement array string to number picker
-        pickers.setDisplayedValues(arrayPicker);
+        pickers1.setDisplayedValues(arrayPicker1);
         //disable soft keyboard
-        pickers.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        //set wrap true or false, try it you will know the difference
-        pickers.setWrapSelectorWheel(false);
-        if (SurveyStatus == -1) {
-            pickers.setValue(SurveyDefaultValue);
+        pickers1.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
+        pickers1.setWrapSelectorWheel(false);
+        if (SurveyStatus1 == -1) {
+            pickers1.setValue(SurveyDefaultValue1);
+            SurveyStatus1 = SurveyStartRange1 + (SurveyDefaultValue1 - 1);
+            mStepper.getExtras().putInt(SURVEY_STATUS1, SurveyStatus1);
+            bundle.putInt(SURVEY_STATUS1, SurveyStatus1);
+            SurveyStatus1= SurveyDefaultValue1;
         } else {
-            pickers.setValue(SurveyStatus-SurveyStartRange);
+            pickers1.setValue(SurveyStatus1-SurveyStartRange1 + 1);
         }
 
+        pickers2 = (NumberPicker) v.findViewById(R.id.genericPicker2);
+        if (SurveyEndRange2 != SurveyStartRange2) {
+
+            //set min value zero
+            pickers2.setMinValue(0);
+            //set max value from length array string reduced 1
+            pickers2.setMaxValue(arrayPicker2.length - 1);
+            //implement array string to number picker
+            pickers2.setDisplayedValues(arrayPicker2);
+            //disable soft keyboard
+            pickers2.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
+            pickers2.setWrapSelectorWheel(false);
+            if (SurveyStatus2 == -1) {
+                pickers2.setValue(SurveyDefaultValue2);
+                SurveyStatus2 = SurveyStartRange2 + (SurveyDefaultValue2 - 1);
+                mStepper.getExtras().putInt(SURVEY_STATUS2, SurveyStatus2);
+                bundle.putInt(SURVEY_STATUS2, SurveyStatus2);
+                SurveyStatus2= SurveyDefaultValue2;
+            } else {
+                pickers2.setValue(SurveyStatus2-SurveyStartRange2 + 1);
+            }
+        }
+        else {
+            pickers2.setVisibility(View.GONE);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 0, 0, 0);
+            pickers1.setLayoutParams(params);
+        }
 
 
         return v;
@@ -81,12 +185,12 @@ public class FragmentSurveyScrolling extends AbstractStep {
     @Override
     public void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
-        state.putInt(SURVEY_STATUS, SurveyStatus);
+        state.putInt(SURVEY_STATUS1, SurveyStatus1);
     }
 
     @Override
     public String name() {
-        return "Tab " + getArguments().getInt(SURVEY_STATUS, 0);
+        return "Tab " + getArguments().getInt(SURVEY_STATUS1, 0);
     }
 
     @Override
@@ -101,20 +205,32 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
     @Override
     public void onNext() {
-        int pos = pickers.getValue();
-        SurveyStatus = SurveyStartRange + pos;
-        mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
-        bundle.putInt(SURVEY_STATUS, SurveyStatus);
+        int pos = pickers1.getValue();
+        SurveyStatus1 = SurveyStartRange1 + (pos - 1);
+        mStepper.getExtras().putInt(SURVEY_STATUS1, SurveyStatus1);
+        bundle.putInt(SURVEY_STATUS1, SurveyStatus1);
+        if (SurveyEndRange2 != SurveyStartRange2) {
+            pos = pickers2.getValue();
+            SurveyStatus2 = SurveyStartRange2 + (pos - 1);
+            mStepper.getExtras().putInt(SURVEY_STATUS2, SurveyStatus2);
+            bundle.putInt(SURVEY_STATUS2, SurveyStatus2);
+        }
         System.out.println("onNext");
         setVisibilityNextStep(true, 1);
     }
 
     @Override
     public void onPrevious() {
-        int pos = pickers.getValue();
-        SurveyStatus = SurveyStartRange + pos;
-        mStepper.getExtras().putInt(SURVEY_STATUS, SurveyStatus);
-        bundle.putInt(SURVEY_STATUS, SurveyStatus);
+        int pos = pickers1.getValue();
+        SurveyStatus1 = SurveyStartRange1 + (pos - 1);
+        mStepper.getExtras().putInt(SURVEY_STATUS1, SurveyStatus1);
+        bundle.putInt(SURVEY_STATUS1, SurveyStatus1);
+        if (SurveyEndRange2 != SurveyStartRange2) {
+            pos = pickers2.getValue();
+            SurveyStatus2 = SurveyStartRange2 + (pos - 1);
+            mStepper.getExtras().putInt(SURVEY_STATUS2, SurveyStatus2);
+            bundle.putInt(SURVEY_STATUS2, SurveyStatus2);
+        }
         System.out.println("onPrevious");
     }
 
@@ -125,7 +241,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
     @Override
     public boolean nextIf() {
-        return SurveyStatus > 1;
+        return SurveyStatus1 > 1;
     }
 
     @Override
