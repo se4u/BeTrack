@@ -93,7 +93,7 @@ public class ActivityStartStudy extends DotStepper {
         //Step 2 Study details
         bundle2 = new Bundle();
         bundle2.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_TITLE, ObjSettingsStudy.getStudyName());
-        bundle2.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_DESC, ObjSettingsStudy.getStudyDescription());
+        bundle2.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_DESC, getResources().getString(R.string.disclaimer));
         bundle2.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_AGREE, getResources().getString(R.string.study_agree));
         Step2 = new FragmentDisclaimers();
         Step2.setArguments(bundle2);

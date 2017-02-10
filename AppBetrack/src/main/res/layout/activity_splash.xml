@@ -28,7 +28,7 @@
         android:layout_height="fill_parent"
         android:layout_weight="2"
         android:gravity="center_vertical|center_horizontal"
-        android:src="@drawable/ic_ubc_logo" />`
+        android:src="@drawable/ic_uni_hagen_logo" />`
 
 
     <TextView android:layout_width="fill_parent"
