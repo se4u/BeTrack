@@ -43,15 +43,15 @@
 
     <!-- reminder study -->
     <string name="study_reminder">REMINDER</string>
-    <string name="study_reminder_question">From tomorrow on you will be notified every day to fill up a survey </string>
+    <string name="study_reminder_question">From tomorrow on you will be notified every day to fill in a survey </string>
 
 
     <!-- Network error -->
         <string name="network_error_title">Network connection error</string>
         <string name="network_title_in_progress">Network connection</string>
-        <string name="network_error_start_text">Please connect your phone to internet. It is mandatory to have an internet connection to register for a new study</string>
+        <string name="network_error_start_text">Please connect your phone to the internet. It is mandatory to have an internet connection to register for a new study</string>
         <string name="network_end_text">Data transfer in progress</string>
-        <string name="network_error_end_text">Please connect your phone to internet. It is mandatory to have an internet connection for the last day of the study</string>
+        <string name="network_error_end_text">Please connect your phone to the internet. It is mandatory to have an internet connection for the last day of the study</string>
         <string name="network_retry">Retry</string>
 
         <!-- Network loading -->
@@ -76,7 +76,7 @@
     <string name="Betrack_welcome">Thank you for participating and see you again tomorrow!</string>
     <string name="Betrack_info_start">Days remaining:</string>
     <string name="Betrack_start">Thank you for registering! The study will start tomorrow.</string>
-    <string name="Betrack_end">Thank you for participating in the study. You can uninstall Betrack now.</string>
+    <string name="Betrack_end">Thank you for participating in the study. You can uninstall BeTrack now.</string>
     <string name="Betrack_info_end">Your phone usage:</string>
     <string name="Betrack_settings">Settings</string>
 
@@ -130,7 +130,7 @@
 
     <!-- notification -->
     <string name="notification_title">BeTrack</string>
-    <string name="notification_desc">Please fill up our little daily survey</string>
+    <string name="notification_desc">Please fill in our little daily survey</string>
     <string name="notification_running">Betrack is running</string>
 
     <!-- Huawei protected app -->
@@ -151,8 +151,10 @@
 
     <!-- Surveys -->
     <string name="question_error">You need to answer that question</string>
-    <string name="survey_age">years old</string>
-    <string name="survey_days">days</string>
+    <string name="survey_age">\u0020years old</string>
+    <string name="survey_days">\u0020days</string>
+    <string name="survey_hours">\u0020hour(s)</string>
+    <string name="survey_minutes">\u0020minutes(s)</string>
     <string name="survey_days_left">days left</string>
     <string name="survey_day_left">day left</string>
 
@@ -318,7 +320,7 @@
 
     <!-- Screen 4 -->
     <string name="title_se_screen4">PHONE USAGE</string>
-    <string name="question_se_screen4">On average, how many minutes per day do you think you spent using your phone in general throughout the study?</string>
+    <string name="question_se_screen4">On average, how many hours/minutes per day do you think you spent using your phone in general throughout the study?</string>
 
     <!-- Screen 5 -->
     <string name="title_se_screen5">STUDY</string>
