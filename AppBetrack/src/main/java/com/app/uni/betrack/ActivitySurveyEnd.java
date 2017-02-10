@@ -21,7 +21,7 @@ public class ActivitySurveyEnd  extends DotStepper {
     private int SurveyRelationShip = 0;
     private int SurveyContraception = 0;
     private int SurveyTinder = 0;
-    private String SurveyPhoneUsage = null;
+    private int SurveyPhoneUsage = 0;
     private int SurveyStudy1 = 0;
     private int SurveyStudy2 = 0;
     private int SurveyStudy3 = 0;
@@ -29,6 +29,11 @@ public class ActivitySurveyEnd  extends DotStepper {
     private String SurveyResearchApp2 = null;
     private String DateStudyEnd = null;
     private String TimeStudyEnd = null;
+
+    private static final int SURVEY_PHONE_USAGE_MINUTES_MIN = 0;
+    private static final int SURVEY_PHONE_USAGE_MINUTES_MAX = 59;
+    private static final int SURVEY_PHONE_USAGE_HOURS_MIN = 0;
+    private static final int SURVEY_PHONE_USAGE_HOURS_MAX = 23;
 
     private AbstractStep Step1;
     private Bundle bundle1;
@@ -85,9 +90,13 @@ public class ActivitySurveyEnd  extends DotStepper {
         }
 
         //Step 4 PHONE USAGE
-        resultString = Step4.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
-        if (resultString != null) {
-            SurveyPhoneUsage = resultString;
+        resultInt = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS1, 0);
+        if (resultInt != 0) {
+            SurveyPhoneUsage = resultInt * 60;
+            resultInt = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS2, 0);
+            if (resultInt != 0) {
+                SurveyPhoneUsage += resultInt;
+            }
         }
 
         //Step 5 STUDY 1
@@ -229,12 +238,20 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         //Step 4 PHONE USAGE
         bundle4 = new Bundle();
-        bundle4.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_se_screen4));
-        bundle4.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_se_screen4));
-        bundle4.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
-        bundle4.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
-        bundle4.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_NUMBER_INPUT, true);
-        Step4 = new FragmentSurveyText();
+        bundle4.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_se_screen4));
+        bundle4.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_se_screen4));
+
+        bundle4.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_POST_UNIT_1, getResources().getString(R.string.survey_hours));
+        bundle4.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_POST_UNIT_2, getResources().getString(R.string.survey_minutes));
+
+        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_1, SURVEY_PHONE_USAGE_MINUTES_MIN);
+        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_1, SURVEY_PHONE_USAGE_MINUTES_MAX);
+
+        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_2, SURVEY_PHONE_USAGE_HOURS_MIN);
+        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_2, SURVEY_PHONE_USAGE_HOURS_MAX);
+
+        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE_1, 0);
+        Step4 = new FragmentSurveyScrolling();
         Step4.setArguments(bundle4);
         addStep(Step4, true, 0, false);
 

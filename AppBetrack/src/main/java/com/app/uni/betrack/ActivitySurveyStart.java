@@ -45,15 +45,19 @@ public class ActivitySurveyStart extends ProgressStepper {
 
     private static final int SURVEY_AGE_START = 18;
     private static final int SURVEY_AGE_END = 40;
-    private static final int SURVEY_DEFAULT_AGE = SurveyAge - SURVEY_AGE_START + 1;
+    private static final int SURVEY_DEFAULT_AGE = SurveyAge - SURVEY_AGE_START;
 
+    private static final String SURVEY_PERIOD1_OUT_MIN = "< 18";
+    private static final String SURVEY_PERIOD1_OUT_MAX = "> 52";
     private static final int SURVEY_PERIOD1_MIN = 18;
     private static final int SURVEY_PERIOD1_MAX = 52;
-    private static final int SURVEY_DEFAULT_PERIOD1 = SurveyPeriod1 - SURVEY_PERIOD1_MIN + 1;
+    private static final int SURVEY_DEFAULT_PERIOD1 = SurveyPeriod1 - SURVEY_PERIOD1_MIN;
 
+    private static final String SURVEY_PERIOD2_OUT_MIN = "< 18";
+    private static final String SURVEY_PERIOD2_OUT_MAX = "> 52";
     private static final int SURVEY_PERIOD2_MIN = 18;
     private static final int SURVEY_PERIOD2_MAX = 52;
-    private static final int SURVEY_DEFAULT_PERIOD2 = SurveyPeriod2 - SURVEY_PERIOD2_MIN + 1;
+    private static final int SURVEY_DEFAULT_PERIOD2 = SurveyPeriod2 - SURVEY_PERIOD2_MIN;
 
     private String DateStudyStart = null;
     private String TimeStudyStart = null;
@@ -121,7 +125,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         //Get the values from the survey
 
         //Step 1 AGE
-        resultInt = Step1.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        resultInt = Step1.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS1, 0);
         if (resultInt != 0) {
             SurveyAge = resultInt;
         }
@@ -221,13 +225,13 @@ public class ActivitySurveyStart extends ProgressStepper {
         }
 
         //Step 17 PERIOD 1
-        resultInt = Step17.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        resultInt = Step17.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS1, 0);
         if (resultInt != 0) {
             SurveyPeriod1 = resultInt;
         }
 
         //Step 18 PERIOD 2
-        resultInt = Step18.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS, 0);
+        resultInt = Step18.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS1, 0);
         if (resultInt != 0) {
             SurveyPeriod2 = resultInt;
         }
@@ -317,10 +321,10 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle1 = new Bundle();
         bundle1.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen1));
         bundle1.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen1));
-        bundle1.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_age));
-        bundle1.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_AGE_START);
-        bundle1.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_AGE_END);
-        bundle1.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_AGE);
+        bundle1.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_POST_UNIT_1, getResources().getString(R.string.survey_age));
+        bundle1.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_1, SURVEY_AGE_START);
+        bundle1.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_1, SURVEY_AGE_END);
+        bundle1.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE_1, SURVEY_DEFAULT_AGE);
         Step1 = new FragmentSurveyScrolling();
         Step1.setArguments(bundle1);
         addStep(Step1, true, 0, false);
@@ -567,10 +571,13 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle17 = new Bundle();
         bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen17));
         bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen17));
-        bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_days));
-        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_PERIOD1_MIN);
-        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_PERIOD1_MAX);
-        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_PERIOD1);
+        bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_PRE_UNIT_1, "~");
+        bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_POST_UNIT_1, getResources().getString(R.string.survey_days));
+        bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_MIN_TXT_VALUE_1, SURVEY_PERIOD1_OUT_MIN + getResources().getString(R.string.survey_days));
+        bundle17.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_MAX_TXT_VALUE_1, SURVEY_PERIOD1_OUT_MAX + getResources().getString(R.string.survey_days));
+        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_1, SURVEY_PERIOD1_MIN);
+        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_1, SURVEY_PERIOD1_MAX);
+        bundle17.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE_1, SURVEY_DEFAULT_PERIOD1);
         Step17 = new FragmentSurveyScrolling();
         Step17.setArguments(bundle17);
         addStep(Step17, true, 0, false);
@@ -579,10 +586,13 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle18 = new Bundle();
         bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_TITLE, getResources().getString(R.string.title_ss_screen18));
         bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_DESC, getResources().getString(R.string.question_ss_screen18));
-        bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_UNIT, getResources().getString(R.string.survey_days));
-        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE, SURVEY_PERIOD2_MIN);
-        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE, SURVEY_PERIOD2_MAX);
-        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE, SURVEY_DEFAULT_PERIOD2);
+        bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_PRE_UNIT_1, "~");
+        bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_POST_UNIT_1, getResources().getString(R.string.survey_days));
+        bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_MIN_TXT_VALUE_1, SURVEY_PERIOD2_OUT_MIN + getResources().getString(R.string.survey_days));
+        bundle18.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_MAX_TXT_VALUE_1, SURVEY_PERIOD2_OUT_MAX + getResources().getString(R.string.survey_days));
+        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_1, SURVEY_PERIOD2_MIN);
+        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_1, SURVEY_PERIOD2_MAX);
+        bundle18.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE_1, SURVEY_DEFAULT_PERIOD2);
         Step18 = new FragmentSurveyScrolling();
         Step18.setArguments(bundle18);
         addStep(Step18, true, 0, false);
