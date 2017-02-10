@@ -73,9 +73,9 @@
     <string name="welcome_wait">Please wait...</string>
 
     <!-- Study main screen -->
-    <string name="Betrack_welcome">Thank you for participating and see you again tomorrow !</string>
+    <string name="Betrack_welcome">Thank you for participating and see you again tomorrow!</string>
     <string name="Betrack_info_start">Days remaining:</string>
-    <string name="Betrack_start">Thank you for registering ! The study will start tomorrow.</string>
+    <string name="Betrack_start">Thank you for registering! The study will start tomorrow.</string>
     <string name="Betrack_end">Thank you for participating in the study. You can uninstall Betrack now.</string>
     <string name="Betrack_info_end">Your phone usage:</string>
     <string name="Betrack_settings">Settings</string>
@@ -87,7 +87,7 @@
     <string name="pref_header_general">General</string>
     <string name="pref_key_study_enable"> Betrack.Settings.StudyEnable </string>
     <string name="pref_title_enable_study">Enable study</string>
-    <string name="pref_description_enable_study">Allow to be temporarily or permanently be out of the study
+    <string name="pref_description_enable_study">Allow to be temporarily or permanently out of the study
     </string>
 
     <!-- Settings for Data & Sync -->
