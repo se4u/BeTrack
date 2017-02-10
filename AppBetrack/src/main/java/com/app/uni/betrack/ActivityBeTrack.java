@@ -36,6 +36,12 @@ import static android.view.Gravity.CENTER_VERTICAL;
 
 public class ActivityBeTrack extends AppCompatActivity {
     static final String TAG = "ActivityBeTrack";
+
+    final String FB_MESSENGER = "orca";
+    final String FB_MESSENGER_COMMON_NAME = "messenger";
+    final String FB_FACEBOOK = "katana";
+    final String FB_FACEBOOK_COMMON_NAME = "facebook";
+
     private Menu SaveMenuRef = null;
     public static boolean OnForeground = false;
 
@@ -278,7 +284,13 @@ public class ActivityBeTrack extends AppCompatActivity {
             }
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
                 if (UsagePerApp[i] > 0) {
-                    entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
+                    if (ObjSettingsStudy.getApplicationsToWatch().get(i) == FB_MESSENGER) {
+                        entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), FB_MESSENGER_COMMON_NAME));
+                    } else if (ObjSettingsStudy.getApplicationsToWatch().get(i) == FB_FACEBOOK) {
+                        entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), FB_FACEBOOK_COMMON_NAME));
+                    } else {
+                        entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
+                    }
                 }
             }
         } else {
