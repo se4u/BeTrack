@@ -126,9 +126,16 @@ public class IntentServiceTrackApp extends IntentService {
 
                                         values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
                                         values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                                        try {
+                                            SettingsStudy.SemAppWatchMonitor.acquire();
+                                            if (SettingsStudy.AppWatchId != -1) {
+                                                int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime) / 1000);
+                                                ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                                                SettingsStudy.AppWatchId = -1;
+                                            }
+                                            SettingsStudy.SemAppWatchMonitor.release();
+                                        } catch (Exception eWatchId) {}
 
-                                        int TimeWatched = (int)((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime)/1000);
-                                        ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
 
                                         this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
                                         mHandler.post(new UtilsDisplayToast(this, "Betrack: Stop 1 monitoring date: " + ActivityStopDate + " time: " + ActivityStopTime));
@@ -165,8 +172,15 @@ public class IntentServiceTrackApp extends IntentService {
                                     values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
                                     values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
 
-                                    int TimeWatched = (int)((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime)/1000);
-                                    ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                                    try {
+                                        SettingsStudy.SemAppWatchMonitor.acquire();
+                                        if (SettingsStudy.AppWatchId != -1) {
+                                            int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime) / 1000);
+                                            ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                                            SettingsStudy.AppWatchId = -1;
+                                        }
+                                        SettingsStudy.SemAppWatchMonitor.release();
+                                    } catch (Exception eWatchId) {}
 
                                     this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
                                     mHandler.post(new UtilsDisplayToast(this, "Betrack: Stop 2 monitoring date: " + ActivityStopDate + " time: " + ActivityStopTime));
@@ -210,10 +224,14 @@ public class IntentServiceTrackApp extends IntentService {
 
 
                                                 ActivityOnGoing = topActivity;
-
+                                                SettingsStudy.SemAppWatchMonitor.acquire();
+                                                if (SettingsStudy.AppWatchId != -1) {
+                                                    int TimeWatched = (int)((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime)/1000);
+                                                    ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                                                }
                                                 SettingsStudy.AppWatchStartTime = System.currentTimeMillis();
                                                 SettingsStudy.AppWatchId = i;
-
+                                                SettingsStudy.SemAppWatchMonitor.release();
                                                 //Save the date
                                                 ActivityStartDate = sdf.format(new Date());
                                                 //Save the start time

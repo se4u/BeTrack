@@ -54,8 +54,10 @@ public class SettingsStudy {
     Set<String> ApplicationsToWatchIn;
     static private final String APP_TIME_WATCHED = "AppTimeWatched";
     static private String ApplicationsTimeWatched;
+
+    public static final Semaphore SemAppWatchMonitor = new Semaphore(1, true);
     static public long AppWatchStartTime = 0;
-    static public int AppWatchId = 0;
+    static public int AppWatchId = -1;
 
     static private String StudyId;
     static private String StudyName;
@@ -548,7 +550,12 @@ public class SettingsStudy {
                     }
                 }
             } else {
-                listTimeAppWatched[appWatchedId] += timeWatched;
+                for (int i = 0; i < listTimeAppWatched.length; i++) {
+                    listTimeAppWatched[i] = 0;
+                    if (i == appWatchedId) {
+                        listTimeAppWatched[i] = timeWatched;
+                    }
+                }
             }
 
             for (int i = 0; i < listTimeAppWatched.length; i++) {
