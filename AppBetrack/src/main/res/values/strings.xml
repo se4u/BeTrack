@@ -3,10 +3,10 @@
     <string name="splash_loading">Loading...</string>
 
     <!-- start activity_start_study -->
-    <string name="disclaimer_error">You need to agree to go on with the study</string>
+    <string name="disclaimer_error">Sie müssen der Teilnahme an dieser Studie zustimmen.</string>
 
     <!-- Disclaimer to accept to participate the study -->
-    <string name="disclaimer_title">Participant Consent Form</string>
+    <string name="disclaimer_title">Einverständniserklärung</string>
     <string name="disclaimer">
         Utque aegrum corpus quassari etiam levibus solet offensis, ita animus eius angustus et tener, quicquid increpuisset, ad salutis suae dispendium existimans factum aut cogitatum, insontium caedibus fecit victoriam luctuosam.
         Pandente itaque viam fatorum sorte tristissima, qua praestitutum erat eum vita et imperio spoliari, itineribus interiectis permutatione iumentorum emensis venit Petobionem oppidum Noricorum, ubi reseratae sunt insidiarum latebrae omnes, et Barbatio repente apparuit comes, qui sub eo domesticis praefuit, cum Apodemio agente in rebus milites ducens, quos beneficiis suis oppigneratos elegerat imperator certus nec praemiis nec miseratione ulla posse deflecti.
@@ -19,10 +19,10 @@
         Haec et huius modi quaedam innumerabilia ultrix facinorum impiorum bonorumque praemiatrix aliquotiens operatur Adrastia atque utinam semper quam vocabulo duplici etiam Nemesim appellamus: ius quoddam sublime numinis efficacis, humanarum mentium opinione lunari circulo superpositum, vel ut definiunt alii, substantialis tutela generali potentia partilibus praesidens fatis, quam theologi veteres fingentes Iustitiae filiam ex abdita quadam aeternitate tradunt omnia despectare terrena.
         Ac ne quis a nobis hoc ita dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur.
     </string>
-    <string name="disclaimer_agree">I agree to participate in this research.</string>
+    <string name="disclaimer_agree">Ich stimme der Teilnahme an dieser Studie zu.</string>
 
     <!-- Study informations -->
-    <string name="study_title">Phone Use Study</string>
+    <string name="study_title">Smartphone-Studie</string>
     <string name="study_description">Utque aegrum corpus quassari etiam levibus solet offensis, ita animus eius angustus et tener, quicquid increpuisset, ad salutis suae dispendium existimans factum aut cogitatum, insontium caedibus fecit victoriam luctuosam.
         Pandente itaque viam fatorum sorte tristissima, qua praestitutum erat eum vita et imperio spoliari, itineribus interiectis permutatione iumentorum emensis venit Petobionem oppidum Noricorum, ubi reseratae sunt insidiarum latebrae omnes, et Barbatio repente apparuit comes, qui sub eo domesticis praefuit, cum Apodemio agente in rebus milites ducens, quos beneficiis suis oppigneratos elegerat imperator certus nec praemiis nec miseratione ulla posse deflecti.
         Rogatus ad ultimum admissusque in consistorium ambage nulla praegressa inconsiderate et leviter proficiscere inquit ut praeceptum est, Caesar sciens quod si cessaveris, et tuas et palatii tui auferri iubebo prope diem annonas. hocque solo contumaciter dicto subiratus abscessit nec in conspectum eius postea venit saepius arcessitus.
@@ -34,29 +34,29 @@
         Haec et huius modi quaedam innumerabilia ultrix facinorum impiorum bonorumque praemiatrix aliquotiens operatur Adrastia atque utinam semper quam vocabulo duplici etiam Nemesim appellamus: ius quoddam sublime numinis efficacis, humanarum mentium opinione lunari circulo superpositum, vel ut definiunt alii, substantialis tutela generali potentia partilibus praesidens fatis, quam theologi veteres fingentes Iustitiae filiam ex abdita quadam aeternitate tradunt omnia despectare terrena.
         Ac ne quis a nobis hoc ita dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur.
     </string>
-    <string name="study_agree">I agree to participate in this research.</string>
+    <string name="study_agree">Ich stimme der Teilnahme an dieser Studie zu.</string>
 
     <!-- reminder study -->
-    <string name="study_reminder">REMINDER</string>
-    <string name="study_reminder_question">From tomorrow on you will be notified every day to fill in a survey </string>
+    <string name="study_reminder">ERINNERUNG</string>
+    <string name="study_reminder_question">Ab morgen werden Sie für die Dauer der Studie täglich eine Erinnerungsnachricht erhalten.</string>
 
 
     <!-- Network error -->
-        <string name="network_error_title">Network connection error</string>
-        <string name="network_title_in_progress">Network connection</string>
-        <string name="network_error_start_text">Please connect your phone to the internet. It is mandatory to have an internet connection to register for a new study</string>
-        <string name="network_end_text">Data transfer in progress</string>
-        <string name="network_error_end_text">Please connect your phone to the internet. It is mandatory to have an internet connection for the last day of the study</string>
-        <string name="network_retry">Retry</string>
+    <string name="network_error_title">Verbindungsfehler</string>
+    <string name="network_title_in_progress">Netzwerkverbindung</string>
+    <string name="network_error_start_text">Bitte verbinden Sie Ihr Smartphone mit dem Internet. Eine Internetverbindung ist für die Studienregistrierung erforderlich.</string>
+    <string name="network_end_text">Datenübertragung läuft</string>
+    <string name="network_error_end_text">Bitte verbinden Sie Ihr Smartphone mit dem Internet. Eine Internetverbindung ist für den Abschluss der Studie erforderlich.</string>
+    <string name="network_retry">Bitte versuchen Sie es erneut.</string>
 
-        <!-- Network loading -->
-        <string name="network_loading">Loading...</string>
+    <!-- Network loading -->
+    <string name="network_loading">Laden...</string>
 
     <!-- end activity_start_study -->
 
 
 
-    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_settings">Einstellungen</string>
 
     <!-- Study welcome screen -->
     <string name="welcome_title">BeTrack</string>
@@ -68,20 +68,20 @@
     <string name="welcome_wait">Please wait...</string>
 
     <!-- Study main screen -->
-    <string name="Betrack_welcome">Thank you for participating and see you again tomorrow!</string>
-    <string name="Betrack_info_start">Days remaining:</string>
-    <string name="Betrack_start">Thank you for registering! The study will start tomorrow.</string>
-    <string name="Betrack_end">Thank you for participating in the study. You can uninstall BeTrack now.</string>
-    <string name="Betrack_info_end">Your phone usage:</string>
-    <string name="Betrack_settings">Settings</string>
+    <string name="Betrack_welcome">Herzlichen Dank für Ihre Teilnahme und bis morgen!</string>
+    <string name="Betrack_info_start">Verbleibende Tage:</string>
+    <string name="Betrack_start">Vielen Dank für Ihre Studienregistrierung! Die tägliche Umfrage wird morgen beginnen.</string>
+    <string name="Betrack_end">Herzlichen Dank für Ihre Teilnahme an der Studie. Sie können BeTrack nun deinstallieren.</string>
+    <string name="Betrack_info_end">Ihre Smartphone-Nutzung:</string>
+    <string name="Betrack_settings">Einstellungen</string>
 
     <!-- Your personnal ID-->
-    <string name="pref_header_your_id">Your personnal ID </string>
+    <string name="pref_header_your_id">Ihre persönliche Identifikationsnummer </string>
 
     <!-- General settings -->
-    <string name="pref_header_general">General</string>
+    <string name="pref_header_general">Allgemein</string>
     <string name="pref_key_study_enable"> Betrack.Settings.StudyEnable </string>
-    <string name="pref_title_enable_study">Enable study</string>
+    <string name="pref_title_enable_study">Studie aktivieren</string>
     <string name="pref_description_enable_study">Allow to be temporarily or permanently out of the study
     </string>
 
@@ -111,28 +111,28 @@
     <string name="pref_header_credits_text4">for their awesome sets of icons</string>
 
     <!-- Informations about the study-->
-    <string name="pref_header_info">Informations about the study </string>
+    <string name="pref_header_info">Studieninformationen </string>
 
     <!-- set up Betrack -->
-    <string name="Betrack_setup_title">Set up your BeTrack application</string>
+    <string name="Betrack_setup_title">Richten Sie Ihre BeTrack-Application ein</string>
     <string name="Betrack_setup_text">Almost there. To be a part of the study we need specific right on your phone please follow the steps below. Moreover if you use a battery manager please make sure that we are white listed</string>
 
     <!-- UsageStat enable -->
     <string name="UsageStat_enable_title">Enable Usage Stat</string>
-    <string name="UsageStat_enable_text">When you will click on the OK button of that window, the setting menu of your phone will be open. In that menu please allow BeTrack to access the statistics of your phone. When you are done get back to BeTrack and you\'ll be able to start the study.</string>
-    <string name="UsageStat_ok">USAGE STAT</string>
+    <string name="UsageStat_enable_text">Fast geschafft. Damit Sie an der Studie teilnehmen können, brauchen wir bestimmte Rechte für Ihr Smartphone. Bitte führen Sie die unten gelisteten Schritte durch. Falls Sie einen Batteriemanager verwenden, möchten wir Sie zudem darum bitten, BeTrack als Ausnahme hinzuzufügen.></string>
+    <string name="UsageStat_ok">BENUTZERSTATISTIKEN</string>
 
 
     <!-- notification -->
     <string name="notification_title">BeTrack</string>
-    <string name="notification_desc">Please fill in our little daily survey</string>
-    <string name="notification_running">Betrack is running</string>
+    <string name="notification_desc">Bitte füllen Sie unseren kurzen täglichen Fragebogen aus.</string>
+    <string name="notification_running">BeTrack ist aktiv</string>
 
     <!-- Huawei protected app -->
-    <string name="huawei_title">Huawei Protected Apps</string>
-    <string name="huawei_desc">requires to be enabled in Protected Apps to function properly.</string>
-    <string name="huawei_positive_button">PROTECTED APPS</string>
-    <string name="huawei_check">Do not show again</string>
+    <string name="huawei_title">Huawei geschützte Apps</string>
+    <string name="huawei_desc">muss in geschützte Apps aktiviert sein, um korrekt zu funktionieren.</string>
+    <string name="huawei_positive_button">GESCHÜTZTE APPS</string>
+    <string name="huawei_check">Nicht mehr anzeigen</string>
 
     <!-- GPS Enable -->
     <string name="gps_enable_title">GPS Enable</string>
@@ -145,204 +145,141 @@
     <string name="battery_enable_positive_button">Whitelist betrack</string>
 
     <!-- Surveys -->
-    <string name="question_error">You need to answer that question</string>
-    <string name="survey_age">\u0020years old</string>
-    <string name="survey_days">\u0020days</string>
-    <string name="survey_hours">\u0020hour(s)</string>
-    <string name="survey_minutes">\u0020minutes(s)</string>
-    <string name="survey_days_left">days left</string>
-    <string name="survey_day_left">day left</string>
+    <string name="question_error">Bitte beantworten Sie diese Frage</string>
+    <string name="survey_age">\u0020Jahre alt</string>
+    <string name="survey_days">\u0020Tag(e)</string>
+    <string name="survey_hours">\u0020Stunde(n)</string>
+    <string name="survey_minutes">\u0020Minute(n)</string>
+    <string name="survey_days_start">Noch</string>
+    <string name="survey_days_left">Tage</string>
+    <string name="survey_day_left">Tag</string>
 
     <!-- Start survey -->
 
     <!-- Screen 1 -->
-    <string name="title_ss_screen1">AGE</string>
-    <string name="question_ss_screen1">How old are you?</string>
+    <string name="title_ss_screen1">ALTER</string>
+    <string name="question_ss_screen1">Wie alt sind Sie?</string>
 
-    <!-- Screen 2 -->
-    <string name="title_ss_screen2">ETHNICITY</string>
-    <string name="question_ss_screen2">What is your ethnicity/ethnic background?</string>
-    <string name="option1_ss_screen2">Caucasian</string>
-    <string name="option2_ss_screen2">Hispanic/Latino</string>
-    <string name="option3_ss_screen2">African</string>
-    <string name="option4_ss_screen2">East Asian (e.g., Chinese, Japanese, or Korean</string>
-    <string name="option5_ss_screen2">Southeast Asian (e.g., Vietnamese, Filipino)</string>
-    <string name="option6_ss_screen2">South Asian (e.g., Indian)</string>
-    <string name="option7_ss_screen2">Middle Eastern (e.g, Persian)</string>
-    <string name="option8_ss_screen2">Aboriginal</string>
-    <string name="option9_ss_screen2">Other</string>
-
-    <!-- Screen 3 -->
-    <string name="title_ss_screen3">ETHNICITY</string>
-    <string name="question_ss_screen3">Please specify your ethnicity:</string>
-
-    <!-- Screen 4 -->
-    <string name="title_ss_screen4">STUDENT</string>
-    <string name="question_ss_screen4">Are you classified as an international student by our university?</string>
-
-    <!-- Screen 5 -->
-    <string name="title_ss_screen5">GERMAN LEVEL</string>
-    <string name="question_ss_screen5">Are you a native speaker of German?</string>
-
-    <!-- Screen 6 -->
-    <string name="title_ss_screen6">GERMAN LEVEL</string>
-    <string name="question_ss_screen6">How long have you been speaking German (in years)?</string>
-
-    <!-- Screen 7 -->
-    <string name="title_ss_screen7">GERMAN LEVEL</string>
-    <string name="question_ss_screen7">Do you consider yourself fluent in German?</string>
-
-    <!-- Screen 8 -->
-    <string name="title_ss_screen8">GERMAN LEVEL</string>
-    <string name="question_ss_screen8">If German is not your first language, what test did you take to satisfy the Hagen German Language Admission Requirement?</string>
-    <string name="option1_ss_screen8">Goethe</string>
-    <string name="option2_ss_screen8">STAMP</string>
-    <string name="option3_ss_screen8">other</string>
-
-    <!-- Screen 9 -->
-    <string name="title_ss_screen9">GERMAN LEVEL</string>
-    <string name="question_ss_screen9">Please specify the English test you took:</string>
-
-    <!-- Screen 10 -->
-    <string name="title_ss_screen10">GERMAN LEVEL</string>
-    <string name="question_ss_screen10">Please report your score:</string>
-
-    <!-- Screen 11 -->
-    <string name="title_ss_screen11">UNIVERSITY</string>
-    <string name="question_ss_screen11">What year are you in university?</string>
-    <string name="option1_ss_screen11">I am a first year student at Hagen</string>
-    <string name="option2_ss_screen11">I am a second year student at Hagen</string>
-    <string name="option3_ss_screen11">I am a third year student at Hagen</string>
-    <string name="option4_ss_screen11">I am a fourth year student at Hagen</string>
-    <string name="option5_ss_screen11">Other</string>
-
-    <!-- Screen 12 -->
-    <string name="title_ss_screen12">UNIVERSITY</string>
-    <string name="question_ss_screen12">Did you transfer to Hagen from another post-secondary institution?</string>
-
-    <!-- Screen 13 -->
-    <string name="title_ss_screen13">UNIVERSITY</string>
-    <string name="question_ss_screen13">Please specify?</string>
 
     <!-- Screen 14 -->
-    <string name="title_ss_screen14">RELATIONSHIP</string>
-    <string name="question_ss_screen14">Are you currently in a romantic/sexual relationship?</string>
-    <string name="option1_ss_screen14">Yes, I am in an exclusive romantic/sexual relationship</string>
-    <string name="option2_ss_screen14">Yes, I am in a non-exclusive romantic/sexual relationship</string>
-    <string name="option3_ss_screen14">No</string>
+    <string name="title_ss_screen14">BEZIEHUNGSSTATUS</string>
+    <string name="question_ss_screen14">Sind Sie derzeit in einer romantischen/sexuellen Beziehung?</string>
+    <string name="option1_ss_screen14">Ja, ich bin derzeit in einer exklusiven romantischen/sexuellen Beziehung</string>
+    <string name="option2_ss_screen14">Ja, ich bin derzeit in einer nicht-exklusiven romantischen/sexuellen Beziehung</string>
+    <string name="option3_ss_screen14">Nein</string>
 
     <!-- Screen 15 -->
-    <string name="title_ss_screen15">CONTRACEPTION</string>
-    <string name="question_ss_screen15">Are you currently on any form of hormonal birth control (or do you intend on going on hormonal birth control within the next six weeks)?</string>
+    <string name="title_ss_screen15">VERHÜTUNG</string>
+    <string name="question_ss_screen15">Nehmen Sie derzeit hormonelle Verhütungsmittel ein (oder haben Sie vor, in den nächsten sechs Wochen mit der Einnahme hormoneller Verhütungsmittel zu beginnen)?</string>
 
     <!-- Screen 16 -->
-    <string name="title_ss_screen16">MATERNITY</string>
-    <string name="question_ss_screen16">Are you currently pregnant or breastfeeding?</string>
+    <string name="title_ss_screen16">SCHWANGERSCHAFT/STILLEN</string>
+    <string name="question_ss_screen16">Sind Sie schwanger oder stillen Sie zurzeit?</string>
 
     <!-- Screen 17 -->
-    <string name="title_ss_screen17">PERIOD</string>
-    <string name="question_ss_screen17">How long does your menstrual cycle (i.e., the number of days between the first day of your period until the last day before the onset of your next period) last on average?</string>
+    <string name="title_ss_screen17">ZYKLUS</string>
+    <string name="question_ss_screen17">Wie lange dauert Ihr Menstruationszyklus (d.h. die Anzahl der Tage zwischen dem ersten Tag der Menstruationsblutung bis zum letzten Tag vor dem Beginn der nächsten Menstruationsblutung) im Durchschnitt?</string>
 
     <!-- Screen 18 -->
-    <string name="title_ss_screen18">PERIOD</string>
-    <string name="question_ss_screen18">How long did your last menstrual cycle (i.e., the number of days between the first day of your period until the last day before the onset of your next period) last?</string>
+    <string name="title_ss_screen18">ZYKLUS</string>
+    <string name="question_ss_screen18">Wie lange hat Ihr letzter Menstruationszyklus gedauert (d.h. die Anzahl der Tage zwischen dem ersten Tag der Menstruationsblutung bis zum letzten Tag vor dem Beginn der nächsten Menstruationsblutung)?</string>
 
     <!-- Screen 19 -->
-    <string name="title_ss_screen19">PERIOD</string>
-    <string name="question_ss_screen19">When did your current/last period start? Please provide an exact date if possible:</string>
+    <string name="title_ss_screen19">ZYKLUS</string>
+    <string name="question_ss_screen19">Wann hat Ihre derzeitige/letzte Menstruationsblutung begonnen? Wenn Sie sich nicht ganz sicher sind, bitte schätzen Sie.</string>
 
     <!-- Screen 20 -->
-    <string name="title_ss_screen20">PERIOD</string>
-    <string name="question_ss_screen20">When do you expect your next period to start? Please provide an exact date if possible:</string>
+    <string name="title_ss_screen20">ZYKLUS</string>
+    <string name="question_ss_screen20">An welchem Tag erwarten Sie, dass Ihre nächste Menstruationsblutung beginnt?</string>
 
     <!-- Daily survey -->
     <!-- Screen 1 (Period) -->
-    <string name="title_sd_screen1">PERIOD</string>
-    <string name="question_sd_screen1">Are you on your period today?</string>
+    <string name="title_sd_screen1">ZYKLUS</string>
+    <string name="question_sd_screen1">Haben Sie heute Ihre Monatsblutung?</string>
 
     <!-- Screen 2 (Clothes) -->
     <string name="title_sd_screen2">CLOTHES</string>
     <string name="question_sd_screen2">Which are the dominant colors of the shirt/ dress you are wearing (max. 3)?</string>
 
     <!-- Screen 3 (ACTIVITIES) -->
-    <string name="title_sd_screen3">ACTIVITIES (1/2)</string>
-    <string name="question_sd_screen3">Which of the following activities did you engage in yesterday?</string>
-    <string name="answer1_sd_screen3">working</string>
-    <string name="answer2_sd_screen3">studying</string>
-    <string name="answer3_sd_screen3">reading</string>
-    <string name="answer4_sd_screen3">watching tv</string>
-    <string name="answer5_sd_screen3">sports</string>
-    <string name="answer6_sd_screen3">shopping</string>
+    <string name="title_sd_screen3">AKTIVITÄTEN (1/2)</string>
+    <string name="question_sd_screen3">Welchen der folgenden Beschäftigungen sind Sie gestern nachgegangen?</string>
+    <string name="answer1_sd_screen3">Arbeiten</string>
+    <string name="answer2_sd_screen3">Lernen</string>
+    <string name="answer3_sd_screen3">Lesen</string>
+    <string name="answer4_sd_screen3">Fernsehen</string>
+    <string name="answer5_sd_screen3">Sport</string>
+    <string name="answer6_sd_screen3">Shopping</string>
 
     <!-- Screen 4 (ACTIVITIES 2/2) -->
-    <string name="title_sd_screen4">ACTIVITIES (2/2)</string>
-    <string name="question_sd_screen4">Which of the following activities did you engage in yesterday?</string>
-    <string name="answer1_sd_screen4">meeting friends</string>
-    <string name="answer2_sd_screen4">having drinks</string>
-    <string name="answer3_sd_screen4">clubbing</string>
-    <string name="answer4_sd_screen4">dating</string>
-    <string name="answer5_sd_screen4">sex</string>
-    <string name="answer6_sd_screen4">kissing</string>
+    <string name="title_sd_screen4">AKTIVITÄTEN (2/2)</string>
+    <string name="question_sd_screen4">Welchen der folgenden Beschäftigungen sind Sie gestern nachgegangen?</string>
+    <string name="answer1_sd_screen4">Freunde treffen</string>
+    <string name="answer2_sd_screen4">Trinken gehen</string>
+    <string name="answer3_sd_screen4">Clubbing</string>
+    <string name="answer4_sd_screen4">Dating</string>
+    <string name="answer5_sd_screen4">Sex</string>
+    <string name="answer6_sd_screen4">Küssen</string>
 
     <!-- Screen 5 (Mood) -->
-    <string name="title_sd_screen5">MOOD</string>
-    <string name="question_sd_screen5">How are you feeling right now?</string>
-    <string name="answer1_sd_screen5">Good</string>
-    <string name="answer2_sd_screen5">Relaxed</string>
-    <string name="answer3_sd_screen5">Active</string>
+    <string name="title_sd_screen5">STIMMUNG</string>
+    <string name="question_sd_screen5">Wie fühlen Sie sich gerade?</string>
+    <string name="answer1_sd_screen5">Gut</string>
+    <string name="answer2_sd_screen5">Entspannt</string>
+    <string name="answer3_sd_screen5">Aktiv</string>
 
     <!-- End survey -->
     <!-- Screen 1 -->
-    <string name="title_se_screen1">RELATIONSHIP</string>
-    <string name="question_se_screen1">Has your relationship status changed throughout the study?</string>
-    <string name="option1_se_screen1">Yes, I am now in an exclusive romantic/sexual relationship</string>
-    <string name="option2_se_screen1">Yes, I am now in a non-exclusive romantic/sexual relationship</string>
-    <string name="option3_se_screen1">Yes, I am no longer in a romantic/sexual relationship</string>
-    <string name="option4_se_screen1">No</string>
+    <string name="title_se_screen1">BEZIEHUNGSSTATUS</string>
+    <string name="question_se_screen1">Hat sich Ihr Beziehungsstatus während der Studie geändert?</string>
+    <string name="option1_se_screen1">Ja, ich bin jetzt in einer exklusiven romatischen/sexuellen Beziehung.</string>
+    <string name="option2_se_screen1">Ja, ich bin jetzt in einer nicht-exklusiven romatischen/sexuellen Beziehung.</string>
+    <string name="option3_se_screen1">Ja, ich bin nicht mehr in einer romatischen/sexuellen Beziehung.</string>
+    <string name="option4_se_screen1">Nein</string>
 
     <!-- Screen 2 -->
-    <string name="title_se_screen2">CONTRACEPTION</string>
-    <string name="question_se_screen2">Have you started being on any form of hormonal birth control throughout the study?</string>
+    <string name="title_se_screen2">VERHÜTUNG</string>
+    <string name="question_se_screen2">Haben Sie während der Sudie begonnen, hormonell zu verhüten?</string>
 
     <!-- Screen 3 -->
     <string name="title_se_screen3">TINDER</string>
-    <string name="question_se_screen3">How often do you think you used Tinder throughout the study?</string>
-    <string name="option1_se_screen3">Every day</string>
-    <string name="option2_se_screen3">Several days a week</string>
-    <string name="option3_se_screen3">At least once a week</string>
-    <string name="option4_se_screen3">Less than once a week</string>
-    <string name="option5_se_screen3">Not at all</string>
+    <string name="question_se_screen3">Wie oft denken Sie, dass Sie Tinder während der Studie benutzt haben?</string>
+    <string name="option1_se_screen3">Jeden Tag</string>
+    <string name="option2_se_screen3">An mehreren Tagen pro Woche</string>
+    <string name="option3_se_screen3">Mindestens einmal pro Woche</string>
+    <string name="option4_se_screen3">Seltener als einmal pro Woche</string>
+    <string name="option5_se_screen3">Überhaupt nicht</string>
 
     <!-- Screen 4 -->
-    <string name="title_se_screen4">PHONE USAGE</string>
-    <string name="question_se_screen4">On average, how many hours/minutes per day do you think you spent using your phone in general throughout the study?</string>
+    <string name="title_se_screen4">SMARTPHONE-BENUTZUNG</string>
+    <string name="question_se_screen4">Wie viele Stunden/Minuten am Tag denken Sie, dass Sie Ihr Smartphone im Verlauf der Studie im Durschnitt aktiv genutzt haben?</string>
 
     <!-- Screen 5 -->
-    <string name="title_se_screen5">STUDY</string>
-    <string name="question_se_screen5">How interesting and engaging was it for you to participate in this study?</string>
-    <string name="option1_se_screen5">not at all</string>
-    <string name="option2_se_screen5">extremely</string>
+    <string name="title_se_screen5">STUDIE</string>
+    <string name="question_se_screen5">Wie interessant fanden Sie es, an der Studie teilzunehmen?</string>
+    <string name="option1_se_screen5">überhaupt nicht</string>
+    <string name="option2_se_screen5">sehr</string>
 
     <!-- Screen 6 -->
-    <string name="title_se_screen6">STUDY</string>
-    <string name="question_se_screen6">How much did the daily survey interfere with your activities at the time of the alarm?</string>
-    <string name="option1_se_screen6">not at all</string>
-    <string name="option2_se_screen6">extremely</string>
+    <string name="title_se_screen6">STUDIE</string>
+    <string name="question_se_screen6">Wie sehr wurden Sie durch die tägliche Befragung bei Ihren Tätigkeiten zum Zeitpunkt des Alarms gestört?</string>
+    <string name="option1_se_screen6">überhaupt nicht</string>
+    <string name="option2_se_screen6">sehr</string>
 
     <!-- Screen 7 -->
-    <string name="title_se_screen7">STUDY</string>
-    <string name="question_se_screen7">Would you have minded if the study period had been longer than 35 days (e.g., two full months)?</string>
-    <string name="option1_se_screen7">not at all</string>
-    <string name="option2_se_screen7">very much so</string>
+    <string name="title_se_screen7">STUDIE</string>
+    <string name="question_se_screen7">Hätte es Sie gestört, wenn die Studie länger als 35 Tage gedauert hätte (z.B. zwei ganze Monate)?</string>
+    <string name="option1_se_screen7">überhaupt nicht</string>
+    <string name="option2_se_screen7">sehr</string>
 
     <!-- Screen 8 -->
-    <string name="title_se_screen8">RESEARCH APP</string>
-    <string name="question_se_screen8">How easy/difficult was it for you to use the research app?</string>
-    <string name="option1_se_screen8">very easy</string>
-    <string name="option2_se_screen8">very difficult</string>
+    <string name="title_se_screen8">FORSCHUNGS-APP</string>
+    <string name="question_se_screen8">Wie einfach/schwierig fanden Sie es, diese Forschungs-App zu bedienen?</string>
+    <string name="option1_se_screen8">sehr einfach</string>
+    <string name="option2_se_screen8">sehr schwierig</string>
 
     <!-- Screen 9 -->
-    <string name="title_se_screen9">RESEARCH APP</string>
-    <string name="question_se_screen9">Is there anything in particular you would change about the research app?</string>
+    <string name="title_se_screen9">FORSCHUNGS-APP</string>
+    <string name="question_se_screen9">Gibt es irgendetwas Bestimmtes, das Sie an der Forschungs-App ändern würden?</string>
 
 </resources>

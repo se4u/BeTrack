@@ -129,7 +129,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         if (resultInt != 0) {
             SurveyAge = resultInt;
         }
-
+/*
         //Step 2 ETHNICITY 1
         resultInt = Step2.getArguments().getInt(FragmentSurvey10Choices.SURVEY_STATUS, 0);
         if (resultInt != 0) {
@@ -205,7 +205,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         if (resultInt != 0) {
             SurveyUniversity3 = resultInt;
         }
-
+*/
         //Step 14 RELATIONSHIP
         resultInt = Step14.getArguments().getInt(FragmentSurvey10Choices.SURVEY_STATUS, 0);
         if (resultInt != 0) {
@@ -330,7 +330,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         addStep(Step1, true, 0, false);
 
         //Step 2 ETHNICITY 1
-        bundle2 = new Bundle();
+        /*bundle2 = new Bundle();
         bundle2.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen2));
         bundle2.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, getResources().getString(R.string.question_ss_screen2));
         ArrayList<String> RbText2 = new ArrayList<String>() {{
@@ -362,10 +362,10 @@ public class ActivitySurveyStart extends ProgressStepper {
 
         Step2 = new FragmentSurvey10Choices();
         Step2.setArguments(bundle2);
-        addStep(Step2, true, 0, true);
+        addStep(Step2, true, 0, true);*/
 
         //Step 3 ETHNICITY 2
-        bundle3 = new Bundle();
+        /*bundle3 = new Bundle();
         bundle3.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen3));
         bundle3.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen3));
         bundle3.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
@@ -385,10 +385,10 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle4.putIntegerArrayList(FragmentSurvey2Choices.SURVEY_2_CHOICES_ENABLE_NEXT_STEP, NextStep4);
         Step4 = new FragmentSurvey2Choices();
         Step4.setArguments(bundle4);
-        addStep(Step4, true, 0, false);
+        addStep(Step4, true, 0, false);*/
 
         //Step 5 ENGLISH LEVEL 1
-        bundle5 = new Bundle();
+        /*bundle5 = new Bundle();
         bundle5.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen5));
         bundle5.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_ss_screen5));
         ArrayList<Integer> NextStep5 = new ArrayList<Integer>() {{
@@ -398,10 +398,10 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle5.putIntegerArrayList(FragmentSurvey2Choices.SURVEY_2_CHOICES_ENABLE_NEXT_STEP, NextStep5);
         Step5 = new FragmentSurvey2Choices();
         Step5.setArguments(bundle5);
-        addStep(Step5, true, 0, true);
+        addStep(Step5, true, 0, true);*/
 
         //Step 6 ENGLISH LEVEL 2
-        bundle6 = new Bundle();
+        /*bundle6 = new Bundle();
         bundle6.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen6));
         bundle6.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen6));
         bundle6.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
@@ -409,10 +409,10 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle6.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_NUMBER_INPUT, true);
         Step6 = new FragmentSurveyText();
         Step6.setArguments(bundle6);
-        addStep(Step6, false, 1, false);
+        addStep(Step6, false, 1, false);*/
 
         //Step 7 ENGLISH LEVEL 3
-        bundle7 = new Bundle();
+        /*bundle7 = new Bundle();
         bundle7.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen7));
         bundle7.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_ss_screen7));
         ArrayList<Integer> NextStep7 = new ArrayList<Integer>() {{
@@ -422,10 +422,10 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle7.putIntegerArrayList(FragmentSurvey2Choices.SURVEY_2_CHOICES_ENABLE_NEXT_STEP, NextStep7);
         Step7 = new FragmentSurvey2Choices();
         Step7.setArguments(bundle7);
-        addStep(Step7, false, 1, false);
+        addStep(Step7, false, 1, false);*/
 
         //Step 8 ENGLISH LEVEL 4
-        bundle8 = new Bundle();
+        /* bundle8 = new Bundle();
         bundle8.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen8));
         bundle8.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, getResources().getString(R.string.question_ss_screen8));
         ArrayList<String> RbText8 = new ArrayList<String>() {{
@@ -445,20 +445,20 @@ public class ActivitySurveyStart extends ProgressStepper {
 
         Step8 = new FragmentSurvey10Choices();
         Step8.setArguments(bundle8);
-        addStep(Step8, false, 1, true);
+        addStep(Step8, false, 1, true);*/
 
         //Step 9 ENGLISH LEVEL 5
-        bundle9 = new Bundle();
+        /*bundle9 = new Bundle();
         bundle9.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen9));
         bundle9.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen9));
         bundle9.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle9.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
         Step9 = new FragmentSurveyText();
         Step9.setArguments(bundle9);
-        addStep(Step9, false, 2, false);
+        addStep(Step9, false, 2, false);*/
 
         //Step 10 ENGLISH LEVEL 6
-        bundle10 = new Bundle();
+        /*bundle10 = new Bundle();
         bundle10.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen10));
         bundle10.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen10));
         bundle10.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
@@ -466,10 +466,10 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle10.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_NUMBER_INPUT, true);
         Step10 = new FragmentSurveyText();
         Step10.setArguments(bundle10);
-        addStep(Step10, false, 3, false);
+        addStep(Step10, false, 3, false);*/
 
         //Step 11 UNIVERSITY 1
-        bundle11 = new Bundle();
+        /*bundle11 = new Bundle();
         bundle11.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen11));
         bundle11.putString(FragmentSurvey10Choices.SURVEY_10_CHOICES_DESC, getResources().getString(R.string.question_ss_screen11));
         ArrayList<String> RbText11 = new ArrayList<String>() {{
@@ -493,20 +493,20 @@ public class ActivitySurveyStart extends ProgressStepper {
 
         Step11 = new FragmentSurvey10Choices();
         Step11.setArguments(bundle11);
-        addStep(Step11, true, 0, true);
+        addStep(Step11, true, 0, true);*/
 
         //Step 13 UNIVERSITY 2
-        bundle13 = new Bundle();
+       /* bundle13 = new Bundle();
         bundle13.putString(FragmentSurveyText.SURVEY_TEXT_TITLE, getResources().getString(R.string.title_ss_screen13));
         bundle13.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen13));
         bundle13.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle13.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
         Step13 = new FragmentSurveyText();
         Step13.setArguments(bundle13);
-        addStep(Step13, false, 1, false);
+        addStep(Step13, false, 1, false);*/
 
         //Step 12 UNIVERSITY 3
-        bundle12 = new Bundle();
+        /*bundle12 = new Bundle();
         bundle12.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_TITLE, getResources().getString(R.string.title_ss_screen12));
         bundle12.putString(FragmentSurvey2Choices.SURVEY_2_CHOICES_DESC, getResources().getString(R.string.question_ss_screen12));
         ArrayList<Integer> NextStep12 = new ArrayList<Integer>() {{
@@ -516,7 +516,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle12.putIntegerArrayList(FragmentSurvey2Choices.SURVEY_2_CHOICES_ENABLE_NEXT_STEP, NextStep12);
         Step12 = new FragmentSurvey2Choices();
         Step12.setArguments(bundle12);
-        addStep(Step12, true, 0, false);
+        addStep(Step12, true, 0, false);*/
 
         //Step 14 RELATIONSHIP
         bundle14 = new Bundle();

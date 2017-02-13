@@ -239,25 +239,33 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         int NbrDays = ObjSettingsStudy.getNbrOfNotificationToDo();
 
+        String Start = getResources().getString(R.string.survey_days_start);
+
+        NbrDays++;
+
         if (NbrDays > 1) {
             String Desc = getResources().getString(R.string.survey_days_left);
-            s = new SpannableString(NbrDays+"\n"+Desc);
+            s = new SpannableString(Start+"\n"+NbrDays+"\n"+Desc);
             if (NbrDays > 99) {
-                s.setSpan(new RelativeSizeSpan(3.0f), 0, 3, 0);
-                s.setSpan(new RelativeSizeSpan(2.0f), 3, 13, 0);
+                s.setSpan(new RelativeSizeSpan(2.0f), 0, 5, 0);
+                s.setSpan(new RelativeSizeSpan(3.0f), 5, 8, 0);
+                s.setSpan(new RelativeSizeSpan(2.0f), 8, 13, 0);
             }
             if (NbrDays > 9) {
-                s.setSpan(new RelativeSizeSpan(3.0f), 0, 2, 0);
-                s.setSpan(new RelativeSizeSpan(2.0f), 2, 12, 0);
+                s.setSpan(new RelativeSizeSpan(2.0f), 0, 5, 0);
+                s.setSpan(new RelativeSizeSpan(3.0f), 5, 7, 0);
+                s.setSpan(new RelativeSizeSpan(2.0f), 7, 12, 0);
             } else {
-                s.setSpan(new RelativeSizeSpan(3.0f), 0, 1, 0);
-                s.setSpan(new RelativeSizeSpan(2.0f), 1, 11, 0);
+                s.setSpan(new RelativeSizeSpan(2.0f), 0, 5, 0);
+                s.setSpan(new RelativeSizeSpan(3.0f), 5, 6, 0);
+                s.setSpan(new RelativeSizeSpan(2.0f), 6, 11, 0);
             }
         } else {
             String Desc = getResources().getString(R.string.survey_day_left);
-            s = new SpannableString(NbrDays+"\n"+Desc);
-            s.setSpan(new RelativeSizeSpan(3.0f), 0, 1, 0);
-            s.setSpan(new RelativeSizeSpan(2.0f), 1, 10, 0);
+            s = new SpannableString(Start+"\n"+NbrDays+"\n"+Desc);
+            s.setSpan(new RelativeSizeSpan(2.0f), 0, 5, 0);
+            s.setSpan(new RelativeSizeSpan(3.0f), 5, 6, 0);
+            s.setSpan(new RelativeSizeSpan(2.0f), 6, 10, 0);
         }
 
         return s;
