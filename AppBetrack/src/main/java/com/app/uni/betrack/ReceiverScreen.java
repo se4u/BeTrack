@@ -181,9 +181,15 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                         //Save the stop time
                         ActivityStopTime = shf.format(new Date());
 
-                        int TimeWatched = (int)((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime)/1000);
-                        ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
-
+                        try {
+                            SettingsStudy.SemAppWatchMonitor.acquire();
+                            if (SettingsStudy.AppWatchId != -1) {
+                                int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime) / 1000);
+                                ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                                SettingsStudy.AppWatchId = -1;
+                            }
+                            SettingsStudy.SemAppWatchMonitor.release();
+                        } catch (Exception eWatchId) {}
 
                         values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
                         values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);

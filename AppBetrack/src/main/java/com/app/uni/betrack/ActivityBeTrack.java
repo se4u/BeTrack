@@ -279,14 +279,15 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         if (endStudy == true) {
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
-                UsagePerApp[i] = ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getApplicationsToWatch().size());
+                UsagePerApp[i] = ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getApplicationsToWatch().size()));
+                Log.d(TAG, "ApplicationsToWath: " + i + " Name: " + ObjSettingsStudy.getApplicationsToWatch().get(i) + " Usage: " + UsagePerApp[i]);
                 sumUsage += UsagePerApp[i];
             }
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
                 if (UsagePerApp[i] > 0) {
-                    if (ObjSettingsStudy.getApplicationsToWatch().get(i) == FB_MESSENGER) {
+                    if (ObjSettingsStudy.getApplicationsToWatch().get(i).equals(FB_MESSENGER)) {
                         entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), FB_MESSENGER_COMMON_NAME));
-                    } else if (ObjSettingsStudy.getApplicationsToWatch().get(i) == FB_FACEBOOK) {
+                    } else if (ObjSettingsStudy.getApplicationsToWatch().get(i).equals(FB_FACEBOOK)) {
                         entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), FB_FACEBOOK_COMMON_NAME));
                     } else {
                         entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
