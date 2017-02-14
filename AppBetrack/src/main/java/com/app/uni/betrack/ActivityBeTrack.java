@@ -279,7 +279,7 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         if (endStudy == true) {
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
-                UsagePerApp[i] = ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getApplicationsToWatch().size()));
+                UsagePerApp[i] = ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getApplicationsToWatch().size());
                 Log.d(TAG, "ApplicationsToWath: " + i + " Name: " + ObjSettingsStudy.getApplicationsToWatch().get(i) + " Usage: " + UsagePerApp[i]);
                 sumUsage += UsagePerApp[i];
             }
