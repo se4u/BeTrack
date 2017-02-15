@@ -63,8 +63,8 @@ public class ActivityBeTrack extends AppCompatActivity {
     };
 
     public static final int[] BETRACK_COLORS_END = {
-            rgb("#673AB7"), rgb("#3F51B5"), rgb("#2196F3"), rgb("#03A9F4"),
-            rgb("#009688"), rgb("#4CAF50"), rgb("#8BC34A"), rgb("#CDDC39")
+            rgb("#1A237E"), rgb("#3949AB"), rgb("#5C6BC0"), rgb("#9FA8DA"),
+            rgb("#E8EAF6"), rgb("#1A237E"), rgb("#3949AB"), rgb("#5C6BC0")
     };
 
     private PieChart mChart;
