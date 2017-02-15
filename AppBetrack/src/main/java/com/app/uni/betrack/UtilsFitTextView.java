@@ -49,7 +49,7 @@ public class UtilsFitTextView extends TextView {
 
     private float mSpacingAdd = 0.0f;
 
-    private float mMinTextSize = 20;
+    private float mMinTextSize = 25;
 
     private int mWidthLimit;
 
