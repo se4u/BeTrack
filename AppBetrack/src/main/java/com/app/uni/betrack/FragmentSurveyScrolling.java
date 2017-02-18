@@ -105,7 +105,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
             OffsetSurveyMin1 = 1;
             arrayPicker1[0] = SurveyMinTxt1;
         }
-        counterValue = 0;
+        counterValue = SurveyStartRange1;
         for(int i=SurveyStartRange1;i<SurveyEndRange1;i++) {
             arrayPicker1[i-SurveyStartRange1+OffsetSurveyMin1] = SurveyPreUnit1 + counterValue + SurveyPostUnit1;
             counterValue += ValInc1;
@@ -118,7 +118,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
         SurveyEndRange2 = (int)Math.ceil((double)SurveyEndRange2 / ValInc2);
 
         String[] arrayPicker2= new String[SurveyEndRange2-SurveyStartRange2 + AdditionnalSpace2];
-        counterValue = 0;
+        counterValue = SurveyStartRange2;
         if (SurveyEndRange2 != SurveyStartRange2) {
             if (SurveyMinTxt2 != null) {
                 OffsetSurveyMin2 = 1;
