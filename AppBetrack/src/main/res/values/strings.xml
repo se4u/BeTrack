@@ -155,7 +155,7 @@
     <string name="survey_age">\u0020years old</string>
     <string name="survey_days">\u0020days</string>
     <string name="survey_hours">\u0020hour(s)</string>
-    <string name="survey_minutes">\u0020minutes(s)</string>
+    <string name="survey_minutes">\u0020minute(s)</string>
     <string name="survey_days_left">days left</string>
     <string name="survey_day_left">day left</string>
 
