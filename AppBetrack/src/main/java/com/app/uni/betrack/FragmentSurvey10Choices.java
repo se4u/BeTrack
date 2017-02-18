@@ -74,7 +74,7 @@ public class FragmentSurvey10Choices extends AbstractStep {
 
         while (NbrRbVisible < SURVEY_RB_MAX)
         {
-            radiobutton[NbrRbVisible].setVisibility(View.INVISIBLE);
+            radiobutton[NbrRbVisible].setVisibility(View.GONE);
             NbrRbVisible++;
         }
 

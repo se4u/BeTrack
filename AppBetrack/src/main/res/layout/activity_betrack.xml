@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="10dp"
-        android:padding="30sp"
+        android:padding="20sp"
         android:layout_weight="2"
         android:gravity="center_vertical|center_horizontal"
         android:src="@drawable/ic_betrack" />`
@@ -21,15 +21,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.app.uni.betrack.UtilsFitTextView
+    <TextView
         android:id="@+id/TextWelcome"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:gravity="top|center"
-        android:layout_weight="2"
+        android:layout_marginBottom="10sp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="40dp"
         android:textColor="@color/colorPrimary"
         android:textSize="23sp"
         android:text="@string/Betrack_welcome"

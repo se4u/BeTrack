@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="110dp"
+        android:layout_height="90dp"
         android:id="@+id/disclaimer_title"
         android:textSize="20sp"
         android:textStyle="bold"
