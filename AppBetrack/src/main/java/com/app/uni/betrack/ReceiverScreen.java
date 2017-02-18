@@ -144,11 +144,14 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 Log.d(TAG, "Screen is off we save the data to the local database");
                 //Save the end time
 
-
                 // We should never stop the alarm or from marshallow at some point the whole service goes into a kind of sleep mode
                 //CreateTrackApp.StopAlarm(context);
+
                 //Instead we decrease the frequency
                 CreateTrackApp.CreateAlarm(context,SettingsBetrack.SAMPLING_RATE_SCREEN_OFF);
+
+                //Clear the base time used for the average computation
+                IntentServiceTrackApp.baseTime = 0;
 
                 //Save when the screen was switched off
                 values.clear();

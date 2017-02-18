@@ -92,6 +92,13 @@ public class SettingsStudy {
     static private final String STUDY_TIME_NEXT_NOTIFICATION = "TimeNextNotification";
     static private long TimeNextNotification;
 
+    static private final String STUDY_ACCURACY_COMPUTED = "AccuracyComputed";
+    static private Boolean AccuracyComputed;
+    static private final String STUDY_AVERAGE_PERIODICITY = "AveragePeriodicity";
+    static private String AveragePeriodicity;
+    static private final String STUDY_STD_DEVIATION = "StandardDeviation";
+    static private String StandardDeviation;
+
     static public UtilsCryptoAES.SecretKeys SessionKey;
 
     SharedPreferences prefs;
@@ -146,6 +153,10 @@ public class SettingsStudy {
                 EncryptUserID(IdUser);
             }
         }
+
+        AccuracyComputed = prefs.getBoolean(STUDY_ACCURACY_COMPUTED, false);
+        AveragePeriodicity = prefs.getString(STUDY_AVERAGE_PERIODICITY, null);
+        StandardDeviation = prefs.getString(STUDY_STD_DEVIATION, null);
 
         //Read app to watch
         ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new HashSet<String>());
@@ -232,6 +243,87 @@ public class SettingsStudy {
     {
         mContext = context;
         return ConfigInfoStudyHolder.instance;
+    }
+
+    public String getStandardDeviation()
+    {
+        String ReturnStandardDeviation = null;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnStandardDeviation = StandardDeviation;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnStandardDeviation = null;
+        } finally {
+            return ReturnStandardDeviation;
+        }
+    }
+
+    public void setStandardDeviation(String standarddeviation)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            StandardDeviation = standarddeviation;
+            editor.putString(STUDY_STD_DEVIATION, StandardDeviation);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    public String getAveragePeriodicity()
+    {
+        String ReturnAveragePeriodicity = null;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnAveragePeriodicity = AveragePeriodicity;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnAveragePeriodicity = null;
+        } finally {
+            return ReturnAveragePeriodicity;
+        }
+    }
+
+    public void setAveragePeriodicity(String averageperiodicity)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            AveragePeriodicity = averageperiodicity;
+            editor.putString(STUDY_AVERAGE_PERIODICITY, AveragePeriodicity);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    public Boolean getAccuracyComputed()
+    {
+        boolean ReturnAccuracyComputed = false;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnAccuracyComputed = AccuracyComputed;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnAccuracyComputed = false;
+        } finally {
+            return ReturnAccuracyComputed;
+        }
+    }
+
+    public void setAccuracyComputed(boolean status)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            AccuracyComputed = status;
+            editor.putBoolean(STUDY_ACCURACY_COMPUTED, AccuracyComputed);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
     }
 
     public String getStartDateSurvey()

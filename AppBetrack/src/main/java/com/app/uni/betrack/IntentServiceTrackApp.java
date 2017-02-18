@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -43,12 +44,30 @@ public class IntentServiceTrackApp extends IntentService {
         return localdatabase;
     }
 
+    static final private int NBR_SAMPLE_REACHED = 60;
+    static private long arrayPeriodicity[] = new long[NBR_SAMPLE_REACHED];
+    static private int indexPeriodicity = 0;
+    static private double averagePeriodicity = 0;
+    static private double stdDevPeriodicity = 0;
+    static public long baseTime = 0;
+
+
+
     Handler mHandler;
 
     public IntentServiceTrackApp() {
 
         super("IntentServiceTrackApp");
         mHandler = new Handler();
+    }
+
+    private static BigDecimal truncateDecimal(double x,int numberofDecimals)
+    {
+        if ( x > 0) {
+            return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, BigDecimal.ROUND_FLOOR);
+        } else {
+            return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, BigDecimal.ROUND_CEILING);
+        }
     }
 
     protected void onHandleIntent(Intent intent) {
@@ -76,6 +95,49 @@ public class IntentServiceTrackApp extends IntentService {
         }
 
         if (intent != null) {
+
+            //Compute what's the average refresh frequency of the service and the standard deviation
+            if ((!ObjSettingsStudy.getAccuracyComputed())
+                    && (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState))
+            {
+                Log.d(TAG, "Compute accurancy periodicity basetime: " + baseTime);
+                if (baseTime == 0) {
+                    baseTime = System.currentTimeMillis();
+                }
+
+                if (((System.currentTimeMillis() - baseTime) / 1000) > 0 ) {
+                    arrayPeriodicity[indexPeriodicity] = System.currentTimeMillis() - baseTime;
+                    Log.d(TAG, "arrayperiodicity[" + indexPeriodicity +"] = " + arrayPeriodicity[indexPeriodicity]);
+                    baseTime = System.currentTimeMillis();
+                    indexPeriodicity++;
+                }
+
+                if (indexPeriodicity == NBR_SAMPLE_REACHED) {
+                    //Compute the average
+                    for (int i = 0; i < NBR_SAMPLE_REACHED; i++)
+                    {
+                        averagePeriodicity += arrayPeriodicity[i];
+                    }
+
+                    averagePeriodicity /= NBR_SAMPLE_REACHED;
+
+                    //Compute the standard deviation
+                    for (int i = 0; i < NBR_SAMPLE_REACHED; i++)
+                    {
+                        stdDevPeriodicity += Math.pow((arrayPeriodicity[i] - averagePeriodicity), 2);
+                    }
+                    stdDevPeriodicity /= (NBR_SAMPLE_REACHED - 1);
+                    stdDevPeriodicity = Math.sqrt(stdDevPeriodicity);
+
+                    Log.d(TAG, "averageperiodicity:" + truncateDecimal(averagePeriodicity, 2));
+                    Log.d(TAG, "stdDevperiodicity:" + truncateDecimal(stdDevPeriodicity, 2));
+
+                    ObjSettingsStudy.setAveragePeriodicity(String.valueOf(truncateDecimal(averagePeriodicity, 2)));
+                    ObjSettingsStudy.setStandardDeviation(String.valueOf(truncateDecimal(stdDevPeriodicity, 2)));
+
+                    ObjSettingsStudy.setAccuracyComputed(true);
+                }
+            }
 
             //Check if a study is going on
             StudyOnGoing = ObjSettingsBetrack.GetStudyEnable();
@@ -272,7 +334,6 @@ public class IntentServiceTrackApp extends IntentService {
                                 }
 
                             }
-
                         }
                     }
                 }

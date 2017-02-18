@@ -14,10 +14,12 @@ $study2 = '';
 $study3 = '';
 $researchapp1 = '';
 $researchapp2 = '';
+$averageperiodicity = '';
+$standarddeviation = '';
 $date = '';
 $time = '';
 
-list($relationship, $contraception, $tinder, $phoneusage, $study1, $study2, $study3, $researchapp1, $researchapp2, $date, $time) = explode(chr (30), $plain);
+list($relationship, $contraception, $tinder, $phoneusage, $study1, $study2, $study3, $researchapp1, $researchapp2, $averageperiodicity, $standarddeviation, $date, $time) = explode(chr (30), $plain);
 
 //Check the data
 $userid = strip_tags(trim($userid));
@@ -50,14 +52,20 @@ $researchapp1 = mysqli_real_escape_string($con, $researchapp1);
 $researchapp2 = strip_tags(trim($researchapp2));
 $researchapp2 = mysqli_real_escape_string($con, $researchapp2);
 
+$averageperiodicity = strip_tags(trim($averageperiodicity));
+$averageperiodicity = mysqli_real_escape_string($con, $averageperiodicity);
+
+$standarddeviation = strip_tags(trim($standarddeviation));
+$standarddeviation = mysqli_real_escape_string($con, $standarddeviation);
+
 $date = strip_tags(trim($date));
 $date = mysqli_real_escape_string($con, $date);
 
 $time = strip_tags(trim($time));
 $time = mysqli_real_escape_string($con, $time);
 
-$result = mysqli_query($con,"INSERT INTO BetrackEndStudy (UserId, relationship, contraception, tinder, phoneusage, study1, study2, study3, researchapp1, researchapp2, Date, Time) 
-          VALUES ('$userid ', '$relationship', '$contraception', '$tinder', '$phoneusage', '$study1', '$study2', '$study3', '$researchapp1', '$researchapp2', '$date', '$time')");
+$result = mysqli_query($con,"INSERT INTO BetrackEndStudy (UserId, relationship, contraception, tinder, phoneusage, study1, study2, study3, researchapp1, researchapp2, averageperiodicity, standarddeviation, Date, Time) 
+          VALUES ('$userid ', '$relationship', '$contraception', '$tinder', '$phoneusage', '$study1', '$study2', '$study3', '$researchapp1', '$researchapp2', '$averageperiodicity', '$standarddeviation', '$date', '$time')");
  
 endsession:		  
 if($result === true) {

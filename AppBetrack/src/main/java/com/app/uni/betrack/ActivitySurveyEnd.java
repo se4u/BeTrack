@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.DotStepper;
+import com.github.fcannizzaro.materialstepper.style.ProgressStepper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.Date;
 /**
  * Created by cevincent on 14/09/2016.
  */
-public class ActivitySurveyEnd  extends DotStepper {
+public class ActivitySurveyEnd  extends ProgressStepper {
     private static final String TAG = "ActivitySurveyEnd";
 
     private int SurveyRelationShip = 0;
@@ -140,6 +141,9 @@ public class ActivitySurveyEnd  extends DotStepper {
         values.put(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP1, SurveyResearchApp1);
         values.put(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP2, SurveyResearchApp2);
 
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_AVERAGE_PERIODICITY, ObjSettingsStudy.getAveragePeriodicity());
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_STD_DEVIATION, ObjSettingsStudy.getStandardDeviation());
+
         DateStudyEnd = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_DATE, DateStudyEnd);
         TimeStudyEnd = shf.format(new Date());
@@ -246,7 +250,7 @@ public class ActivitySurveyEnd  extends DotStepper {
 
         bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_1, SURVEY_PHONE_USAGE_MINUTES_MIN);
         bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_1, SURVEY_PHONE_USAGE_MINUTES_MAX);
-
+        //Ajouter option pour increment
         bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_2, SURVEY_PHONE_USAGE_HOURS_MIN);
         bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_2, SURVEY_PHONE_USAGE_HOURS_MAX);
 

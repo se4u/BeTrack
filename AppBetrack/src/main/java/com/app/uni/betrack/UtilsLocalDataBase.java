@@ -229,6 +229,8 @@ public class UtilsLocalDataBase {
     static final String C_ENDSTUDY_STUDY3 = "study3";
     static final String C_ENDSTUDY_RESEARCHAPP1 = "researchapp1";
     static final String C_ENDSTUDY_RESEARCHAPP2 = "researchapp2";
+    static final String C_ENDSTUDY_AVERAGE_PERIODICITY = "averageperiodicity";
+    static final String C_ENDSTUDY_STD_DEVIATION = "standarddeviation";
     static final String C_ENDSTUDY_DATE = "Date";
     static final String C_ENDSTUDY_TIME = "Time";
 
@@ -243,6 +245,8 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_ENDSTUDY_STUDY3);
         add(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP1);
         add(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP2);
+        add(UtilsLocalDataBase.C_ENDSTUDY_AVERAGE_PERIODICITY);
+        add(UtilsLocalDataBase.C_ENDSTUDY_STD_DEVIATION);
         add(UtilsLocalDataBase.C_ENDSTUDY_DATE);
         add(UtilsLocalDataBase.C_ENDSTUDY_TIME);
     }};
@@ -258,6 +262,8 @@ public class UtilsLocalDataBase {
         add(true);  //C_ENDSTUDY_STUDY3
         add(true);  //C_ENDSTUDY_RESEARCHAPP1
         add(true);  //C_ENDSTUDY_RESEARCHAPP2
+        add(true);  //C_ENDSTUDY_AVERAGE_PERIODICITY
+        add(true);  //C_ENDSTUDY_STD_DEVIATION
         add(true); //C_ENDSTUDY_DATE
         add(true); //C_ENDSTUDY_TIME
     }};
@@ -389,15 +395,16 @@ public class UtilsLocalDataBase {
                     + C_ENDSTUDY_STUDY3 + " text, "
                     + C_ENDSTUDY_RESEARCHAPP1 + " text, "
                     + C_ENDSTUDY_RESEARCHAPP2 + " text, "
+                    + C_ENDSTUDY_AVERAGE_PERIODICITY + " text, "
+                    + C_ENDSTUDY_STD_DEVIATION + " text, "
                     + C_ENDSTUDY_DATE +  " text, "
-                    + C_ENDSTUDY_TIME + " text)"; //
+                    + C_ENDSTUDY_TIME + " text)";
             db.execSQL(sql6);
             Log.d(TAG, "onCreated sql: " + sql6);
-
             String sql7 = "create table " + TABLE_SESSION_KEY + " (" + C_SESSION_KEY_ID + " integer primary key autoincrement, "
                     + C_SESSION_KEY_BLOB + " text, "
                     + C_SESSION_KEY_DATE + " text, "
-                    + C_SESSION_KEY_TIME + " text)"; //
+                    + C_SESSION_KEY_TIME + " text)";
             db.execSQL(sql7);
             Log.d(TAG, "onCreated sql: " + sql7);
 
