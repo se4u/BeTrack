@@ -16,10 +16,11 @@ $researchapp1 = '';
 $researchapp2 = '';
 $averageperiodicity = '';
 $standarddeviation = '';
+$betrackkilled = '';
 $date = '';
 $time = '';
 
-list($relationship, $contraception, $tinder, $phoneusage, $study1, $study2, $study3, $researchapp1, $researchapp2, $averageperiodicity, $standarddeviation, $date, $time) = explode(chr (30), $plain);
+list($relationship, $contraception, $tinder, $phoneusage, $study1, $study2, $study3, $researchapp1, $researchapp2, $averageperiodicity, $standarddeviation, $betrackkilled, $date, $time) = explode(chr (30), $plain);
 
 //Check the data
 $userid = strip_tags(trim($userid));
@@ -58,14 +59,17 @@ $averageperiodicity = mysqli_real_escape_string($con, $averageperiodicity);
 $standarddeviation = strip_tags(trim($standarddeviation));
 $standarddeviation = mysqli_real_escape_string($con, $standarddeviation);
 
+$betrackkilled = strip_tags(trim($betrackkilled));
+$betrackkilled = mysqli_real_escape_string($con, $betrackkilled);
+
 $date = strip_tags(trim($date));
 $date = mysqli_real_escape_string($con, $date);
 
 $time = strip_tags(trim($time));
 $time = mysqli_real_escape_string($con, $time);
 
-$result = mysqli_query($con,"INSERT INTO BetrackEndStudy (UserId, relationship, contraception, tinder, phoneusage, study1, study2, study3, researchapp1, researchapp2, averageperiodicity, standarddeviation, Date, Time) 
-          VALUES ('$userid ', '$relationship', '$contraception', '$tinder', '$phoneusage', '$study1', '$study2', '$study3', '$researchapp1', '$researchapp2', '$averageperiodicity', '$standarddeviation', '$date', '$time')");
+$result = mysqli_query($con,"INSERT INTO BetrackEndStudy (UserId, relationship, contraception, tinder, phoneusage, study1, study2, study3, researchapp1, researchapp2, averageperiodicity, standarddeviation, betrackkilled, Date, Time) 
+          VALUES ('$userid ', '$relationship', '$contraception', '$tinder', '$phoneusage', '$study1', '$study2', '$study3', '$researchapp1', '$researchapp2', '$averageperiodicity', '$standarddeviation', '$betrackkilled', '$date', '$time')");
  
 endsession:		  
 if($result === true) {

@@ -148,6 +148,7 @@ CREATE TABLE `BetrackStartStudy` (
   `ResearchApp2` varchar(1024) COLLATE latin1_general_ci NOT NULL,
   `Averageperiodicity` varchar(10) COLLATE latin1_general_ci NOT NULL,
   `Standarddeviation` varchar(10) COLLATE latin1_general_ci NOT NULL,
+  `BetrackKilled` varchar(1) COLLATE latin1_general_ci NOT NULL,
   `Date` varchar(15) COLLATE latin1_general_ci NOT NULL,
   `Time` varchar(15) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`)) ENGINE=MyISAM  
