@@ -33,6 +33,7 @@ public class ActivitySurveyEnd  extends ProgressStepper {
 
     private static final int SURVEY_PHONE_USAGE_MINUTES_MIN = 0;
     private static final int SURVEY_PHONE_USAGE_MINUTES_MAX = 59;
+    private static final int SURVEY_PHONE_USAGE_MINUTES_VAL_INC = 5;
     private static final int SURVEY_PHONE_USAGE_HOURS_MIN = 0;
     private static final int SURVEY_PHONE_USAGE_HOURS_MAX = 23;
 
@@ -250,11 +251,12 @@ public class ActivitySurveyEnd  extends ProgressStepper {
         bundle4.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_POST_UNIT_1, getResources().getString(R.string.survey_hours));
         bundle4.putString(FragmentSurveyScrolling.SURVEY_SCROLLING_POST_UNIT_2, getResources().getString(R.string.survey_minutes));
 
-        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_1, SURVEY_PHONE_USAGE_MINUTES_MIN);
-        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_1, SURVEY_PHONE_USAGE_MINUTES_MAX);
-        //Ajouter option pour increment
-        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_2, SURVEY_PHONE_USAGE_HOURS_MIN);
-        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_2, SURVEY_PHONE_USAGE_HOURS_MAX);
+        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_1, SURVEY_PHONE_USAGE_HOURS_MIN);
+        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_1, SURVEY_PHONE_USAGE_HOURS_MAX);
+
+        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_START_RANGE_2, SURVEY_PHONE_USAGE_MINUTES_MIN);
+        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_END_RANGE_2, SURVEY_PHONE_USAGE_MINUTES_MAX);
+        bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_VAL_INC_2, SURVEY_PHONE_USAGE_MINUTES_VAL_INC);
 
         bundle4.putInt(FragmentSurveyScrolling.SURVEY_SCROLLING_DEFAULT_VALUE_1, 0);
         Step4 = new FragmentSurveyScrolling();
