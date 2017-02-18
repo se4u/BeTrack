@@ -99,6 +99,9 @@ public class SettingsStudy {
     static private final String STUDY_STD_DEVIATION = "StandardDeviation";
     static private String StandardDeviation;
 
+    static private Boolean BetrackKilled;
+    static private final String STUDY_BETRACK_KILLED = "BetrackKilled";
+
     static public UtilsCryptoAES.SecretKeys SessionKey;
 
     SharedPreferences prefs;
@@ -154,6 +157,10 @@ public class SettingsStudy {
             }
         }
 
+        //Read status if betrack has been killed
+        BetrackKilled = prefs.getBoolean(STUDY_BETRACK_KILLED, false);
+
+        //Read periodicity information
         AccuracyComputed = prefs.getBoolean(STUDY_ACCURACY_COMPUTED, false);
         AveragePeriodicity = prefs.getString(STUDY_AVERAGE_PERIODICITY, null);
         StandardDeviation = prefs.getString(STUDY_STD_DEVIATION, null);
@@ -319,6 +326,33 @@ public class SettingsStudy {
             SemSettingsStudy.acquire();
             AccuracyComputed = status;
             editor.putBoolean(STUDY_ACCURACY_COMPUTED, AccuracyComputed);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    public Boolean getBetrackKilled()
+    {
+        boolean ReturnBetrackKilled = false;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnBetrackKilled = BetrackKilled;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnBetrackKilled = false;
+        } finally {
+            return ReturnBetrackKilled;
+        }
+    }
+
+    public void setBetrackKilled(boolean status)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            BetrackKilled = status;
+            editor.putBoolean(STUDY_BETRACK_KILLED, BetrackKilled);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {

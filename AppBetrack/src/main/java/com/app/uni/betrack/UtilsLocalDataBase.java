@@ -231,6 +231,7 @@ public class UtilsLocalDataBase {
     static final String C_ENDSTUDY_RESEARCHAPP2 = "researchapp2";
     static final String C_ENDSTUDY_AVERAGE_PERIODICITY = "averageperiodicity";
     static final String C_ENDSTUDY_STD_DEVIATION = "standarddeviation";
+    static final String C_ENDSTUDY_BETRACK_KILLED = "betrackkilled";
     static final String C_ENDSTUDY_DATE = "Date";
     static final String C_ENDSTUDY_TIME = "Time";
 
@@ -247,6 +248,7 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP2);
         add(UtilsLocalDataBase.C_ENDSTUDY_AVERAGE_PERIODICITY);
         add(UtilsLocalDataBase.C_ENDSTUDY_STD_DEVIATION);
+        add(UtilsLocalDataBase.C_ENDSTUDY_BETRACK_KILLED);
         add(UtilsLocalDataBase.C_ENDSTUDY_DATE);
         add(UtilsLocalDataBase.C_ENDSTUDY_TIME);
     }};
@@ -264,6 +266,7 @@ public class UtilsLocalDataBase {
         add(true);  //C_ENDSTUDY_RESEARCHAPP2
         add(true);  //C_ENDSTUDY_AVERAGE_PERIODICITY
         add(true);  //C_ENDSTUDY_STD_DEVIATION
+        add(true);  //C_ENDSTUDY_BETRACK_KILLED
         add(true); //C_ENDSTUDY_DATE
         add(true); //C_ENDSTUDY_TIME
     }};
@@ -397,6 +400,7 @@ public class UtilsLocalDataBase {
                     + C_ENDSTUDY_RESEARCHAPP2 + " text, "
                     + C_ENDSTUDY_AVERAGE_PERIODICITY + " text, "
                     + C_ENDSTUDY_STD_DEVIATION + " text, "
+                    + C_ENDSTUDY_BETRACK_KILLED + " text, "
                     + C_ENDSTUDY_DATE +  " text, "
                     + C_ENDSTUDY_TIME + " text)";
             db.execSQL(sql6);

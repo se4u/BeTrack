@@ -99,10 +99,6 @@ public class ActivityBeTrack extends AppCompatActivity {
             textWelcome.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
             mChart.setVisibility(View.VISIBLE);
             if (false == ObjSettingsStudy.getEndSurveyDone()) {
-
-                //We start the study if not started yet
-                StartStudy();
-
                 if (ObjSettingsStudy.getNbrOfNotificationToDo() >= 1) {
                     if (false == ObjSettingsStudy.getSetupBetrackDone()) {
                         Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
@@ -148,12 +144,15 @@ public class ActivityBeTrack extends AppCompatActivity {
                 }
             }
         } else {
-            //We start the study if not started yet
-            StartStudy();
-            mChart.setVisibility(View.GONE);
             textWelcome.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
             textWelcome.setText(getResources().getString(R.string.Betrack_start));
+            mChart.setVisibility(View.GONE);
         }
+
+        textWelcome.setTextColor(Color.parseColor(SettingsBetrack.colorPrimary));
+
+        //We start the study if not started yet
+        StartStudy();
     }
 
     @Override
@@ -330,14 +329,22 @@ public class ActivityBeTrack extends AppCompatActivity {
     }
 
     private void StartStudy()  {
+        TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
+
         //Broadcast an event to start the tracking service if not yet started
         if (!ReceiverStartTracking.startTrackingRunning) {
             Intent intent = new Intent();
             intent.setAction(SettingsBetrack.BROADCAST_START_TRACKING_NAME);
             intent.putExtra(SettingsBetrack.BROADCAST_ARG_MANUAL_START, "1");
             sendBroadcast(intent);
+            if (SettingsBetrack.STUDY_JUST_STARTED == false) {
+                //We got killed, it should never happen so we inform the participant
+                textWelcome.setText(getResources().getString(R.string.Betrack_battery_manager));
+                textWelcome.setTextColor(Color.RED);
+                //Save the info to be transfer to the distant database
+                ObjSettingsStudy.setBetrackKilled(true);
+            }
         }
-
     }
 
     @Override

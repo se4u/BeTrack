@@ -77,6 +77,7 @@
     <string name="Betrack_info_start">Days remaining:</string>
     <string name="Betrack_start">Thank you for registering! The study will start tomorrow.</string>
     <string name="Betrack_end">Thank you for participating in the study. You can uninstall BeTrack now.</string>
+    <string name="Betrack_battery_manager">You seem to use a battery manager, please whitelist BeTrack or contact the Social Health Lab.</string>
     <string name="Betrack_info_end">Your phone usage:</string>
     <string name="Betrack_settings">Settings</string>
 
@@ -170,7 +171,7 @@
     <string name="option1_ss_screen2">Caucasian</string>
     <string name="option2_ss_screen2">Hispanic/Latino</string>
     <string name="option3_ss_screen2">African</string>
-    <string name="option4_ss_screen2">East Asian (e.g., Chinese, Japanese, or Korean</string>
+    <string name="option4_ss_screen2">East Asian (e.g., Chinese, Japanese, or Korean)</string>
     <string name="option5_ss_screen2">Southeast Asian (e.g., Vietnamese, Filipino)</string>
     <string name="option6_ss_screen2">South Asian (e.g., Indian)</string>
     <string name="option7_ss_screen2">Middle Eastern (e.g, Persian)</string>

@@ -144,6 +144,8 @@ public class ActivitySurveyEnd  extends ProgressStepper {
         values.put(UtilsLocalDataBase.C_ENDSTUDY_AVERAGE_PERIODICITY, ObjSettingsStudy.getAveragePeriodicity());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_STD_DEVIATION, ObjSettingsStudy.getStandardDeviation());
 
+        values.put(UtilsLocalDataBase.C_ENDSTUDY_BETRACK_KILLED, ObjSettingsStudy.getBetrackKilled());
+
         DateStudyEnd = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_DATE, DateStudyEnd);
         TimeStudyEnd = shf.format(new Date());

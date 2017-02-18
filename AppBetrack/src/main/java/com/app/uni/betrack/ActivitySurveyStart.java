@@ -294,6 +294,10 @@ public class ActivitySurveyStart extends ProgressStepper {
         Intent i = new Intent(ActivitySurveyStart.this, ActivityBeTrack.class);
         startActivity(i);
         finish();
+
+        //Save that the study was just started
+        SettingsBetrack.STUDY_JUST_STARTED = true;
+
         System.out.println("completed");
     }
 

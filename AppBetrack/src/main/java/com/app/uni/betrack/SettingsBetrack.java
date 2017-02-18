@@ -74,6 +74,8 @@ public class SettingsBetrack {
 
     public static final Semaphore SemSettingsBetrack = new Semaphore(1, true);
 
+    static public boolean STUDY_JUST_STARTED = false;
+
     private Boolean StudyEnable;
     private Boolean StudyNotification;
     private String StudyNotificationTime;
