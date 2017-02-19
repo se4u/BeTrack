@@ -77,6 +77,7 @@ public class ActivityBeTrack extends AppCompatActivity {
     private SettingsBetrack ObjSettingsBetrack = null;
 
 
+
     @Override
     public void onStop() {
         super.onStop();
@@ -87,6 +88,7 @@ public class ActivityBeTrack extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
+        ImageView betrackLogo = (ImageView) findViewById(R.id.BetrackLogo);
 
         if (mChart == null) {
             mChart = (PieChart) findViewById(R.id.chart1);
@@ -109,6 +111,7 @@ public class ActivityBeTrack extends AppCompatActivity {
                         startActivity(i);
                         finish();
                     }
+                    betrackLogo.setVisibility(View.GONE);
                     prepareChart(false);
                     textWelcome.setText(getResources().getString(R.string.Betrack_welcome));
                 } else {
@@ -121,6 +124,8 @@ public class ActivityBeTrack extends AppCompatActivity {
                 if (endStudyTranferState == SettingsStudy.EndStudyTranferState.DONE) {
                     Log.d(TAG, "getEndSurveyTransferred = DONE");
                     prepareChart(true);
+                    betrackLogo.setVisibility(View.VISIBLE);
+                    getSupportActionBar().setTitle("");
                     textWelcome.setText(getResources().getString(R.string.Betrack_end));
                 } else {
                     if (endStudyTranferState == SettingsStudy.EndStudyTranferState.IN_PROGRESS) {
@@ -144,7 +149,9 @@ public class ActivityBeTrack extends AppCompatActivity {
                 }
             }
         } else {
+            getSupportActionBar().setTitle("");
             textWelcome.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+            betrackLogo.setVisibility(View.VISIBLE);
             textWelcome.setText(getResources().getString(R.string.Betrack_start));
             mChart.setVisibility(View.GONE);
         }
@@ -163,7 +170,6 @@ public class ActivityBeTrack extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_logo_padding);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("");
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)) );
         setContentView(R.layout.activity_betrack);
