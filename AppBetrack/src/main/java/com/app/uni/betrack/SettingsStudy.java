@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.Semaphore;
@@ -166,8 +167,8 @@ public class SettingsStudy {
         StandardDeviation = prefs.getString(STUDY_STD_DEVIATION, null);
 
         //Read app to watch
-        ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new HashSet<String>());
-        ApplicationsToWatchIn = new HashSet<>(ApplicationsToWatchHs);
+        ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new LinkedHashSet<String>());
+        ApplicationsToWatchIn = new LinkedHashSet<>(ApplicationsToWatchHs);
 
         //Read time spend per application
         ApplicationsTimeWatched = prefs.getString(APP_TIME_WATCHED, null);
@@ -748,8 +749,8 @@ public class SettingsStudy {
         ArrayList<String>  ReturnApplicationsToWatch = new ArrayList<String>();
 
         if (null == ApplicationsToWatchIn) {
-            ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new HashSet<String>());
-            ApplicationsToWatchIn = new HashSet<>(ApplicationsToWatchHs);
+            ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new LinkedHashSet<String>());
+            ApplicationsToWatchIn = new LinkedHashSet<>(ApplicationsToWatchHs);
         }
 
         Iterator<String> iterator = ApplicationsToWatchIn.iterator();
