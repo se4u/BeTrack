@@ -9,6 +9,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -52,7 +53,6 @@ public class SettingsStudy {
 
     static private final String APP_NAME_TO_WATCH = "AppNameToWatch";
     Set<String> ApplicationsToWatchHs;
-    Set<String> ApplicationsToWatchIn;
     static private final String APP_TIME_WATCHED = "AppTimeWatched";
     static private String ApplicationsTimeWatched;
 
@@ -168,7 +168,6 @@ public class SettingsStudy {
 
         //Read app to watch
         ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new LinkedHashSet<String>());
-        ApplicationsToWatchIn = new LinkedHashSet<>(ApplicationsToWatchHs);
 
         //Read time spend per application
         ApplicationsTimeWatched = prefs.getString(APP_TIME_WATCHED, null);
@@ -735,8 +734,8 @@ public class SettingsStudy {
     {
         try {
             SemSettingsStudy.acquire();
-            ApplicationsToWatchIn.add(appToWatch);
-            editor.putStringSet(APP_NAME_TO_WATCH, ApplicationsToWatchIn);
+            ApplicationsToWatchHs.add(appToWatch);
+            editor.putStringSet(APP_NAME_TO_WATCH, ApplicationsToWatchHs);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {
@@ -748,17 +747,13 @@ public class SettingsStudy {
     {
         ArrayList<String>  ReturnApplicationsToWatch = new ArrayList<String>();
 
-        if (null == ApplicationsToWatchIn) {
-            ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new LinkedHashSet<String>());
-            ApplicationsToWatchIn = new LinkedHashSet<>(ApplicationsToWatchHs);
-        }
-
-        Iterator<String> iterator = ApplicationsToWatchIn.iterator();
+        Iterator<String> iterator = ApplicationsToWatchHs.iterator();
         try {
             SemSettingsStudy.acquire();
             while(iterator.hasNext()) {
                 ReturnApplicationsToWatch.add(iterator.next());
             }
+            Collections.sort(ReturnApplicationsToWatch);
             SemSettingsStudy.release();
         } catch (Exception e) {
             ReturnApplicationsToWatch = null;
