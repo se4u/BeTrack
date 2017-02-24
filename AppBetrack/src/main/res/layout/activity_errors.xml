@@ -20,24 +20,16 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="right|top">
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="15dp"
-                android:padding="10sp"
-                android:layout_weight="2"
-                android:gravity="center_vertical|center_horizontal"
-                android:src="@drawable/ic_betrack" />`
+
 
             <ImageView
                 android:id="@+id/logo_betrack"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_marginTop="40dp"
                 android:padding="30sp"
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
-                android:src="@mipmap/ic_launcher" />`
+                android:src="@drawable/ic_betrack_logo" />`
 
 
             <TextView

@@ -45,7 +45,7 @@ public class CreateNotification {
         builder = new NotificationCompat.Builder(context)
                 .setWhen(System.currentTimeMillis())
                 .setTicker(context.getString(R.string.notification_title))
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_notification)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setContentText(context.getString(R.string.notification_desc))

@@ -58,9 +58,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         int b = (color >> 0) & 0xFF;
         return Color.rgb(r, g, b);
     }
-    public static final int[] BETRACK_COLORS = {
-            rgb("#ECEFF1"), rgb("#90CAF9"), rgb("#4285F5"), rgb("#64B5F6")
-    };
+
 
     public static final int[] BETRACK_COLORS_END = {
             rgb("#1A237E"), rgb("#3949AB"), rgb("#5C6BC0"), rgb("#9FA8DA"),
@@ -88,8 +86,6 @@ public class ActivityBeTrack extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         TextView textWelcome = (TextView) findViewById(R.id.TextWelcome);
-        ImageView betrackLogo = (ImageView) findViewById(R.id.BetrackLogo);
-
         if (mChart == null) {
             mChart = (PieChart) findViewById(R.id.chart1);
         }
@@ -111,7 +107,6 @@ public class ActivityBeTrack extends AppCompatActivity {
                         startActivity(i);
                         finish();
                     }
-                    betrackLogo.setVisibility(View.GONE);
                     prepareChart(false);
                     textWelcome.setText(getResources().getString(R.string.Betrack_welcome));
                 } else {
@@ -124,8 +119,6 @@ public class ActivityBeTrack extends AppCompatActivity {
                 if (endStudyTranferState == SettingsStudy.EndStudyTranferState.DONE) {
                     Log.d(TAG, "getEndSurveyTransferred = DONE");
                     prepareChart(true);
-                    betrackLogo.setVisibility(View.VISIBLE);
-                    getSupportActionBar().setTitle("");
                     textWelcome.setText(getResources().getString(R.string.Betrack_end));
                 } else {
                     if (endStudyTranferState == SettingsStudy.EndStudyTranferState.IN_PROGRESS) {
@@ -149,9 +142,7 @@ public class ActivityBeTrack extends AppCompatActivity {
                 }
             }
         } else {
-            getSupportActionBar().setTitle("");
             textWelcome.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-            betrackLogo.setVisibility(View.VISIBLE);
             textWelcome.setText(getResources().getString(R.string.Betrack_start));
             mChart.setVisibility(View.GONE);
         }
@@ -166,13 +157,9 @@ public class ActivityBeTrack extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Setup the action bar
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_logo_padding);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)) );
         setContentView(R.layout.activity_betrack);
+
+        getSupportActionBar().hide();
 
         if (null == ObjSettingsStudy) {
             //Read the setting of the study
@@ -198,7 +185,6 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         mChart.setUsePercentValues(true);
         mChart.setDescription("");
-        mChart.setExtraOffsets(5, 10, 5, 5);
 
         Legend legend = mChart.getLegend();
         legend.setEnabled(false);
@@ -226,6 +212,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         mChart.setTransparentCircleRadius(61f);
 
         mChart.setDrawCenterText(true);
+        mChart.setCenterTextColor(R.color.colorGrey);
 
         mChart.setRotationAngle(0);
 
@@ -281,6 +268,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         float mult = 100;
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+        PieDataSet dataSet = new PieDataSet(entries, "Days study");
 
         if (endStudy == true) {
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
@@ -300,8 +288,25 @@ public class ActivityBeTrack extends AppCompatActivity {
                 }
             }
         } else {
+            for(int i =0;i<ObjSettingsStudy.getStudyDuration();i++) {
+                entries.add(new PieEntry((float) (100 / ObjSettingsStudy.getStudyDuration()), ""));
+            }
 
-            if (ObjSettingsStudy.getStudyDuration() > NbrDays) {
+            int done = rgb("#ECEFF1");
+            int todo = rgb("#90CAF9");
+            int[] graph_colors = new int[ObjSettingsStudy.getStudyDuration()];
+
+            for(int i =0;i<ObjSettingsStudy.getStudyDuration();i++) {
+                if (i < NbrDays) {
+                    graph_colors[i] = done;
+                } else {
+                    graph_colors[i] = todo;
+                }
+            }
+
+            dataSet.setColors(graph_colors);
+
+            /*if (ObjSettingsStudy.getStudyDuration() > NbrDays) {
                 Done = ((ObjSettingsStudy.getStudyDuration() - NbrDays) * 100) / ObjSettingsStudy.getStudyDuration();
             } else {
                 Done = 0;
@@ -310,18 +315,17 @@ public class ActivityBeTrack extends AppCompatActivity {
             int ToBeDone = (NbrDays * 100) / ObjSettingsStudy.getStudyDuration();
 
             entries.add(new PieEntry((float) (ToBeDone), ""));
-            entries.add(new PieEntry((float) (Done), ""));
+            entries.add(new PieEntry((float) (Done), ""));*/
         }
 
-        PieDataSet dataSet = new PieDataSet(entries, "Days study");
+
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
 
-        if (endStudy == false) {
-            dataSet.setColors(BETRACK_COLORS);
-        } else {
+        if (endStudy == true) {
             dataSet.setColors(BETRACK_COLORS_END);
         }
+
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
@@ -358,7 +362,7 @@ public class ActivityBeTrack extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
 
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
-            inflater.inflate(R.menu.settingsmenu, menu);
+            //inflater.inflate(R.menu.settingsmenu, menu);
             for (int j = 0; j < menu.size(); j++) {
                 MenuItem item = menu.getItem(j);
                 item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -378,4 +382,11 @@ public class ActivityBeTrack extends AppCompatActivity {
         return true;
     }
 
+    public void onButtonClicked(View view) {
+        switch (view.getId()) {
+            case  R.id.ImgButtonChoice1:
+                startActivity(new Intent(this, ActivitySettings.class));
+                break;
+        }
+    }
 }

@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:paddingTop="10sp"
-        android:textColor="#000"
+        android:textColor="@color/colorGrey"
         android:gravity="center"
         android:text="Description test"/>
 </LinearLayout>

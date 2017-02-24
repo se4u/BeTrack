@@ -3,23 +3,24 @@
 
     <item android:id="@android:id/background">
         <shape android:shape="rectangle" >
-            <corners android:radius="20dp" />
+            <corners android:radius="1dp" />
 
             <gradient
                 android:angle="270"
-                android:endColor="@color/colorPrimary"
-                android:startColor="@color/colorPrimary" />
+                android:endColor="@color/colorLightGrey"
+                android:startColor="@color/colorLightGrey" />
         </shape>
     </item>
+
     <item android:id="@android:id/progress">
         <clip>
             <shape android:shape="rectangle" >
-                <corners android:radius="20dp" />
+                <corners android:radius="1dp" />
 
                 <gradient
-                    android:angle="270"
+                    android:angle="0"
                     android:endColor="@color/colorPrimary"
-                    android:startColor="@color/colorPrimary" />
+                    android:startColor="@color/colorLightGrey" />
             </shape>
         </clip>
     </item>

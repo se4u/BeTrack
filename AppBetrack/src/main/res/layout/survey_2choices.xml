@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <TextView
+    <com.app.uni.betrack.UtilsHandWritingTextView
         android:layout_width="fill_parent"
         android:layout_height="90dp"
         android:id="@+id/survey_title"
@@ -25,7 +25,7 @@
         android:paddingLeft="10sp"
         android:paddingRight="10sp"
         android:textSize="@dimen/test_description_font_size"
-        android:textColor="#000"
+        android:textColor="@color/colorGrey"
         android:gravity="center|top"
         android:layout_margin="10dp"
         android:text="Description test"/>

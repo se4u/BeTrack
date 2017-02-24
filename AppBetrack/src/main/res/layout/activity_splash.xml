@@ -4,13 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="3"/>
+
     <ImageView
+        android:id="@+id/logo_betrack"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="25dp"
-        android:layout_weight="3"
+        android:layout_weight="2"
         android:gravity="center_vertical|center_horizontal"
-        android:src="@drawable/ic_betrack" />`
+        android:src="@drawable/ic_betrack_logo" />`
 
     <TextView android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -21,15 +26,6 @@
         android:id="@+id/splash_version"
         android:text="V0.0"
         android:gravity="top|center_horizontal"/>
-
-    <ImageView
-        android:id="@+id/logo_betrack"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="2"
-        android:gravity="center_vertical|center_horizontal"
-        android:src="@drawable/ic_ubc_logo" />`
-
 
     <TextView android:layout_width="fill_parent"
         android:layout_height="fill_parent"

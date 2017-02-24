@@ -33,6 +33,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="left"
+            android:textColor="@color/colorGrey"
             android:id="@+id/disclaimers"
             android:text="@string/disclaimer"/>
     </ScrollView>
@@ -46,7 +47,7 @@
 
         <CheckBox android:id="@+id/checkbox_agree"
             android:theme="@style/checkBoxStyle"
-            android:textColor="#000"
+            android:textColor="@color/colorGrey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="I agree to terms"
