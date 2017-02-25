@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -79,6 +80,8 @@ public class FragmentSurveyText extends AbstractStep {
         }
         if (maxNbrLines > 1) {
             Comment.setSingleLine(false);
+            Comment.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            Comment.setRawInputType(InputType.TYPE_CLASS_TEXT);
             Comment.setLines(maxNbrLines);
             Comment.setGravity(Gravity.TOP);
             // Create a border programmatically
