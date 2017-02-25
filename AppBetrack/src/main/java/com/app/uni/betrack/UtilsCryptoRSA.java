@@ -36,6 +36,28 @@ public class UtilsCryptoRSA {
     private SecretKeySpec skeySpec;
     private Cipher cipher;
 
+    public static byte[] decryptWithPublicKey(String pemString, byte[] data, Context context) {
+        try {
+            PublicKey publicKey = getPublicKeyFromPemFormat(pemString, context);
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.DECRYPT_MODE, publicKey);
+            byte[] decipherData = cipher.doFinal(Base64.decode(data, Base64.CRLF));
+            return decipherData;
+        } catch (IOException ioException) {
+            Log.e(TAG, "ioException");
+        } catch (NoSuchAlgorithmException exNoSuchAlg) {
+            Log.e(TAG, "NoSuchAlgorithmException");
+        } catch (javax.crypto.NoSuchPaddingException exNoSuchPadding) {
+            Log.e(TAG, "NoSuchPaddingException");
+        } catch (java.security.InvalidKeyException exInvalidKey) {
+            Log.e(TAG, "InvalidKeyException");
+        } catch (javax.crypto.IllegalBlockSizeException exIllBlockSize) {
+            Log.e(TAG, "IllegalBlockSizeException");
+        } catch (javax.crypto.BadPaddingException exBadPadding) {
+            Log.e(TAG, "BadPaddingException");
+        }
+        return null;
+    }
 
     public static String encryptWithPublicKey(String pemString, byte[] sessionKey, Context context) {
         try {

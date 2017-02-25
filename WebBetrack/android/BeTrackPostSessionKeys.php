@@ -16,7 +16,8 @@ $date = $_POST['Date'];
 $time = $_POST['Time'];
 
 $data = base64_decode(strtr($useridcypher, '-_', '+/')); 
-$rc = openssl_private_decrypt($data, $userid, openssl_pkey_get_private($pri, "cedric"),OPENSSL_PKCS1_OAEP_PADDING);
+$privatekey =  openssl_pkey_get_private($pri, "cedric");
+$rc = openssl_private_decrypt($data, $userid, $privatekey, OPENSSL_PKCS1_OAEP_PADDING);
 
 if ($rc === false) {
 	echo 'decrypt userid RSA failed: '.$useridcypher;
@@ -68,5 +69,7 @@ else{
 	echo PHP_EOL;
 	echo 'KO';
 }
+
+openssl_free_key($privatekey);
 mysqli_close($con);
 ?>

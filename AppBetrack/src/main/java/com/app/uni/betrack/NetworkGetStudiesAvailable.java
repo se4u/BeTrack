@@ -11,6 +11,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Iterator;
+
+import static android.R.id.list;
 
 /**
  * Created by cevincent on 4/13/16.
@@ -19,7 +25,8 @@ public class NetworkGetStudiesAvailable extends AsyncTask<String, Void, String> 
 
     static final String TAG = "NetworkGetStudiesAvailable";
     private Context mContext;
-    private SettingsStudy ObjSettingsStudy;
+    private SettingsStudy ObjSettingsStudy = null;
+    private SettingsBetrack ObjSettingsBetrack = null;
 
     static private String[] StudyID;
     static private String[] StudyActive;
@@ -29,6 +36,7 @@ public class NetworkGetStudiesAvailable extends AsyncTask<String, Void, String> 
     static private String[] StudyDuration;
     static private String[] StudyPublicKey;
     static private String[] StudyContactEmail;
+    static private String[] StudySignature;
 
     static private int NbrStudyAvailable;
     static private final int NbrMaxStudy = 3;
@@ -56,6 +64,12 @@ public class NetworkGetStudiesAvailable extends AsyncTask<String, Void, String> 
         java.net.URL url;
         ObjSettingsStudy = SettingsStudy.getInstance(mContext);
 
+        if (null == ObjSettingsBetrack) {
+            //Read the preferences
+            ObjSettingsBetrack = SettingsBetrack.getInstance();
+            ObjSettingsBetrack.Update(mContext);
+        }
+
         try {
 
             StudyID=new String[NbrMaxStudy];
@@ -66,6 +80,7 @@ public class NetworkGetStudiesAvailable extends AsyncTask<String, Void, String> 
             StudyDuration=new String[NbrMaxStudy];
             StudyPublicKey=new String[NbrMaxStudy];
             StudyContactEmail=new String[NbrMaxStudy];
+            StudySignature=new String[NbrMaxStudy];
 
             //Connect to the remote database to get the available studies
             url = new URL(SettingsBetrack.STUDY_WEBSITE + SettingsBetrack.STUDY_GETSTUDIESAVAILABLE);
@@ -79,41 +94,63 @@ public class NetworkGetStudiesAvailable extends AsyncTask<String, Void, String> 
                     new BufferedReader(new InputStreamReader(
                             urlConnection.getInputStream()));
 
-            //We keep this code for later when we might have more than one study running in
-            //the same database
-            String next;
-            NbrStudyAvailable = 0;
-            while ((next = bufferedReader.readLine()) != null) {
-                JSONArray ja = new JSONArray(next);
 
-                for (int i = 0; i < ja.length(); i++) {
-                    JSONObject jo = (JSONObject) ja.get(i);
-                    StudyActive[i] = jo.getString("StudyActive");
-                    if (StudyActive[i].equals("1")) {
-                        StudyID[i] = jo.getString("StudyId");
-                        StudyName[i] = jo.getString("StudyName");
-                        StudyDescription[i] = jo.getString("StudyDescription");
-                        StudyVersionApp[i] = jo.getString("VersionApp");
-                        StudyDuration[i] = jo.getString("Duration");
-                        StudyPublicKey[i] = jo.getString("PublicKey");
-                        StudyContactEmail[i] = jo.getString("ContactEmail");
-                        NbrStudyAvailable++;
-                        //We limit the number of study to NbrMaxStudy
-                        if (NbrStudyAvailable > NbrMaxStudy) break;
-                    }
+            String JsonLine;
+            NbrStudyAvailable = 0;
+            JsonLine = bufferedReader.readLine();
+            JSONArray ja = new JSONArray(JsonLine);
+
+            JSONObject jo = (JSONObject) ja.get(0);
+            StudyActive[0] = jo.getString("StudyActive");
+            StudyID[0] = jo.getString("StudyId");
+            StudyName[0] = jo.getString("StudyName");
+            StudyDescription[0] = jo.getString("StudyDescription");
+            StudyVersionApp[0] = jo.getString("VersionApp");
+            StudyDuration[0] = jo.getString("Duration");
+            StudyPublicKey[0] = jo.getString("PublicKey");
+            StudyContactEmail[0] = jo.getString("ContactEmail");
+
+            //Compute the sha of the JSON string received
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            String[] toBeCheck = JsonLine.split("[}]");
+            toBeCheck[0] += "}]";
+            byte[] hash_computed = digest.digest(toBeCheck[0].getBytes("UTF-8"));
+
+            //Read the signature
+            jo = (JSONObject) ja.get(1);
+            StudySignature[0] = jo.getString("Signature");
+
+            //Decrypt the signature with the public key (String pemString, byte[] data, Context context)
+            byte[] dataBytes = StudySignature[0].toString().getBytes("utf-8");
+            byte[] hash_server = UtilsCryptoRSA.decryptWithPublicKey(ObjSettingsBetrack.STUDY_PUBLIC_KEY, dataBytes, mContext);
+            boolean sha_equal = true;
+            //Compare both SHA
+            for (int i = 0; i < 32; i++)
+            {
+                if (hash_computed[i] != hash_server[i + 19])
+                {
+                    sha_equal = false;
+                    break;
                 }
             }
 
-            //We just take in account the first study in the table
-            ObjSettingsStudy.setStudyId(StudyID[0]);
-            ObjSettingsStudy.setStudyName(StudyName[0]);
-            ObjSettingsStudy.setStudyDescription(StudyDescription[0]);
-            ObjSettingsStudy.setStudyVersionApp(StudyVersionApp[0]);
-            ObjSettingsStudy.setStudyDuration(Integer.parseInt(StudyDuration[0]));
-            ObjSettingsStudy.setStudyPublicKey(StudyPublicKey[0]);
-            ObjSettingsStudy.setStudyContactEmail(StudyContactEmail[0]);
+            if (sha_equal == true) {
+                //We just take in account the first study in the table
+                ObjSettingsStudy.setStudyId(StudyID[0]);
+                ObjSettingsStudy.setStudyName(StudyName[0]);
+                ObjSettingsStudy.setStudyDescription(StudyDescription[0]);
+                ObjSettingsStudy.setStudyVersionApp(StudyVersionApp[0]);
+                ObjSettingsStudy.setStudyDuration(Integer.parseInt(StudyDuration[0]));
+                ObjSettingsStudy.setStudyPublicKey(StudyPublicKey[0]);
+                ObjSettingsStudy.setStudyContactEmail(StudyContactEmail[0]);
 
-            result = "OK";
+                result = "OK";
+            }
+            else {
+                result = null;
+            }
+
         } catch (java.net.SocketTimeoutException e) {
             return result;
         } catch (Exception e) {
