@@ -29,15 +29,29 @@
                 android:layout_weight="4"
                 android:src="@drawable/separator_grey" />
 
-            <ImageView
-                android:id="@+id/BetrackLogo"
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/logo_betrack"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="3"
                 android:layout_marginTop="10dp"
-                android:padding="20sp"
                 android:gravity="center_vertical|center_horizontal"
-                android:src="@drawable/ic_betrack_logo"/>`
+                android:layout_weight="3">
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:padding="5sp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:src="@drawable/ic_betrack_logo" />
+
+                <ImageView
+                    android:id="@+id/logo_university"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_gravity="bottom|right"
+                    android:src="@drawable/ic_university_logo" />
+
+            </FrameLayout>
 
             <ImageView
                 android:layout_width="fill_parent"
