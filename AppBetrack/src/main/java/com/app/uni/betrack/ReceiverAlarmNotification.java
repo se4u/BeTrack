@@ -45,13 +45,12 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
         }
 
         Log.d(TAG, "Received ");
-        if ((ObjSettingsStudy.getDailySurveyDone() == true) ||
-                ( (ObjSettingsStudy.getNbrOfNotificationToDo() == 0) && (ObjSettingsStudy.getEndSurveyDone() == true) ) ){
-            int NbrOfNotificationDone = ObjSettingsStudy.getNbrOfNotificationToDo();
-            NbrOfNotificationDone--;
-            Log.d(TAG, "NbrOfNotificationDone = " + NbrOfNotificationDone);
-            ObjSettingsStudy.setNbrOfNotificationToDo(NbrOfNotificationDone);
-        }
+
+        int NbrOfNotificationDone = ObjSettingsStudy.getNbrOfNotificationToDo();
+        NbrOfNotificationDone--;
+        Log.d(TAG, "NbrOfNotificationDone = " + NbrOfNotificationDone);
+        ObjSettingsStudy.setNbrOfNotificationToDo(NbrOfNotificationDone);
+
 
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
             if (ObjSettingsStudy.getNbrOfNotificationToDo() > 0) {
