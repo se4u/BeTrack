@@ -47,7 +47,8 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
 
             //Since we were off we check if we didn't miss the last notification
             if ( (true == ObjSettingsBetrack.GetStudyNotification())
-                    && (ObjSettingsStudy.getTimeNextNotification() - System.currentTimeMillis() < 0)) {
+                    && (ObjSettingsStudy.getTimeNextNotification() - System.currentTimeMillis() < 0)
+                    && (ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.NOT_YET)) {
                 Log.d(TAG, "We missed the notification so we trigger it manually");
                 Intent intentNotif = new Intent();
                 intentNotif.setAction(SettingsBetrack.BROADCAST_TRIGGER_NOTIFICATION);
