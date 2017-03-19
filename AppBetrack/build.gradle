@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId 'com.app.uni.betrack'
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
-        versionName "0.76"
+        versionName "0.77"
     }
     buildTypes {
         release {
