@@ -16,6 +16,7 @@
         android:background="@color/colorLightGrey"
         android:layout_margin="0dp"
         android:text="Title test"/>
+
     <TextView
         android:layout_width="fill_parent"
         android:id="@+id/survey_desc"
@@ -29,19 +30,23 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+       >
+
 
         <DatePicker
             android:id="@+id/date_picker"
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            android:layout_marginLeft="-50dp"
-            android:layout_marginTop="-40dp"
-            android:layout_marginRight="-50dp"
-            android:layout_marginBottom="-40dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="-40dp"
+            android:layout_marginTop="-35dp"
+            android:theme="@style/DatePicker"
+
+            android:scaleX="0.87"
+            android:scaleY="0.87"
+
+ />
     </RelativeLayout>
 
 
