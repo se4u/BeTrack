@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:textColor">#3b404b</item>-->
     </style>
 
     <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
@@ -21,5 +22,10 @@
 
     <style name="ButtonAppTheme" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="DatePicker" parent="@android:style/Widget.DeviceDefault.DatePicker">
+        <item name="android:textSize">16dp</item>
+
     </style>
 </resources>
