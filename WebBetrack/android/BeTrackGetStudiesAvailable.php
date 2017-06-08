@@ -4,19 +4,25 @@
 	$pub = file_get_contents('./public.pem');
 	$pri = file_get_contents('./private.pem');
 
+
     //fetch table rows from mysql db
     $sql = "select * from BetrackConf";
+
     $result = mysqli_query($con, $sql) or die("Error in Selecting " . mysqli_error($con));
+
 
     $data = array();
 	$signature = "";
 	$encryptionOk = false;
 
     $data[] =mysqli_fetch_assoc($result);
+
+
     
 	//Compute the sha
 	$privatekey =  openssl_pkey_get_private($pri, "cedric");
-	$encryptionOk = openssl_sign(json_encode($data), $signature, $privatekey, OPENSSL_ALGO_SHA256);
+
+	$encryptionOk = openssl_sign(json_encode($data), $signature, $privatekey, SHA256);
 	
 	if($encryptionOk === false)
 	{
@@ -33,8 +39,8 @@
 		$signature_json[] = $object;
 
 		$dataJson = array_merge( $data, $signature_json );
-	
 		echo json_encode($dataJson);
+
 	}
 
 	openssl_free_key($privatekey);

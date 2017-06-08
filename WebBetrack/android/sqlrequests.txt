@@ -16,10 +16,10 @@ CREATE TABLE `BetrackConf` (
 
 Insert value in configuration table
 
-INSERT INTO Configuration (StudyId, StudyActive, StudyName, StudyDescription, VersionApp, Duration, PublicKey, ContactEmail, LinkEndStudy) 
+INSERT INTO BetrackConf (StudyId, StudyActive, StudyName, StudyDescription, VersionApp, Duration, PublicKey, ContactEmail, LinkEndStudy) 
           VALUES ('Participant Consent Form', '1', 'Participant Consent Form', 'Principal Investigator: Dr. Frances Chen, UBC Department of Psychology (Tel: 604-822-2549)
 
-Co-Investigator: Dr. Christine Anderl, FernUniversität in Hagen (Tel: +49 2331-987-2195)
+Co-Investigator: Dr. Christine Anderl, , UBC Department of Psychology
 
 1. Introduction: In this study we are interested in whether smartphone use varies across the natural female menstrual cycle. This consent form describes what will happen to you during the study; it will also describe any possible benefits, risks, and discomforts. Before making a decision whether to participate or not, please read the following information carefully.
 
@@ -34,7 +34,7 @@ Finally, you will be invited back to the Social Health Lab so that the research 
 
 6. What are the benefits of participating in this study?: As a result of participating in this research, you will be given the opportunity to learn more about your individual smartphone use. More specifically, upon completion of the study, we will provide you with individual feedback on how much time you spend per day using your smartphone in general and a number of social media applications in particular.
 
-7. Will I receive any tangible rewards for participating in this study?: Through UBC’s Human Subjects Pool, you will receive 2 HSP credits for your participation in this study.
+7. Will I receive any tangible rewards for participating in this study?: Through UBC's Human Subjects Pool, you will receive 2 HSP credits for your participation in this study.
 
 8. Your responses will be kept strictly confidential: All of the information you provide will be kept strictly confidential. All electronic study data will be encrypted before being sent from your smartphone to a password-protected server and then stored on encrypted and password-protected computers and/or locked laboratory facilities in the Department of Psychology at the University of British Columbia. Access to all data collected during the study will be restricted to Dr. Chen and her research team. All data (both online and paper formats) will be kept for at least five years and destroyed when it is no longer needed. In line with current best practices in psychological research, electronic data will be preserved for future use in open science initiatives. Open science initiatives allow for researchers from different universities to share their data upon completion of studies, in an effort to stimulate further use and exploration of existing data sets. Data is uploaded to an online form in the form of a computer software file (e.g., SPSS), and these files are stripped of any information that could identify you (e.g., names) to ensure confidentiality and anonymity.
 

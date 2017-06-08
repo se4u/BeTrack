@@ -1,5 +1,11 @@
 <?php
 
-$con=mysqli_connect("gman.myd.infomaniak.com","gman_betrack","fg7s5V3V","gman_betrack");
+$con=mysqli_connect("ubcsys-dbp01.webi.it.ubc.ca","smartpho_Betrack","OnionsSatesTutorDollop23","smartpho_Study1");
+
+// Check connection
+if (mysqli_connect_errno())
+  {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  }
 
 ?>

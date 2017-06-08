@@ -3,8 +3,11 @@
 include './BeTrackCrypto.php';
 
 if($result === false) {
+    echo 'Decryption failed!';
+    echo PHP_EOL;
     goto endsession;
 }
+
 
 $age = '';
 $ethnicity1 = '';

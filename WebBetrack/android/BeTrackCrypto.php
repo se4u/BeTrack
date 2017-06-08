@@ -4,8 +4,33 @@ include './BeTrackDataBase.php';
 $pub = file_get_contents('./public.pem');
 $pri = file_get_contents('./private.pem');
 
+if(!function_exists('hash_equals'))
+{
+    function hash_equals($str1, $str2)
+    {
+        if(strlen($str1) != strlen($str2))
+        {
+            return false;
+        }
+        else
+        {
+            $res = $str1 ^ $str2;
+            $ret = 0;
+            for($i = strlen($res) - 1; $i >= 0; $i--)
+            {
+                $ret |= ord($res[$i]);
+            }
+            return !$ret;
+        }
+    }
+}	
+
+$result = false;
+
 if (mysqli_connect_errno($con))
 {
+   echo 'Error connecting to the database';
+   echo PHP_EOL;
    $result = false;
    goto endsession;
 }
@@ -14,7 +39,8 @@ $useridcypher = $_POST['ParticipantID'];
 $encrypted = $_POST['encrypted'];
 
 $data = base64_decode(strtr($useridcypher, '-_', '+/')); 
-$rc = openssl_private_decrypt($data, $userid, openssl_pkey_get_private($pri, "cedric"),OPENSSL_PKCS1_OAEP_PADDING);
+$privatekey =  openssl_pkey_get_private($pri, "cedric");
+$rc = openssl_private_decrypt($data, $userid, $privatekey, OPENSSL_PKCS1_OAEP_PADDING);
 
 if ($rc === false) {
 	echo 'decrypt userid RSA failed: '.$useridcypher;
@@ -28,6 +54,9 @@ $sql = "select * from BetrackSessionKeys where UserId='".$userid."'";
 
 $query = mysqli_query($con, $sql) or die("Error in Selecting " . mysqli_error($con));
 if ($query === false) {
+	echo 'Error querrying the database';
+	echo PHP_EOL;
+	$result = false;
 	goto endsession;
 }
 
@@ -63,6 +92,10 @@ else {
 		echo PHP_EOL;
 		$result = false;
 		goto endsession;
+	}
+	else
+	{
+		$result = true;
 	}
 }
 

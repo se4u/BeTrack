@@ -14,6 +14,7 @@
 	$signature = "";
 	$encryptionOk = false;
 
+
     while($row[] =mysqli_fetch_assoc($result))
     {
 		$data += $row;
@@ -21,7 +22,7 @@
 	
 	//Compute the sha
 	$privatekey =  openssl_pkey_get_private($pri, "cedric");
-	$encryptionOk = openssl_sign(json_encode($data), $signature, $privatekey, OPENSSL_ALGO_SHA256);
+	$encryptionOk = openssl_sign(json_encode($data), $signature, $privatekey, SHA256);
 	
 	if($encryptionOk === false)
 	{
