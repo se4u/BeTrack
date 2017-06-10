@@ -13,6 +13,10 @@ public class ServiceBetrack extends Service {
     static final String TAG = "ServiceBetrack";
     static ServiceBetrack instance;
 
+    private SettingsStudy ObjSettingsStudy = null;
+    private BroadcastReceiver mReceiverScreen;
+    private BroadcastReceiver mNetworkChange;
+
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
@@ -30,14 +34,19 @@ public class ServiceBetrack extends Service {
         filterScreen.addAction(Intent.ACTION_SHUTDOWN);
         filterScreen.addAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
 
-        BroadcastReceiver mReceiverScreen = new ReceiverScreen();
+        mReceiverScreen = new ReceiverScreen();
         registerReceiver(mReceiverScreen, filterScreen);
 
         IntentFilter filterNetworkChange = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         filterNetworkChange.addAction("android.net.wifi.WIFI_STATE_CHANGED");
 
-        BroadcastReceiver mNetworkChange = new ReceiverNetworkChange();
+        mNetworkChange = new ReceiverNetworkChange();
         registerReceiver(mNetworkChange, filterNetworkChange);
+
+        if (null == ObjSettingsStudy) {
+            //Read the setting of the study
+            ObjSettingsStudy = SettingsStudy.getInstance(this);
+        }
 
         instance = this;
         if (startService(new Intent(this, UtilsForegroundEnablingService.class)) == null)
@@ -54,7 +63,18 @@ public class ServiceBetrack extends Service {
     public void onDestroy() { //
         super.onDestroy();
         instance = null;
+        unregisterReceiver(mReceiverScreen);
+        unregisterReceiver(mNetworkChange);
         stopForeground(true);
+        //Check if we get killed
+        SettingsStudy.EndStudyTranferState endStudyTranferState = ObjSettingsStudy.getEndSurveyTransferred();
+        if (endStudyTranferState != SettingsStudy.EndStudyTranferState.DONE) {
+            //We got killed but the study is not finished so we restart the service
+            Intent intent = new Intent();
+            intent.setAction(SettingsBetrack.BROADCAST_START_TRACKING_NAME);
+            intent.putExtra(SettingsBetrack.BROADCAST_ARG_MANUAL_START, "1");
+            sendBroadcast(intent);
+        }
         Log.d(TAG, "onDestroyed");
 
     }
