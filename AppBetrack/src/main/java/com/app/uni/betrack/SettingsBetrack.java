@@ -11,8 +11,6 @@ import java.util.concurrent.Semaphore;
  */
 public class SettingsBetrack {
 
-    static private final String TAG = "ConfigSettingsBetrack";
-
     //Colors should match the colors.xml file !!!
     /*<color name="colorPrimary">#26A69A</color>
     <color name="colorPrimaryDark">#303F9F</color>
@@ -22,21 +20,18 @@ public class SettingsBetrack {
     static final public String colorPrimary = "#1565C0";
     static final public String colorDarkGrey = "#90A4AE";
     static final public String colorLightGrey = "#ECEFF1";
-
+    public static final Semaphore SemSettingsBetrack = new Semaphore(1, true);
+    static final String C_STARTSTUDY_PID = "ParticipantID";
+    static private final String TAG = "ConfigSettingsBetrack";
     //Server access
     static public String BROADCAST_CHECK_INTERNET = "com.app.uni.betrack.CHECK_INTERNET";
     static public String BROADCAST_TRIGGER_NOTIFICATION = "com.app.uni.betrack.TRIGGER_NOTIFICATION";
     static public String BROADCAST_START_TRACKING_NAME = "com.app.uni.betrack.START_TRACKING";
     static public String BROADCAST_ARG_MANUAL_START = "com.app.uni.betrack.BROADCAST_ARG_MANUAL_START";
-
     static public String BROADCAST_CHECK_SCREEN_STATUS = "com.app.uni.betrack.CHECK_SCREEN_STATUS";
-
-    static public String STUDY_WEBSITE = "http://smartphonestudy.chenlab.psych.ubc.ca/Study1/android/";
-
+    static public String STUDY_WEBSITE = "http://smartphonestudy.chenlab.psych.ubc.ca/CA001/android/";
     static public String STUDY_GETSTUDIESAVAILABLE = "BeTrackGetStudiesAvailable.php";
     static public String STUDY_GETAPPTOWATCH = "BeTrackGetAppToWatch.php?table_name=BetrackApp";
-
-
     static public String STUDY_POSTAPPWATCHED = "BeTrackPostAppWatch";
     static public String STUDY_POSTDAILYSTATUS = "BeTrackPostDailyStatus";
     static public String STUDY_POSTSTARTSTUDY = "BeTrackPostStartStudy";
@@ -45,35 +40,21 @@ public class SettingsBetrack {
     static public String STUDY_POSTPHONEUSAGEDATA = "BeTrackPostPhoneUsageData";
     static public String STUDY_POSTNOTIFICATIONTIME = "BeTrackPostNotifTimeData";
     static public String STUDY_POSTBLOBKEY = "BeTrackPostSessionKeys";
-
-    static final String C_STARTSTUDY_PID = "ParticipantID";
-
     static public int SERVER_TIMEOUT = 20000;
     static public int DELTA_BTW_RECHECK_STUDY_STARTED = 10000;
-
     static public int SAMPLING_RATE = 1000; //In ms
     static public int SAMPLING_RATE_SCREEN_OFF = 2 * 60 * 1000;
-
     static public int POSTDATA_SENDING_DELTA = 1000 * 60 * 60 * 2; //In ms (every 2 hours)
-
     static public int TRACKGPS_DELTA = 1000  * 60 * 60 * 1; //In ms (every 1 hour)
-
     static public int UPDATE_STATUS_STUDY_TIME = 60000;
-
     static public int ID_NOTIFICATION_BETRACK = 1335;
     static public int ID_TRACKAPP = 1336;
     static public int ID_NOTIFICATION_SERVICE = 1337;
-
     static public int GPSMAXTIMEOUT = 30000;
     static public int GPSDECTIMEOUT = 5000;
     static public int GPSMINTIMEOUT = 5000;
-
     static public String STUDY_PUBLIC_KEY = "public.pem";
-
     static public boolean STUDY_ENABLE_GPS = false;
-
-    public static final Semaphore SemSettingsBetrack = new Semaphore(1, true);
-
     static public boolean STUDY_JUST_STARTED = false;
 
     private Boolean StudyEnable;
@@ -84,11 +65,6 @@ public class SettingsBetrack {
 
     private SettingsBetrack()
     {}
-
-    private static class ConfigSettingsBetrackHolder
-    {
-        private final static SettingsBetrack instance = new SettingsBetrack();
-    }
 
     public static SettingsBetrack getInstance()
     {
@@ -169,6 +145,11 @@ public class SettingsBetrack {
         } catch (Exception e) {
 
         }
+    }
+
+    private static class ConfigSettingsBetrackHolder
+    {
+        private final static SettingsBetrack instance = new SettingsBetrack();
     }
 
 }
