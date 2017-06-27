@@ -10,6 +10,34 @@ import android.support.v4.app.NotificationCompat;
 
 public class UtilsForegroundEnablingService extends Service {
 
+    private static void startForeground(Service service) {
+        Notification notification;
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            notification = SetNotificationFromO(service);
+        }
+        else */if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            notification = SetNotificationFromJellyBean(service);
+        } else {
+            notification = SetNotificationFromIceCream(service);
+        }
+
+        service.startForeground(SettingsBetrack.ID_NOTIFICATION_SERVICE, notification);
+    }
+
+/*
+    @TargetApi(Build.VERSION_CODES.O)  private static Notification SetNotificationFromO(Service service) {
+        String CHANNEL_ID = "betrack_channel";
+        return new Notification.Builder(service).setChannel(CHANNEL_ID).build();
+    }
+*/
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)  private static Notification SetNotificationFromJellyBean(Service service) {
+        return new NotificationCompat.Builder(service).build();
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)  private static Notification SetNotificationFromIceCream(Service service) {
+        return new NotificationCompat.Builder(service).getNotification();
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (ServiceBetrack.instance == null)
@@ -26,27 +54,6 @@ public class UtilsForegroundEnablingService extends Service {
         stopSelf();
 
         return START_NOT_STICKY;
-    }
-
-
-
-    private static void startForeground(Service service) {
-        Notification notification;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            notification = SetNotificationFromJellyBean(service);
-        } else {
-            notification = SetNotificationFromIceCream(service);
-        }
-
-        service.startForeground(SettingsBetrack.ID_NOTIFICATION_SERVICE, notification);
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)  private static Notification SetNotificationFromJellyBean(Service service) {
-        return new NotificationCompat.Builder(service).build();
-    }
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)  private static Notification SetNotificationFromIceCream(Service service) {
-        return new NotificationCompat.Builder(service).getNotification();
     }
 
     @Override
