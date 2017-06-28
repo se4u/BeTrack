@@ -27,33 +27,23 @@ public class IntentServiceTrackApp extends IntentService {
 
 
     static final String TAG = "IntentServiceTrackApp";
-
+    static final private int NBR_SAMPLE_REACHED = 60;
     public static String ActivityOnGoing = null;
     public static String ActivityStartDate = null;
     public static String ActivityStartTime = null;
     public static String ActivityStopDate = null;
     public static String ActivityStopTime=null;
-
-
-    private SettingsBetrack ObjSettingsBetrack = null;
-    private SettingsStudy ObjSettingsStudy = null;
-
-    private UtilsLocalDataBase localdatabase = null;
-    private UtilsLocalDataBase AccesLocalDB()
-    {
-        return localdatabase;
-    }
-
-    static final private int NBR_SAMPLE_REACHED = 60;
+    static public long baseTime = 0;
     static private long arrayPeriodicity[] = new long[NBR_SAMPLE_REACHED];
     static private int indexPeriodicity = 0;
     static private double averagePeriodicity = 0;
     static private double stdDevPeriodicity = 0;
-    static public long baseTime = 0;
-
-
-
     Handler mHandler;
+    private SettingsBetrack ObjSettingsBetrack = null;
+    private SettingsStudy ObjSettingsStudy = null;
+    private UtilsLocalDataBase localdatabase = null;
+
+
 
     public IntentServiceTrackApp() {
 
@@ -68,6 +58,11 @@ public class IntentServiceTrackApp extends IntentService {
         } else {
             return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, BigDecimal.ROUND_CEILING);
         }
+    }
+
+    private UtilsLocalDataBase AccesLocalDB()
+    {
+        return localdatabase;
     }
 
     protected void onHandleIntent(Intent intent) {
@@ -365,9 +360,15 @@ public class IntentServiceTrackApp extends IntentService {
         String topActivity = null;
         long endTime = System.currentTimeMillis();
         long beginTime = endTime - SettingsBetrack.SAMPLING_RATE * 60;
+        List<UsageStats> stats;
 
         UsageStatsManager mUsageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
-        List<UsageStats> stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, beginTime, endTime);
+        try {
+            stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, beginTime, endTime);
+        } catch (Exception f) {
+            stats = null;
+        }
+
 
         // Sort the stats by the last time used
         if (stats != null) {
