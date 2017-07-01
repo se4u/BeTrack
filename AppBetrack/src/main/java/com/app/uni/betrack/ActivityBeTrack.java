@@ -136,6 +136,7 @@ public class ActivityBeTrack extends AppCompatActivity {
             textWelcome.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
             textWelcome.setText(getResources().getString(R.string.Betrack_start));
             mChart.setVisibility(View.GONE);
+
         }
 
         textWelcome.setTextColor(Color.parseColor(SettingsBetrack.colorPrimary));
@@ -174,17 +175,28 @@ public class ActivityBeTrack extends AppCompatActivity {
     private void prepareChart(boolean endStudy) {
         //Set up the chart
 
-        mChart.setUsePercentValues(true);
+        mChart.setUsePercentValues(false);
         mChart.setDescription("");
 
         Legend legend = mChart.getLegend();
-        legend.setEnabled(false);
+
+        if (endStudy==false) {
+            legend.setEnabled(false);
+        } else {
+            legend.setEnabled(true);
+            legend.setTextSize(12f);
+            legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+            legend.setWordWrapEnabled(true);
+            legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        }
 
         mChart.setDragDecelerationFrictionCoef(0.95f);
 
         if (endStudy==false) {
+            mChart.setDrawEntryLabels(true);
             mChart.setCenterText(generateCenterSpannableText());
         } else {
+            mChart.setDrawEntryLabels(false);
             mChart.setCenterText(generateEmptySpannableText());
         }
 
@@ -255,18 +267,38 @@ public class ActivityBeTrack extends AppCompatActivity {
         int[] UsagePerApp = new int[ObjSettingsStudy.getApplicationsToWatch().size()];
         int Done = 0;
         int NbrDays  = ObjSettingsStudy.getNbrOfNotificationToDo();
-        int sumUsage = 0;
+        float sumUsage = 0;
         float mult = 100;
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-        PieDataSet dataSet = new PieDataSet(entries, "Days study");
+        PieDataSet dataSet = new PieDataSet(entries, " ");
+
 
         if (endStudy == true) {
+//            for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
+//                UsagePerApp[i] = ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getApplicationsToWatch().size());
+//                Log.d(TAG, "ApplicationsToWath: " + i + " Name: " + ObjSettingsStudy.getApplicationsToWatch().get(i) + " Usage: " + UsagePerApp[i]);
+//                sumUsage += UsagePerApp[i];
+//            }
+//
+//            for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
+//                if (UsagePerApp[i] > 0) {
+//                    if (ObjSettingsStudy.getApplicationsToWatch().get(i).equals(FB_MESSENGER)) {
+//                        entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), FB_MESSENGER_COMMON_NAME));
+//                    } else if (ObjSettingsStudy.getApplicationsToWatch().get(i).equals(FB_FACEBOOK)) {
+//                        entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), FB_FACEBOOK_COMMON_NAME));
+//                    } else {
+//                        entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
+//                    }
+//                }
+//            }
+
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
                 UsagePerApp[i] = ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getApplicationsToWatch().size());
                 Log.d(TAG, "ApplicationsToWath: " + i + " Name: " + ObjSettingsStudy.getApplicationsToWatch().get(i) + " Usage: " + UsagePerApp[i]);
                 sumUsage += UsagePerApp[i];
             }
+
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
                 if (UsagePerApp[i] > 0) {
                     if (ObjSettingsStudy.getApplicationsToWatch().get(i).equals(FB_MESSENGER)) {
@@ -278,6 +310,7 @@ public class ActivityBeTrack extends AppCompatActivity {
                     }
                 }
             }
+
         } else {
             for(int i =0;i<ObjSettingsStudy.getStudyDuration();i++) {
                 entries.add(new PieEntry((float) (100 / ObjSettingsStudy.getStudyDuration()), ""));
@@ -313,14 +346,17 @@ public class ActivityBeTrack extends AppCompatActivity {
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
 
+        PieData data = new PieData(dataSet);
+
         if (endStudy == true) {
+
+            data.setValueFormatter(new MyValueFormatter(sumUsage));
+            data.setValueTextSize(11f);
+            data.setValueTextColor(Color.WHITE);
+
             dataSet.setColors(BETRACK_COLORS_END);
         }
 
-        PieData data = new PieData(dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
         mChart.setData(data);
 
         // undo all highlights

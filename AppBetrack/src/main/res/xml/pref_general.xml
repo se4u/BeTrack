@@ -6,5 +6,16 @@
         android:summary="@string/pref_description_enable_study"
         android:title="@string/pref_title_enable_study" />
 
+    <Preference
+        android:key="consent_form"
+        android:selectable="true"
+        android:summary="@string/pref_consent_description"
+        android:title="@string/pref_consent_title"/>
+    <Preference
+        android:key="email_address"
+        android:selectable="false"
+        android:summary="@string/pref_contact_description"
+        android:title="@string/pref_contact_title"/>
+
 
 </PreferenceScreen>
