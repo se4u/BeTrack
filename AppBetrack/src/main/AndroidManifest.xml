@@ -31,6 +31,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".ReceiverStopTracking">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".ReceiverAlarmNotification">
             <intent-filter>
                 <action android:name="com.app.uni.betrack.TRIGGER_NOTIFICATION" />
@@ -73,15 +79,15 @@
         <activity android:name=".ActivityErrors" android:screenOrientation="portrait"/>
         <activity
             android:name=".ActivityDummy"
-            android:theme="@android:style/Theme.NoDisplay"
-            android:enabled="true"
             android:allowTaskReparenting="true"
-            android:noHistory="true"
-            android:excludeFromRecents="true"
             android:alwaysRetainTaskState="false"
-            android:stateNotNeeded="true"
             android:clearTaskOnLaunch="true"
+            android:enabled="true"
+            android:excludeFromRecents="true"
             android:finishOnTaskLaunch="true"
+            android:noHistory="true"
+            android:stateNotNeeded="true"
+            android:theme="@android:style/Theme.NoDisplay"
             />
     </application>
 

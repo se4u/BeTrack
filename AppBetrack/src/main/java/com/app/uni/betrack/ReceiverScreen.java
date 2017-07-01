@@ -20,24 +20,13 @@ import java.util.Date;
  */
 public class ReceiverScreen extends WakefulBroadcastReceiver {
 
-    Handler mHandler;
-    public enum StateScreen {
-        UNKNOWN, OFF, ON
-    }
+    static final String TAG = "ReceiverScreen";
     public static StateScreen ScreenState = StateScreen.UNKNOWN;
-
+    private static UtilsLocalDataBase localdatabase =  null;
+    Handler mHandler;
     private SettingsStudy ObjSettingsStudy;
 
-    private static UtilsLocalDataBase localdatabase =  null;
-
-    private UtilsLocalDataBase AccesLocalDB()
-    {
-        return localdatabase;
-    }
-
-    static final String TAG = "ReceiverScreen";
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)  private static void CheckScreenStatusFromLollipop(Context context) {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)  public static void CheckScreenStatusFromLollipop(Context context) {
         DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
         for (Display display : dm.getDisplays()) {
             if (display.getState() != Display.STATE_OFF) {
@@ -66,6 +55,11 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
             ScreenState = StateScreen.OFF;
 
         }
+    }
+
+    private UtilsLocalDataBase AccesLocalDB()
+    {
+        return localdatabase;
     }
 
     @Override
@@ -118,7 +112,7 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 } catch (Exception f) {
                     Log.d(TAG, "Nothing to update in the database");
                 }
-                
+
                 DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastGPS();
                 if ((DeltaLastTransfer >= SettingsBetrack.TRACKGPS_DELTA) || (DeltaLastTransfer < 0))  {
                     ReceiverGPSChange.StartGPS(context);
@@ -185,13 +179,16 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                         ActivityStopTime = shf.format(new Date());
 
                         try {
+                            Log.d(TAG, "RecScreenSem1 try acquire");
                             SettingsStudy.SemAppWatchMonitor.acquire();
+                            Log.d(TAG, "RecScreenSem1 acquired");
                             if (SettingsStudy.AppWatchId != -1) {
-                                int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime) / 1000);
+                                int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.getAppWatchStartTime()) / 1000);
                                 ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
                                 SettingsStudy.AppWatchId = -1;
                             }
                             SettingsStudy.SemAppWatchMonitor.release();
+                            Log.d(TAG, "RecScreenSem1 try released");
                         } catch (Exception eWatchId) {}
 
                         values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
@@ -224,5 +221,9 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 }
             }
         }
+    }
+
+    public enum StateScreen {
+        UNKNOWN, OFF, ON
     }
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -35,15 +36,22 @@ import static android.view.Gravity.CENTER_VERTICAL;
 
 
 public class ActivityBeTrack extends AppCompatActivity {
+    public static final int[] BETRACK_COLORS_END = {
+            rgb("#1A237E"), rgb("#3949AB"), rgb("#5C6BC0"), rgb("#9FA8DA"),
+            rgb("#E8EAF6"), rgb("#1A237E"), rgb("#3949AB"), rgb("#5C6BC0")
+    };
     static final String TAG = "ActivityBeTrack";
-
+    public static boolean OnForeground = false;
     final String FB_MESSENGER = "orca";
     final String FB_MESSENGER_COMMON_NAME = "messenger";
     final String FB_FACEBOOK = "katana";
     final String FB_FACEBOOK_COMMON_NAME = "facebook";
-
     private Menu SaveMenuRef = null;
-    public static boolean OnForeground = false;
+    private PieChart mChart;
+    private ContentValues values = new ContentValues();
+    private Animation animTranslate;
+    private SettingsStudy ObjSettingsStudy = null;
+    private SettingsBetrack ObjSettingsBetrack = null;
 
     /**
      * Converts the given hex-color-string to rgb.
@@ -58,23 +66,6 @@ public class ActivityBeTrack extends AppCompatActivity {
         int b = (color >> 0) & 0xFF;
         return Color.rgb(r, g, b);
     }
-
-
-    public static final int[] BETRACK_COLORS_END = {
-            rgb("#1A237E"), rgb("#3949AB"), rgb("#5C6BC0"), rgb("#9FA8DA"),
-            rgb("#E8EAF6"), rgb("#1A237E"), rgb("#3949AB"), rgb("#5C6BC0")
-    };
-
-    private PieChart mChart;
-
-    private ContentValues values = new ContentValues();
-
-    private Animation animTranslate;
-
-    private SettingsStudy ObjSettingsStudy = null;
-    private SettingsBetrack ObjSettingsBetrack = null;
-
-
 
     @Override
     public void onStop() {
@@ -347,7 +338,7 @@ public class ActivityBeTrack extends AppCompatActivity {
             intent.setAction(SettingsBetrack.BROADCAST_START_TRACKING_NAME);
             intent.putExtra(SettingsBetrack.BROADCAST_ARG_MANUAL_START, "1");
             sendBroadcast(intent);
-            if (SettingsBetrack.STUDY_JUST_STARTED == false) {
+            if ( (SettingsBetrack.STUDY_JUST_STARTED == false) && (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) ) {
                 //We got killed, it should never happen so we inform the participant
                 textWelcome.setText(getResources().getString(R.string.Betrack_battery_manager));
                 textWelcome.setTextColor(Color.RED);

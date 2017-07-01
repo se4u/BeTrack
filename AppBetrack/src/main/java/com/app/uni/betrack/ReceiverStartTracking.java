@@ -66,8 +66,9 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
                 ObjSettingsBetrack.Update(context);
             }
 
-            context.startService(new Intent(context, ServiceBetrack.class));
-
+            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                context.startService(new Intent(context, ServiceBetrack.class));
+            }
             CreateNotification.CreateAlarm(context,
                     ObjSettingsBetrack.GetStudyNotification(),
                     ObjSettingsBetrack.GetStudyNotificationTime(),

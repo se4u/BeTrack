@@ -18,55 +18,27 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.Semaphore;
 
+import static com.app.uni.betrack.ReceiverScreen.StateScreen.OFF;
+import static com.app.uni.betrack.ReceiverScreen.StateScreen.ON;
+import static com.app.uni.betrack.ReceiverScreen.StateScreen.UNKNOWN;
+
 /**
  * Created by cevincent on 4/24/16.
  */
 public class SettingsStudy {
 
-    static final String TAG = "SettingsStudy";
-
-    private SettingsBetrack ObjSettingsBetrack = null;
-    private UtilsLocalDataBase localdatabase = null;
-    private UtilsLocalDataBase AccesLocalDB()
-    {
-        return localdatabase;
-    }
-
-    public static enum EndStudyTranferState {
-        NOT_YET, IN_PROGRESS, DONE, ERROR
-    }
-
     public static final Semaphore SemSettingsStudy = new Semaphore(1, true);
-
+    public static final Semaphore SemAppWatchMonitor = new Semaphore(1, true);
+    static final String TAG = "SettingsStudy";
+    static private final String STUDY_BETRACK_SCREENSTATE = "BetrackScreenState";
     static private final String STUDY_STARTED = "study_started";
     static private final String START_SURVEY_DONE = "start_survey_done";
     static private final String SETUP_BETRACK_DONE = "setup_betrack_done";
     static private final String END_SURVEY_DONE = "end_survey_done";
     static private final String END_SURVEY_TRANSFERRED = "end_survey_transferred";
-
-    static private Boolean StudyStarted; //A study is started
-    static private Boolean SetupBetrackDone; //The phone has be set up to be used by Betrack
-    static private Boolean StartSurveyDone; //Survey for starting the study has been filled up
-    static private Boolean EndSurveyDone; //Survey for ending the study has been filled up
-    static private EndStudyTranferState EndSurveyTransferred; //Set to true when trhe end survey has been successfully transferred
-
-
+    static private final String ARRAYPERIODICITY = "arrayPeriodicity";
     static private final String APP_NAME_TO_WATCH = "AppNameToWatch";
-    Set<String> ApplicationsToWatchHs;
     static private final String APP_TIME_WATCHED = "AppTimeWatched";
-    static private String ApplicationsTimeWatched;
-
-    public static final Semaphore SemAppWatchMonitor = new Semaphore(1, true);
-    static public long AppWatchStartTime = 0;
-    static public int AppWatchId = -1;
-
-    static private String StudyId;
-    static private String StudyName;
-    static private String StudyDescription;
-    static private String StudyVersionApp;
-    static private int StudyDuration;
-    static private String StudyPublicKey;
-    static private String StudyContactEmail;
     static private final String STUDY_ID = "StudyId";
     static private final String STUDY_NAME = "StudyName";
     static private final String STUDY_DESCRIPTION = "StudyDescription";
@@ -74,54 +46,53 @@ public class SettingsStudy {
     static private final String STUDY_DURATION = "StudyDuration";
     static private final String STUDY_PUBLICKEY = "StudyPublicKey";
     static private final String STUDY_CONTACTEMAIL = "StudyContactEmail";
-
-    static private String IdUser;
     static private final String USER_ID = "UserId";
-    static private String IdUserCypher;
     static private final String USER_ID_CYPHER = "UserIdCypher";
-
-    static private Boolean DailySurveyDone;
-    static private String StartDateSurvey;
-    static private int NbrOfNotificationToDo;
     static private final String STUDY_DAILY_SURVEY_DONE = "DailySurveyDone";
     static private final String STUDY_STARTDATE_SURVEY = "StartDateSurvey";
     static private final String STUDY_NBR_OF_NOTIFICATION_TO_DO = "NumberOfNotificationDone";
-
+    static private final String APP_WATCH_START_TIME = "AppWatchStartTime";
+    static private final String STUDY_TIME_NEXT_NOTIFICATION = "TimeNextNotification";
+    static private final String STUDY_ACCURACY_COMPUTED = "AccuracyComputed";
+    static private final String STUDY_AVERAGE_PERIODICITY = "AveragePeriodicity";
+    static private final String STUDY_STD_DEVIATION = "StandardDeviation";
+    static private final String STUDY_BETRACK_KILLED = "BetrackKilled";
+    static public int AppWatchId = -1;
+    static public UtilsCryptoAES.SecretKeys SessionKey;
+    static SharedPreferences.Editor editor;
+    static private ReceiverScreen.StateScreen ScreenState = ReceiverScreen.StateScreen.UNKNOWN;
+    static private Boolean StudyStarted; //A study is started
+    static private Boolean SetupBetrackDone; //The phone has be set up to be used by Betrack
+    static private Boolean StartSurveyDone; //Survey for starting the study has been filled up
+    static private Boolean EndSurveyDone; //Survey for ending the study has been filled up
+    static private EndStudyTranferState EndSurveyTransferred; //Set to true when trhe end survey has been successfully transferred
+    static private String ApplicationsTimeWatched;
+    static private String StudyId;
+    static private String StudyName;
+    static private String StudyDescription;
+    static private String StudyVersionApp;
+    static private int StudyDuration;
+    static private String StudyPublicKey;
+    static private String StudyContactEmail;
+    static private String IdUser;
+    static private String IdUserCypher;
+    static private Boolean DailySurveyDone;
+    static private String StartDateSurvey;
+    static private int NbrOfNotificationToDo;
     static private long TimeLastTransfer;
     static private long TimeLastGPS;
-
-    static private final String STUDY_TIME_NEXT_NOTIFICATION = "TimeNextNotification";
+    static private long AppWatchStartTime;
     static private long TimeNextNotification;
-
-    static private final String STUDY_ACCURACY_COMPUTED = "AccuracyComputed";
     static private Boolean AccuracyComputed;
-    static private final String STUDY_AVERAGE_PERIODICITY = "AveragePeriodicity";
     static private String AveragePeriodicity;
-    static private final String STUDY_STD_DEVIATION = "StandardDeviation";
     static private String StandardDeviation;
-
     static private Boolean BetrackKilled;
-    static private final String STUDY_BETRACK_KILLED = "BetrackKilled";
-
-    static public UtilsCryptoAES.SecretKeys SessionKey;
-
-    SharedPreferences prefs;
-    SharedPreferences.Editor editor;
     static private Context mContext = null;
-
-    private void EncryptUserID(String IdUser)
-    {
-        //Encrypt the user ID
-        try {
-            byte[] dataBytes = IdUser.toString().getBytes("utf-8");
-            IdUserCypher = UtilsCryptoRSA.encryptWithPublicKey(ObjSettingsBetrack.STUDY_PUBLIC_KEY, dataBytes, mContext);
-            //We save it
-            editor.putString(USER_ID_CYPHER, IdUserCypher);
-            editor.commit();
-        } catch (Exception e) {
-            IdUserCypher = null;
-        }
-    }
+    Set<String> ArrayPeriodicityHs;
+    Set<String> ApplicationsToWatchHs;
+    SharedPreferences prefs;
+    private SettingsBetrack ObjSettingsBetrack = null;
+    private UtilsLocalDataBase localdatabase = null;
     private SettingsStudy()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
@@ -158,6 +129,17 @@ public class SettingsStudy {
             }
         }
 
+        //Read the state of the screen
+         if (prefs.getBoolean(STUDY_BETRACK_SCREENSTATE, false) == false) {
+             ScreenState = OFF;
+         } else
+         {
+             ScreenState = ON;
+         }
+
+         //Read when we started the monitoring of the application
+        AppWatchStartTime = prefs.getLong(APP_WATCH_START_TIME, 0);
+
         //Read status if betrack has been killed
         BetrackKilled = prefs.getBoolean(STUDY_BETRACK_KILLED, false);
 
@@ -165,6 +147,9 @@ public class SettingsStudy {
         AccuracyComputed = prefs.getBoolean(STUDY_ACCURACY_COMPUTED, false);
         AveragePeriodicity = prefs.getString(STUDY_AVERAGE_PERIODICITY, null);
         StandardDeviation = prefs.getString(STUDY_STD_DEVIATION, null);
+
+        //Read array periodicity
+        //ArrayPeriodicityHs = prefs.getStringSet(ARRAYPERIODICITY, new LinkedHashSet<String>());
 
         //Read app to watch
         ApplicationsToWatchHs = prefs.getStringSet(APP_NAME_TO_WATCH, new LinkedHashSet<String>());
@@ -241,15 +226,56 @@ public class SettingsStudy {
         }
     }
 
-    private static class ConfigInfoStudyHolder
-    {
-        private final static SettingsStudy instance = new SettingsStudy();
-    }
-
     public static SettingsStudy getInstance(Context context)
     {
         mContext = context;
         return ConfigInfoStudyHolder.instance;
+    }
+
+    static public long getAppWatchStartTime()
+    {
+        long ReturnAppWatchStartTime = 0;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnAppWatchStartTime = AppWatchStartTime;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnAppWatchStartTime = 0;
+        } finally {
+            return ReturnAppWatchStartTime;
+        }
+    }
+
+    static public void setAppWatchStartTime(long appwatchstarttime)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            AppWatchStartTime = appwatchstarttime;
+            editor.putLong(APP_WATCH_START_TIME, AppWatchStartTime);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    private UtilsLocalDataBase AccesLocalDB()
+    {
+        return localdatabase;
+    }
+
+    private void EncryptUserID(String IdUser)
+    {
+        //Encrypt the user ID
+        try {
+            byte[] dataBytes = IdUser.toString().getBytes("utf-8");
+            IdUserCypher = UtilsCryptoRSA.encryptWithPublicKey(ObjSettingsBetrack.STUDY_PUBLIC_KEY, dataBytes, mContext);
+            //We save it
+            editor.putString(USER_ID_CYPHER, IdUserCypher);
+            editor.commit();
+        } catch (Exception e) {
+            IdUserCypher = null;
+        }
     }
 
     public String getStandardDeviation()
@@ -326,6 +352,42 @@ public class SettingsStudy {
             SemSettingsStudy.acquire();
             AccuracyComputed = status;
             editor.putBoolean(STUDY_ACCURACY_COMPUTED, AccuracyComputed);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    public ReceiverScreen.StateScreen getBetrackScreenState()
+    {
+        ReceiverScreen.StateScreen ReturnBetrackScreenState = UNKNOWN;
+        try {
+            SemSettingsStudy.acquire();
+            if (prefs.getBoolean(STUDY_BETRACK_SCREENSTATE, false) == false) {
+                ReturnBetrackScreenState = OFF;
+            } else
+            {
+                ReturnBetrackScreenState = ON;
+            }
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnBetrackScreenState = UNKNOWN;
+        } finally {
+            return ReturnBetrackScreenState;
+        }
+    }
+
+    public void setBetrackScreenState(ReceiverScreen.StateScreen BetrackScreenState)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            if (BetrackScreenState == OFF) {
+                editor.putBoolean(STUDY_BETRACK_SCREENSTATE, false);
+            } else
+            {
+                editor.putBoolean(STUDY_BETRACK_SCREENSTATE, true);
+            }
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {
@@ -441,7 +503,6 @@ public class SettingsStudy {
         }
     }
 
-
     public long getTimeLastTransfer()
     {
         long ReturnTimeLastTransfer = 0;
@@ -522,19 +583,6 @@ public class SettingsStudy {
         }
     }
 
-    public void setStudyStarted(boolean status)
-    {
-        try {
-            SemSettingsStudy.acquire();
-            StudyStarted = status;
-            editor.putBoolean(STUDY_STARTED, StudyStarted);
-            editor.commit();
-            SemSettingsStudy.release();
-        } catch (Exception e) {
-            Log.d(TAG, "Error during acquiring SemSettingsStudy");
-        }
-    }
-
     public boolean getStudyStarted()
     {
         boolean ReturnStudyStarted = false;
@@ -549,12 +597,12 @@ public class SettingsStudy {
         }
     }
 
-    public void setStartSurveyDone(boolean status)
+    public void setStudyStarted(boolean status)
     {
         try {
             SemSettingsStudy.acquire();
-            StartSurveyDone = status;
-            editor.putBoolean(START_SURVEY_DONE, StartSurveyDone);
+            StudyStarted = status;
+            editor.putBoolean(STUDY_STARTED, StudyStarted);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {
@@ -576,12 +624,12 @@ public class SettingsStudy {
         }
     }
 
-    public void setSetupBetrackDone(boolean status)
+    public void setStartSurveyDone(boolean status)
     {
         try {
             SemSettingsStudy.acquire();
-            SetupBetrackDone = status;
-            editor.putBoolean(SETUP_BETRACK_DONE, SetupBetrackDone);
+            StartSurveyDone = status;
+            editor.putBoolean(START_SURVEY_DONE, StartSurveyDone);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {
@@ -603,12 +651,12 @@ public class SettingsStudy {
         }
     }
 
-    public void setEndSurveyDone(boolean status)
+    public void setSetupBetrackDone(boolean status)
     {
         try {
             SemSettingsStudy.acquire();
-            EndSurveyDone = status;
-            editor.putBoolean(END_SURVEY_DONE, EndSurveyDone);
+            SetupBetrackDone = status;
+            editor.putBoolean(SETUP_BETRACK_DONE, SetupBetrackDone);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {
@@ -630,12 +678,12 @@ public class SettingsStudy {
         }
     }
 
-    public void setEndSurveyTransferred(EndStudyTranferState status)
+    public void setEndSurveyDone(boolean status)
     {
         try {
             SemSettingsStudy.acquire();
-            EndSurveyTransferred = status;
-            editor.putInt(END_SURVEY_TRANSFERRED, EndSurveyTransferred.ordinal());
+            EndSurveyDone = status;
+            editor.putBoolean(END_SURVEY_DONE, EndSurveyDone);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {
@@ -654,6 +702,19 @@ public class SettingsStudy {
             ReturnEndSurveyTransferred = EndStudyTranferState.ERROR;
         } finally {
             return ReturnEndSurveyTransferred;
+        }
+    }
+
+    public void setEndSurveyTransferred(EndStudyTranferState status)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            EndSurveyTransferred = status;
+            editor.putInt(END_SURVEY_TRANSFERRED, EndSurveyTransferred.ordinal());
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
         }
     }
 
@@ -730,13 +791,39 @@ public class SettingsStudy {
         }
     }
 
-    public void setApplicationsToWatch(String appToWatch)
+    public ArrayList<Long>  getArrayPeriodicity()
+    {
+        ArrayList<Long>  ReturnArrayPeriodicity = new ArrayList<>();
+        ArrayPeriodicityHs = prefs.getStringSet(ARRAYPERIODICITY, new LinkedHashSet<String>());
+        Iterator<String> iterator = ArrayPeriodicityHs.iterator();
+        try {
+            SemSettingsStudy.acquire();
+            while(iterator.hasNext()) {
+                ReturnArrayPeriodicity.add(Long.parseLong(iterator.next().trim()));
+            }
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnArrayPeriodicity = null;
+        } finally {
+            return ReturnArrayPeriodicity;
+        }
+    }
+
+    public void setArrayPeriodicity(long Periodicity)
     {
         try {
             SemSettingsStudy.acquire();
-            ApplicationsToWatchHs.add(appToWatch);
-            editor.putStringSet(APP_NAME_TO_WATCH, ApplicationsToWatchHs);
+            ArrayPeriodicityHs = prefs.getStringSet(ARRAYPERIODICITY, new LinkedHashSet<String>());
+            int size = ArrayPeriodicityHs.size() + Long.toString(Periodicity).length();
+
+            //make a copy, update it and save it
+            Set<String> newStrSet = new HashSet<String>();
+            newStrSet.add(String.format("%-"+size+"s", Long.toString(Periodicity)));
+            newStrSet.addAll(ArrayPeriodicityHs);
+            editor.remove(ARRAYPERIODICITY);
+            editor.putStringSet(ARRAYPERIODICITY, newStrSet);
             editor.commit();
+
             SemSettingsStudy.release();
         } catch (Exception e) {
             Log.d(TAG, "Error during acquiring SemSettingsStudy");
@@ -759,6 +846,19 @@ public class SettingsStudy {
             ReturnApplicationsToWatch = null;
         } finally {
             return ReturnApplicationsToWatch;
+        }
+    }
+
+    public void setApplicationsToWatch(String appToWatch)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            ApplicationsToWatchHs.add(appToWatch);
+            editor.putStringSet(APP_NAME_TO_WATCH, ApplicationsToWatchHs);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
         }
     }
 
@@ -976,6 +1076,15 @@ public class SettingsStudy {
         } catch (Exception e) {
             Log.d(TAG, "Error during acquiring SemSettingsStudy");
         }
+    }
+
+    public static enum EndStudyTranferState {
+        NOT_YET, IN_PROGRESS, DONE, ERROR
+    }
+
+    private static class ConfigInfoStudyHolder
+    {
+        private final static SettingsStudy instance = new SettingsStudy();
     }
 
 }

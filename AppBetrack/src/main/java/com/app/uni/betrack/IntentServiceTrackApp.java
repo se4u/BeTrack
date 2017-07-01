@@ -27,15 +27,13 @@ public class IntentServiceTrackApp extends IntentService {
 
 
     static final String TAG = "IntentServiceTrackApp";
-    static final private int NBR_SAMPLE_REACHED = 60;
+    static final private int NBR_SAMPLE_REACHED = 500;
     public static String ActivityOnGoing = null;
     public static String ActivityStartDate = null;
     public static String ActivityStartTime = null;
     public static String ActivityStopDate = null;
     public static String ActivityStopTime=null;
     static public long baseTime = 0;
-    static private long arrayPeriodicity[] = new long[NBR_SAMPLE_REACHED];
-    static private int indexPeriodicity = 0;
     static private double averagePeriodicity = 0;
     static private double stdDevPeriodicity = 0;
     Handler mHandler;
@@ -95,42 +93,43 @@ public class IntentServiceTrackApp extends IntentService {
             if ((!ObjSettingsStudy.getAccuracyComputed())
                     && (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState))
             {
-                Log.d(TAG, "Compute accurancy periodicity basetime: " + baseTime);
+
+                Log.d(TAG, "Compute accuracy periodicity basetime: " + baseTime);
                 if (baseTime == 0) {
                     baseTime = System.currentTimeMillis();
                 }
 
                 if (((System.currentTimeMillis() - baseTime) / 1000) > 0 ) {
-                    arrayPeriodicity[indexPeriodicity] = System.currentTimeMillis() - baseTime;
-                    Log.d(TAG, "arrayperiodicity[" + indexPeriodicity +"] = " + arrayPeriodicity[indexPeriodicity]);
+                    Long periodicity = System.currentTimeMillis() - baseTime;
+                    Log.d(TAG, "arrayperiodicity[" + ObjSettingsStudy.getArrayPeriodicity().size() +"] = " + periodicity);
+                    ObjSettingsStudy.setArrayPeriodicity(periodicity);
                     baseTime = System.currentTimeMillis();
-                    indexPeriodicity++;
                 }
 
-                if (indexPeriodicity == NBR_SAMPLE_REACHED) {
-                    //Compute the average
-                    for (int i = 0; i < NBR_SAMPLE_REACHED; i++)
-                    {
-                        averagePeriodicity += arrayPeriodicity[i];
+                if (ObjSettingsStudy.getArrayPeriodicity() != null) {
+                    if (ObjSettingsStudy.getArrayPeriodicity().size() >= NBR_SAMPLE_REACHED) {
+                        //Compute the average
+                        for (int i = 0; i < NBR_SAMPLE_REACHED; i++) {
+                            averagePeriodicity += ObjSettingsStudy.getArrayPeriodicity().get(i);
+                        }
+
+                        averagePeriodicity /= NBR_SAMPLE_REACHED;
+
+                        //Compute the standard deviation
+                        for (int i = 0; i < NBR_SAMPLE_REACHED; i++) {
+                            stdDevPeriodicity += Math.pow((ObjSettingsStudy.getArrayPeriodicity().get(i) - averagePeriodicity), 2);
+                        }
+                        stdDevPeriodicity /= (NBR_SAMPLE_REACHED - 1);
+                        stdDevPeriodicity = Math.sqrt(stdDevPeriodicity);
+
+                        Log.d(TAG, "averageperiodicity:" + truncateDecimal(averagePeriodicity, 2));
+                        Log.d(TAG, "stdDevperiodicity:" + truncateDecimal(stdDevPeriodicity, 2));
+
+                        ObjSettingsStudy.setAveragePeriodicity(String.valueOf(truncateDecimal(averagePeriodicity, 2)));
+                        ObjSettingsStudy.setStandardDeviation(String.valueOf(truncateDecimal(stdDevPeriodicity, 2)));
+
+                        ObjSettingsStudy.setAccuracyComputed(true);
                     }
-
-                    averagePeriodicity /= NBR_SAMPLE_REACHED;
-
-                    //Compute the standard deviation
-                    for (int i = 0; i < NBR_SAMPLE_REACHED; i++)
-                    {
-                        stdDevPeriodicity += Math.pow((arrayPeriodicity[i] - averagePeriodicity), 2);
-                    }
-                    stdDevPeriodicity /= (NBR_SAMPLE_REACHED - 1);
-                    stdDevPeriodicity = Math.sqrt(stdDevPeriodicity);
-
-                    Log.d(TAG, "averageperiodicity:" + truncateDecimal(averagePeriodicity, 2));
-                    Log.d(TAG, "stdDevperiodicity:" + truncateDecimal(stdDevPeriodicity, 2));
-
-                    ObjSettingsStudy.setAveragePeriodicity(String.valueOf(truncateDecimal(averagePeriodicity, 2)));
-                    ObjSettingsStudy.setStandardDeviation(String.valueOf(truncateDecimal(stdDevPeriodicity, 2)));
-
-                    ObjSettingsStudy.setAccuracyComputed(true);
                 }
             }
 
@@ -150,12 +149,116 @@ public class IntentServiceTrackApp extends IntentService {
                         topActivity = handleCheckActivity(intent);
                     }
 
-                    Log.d(TAG, "Foreground App " + topActivity + " ActivityOnGoing " + ActivityOnGoing);
-                    if (ReceiverScreen.StateScreen.UNKNOWN == ReceiverScreen.ScreenState) {
-                        intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
-                        this.sendBroadcast(intentCheckScreenStatus);
+                    try {
+                        ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
+                    } catch (Exception e) {
+                        try {
+                            ActivityOnGoing = values.get(UtilsLocalDataBase.C_APPWATCH_APPLICATION).toString();
+                        }
+                        catch (Exception f) {
+
+                        }
                     }
 
+                    Log.d(TAG, "Foreground App " + topActivity + " ActivityOnGoing " + ActivityOnGoing);
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        ReceiverScreen.CheckScreenStatusFromLollipop(this);
+
+                        //Save the date
+                        ActivityStartDate = sdf.format(new Date());
+                        //Save the start time
+                        ActivityStartTime = shf.format(new Date());
+
+                        if (ObjSettingsStudy.getBetrackScreenState() != ReceiverScreen.ScreenState) {
+                            ObjSettingsStudy.setBetrackScreenState(ReceiverScreen.ScreenState);
+                            values.clear();
+                            if (ObjSettingsStudy.getBetrackScreenState() == ReceiverScreen.StateScreen.ON ) {
+                                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 1);
+                                Log.d(TAG, "Screen ON saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                                long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
+                                if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {
+                                    if (IntentServicePostData.SemPostData.tryAcquire()) {
+                                        Intent msgIntent = new Intent(this, IntentServicePostData.class);
+                                        //Start the service for sending the data to the remote server
+                                        this.startService(msgIntent);
+                                    }
+                                }
+
+                                values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
+                                values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
+                                try {
+                                    AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
+
+                                } catch (Exception f) {
+                                    Log.d(TAG, "Nothing to update in the database");
+                                }
+                            }
+                            else
+                            {
+                                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 0);
+                                Log.d(TAG, "Screen OFF saved in database " + ActivityStartDate + " " + ActivityStartTime);
+
+                                values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
+                                values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
+                                try {
+                                    AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
+
+                                } catch (Exception f) {
+                                    Log.d(TAG, "Nothing to update in the database");
+                                }
+
+                                values.clear();
+                                values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
+                                try {
+                                    ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
+                                    Log.d(TAG, "End monitoring date: nothing to save");
+                                } catch (Exception e) {
+                                    if (null != values) {
+                                        //Save the stop date
+                                        ActivityStopDate = sdf.format(new Date());
+                                        //Save the stop time
+                                        ActivityStopTime = shf.format(new Date());
+
+                                        try {
+                                            Log.d(TAG, "Sem1 try acquire");
+                                            SettingsStudy.SemAppWatchMonitor.acquire();
+                                            Log.d(TAG, "Sem1 acquired");
+                                            SettingsStudy.AppWatchId = ReturnAppWatchId();
+
+                                            if (SettingsStudy.AppWatchId != -1) {
+                                                int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.getAppWatchStartTime()) / 1000);
+                                                ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                                                SettingsStudy.AppWatchId = -1;
+                                            }
+                                            SettingsStudy.SemAppWatchMonitor.release();
+                                            Log.d(TAG, "Sem1 try released");
+                                        } catch (Exception eWatchId) {
+                                        }
+
+                                        values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                                        values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                                        try {
+                                            this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
+                                        } catch (Exception f) {
+                                            Log.d(TAG, "Nothing to update in the database");
+                                        }
+                                        ActivityOnGoing = null;
+                                        ActivityStartDate = null;
+                                        ActivityStartTime = null;
+                                        ActivityStopDate = null;
+                                        ActivityStopTime = null;
+
+                                        Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        if (ReceiverScreen.StateScreen.UNKNOWN == ReceiverScreen.ScreenState) {
+                            intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
+                            this.sendBroadcast(intentCheckScreenStatus);
+                        }
+                    }
                     //Check the status of the screen
                     //Check if that activity should be monitored
                     for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
@@ -169,7 +272,7 @@ public class IntentServiceTrackApp extends IntentService {
                             if ((null != topActivity) && (!topActivity.equals("android")) && (!topActivity.equals("com.android.systemui")) && (!ActivityOnGoing.equals(topActivity))) {
                                 if (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState) {
 
-                                    //We save in the local database the informations about the study
+                                    //We save in the local database the information about the study
                                     values.clear();
                                     values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
                                     try {
@@ -184,13 +287,19 @@ public class IntentServiceTrackApp extends IntentService {
                                         values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
                                         values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
                                         try {
+                                            Log.d(TAG, "Sem2 try acquire");
                                             SettingsStudy.SemAppWatchMonitor.acquire();
+                                            Log.d(TAG, "Sem2 acquired");
+
+                                            SettingsStudy.AppWatchId = ReturnAppWatchId();
+
                                             if (SettingsStudy.AppWatchId != -1) {
-                                                int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime) / 1000);
+                                                int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.getAppWatchStartTime()) / 1000);
                                                 ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
                                                 SettingsStudy.AppWatchId = -1;
                                             }
                                             SettingsStudy.SemAppWatchMonitor.release();
+                                            Log.d(TAG, "Sem2 try released");
                                         } catch (Exception eWatchId) {}
 
 
@@ -230,13 +339,18 @@ public class IntentServiceTrackApp extends IntentService {
                                     values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
 
                                     try {
+                                        Log.d(TAG, "Sem3 try acquire");
                                         SettingsStudy.SemAppWatchMonitor.acquire();
+                                        Log.d(TAG, "Sem3 acquired");
+                                        SettingsStudy.AppWatchId = ReturnAppWatchId();
+
                                         if (SettingsStudy.AppWatchId != -1) {
-                                            int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime) / 1000);
+                                            int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.getAppWatchStartTime()) / 1000);
                                             ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
                                             SettingsStudy.AppWatchId = -1;
                                         }
                                         SettingsStudy.SemAppWatchMonitor.release();
+                                        Log.d(TAG, "Sem3 try released");
                                     } catch (Exception eWatchId) {}
 
                                     this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
@@ -259,7 +373,7 @@ public class IntentServiceTrackApp extends IntentService {
                         if ((null != topActivity) && (null != ObjSettingsStudy.getApplicationsToWatch().get(i))) {
                             if (topActivity.toLowerCase().contains(ObjSettingsStudy.getApplicationsToWatch().get(i).toLowerCase())) {
 
-                                Log.d(TAG, "Status ActivityOnGoing: " + ActivityOnGoing);
+                                //Log.d(TAG, "Status ActivityOnGoing: " + ActivityOnGoing);
 
                                 //A new activity to be watch
                                 if (null == ActivityOnGoing) {
@@ -281,14 +395,13 @@ public class IntentServiceTrackApp extends IntentService {
 
 
                                                 ActivityOnGoing = topActivity;
+                                                Log.d(TAG, "Sem4 try acquire");
                                                 SettingsStudy.SemAppWatchMonitor.acquire();
-                                                if (SettingsStudy.AppWatchId != -1) {
-                                                    int TimeWatched = (int)((System.currentTimeMillis() - SettingsStudy.AppWatchStartTime)/1000);
-                                                    ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
-                                                }
-                                                SettingsStudy.AppWatchStartTime = System.currentTimeMillis();
+                                                Log.d(TAG, "Sem4 acquired");
+                                                SettingsStudy.setAppWatchStartTime(System.currentTimeMillis());
                                                 SettingsStudy.AppWatchId = i;
                                                 SettingsStudy.SemAppWatchMonitor.release();
+                                                Log.d(TAG, "Sem4 try released");
                                                 //Save the date
                                                 ActivityStartDate = sdf.format(new Date());
                                                 //Save the start time
@@ -353,6 +466,24 @@ public class IntentServiceTrackApp extends IntentService {
         return topActivity;
 
     }
+
+    private int ReturnAppWatchId()
+    {
+        int i=-1;
+        for(i = 0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
+            if ( (ActivityOnGoing != null) && (ObjSettingsStudy.getApplicationsToWatch().get(i) != null)) {
+                if (ActivityOnGoing.toLowerCase().contains(ObjSettingsStudy.getApplicationsToWatch().get(i).toLowerCase())) {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        return i;
+    }
+
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP) private String handleCheckActivity_FromLollipop(Intent intent)
     {

@@ -53,7 +53,7 @@ public class UtilsForegroundEnablingService extends Service {
         //Stop this service so we don't waste RAM
         stopSelf();
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
