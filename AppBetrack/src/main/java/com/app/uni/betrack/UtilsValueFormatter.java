@@ -6,6 +6,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -13,32 +14,41 @@ import java.util.ArrayList;
  * Created by Lo on 2017-05-26.
  */
 
-public class MyValueFormatter implements IValueFormatter, IAxisValueFormatter {
+public class UtilsValueFormatter implements IValueFormatter, IAxisValueFormatter {
     private DecimalFormat percentageFormat;
-    private DecimalFormat valueFormat;
+    private DecimalFormat minFormat;
+    private DecimalFormat hourFormat;
     private float sum;
 
 
-    public MyValueFormatter(float sumTime) {
+    public UtilsValueFormatter(float sumTime) {
         percentageFormat = new DecimalFormat("###,###,##0.0");
-        valueFormat = new DecimalFormat("###,###,###0.00");
+        minFormat = new DecimalFormat("###,###,###0");
+        minFormat.setRoundingMode(RoundingMode.UP);
+        hourFormat = new DecimalFormat("###,###,##0.0");
         sum = sumTime;
     }
 
 
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-        // write your logic here
-        float mins = ((value/100) * sum) / 60;
-
-        return percentageFormat.format(value) + " % ( " + valueFormat.format(mins) + " mins) ";
+        return FormatValues(value);
     }
 
-    // IAxisValueFormatter
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
+        return FormatValues(value);
+    }
+
+    public String FormatValues(float value)
+    {
         float mins = ((value/100) * sum) / 60;
-        return percentageFormat.format(value) + " % ( " + valueFormat.format(mins) + " mins) ";
+
+        if (mins < 60) {
+            return percentageFormat.format(value) + " %(" + minFormat.format(mins) + " min) ";
+        } else {
+            return percentageFormat.format(value) + " %(" + hourFormat.format(mins/60) + " h) ";
+        }
     }
 
     @Override

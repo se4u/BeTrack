@@ -173,6 +173,20 @@ public class IntentServiceTrackApp extends IntentService {
                             ObjSettingsStudy.setBetrackScreenState(ReceiverScreen.ScreenState);
                             values.clear();
                             if (ObjSettingsStudy.getBetrackScreenState() == ReceiverScreen.StateScreen.ON ) {
+
+                                try {
+                                    SettingsStudy.SemScreenOn.acquire();
+                                    if (SettingsStudy.getStartScreenOn() == 0) {
+                                        SettingsStudy.setStartScreenOn(System.currentTimeMillis());
+                                        Log.d(TAG, "Screen ON saved " + System.currentTimeMillis());
+                                    }
+
+                                } catch (Exception eScreenOn) {
+                                }
+                                finally {
+                                    SettingsStudy.SemScreenOn.release();
+                                }
+
                                 values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 1);
                                 Log.d(TAG, "Screen ON saved in database " + ActivityStartDate + " " + ActivityStartTime);
                                 long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
@@ -195,11 +209,30 @@ public class IntentServiceTrackApp extends IntentService {
                             }
                             else
                             {
+                                baseTime = 0;
                                 values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 0);
                                 Log.d(TAG, "Screen OFF saved in database " + ActivityStartDate + " " + ActivityStartTime);
 
                                 values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
                                 values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
+
+
+                                try {
+                                    SettingsStudy.SemScreenOn.acquire();
+                                    long ScreenOn = SettingsStudy.getDurationScreenOn();
+                                    Log.d(TAG, "Duration Screen On:" + ScreenOn);
+                                    Log.d(TAG, "Duration last screen On:" + System.currentTimeMillis() + "-" +      SettingsStudy.getStartScreenOn() + "/1000= " + (System.currentTimeMillis() - SettingsStudy.getStartScreenOn())/1000);
+                                    ScreenOn += (System.currentTimeMillis() - SettingsStudy.getStartScreenOn())/1000;
+                                    Log.d(TAG, "New duration screen on:" + ScreenOn);
+                                    SettingsStudy.setDurationScreenOn(ScreenOn);
+                                    SettingsStudy.setStartScreenOn(0);
+                                } catch (Exception eScreenOn) {
+                                }
+                                finally {
+                                    SettingsStudy.SemScreenOn.release();
+                                }
+
+
                                 try {
                                     AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
 
@@ -223,16 +256,19 @@ public class IntentServiceTrackApp extends IntentService {
                                             Log.d(TAG, "Sem1 try acquire");
                                             SettingsStudy.SemAppWatchMonitor.acquire();
                                             Log.d(TAG, "Sem1 acquired");
-                                            SettingsStudy.AppWatchId = ReturnAppWatchId();
 
-                                            if (SettingsStudy.AppWatchId != -1) {
+                                            if (SettingsStudy.getAppWatchId() != -1) {
                                                 int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.getAppWatchStartTime()) / 1000);
-                                                ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
-                                                SettingsStudy.AppWatchId = -1;
+                                                Log.d(TAG, "TimeWatched: " + TimeWatched + " AppWatchId: " + ObjSettingsStudy.getApplicationsToWatch().get(SettingsStudy.getAppWatchId()));
+                                                ObjSettingsStudy.setAppTimeWatched(SettingsStudy.getAppWatchId(), ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                                                SettingsStudy.setAppWatchId(-1);
                                             }
+
+                                        } catch (Exception eWatchId) {
+                                        }
+                                        finally {
                                             SettingsStudy.SemAppWatchMonitor.release();
                                             Log.d(TAG, "Sem1 try released");
-                                        } catch (Exception eWatchId) {
                                         }
 
                                         values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
@@ -291,16 +327,18 @@ public class IntentServiceTrackApp extends IntentService {
                                             SettingsStudy.SemAppWatchMonitor.acquire();
                                             Log.d(TAG, "Sem2 acquired");
 
-                                            SettingsStudy.AppWatchId = ReturnAppWatchId();
-
-                                            if (SettingsStudy.AppWatchId != -1) {
+                                            if (SettingsStudy.getAppWatchId() != -1) {
                                                 int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.getAppWatchStartTime()) / 1000);
-                                                ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
-                                                SettingsStudy.AppWatchId = -1;
+                                                Log.d(TAG, "TimeWatched: " + TimeWatched + " AppWatchId: " + ObjSettingsStudy.getApplicationsToWatch().get(SettingsStudy.getAppWatchId()));
+                                                ObjSettingsStudy.setAppTimeWatched(SettingsStudy.getAppWatchId(), ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                                                SettingsStudy.setAppWatchId(-1);
                                             }
+
+                                        } catch (Exception eWatchId) {}
+                                        finally {
                                             SettingsStudy.SemAppWatchMonitor.release();
                                             Log.d(TAG, "Sem2 try released");
-                                        } catch (Exception eWatchId) {}
+                                        }
 
 
                                         this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
@@ -342,16 +380,19 @@ public class IntentServiceTrackApp extends IntentService {
                                         Log.d(TAG, "Sem3 try acquire");
                                         SettingsStudy.SemAppWatchMonitor.acquire();
                                         Log.d(TAG, "Sem3 acquired");
-                                        SettingsStudy.AppWatchId = ReturnAppWatchId();
 
-                                        if (SettingsStudy.AppWatchId != -1) {
+                                        if (SettingsStudy.getAppWatchId() != -1) {
                                             int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.getAppWatchStartTime()) / 1000);
-                                            ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
-                                            SettingsStudy.AppWatchId = -1;
+                                            Log.d(TAG, "TimeWatched: " + TimeWatched + " AppWatchId: " + ObjSettingsStudy.getApplicationsToWatch().get(SettingsStudy.getAppWatchId()));
+                                            ObjSettingsStudy.setAppTimeWatched(SettingsStudy.getAppWatchId(), ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                                            SettingsStudy.setAppWatchId(-1);
                                         }
+
+                                    } catch (Exception eWatchId) {}
+                                    finally {
                                         SettingsStudy.SemAppWatchMonitor.release();
                                         Log.d(TAG, "Sem3 try released");
-                                    } catch (Exception eWatchId) {}
+                                    }
 
                                     this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
                                     mHandler.post(new UtilsDisplayToast(this, "Betrack: Stop 2 monitoring date: " + ActivityStopDate + " time: " + ActivityStopTime));
@@ -399,7 +440,7 @@ public class IntentServiceTrackApp extends IntentService {
                                                 SettingsStudy.SemAppWatchMonitor.acquire();
                                                 Log.d(TAG, "Sem4 acquired");
                                                 SettingsStudy.setAppWatchStartTime(System.currentTimeMillis());
-                                                SettingsStudy.AppWatchId = i;
+                                                SettingsStudy.setAppWatchId(i);
                                                 SettingsStudy.SemAppWatchMonitor.release();
                                                 Log.d(TAG, "Sem4 try released");
                                                 //Save the date
@@ -466,24 +507,6 @@ public class IntentServiceTrackApp extends IntentService {
         return topActivity;
 
     }
-
-    private int ReturnAppWatchId()
-    {
-        int i=-1;
-        for(i = 0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
-            if ( (ActivityOnGoing != null) && (ObjSettingsStudy.getApplicationsToWatch().get(i) != null)) {
-                if (ActivityOnGoing.toLowerCase().contains(ObjSettingsStudy.getApplicationsToWatch().get(i).toLowerCase())) {
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-
-        return i;
-    }
-
-
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP) private String handleCheckActivity_FromLollipop(Intent intent)
     {

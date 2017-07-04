@@ -87,14 +87,16 @@ public class ReceiverStopTracking  extends WakefulBroadcastReceiver {
                     Log.d(TAG, "RecStopSem1 acquired");
                     //SettingsStudy.AppWatchId = ReturnAppWatchId();
 
-                    if (SettingsStudy.AppWatchId != -1) {
+                    if (SettingsStudy.getAppWatchId() != -1) {
                         int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.getAppWatchStartTime()) / 1000);
-                        ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
-                        SettingsStudy.AppWatchId = -1;
+                        ObjSettingsStudy.setAppTimeWatched(SettingsStudy.getAppWatchId(), ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                        SettingsStudy.setAppWatchId(-1);
                     }
+                } catch (Exception eWatchId) {
+                }
+                finally {
                     SettingsStudy.SemAppWatchMonitor.release();
                     Log.d(TAG, "RecStopSem1 try released");
-                } catch (Exception eWatchId) {
                 }
 
                 values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
@@ -114,5 +116,7 @@ public class ReceiverStopTracking  extends WakefulBroadcastReceiver {
             }
         }
         SettingsStudy.setAppWatchStartTime(0);
+        SettingsStudy.setAppWatchId(-1);
+        SettingsStudy.setStartScreenOn(0);
     }
 }

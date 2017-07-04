@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <com.app.uni.betrack.UtilsHandWritingTextView
+        android:id="@+id/survey_title"
         android:layout_width="fill_parent"
         android:layout_height="90dp"
-        android:id="@+id/survey_title"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
+        android:layout_margin="0dp"
+        android:background="@color/colorLightGrey"
         android:gravity="center|top"
         android:paddingTop="30dp"
-        android:background="@color/colorLightGrey"
-        android:layout_margin="0dp"
-        android:text="Title test"/>
+        android:text="Title test"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <TextView
-        android:layout_width="fill_parent"
         android:id="@+id/survey_desc"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20sp"
+        android:gravity="center"
         android:paddingLeft="10sp"
         android:paddingRight="10sp"
-        android:textSize="@dimen/test_description_font_size"
+        android:paddingTop="20sp"
+        android:text="Description test"
         android:textColor="@color/colorGrey"
-        android:gravity="center"
-        android:text="Description test"/>
+        android:textSize="@dimen/test_description_font_size"/>
 
     <View
         android:layout_width="wrap_content"
@@ -35,177 +36,178 @@
         android:layout_weight="1"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
         android:id="@+id/SeekBar1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
 
-            <TextView android:layout_width="fill_parent"
-                android:layout_weight="2"
-                android:id="@+id/TextInfoLeft1"
+            <TextView android:id="@+id/TextInfoLeft1"
+                android:layout_width="fill_parent"
                 android:layout_height="60dp"
-                android:textSize="@dimen/survey_6choices_textsize"
+                android:layout_weight="2"
+                android:gravity="center"
                 android:textColor="@color/colorGrey"
-                android:gravity="center"/>
+                android:textSize="@dimen/survey_6choices_textsize"/>
 
 
             <SeekBar
-                android:layout_weight="1"
                 android:id="@+id/volume_bar1"
-                android:layout_width="fill_parent"
-                android:splitTrack="false"
-                android:layout_height="60dp"
-                android:paddingTop="27dp"
-                android:paddingBottom="27dp"
                 style="@style/CustomSeekBar"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:max="100"
+                android:paddingBottom="26dp"
+                android:paddingTop="26dp"
                 android:progress="0"
-                android:secondaryProgress="0" />
+                android:secondaryProgress="0"
+                android:splitTrack="false"
+                tools:targetApi="kitkat" />
 
 
             <TextView
-                android:layout_weight="2"
-                android:layout_width="fill_parent"
                 android:id="@+id/TextInfoRight1"
+                android:layout_width="fill_parent"
                 android:layout_height="60dp"
-                android:textSize="@dimen/survey_6choices_textsize"
-                android:textColor="@color/colorGrey"
+                android:layout_weight="2"
                 android:gravity="center"
-                android:text="Good"/>
+                android:text="Good"
+                android:textColor="@color/colorGrey"
+                android:textSize="@dimen/survey_6choices_textsize"/>
 
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
         android:id="@+id/SeekBar2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
 
-        <TextView android:layout_width="fill_parent"
-            android:layout_weight="2"
-            android:id="@+id/TextInfoLeft2"
+        <TextView android:id="@+id/TextInfoLeft2"
+            android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:textSize="@dimen/survey_6choices_textsize"
+            android:layout_weight="2"
+            android:gravity="center"
             android:textColor="@color/colorGrey"
-            android:gravity="center"/>
+            android:textSize="@dimen/survey_6choices_textsize"/>
 
 
         <SeekBar
-            android:layout_weight="1"
             android:id="@+id/volume_bar2"
-            android:layout_width="fill_parent"
-            android:splitTrack="false"
-            android:layout_height="60dp"
-            android:paddingTop="27dp"
-            android:paddingBottom="27dp"
             style="@style/CustomSeekBar"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:max="100"
+            android:paddingBottom="26dp"
+            android:paddingTop="26dp"
             android:progress="0"
-            android:secondaryProgress="0" />
+            android:secondaryProgress="0"
+            android:splitTrack="false" />
 
 
         <TextView
-            android:layout_weight="2"
-            android:layout_width="fill_parent"
             android:id="@+id/TextInfoRight2"
+            android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:textSize="@dimen/survey_6choices_textsize"
-            android:textColor="@color/colorGrey"
+            android:layout_weight="2"
             android:gravity="center"
-            android:text="Good"/>
+            android:text="Good"
+            android:textColor="@color/colorGrey"
+            android:textSize="@dimen/survey_6choices_textsize"/>
 
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
         android:id="@+id/SeekBar3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
 
-        <TextView android:layout_width="fill_parent"
-            android:layout_weight="2"
-            android:id="@+id/TextInfoLeft3"
+        <TextView android:id="@+id/TextInfoLeft3"
+            android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:textSize="@dimen/survey_6choices_textsize"
+            android:layout_weight="2"
+            android:gravity="center"
             android:textColor="@color/colorGrey"
-            android:gravity="center"/>
+            android:textSize="@dimen/survey_6choices_textsize"/>
 
 
         <SeekBar
-            android:layout_weight="1"
             android:id="@+id/volume_bar3"
-            android:layout_width="fill_parent"
-            android:splitTrack="false"
-            android:layout_height="60dp"
-            android:paddingTop="27dp"
-            android:paddingBottom="27dp"
             style="@style/CustomSeekBar"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:max="100"
+            android:paddingBottom="26dp"
+            android:paddingTop="26dp"
             android:progress="0"
-            android:secondaryProgress="0" />
+            android:secondaryProgress="0"
+            android:splitTrack="false" />
 
 
         <TextView
-            android:layout_weight="2"
-            android:layout_width="fill_parent"
             android:id="@+id/TextInfoRight3"
+            android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:textSize="@dimen/survey_6choices_textsize"
-            android:textColor="@color/colorGrey"
+            android:layout_weight="2"
             android:gravity="center"
-            android:text="Good"/>
+            android:text="Good"
+            android:textColor="@color/colorGrey"
+            android:textSize="@dimen/survey_6choices_textsize"/>
 
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
         android:id="@+id/SeekBar4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
 
-        <TextView android:layout_width="fill_parent"
-            android:layout_weight="2"
-            android:id="@+id/TextInfoLeft4"
+        <TextView android:id="@+id/TextInfoLeft4"
+            android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:textSize="@dimen/survey_6choices_textsize"
+            android:layout_weight="2"
+            android:gravity="center"
             android:textColor="@color/colorGrey"
-            android:gravity="center" />
+            android:textSize="@dimen/survey_6choices_textsize" />
 
 
         <SeekBar
-            android:layout_weight="1"
             android:id="@+id/volume_bar4"
-            android:layout_width="fill_parent"
-            android:splitTrack="false"
-            android:layout_height="60dp"
-            android:paddingTop="27dp"
-            android:paddingBottom="27dp"
             style="@style/CustomSeekBar"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:max="100"
+            android:paddingBottom="26dp"
+            android:paddingTop="26dp"
             android:progress="0"
-            android:secondaryProgress="0" />
+            android:secondaryProgress="0"
+            android:splitTrack="false" />
 
 
         <TextView
-            android:layout_weight="2"
-            android:layout_width="fill_parent"
             android:id="@+id/TextInfoRight4"
+            android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:textSize="@dimen/survey_6choices_textsize"
-            android:textColor="@color/colorGrey"
+            android:layout_weight="2"
             android:gravity="center"
-            android:text="Relaxed"/>
+            android:text="Relaxed"
+            android:textColor="@color/colorGrey"
+            android:textSize="@dimen/survey_6choices_textsize"/>
 
     </LinearLayout>
 

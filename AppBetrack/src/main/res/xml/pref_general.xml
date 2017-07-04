@@ -1,11 +1,5 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="@string/pref_key_study_enable"
-        android:summary="@string/pref_description_enable_study"
-        android:title="@string/pref_title_enable_study" />
-
     <Preference
         android:key="consent_form"
         android:selectable="true"

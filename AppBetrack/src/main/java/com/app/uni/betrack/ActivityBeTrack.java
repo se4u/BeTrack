@@ -5,10 +5,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -19,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -28,17 +25,14 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
-
-import static android.view.Gravity.CENTER_VERTICAL;
 
 
 public class ActivityBeTrack extends AppCompatActivity {
     public static final int[] BETRACK_COLORS_END = {
-            rgb("#1A237E"), rgb("#3949AB"), rgb("#5C6BC0"), rgb("#9FA8DA"),
-            rgb("#E8EAF6"), rgb("#1A237E"), rgb("#3949AB"), rgb("#5C6BC0")
+            rgb("#1A237E"), rgb("#1976D2"), rgb("#009688"), rgb("#43A047"),
+            rgb("#EF6C00"), rgb("#EF5350"), rgb("#C62828"), rgb("#C2185B"),
     };
     static final String TAG = "ActivityBeTrack";
     public static boolean OnForeground = false;
@@ -266,8 +260,10 @@ public class ActivityBeTrack extends AppCompatActivity {
     private void setData(boolean endStudy) {
         int[] UsagePerApp = new int[ObjSettingsStudy.getApplicationsToWatch().size()];
         int Done = 0;
-        int NbrDays  = ObjSettingsStudy.getNbrOfNotificationToDo();
+        int NbrNotifications  = ObjSettingsStudy.getNbrOfNotificationToDo();
+        int NbrDays  = ObjSettingsStudy.getStudyDuration();
         float sumUsage = 0;
+        float sumOthersAppUsage=0;
         float mult = 100;
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
@@ -275,29 +271,15 @@ public class ActivityBeTrack extends AppCompatActivity {
 
 
         if (endStudy == true) {
-//            for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
-//                UsagePerApp[i] = ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getApplicationsToWatch().size());
-//                Log.d(TAG, "ApplicationsToWath: " + i + " Name: " + ObjSettingsStudy.getApplicationsToWatch().get(i) + " Usage: " + UsagePerApp[i]);
-//                sumUsage += UsagePerApp[i];
-//            }
-//
-//            for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
-//                if (UsagePerApp[i] > 0) {
-//                    if (ObjSettingsStudy.getApplicationsToWatch().get(i).equals(FB_MESSENGER)) {
-//                        entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), FB_MESSENGER_COMMON_NAME));
-//                    } else if (ObjSettingsStudy.getApplicationsToWatch().get(i).equals(FB_FACEBOOK)) {
-//                        entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), FB_FACEBOOK_COMMON_NAME));
-//                    } else {
-//                        entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
-//                    }
-//                }
-//            }
 
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
-                UsagePerApp[i] = ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getApplicationsToWatch().size());
-                Log.d(TAG, "ApplicationsToWath: " + i + " Name: " + ObjSettingsStudy.getApplicationsToWatch().get(i) + " Usage: " + UsagePerApp[i]);
+                UsagePerApp[i] = ObjSettingsStudy.getAppTimeWatched(i, ObjSettingsStudy.getApplicationsToWatch().size()) / NbrDays;
+                Log.d(TAG, "ApplicationsToWatch: " + i + " Name: " + ObjSettingsStudy.getApplicationsToWatch().get(i) + " Usage: " + UsagePerApp[i]);
                 sumUsage += UsagePerApp[i];
             }
+
+            sumOthersAppUsage = (SettingsStudy.getDurationScreenOn() / NbrDays) - sumUsage;
+            sumUsage = (SettingsStudy.getDurationScreenOn() / NbrDays);
 
             for(int i =0;i<ObjSettingsStudy.getApplicationsToWatch().size();i++) {
                 if (UsagePerApp[i] > 0) {
@@ -311,6 +293,8 @@ public class ActivityBeTrack extends AppCompatActivity {
                 }
             }
 
+            entries.add(new PieEntry((float) ((sumOthersAppUsage * mult) / sumUsage), getResources().getString(R.string.Betrack_screen_on)));
+
         } else {
             for(int i =0;i<ObjSettingsStudy.getStudyDuration();i++) {
                 entries.add(new PieEntry((float) (100 / ObjSettingsStudy.getStudyDuration()), ""));
@@ -321,7 +305,7 @@ public class ActivityBeTrack extends AppCompatActivity {
             int[] graph_colors = new int[ObjSettingsStudy.getStudyDuration()];
 
             for(int i =0;i<ObjSettingsStudy.getStudyDuration();i++) {
-                if (i < NbrDays) {
+                if (i < NbrNotifications) {
                     graph_colors[i] = done;
                 } else {
                     graph_colors[i] = todo;
@@ -329,17 +313,6 @@ public class ActivityBeTrack extends AppCompatActivity {
             }
 
             dataSet.setColors(graph_colors);
-
-            /*if (ObjSettingsStudy.getStudyDuration() > NbrDays) {
-                Done = ((ObjSettingsStudy.getStudyDuration() - NbrDays) * 100) / ObjSettingsStudy.getStudyDuration();
-            } else {
-                Done = 0;
-            }
-
-            int ToBeDone = (NbrDays * 100) / ObjSettingsStudy.getStudyDuration();
-
-            entries.add(new PieEntry((float) (ToBeDone), ""));
-            entries.add(new PieEntry((float) (Done), ""));*/
         }
 
 
@@ -350,7 +323,7 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         if (endStudy == true) {
 
-            data.setValueFormatter(new MyValueFormatter(sumUsage));
+            data.setValueFormatter(new UtilsValueFormatter(sumUsage));
             data.setValueTextSize(11f);
             data.setValueTextColor(Color.WHITE);
 

@@ -29,6 +29,8 @@ public class SettingsStudy {
 
     public static final Semaphore SemSettingsStudy = new Semaphore(1, true);
     public static final Semaphore SemAppWatchMonitor = new Semaphore(1, true);
+    public static final Semaphore SemScreenOn = new Semaphore(1, true);
+
     static final String TAG = "SettingsStudy";
     static private final String STUDY_BETRACK_SCREENSTATE = "BetrackScreenState";
     static private final String STUDY_STARTED = "study_started";
@@ -52,14 +54,17 @@ public class SettingsStudy {
     static private final String STUDY_STARTDATE_SURVEY = "StartDateSurvey";
     static private final String STUDY_NBR_OF_NOTIFICATION_TO_DO = "NumberOfNotificationDone";
     static private final String APP_WATCH_START_TIME = "AppWatchStartTime";
+    static private final String APP_WATCH_ID = "AppWatchId";
     static private final String STUDY_TIME_NEXT_NOTIFICATION = "TimeNextNotification";
     static private final String STUDY_ACCURACY_COMPUTED = "AccuracyComputed";
     static private final String STUDY_AVERAGE_PERIODICITY = "AveragePeriodicity";
     static private final String STUDY_STD_DEVIATION = "StandardDeviation";
     static private final String STUDY_BETRACK_KILLED = "BetrackKilled";
-    static public int AppWatchId = -1;
+    static private final String DURATION_SCREEN_ON = "DurationScreenOn";
+    static private final String START_SCREEN_ON = "StartScreenOn";
     static public UtilsCryptoAES.SecretKeys SessionKey;
     static SharedPreferences.Editor editor;
+    static private int AppWatchId = -1;
     static private ReceiverScreen.StateScreen ScreenState = ReceiverScreen.StateScreen.UNKNOWN;
     static private Boolean StudyStarted; //A study is started
     static private Boolean SetupBetrackDone; //The phone has be set up to be used by Betrack
@@ -87,6 +92,8 @@ public class SettingsStudy {
     static private String AveragePeriodicity;
     static private String StandardDeviation;
     static private Boolean BetrackKilled;
+    static private long DurationScreenOn;
+    static private long StartScreenOn;
     static private Context mContext = null;
     Set<String> ArrayPeriodicityHs;
     Set<String> ApplicationsToWatchHs;
@@ -137,6 +144,11 @@ public class SettingsStudy {
              ScreenState = ON;
          }
 
+        DurationScreenOn = prefs.getLong(DURATION_SCREEN_ON, 0);
+        StartScreenOn = prefs.getLong(START_SCREEN_ON, 0);
+
+
+        AppWatchId = prefs.getInt(APP_WATCH_ID, -1);
          //Read when we started the monitoring of the application
         AppWatchStartTime = prefs.getLong(APP_WATCH_START_TIME, 0);
 
@@ -231,6 +243,88 @@ public class SettingsStudy {
         mContext = context;
         return ConfigInfoStudyHolder.instance;
     }
+
+    static public int getAppWatchId()
+    {
+        int ReturnAppWatchId = -1;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnAppWatchId = AppWatchId;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnAppWatchId = -1;
+        } finally {
+            return ReturnAppWatchId;
+        }
+    }
+
+    static public void setAppWatchId(int appwatchid)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            AppWatchId = appwatchid;
+            editor.putInt(APP_WATCH_ID, AppWatchId);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    static public long getStartScreenOn()
+    {
+        long ReturnStartScreenOn = 0;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnStartScreenOn = StartScreenOn;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnStartScreenOn = 0;
+        } finally {
+            return ReturnStartScreenOn;
+        }
+    }
+
+    static public void setStartScreenOn(long startscreenon)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            StartScreenOn = startscreenon;
+            editor.putLong(START_SCREEN_ON, StartScreenOn);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    static public long getDurationScreenOn()
+    {
+        long ReturnDurationScreenOn = 0;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnDurationScreenOn = DurationScreenOn;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnDurationScreenOn = 0;
+        } finally {
+            return ReturnDurationScreenOn;
+        }
+    }
+
+    static public void setDurationScreenOn(long durationscreenon)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            DurationScreenOn = durationscreenon;
+            editor.putLong(DURATION_SCREEN_ON, DurationScreenOn);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
 
     static public long getAppWatchStartTime()
     {

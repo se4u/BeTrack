@@ -30,13 +30,13 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
         DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
         for (Display display : dm.getDisplays()) {
             if (display.getState() != Display.STATE_OFF) {
-                Log.d(TAG, "MANUAL CHECK SCREEN IS ON");
+                //Log.d(TAG, "MANUAL CHECK SCREEN IS ON");
                 ScreenState = StateScreen.ON;
                 break;
             }
             else
             {
-                Log.d(TAG, "MANUAL CHECK SCREEN IS OFF");
+                //Log.d(TAG, "MANUAL CHECK SCREEN IS OFF");
                 ScreenState = StateScreen.OFF;
                 break;
             }
@@ -46,12 +46,12 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)  private static void CheckScreenStatusFromIceCream(Context context) {
         PowerManager powerManager = (PowerManager) context.getSystemService(context.POWER_SERVICE);
         if  (powerManager.isScreenOn()) {
-            Log.d(TAG, "MANUAL CHECK SCREEN IS ON");
+            //Log.d(TAG, "MANUAL CHECK SCREEN IS ON");
             ScreenState = StateScreen.ON;
         }
         else
         {
-            Log.d(TAG, "MANUAL CHECK SCREEN IS OFF");
+            //Log.d(TAG, "MANUAL CHECK SCREEN IS OFF");
             ScreenState = StateScreen.OFF;
 
         }
@@ -95,6 +95,20 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
             if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
                 long DeltaLastTransfer;
                 Log.d(TAG, "ACTION_SCREEN_ON");
+
+                try {
+                    SettingsStudy.SemScreenOn.acquire();
+                    if (SettingsStudy.getStartScreenOn() == 0) {
+                        SettingsStudy.setStartScreenOn(System.currentTimeMillis());
+                        Log.d(TAG, "Screen ON saved " + System.currentTimeMillis());
+                    }
+
+                } catch (Exception eScreenOn) {
+                }
+                finally {
+                    SettingsStudy.SemScreenOn.release();
+                }
+
                 ScreenState = StateScreen.ON;
                 //Screen is on and not locked we save this status in the databse
                 //Save when the screen was switched off
@@ -121,6 +135,20 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
 
             if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
                 Log.d(TAG, "ACTION_USER_PRESENT");
+
+                try {
+                    SettingsStudy.SemScreenOn.acquire();
+                    if (SettingsStudy.getStartScreenOn() == 0) {
+                        SettingsStudy.setStartScreenOn(System.currentTimeMillis());
+                        Log.d(TAG, "Screen ON saved " + System.currentTimeMillis());
+                    }
+
+                } catch (Exception eScreenOn) {
+                }
+                finally {
+                    SettingsStudy.SemScreenOn.release();
+                }
+
                 ScreenState = StateScreen.ON;
 
             }
@@ -165,6 +193,25 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                     Log.d(TAG, "Nothing to update in the database");
                 }
 
+
+                try {
+                    SettingsStudy.SemScreenOn.acquire();
+                    long ScreenOn = SettingsStudy.getDurationScreenOn();
+                    Log.d(TAG, "Duration Screen On:" + ScreenOn);
+                    Log.d(TAG, "Duration last screen On:" + System.currentTimeMillis() + "-" +      SettingsStudy.getStartScreenOn() + "/1000= " + (System.currentTimeMillis() - SettingsStudy.getStartScreenOn())/1000);
+                    ScreenOn += (System.currentTimeMillis() - SettingsStudy.getStartScreenOn())/1000;
+                    Log.d(TAG, "New duration screen on:" + ScreenOn);
+                    SettingsStudy.setDurationScreenOn(ScreenOn);
+                    SettingsStudy.setStartScreenOn(0);
+
+
+                } catch (Exception eScreenOn) {
+                }
+                finally {
+                    SettingsStudy.SemScreenOn.release();
+                }
+
+
                 //Save in the database if needed when we stop monitoring an application
                 values.clear();
                 values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
@@ -182,14 +229,17 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                             Log.d(TAG, "RecScreenSem1 try acquire");
                             SettingsStudy.SemAppWatchMonitor.acquire();
                             Log.d(TAG, "RecScreenSem1 acquired");
-                            if (SettingsStudy.AppWatchId != -1) {
+                            if (SettingsStudy.getAppWatchId() != -1) {
                                 int TimeWatched = (int) ((System.currentTimeMillis() - SettingsStudy.getAppWatchStartTime()) / 1000);
-                                ObjSettingsStudy.setAppTimeWatched(SettingsStudy.AppWatchId, ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
-                                SettingsStudy.AppWatchId = -1;
+                                Log.d(TAG, "TimeWatched: " + TimeWatched + " AppWatchId: " + ObjSettingsStudy.getApplicationsToWatch().get(SettingsStudy.getAppWatchId()));
+                                ObjSettingsStudy.setAppTimeWatched(SettingsStudy.getAppWatchId(), ObjSettingsStudy.getApplicationsToWatch().size(), TimeWatched);
+                                SettingsStudy.setAppWatchId(-1);
                             }
+                        } catch (Exception eWatchId) {}
+                        finally {
                             SettingsStudy.SemAppWatchMonitor.release();
                             Log.d(TAG, "RecScreenSem1 try released");
-                        } catch (Exception eWatchId) {}
+                        }
 
                         values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
                         values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);

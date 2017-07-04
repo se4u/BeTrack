@@ -28,6 +28,18 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
 
         ReceiverScreen.ScreenState = ReceiverScreen.StateScreen.ON;
 
+        try {
+            SettingsStudy.SemScreenOn.acquire();
+            if (SettingsStudy.getStartScreenOn() == 0) {
+                SettingsStudy.setStartScreenOn(System.currentTimeMillis());
+                Log.d(TAG, "Screen ON saved " + System.currentTimeMillis());
+            }
+
+        } catch (Exception eScreenOn) {
+        }
+        finally {
+            SettingsStudy.SemScreenOn.release();
+        }
 
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(context);
