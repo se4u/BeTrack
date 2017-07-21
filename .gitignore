@@ -1,4 +1,7 @@
 *.iml
+*.apk
+*.jks
+*.tags
 .gradle
 /local.properties
 /.idea/workspace.xml
@@ -6,4 +9,5 @@
 .DS_Store
 /build
 /captures
+/AppBetrack/release
 build
