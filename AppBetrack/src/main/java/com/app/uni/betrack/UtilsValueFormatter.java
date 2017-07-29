@@ -22,7 +22,7 @@ public class UtilsValueFormatter implements IValueFormatter, IAxisValueFormatter
 
 
     public UtilsValueFormatter(float sumTime) {
-        percentageFormat = new DecimalFormat("###,###,##0.0");
+        percentageFormat = new DecimalFormat("###,###,##0");
         minFormat = new DecimalFormat("###,###,###0");
         minFormat.setRoundingMode(RoundingMode.UP);
         hourFormat = new DecimalFormat("###,###,##0.0");
@@ -45,9 +45,9 @@ public class UtilsValueFormatter implements IValueFormatter, IAxisValueFormatter
         float mins = ((value/100) * sum) / 60;
 
         if (mins < 60) {
-            return percentageFormat.format(value) + " %(" + minFormat.format(mins) + " min) ";
+            return percentageFormat.format(value) + "% (" + minFormat.format(mins) + "min)";
         } else {
-            return percentageFormat.format(value) + " %(" + hourFormat.format(mins/60) + " h) ";
+            return percentageFormat.format(value) + "% (" + hourFormat.format(mins/60) + "h)";
         }
     }
 
