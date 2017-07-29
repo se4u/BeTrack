@@ -137,7 +137,7 @@ public class SettingsBetrack {
             SemSettingsBetrack.acquire();
             //Update settings with value of preferences from the shared preference editor or default values
             StudyEnable = prefs.getBoolean(mActivity.getString(R.string.pref_key_study_enable), true);
-            EnableDataUsage = prefs.getBoolean(mActivity.getString(R.string.pref_key_data_sync_enable_usage_3g), true);
+            EnableDataUsage = prefs.getBoolean(mActivity.getString(R.string.pref_key_data_sync_enable_usage_3g), false);
             StudyNotification = prefs.getBoolean(mActivity.getString(R.string.pref_key_study_notification), true);
             StudyNotificationTime = prefs.getString(mActivity.getString(R.string.pref_key_study_notification_time), "20:00") + ":00";
             //Log.d(TAG, "StudyEnable: " + StudyEnable + " EnableDataUsage: " + EnableDataUsage + " StudyNotification: " + StudyNotification + " StudyNotificationTime: " + StudyNotificationTime);
