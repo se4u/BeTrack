@@ -2,6 +2,7 @@ package com.app.uni.betrack;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -146,6 +147,12 @@ public class ActivitySurveyEnd  extends ProgressStepper {
         values.put(UtilsLocalDataBase.C_ENDSTUDY_STD_DEVIATION, ObjSettingsStudy.getStandardDeviation());
 
         values.put(UtilsLocalDataBase.C_ENDSTUDY_BETRACK_KILLED, ObjSettingsStudy.getBetrackKilled());
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            values.put(UtilsLocalDataBase.C_ENDSTUDY_BETRACK_POLLING, 1);
+        } else {
+            values.put(UtilsLocalDataBase.C_ENDSTUDY_BETRACK_POLLING, 0);
+        }
 
         DateStudyEnd = sdf.format(new Date());
         values.put(UtilsLocalDataBase.C_ENDSTUDY_DATE, DateStudyEnd);
