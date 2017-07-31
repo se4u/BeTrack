@@ -76,7 +76,7 @@
         <activity android:name=".ActivitySurveyEnd" android:screenOrientation="portrait"/>
         <activity android:name=".ActivityStartStudy" android:screenOrientation="portrait"/>
         <activity android:name=".ActivitySetupBetrack" android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityErrors" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityInternetConnectivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".ActivityDummy"
             android:allowTaskReparenting="true"

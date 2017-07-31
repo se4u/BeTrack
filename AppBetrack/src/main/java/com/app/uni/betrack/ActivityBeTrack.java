@@ -77,7 +77,7 @@ public class ActivityBeTrack extends AppCompatActivity {
 
         OnForeground = true;
 
-        if ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(this)) >= 0)
+        if (((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(this)) >= 0) || (true == ObjSettingsStudy.getEndSurveyDone()))
         {
             textWelcome.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
             mChart.setVisibility(View.VISIBLE);
@@ -94,6 +94,10 @@ public class ActivityBeTrack extends AppCompatActivity {
                     }
                     prepareChart(false);
                     textWelcome.setText(getResources().getString(R.string.Betrack_welcome));
+
+                    //We start the study if not started yet
+                    StartStudy();
+
                 } else {
                     Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
                     startActivity(i);
@@ -108,9 +112,14 @@ public class ActivityBeTrack extends AppCompatActivity {
                 } else {
                     if (endStudyTranferState == SettingsStudy.EndStudyTranferState.IN_PROGRESS) {
                         Log.d(TAG, "getEndSurveyTransferred = IN_PROGRESS");
-                        Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
-                        iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY_IN_PROGRESS);
-                        startActivity(iError);
+                        Intent iInternetConnectivity = new Intent(ActivityBeTrack.this, ActivityInternetConnectivity.class);
+
+                        Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
+                        //Start the service for sending the data to the remote server
+                        startService(msgIntent);
+
+                        iInternetConnectivity.putExtra(ActivityInternetConnectivity.STATUS_START_ACTIVITY, ActivityInternetConnectivity.END_STUDY_IN_PROGRESS);
+                        startActivity(iInternetConnectivity);
                         finish();
                     } else {
                         if (endStudyTranferState == SettingsStudy.EndStudyTranferState.NOT_YET) {
@@ -119,9 +128,9 @@ public class ActivityBeTrack extends AppCompatActivity {
                             Log.d(TAG, "getEndSurveyTransferred = ERROR");
                         }
 
-                        Intent iError = new Intent(ActivityBeTrack.this, ActivityErrors.class);
-                        iError.putExtra(ActivityErrors.STATUS_START_ACTIVITY, ActivityErrors.END_STUDY_IN_ERROR);
-                        startActivity(iError);
+                        Intent iInternetConnectivity = new Intent(ActivityBeTrack.this, ActivityInternetConnectivity.class);
+                        iInternetConnectivity.putExtra(ActivityInternetConnectivity.STATUS_START_ACTIVITY, ActivityInternetConnectivity.END_STUDY_IN_ERROR);
+                        startActivity(iInternetConnectivity);
                         finish();
                     }
                 }
@@ -131,12 +140,13 @@ public class ActivityBeTrack extends AppCompatActivity {
             textWelcome.setText(getResources().getString(R.string.Betrack_start));
             mChart.setVisibility(View.GONE);
 
+            //We start the study if not started yet
+            StartStudy();
+
         }
 
         textWelcome.setTextColor(Color.parseColor(SettingsBetrack.colorPrimary));
 
-        //We start the study if not started yet
-        StartStudy();
     }
 
     @Override
