@@ -23,6 +23,7 @@ import java.util.concurrent.Semaphore;
 
 import javax.net.ssl.HttpsURLConnection;
 
+
 /**
  * Created by cedoctet on 23/08/2016.
  */
@@ -41,12 +42,6 @@ public class IntentServicePostData extends IntentService {
     }
 
     private static volatile PowerManager.WakeLock lockStatic;
-
-    private enum ConnectionState {
-        NONE,
-        WIFI,
-        LTE,
-    };
 
     private static final char TABLE_APPWATCH_TRANSFERED = 1;
     private static final char TABLE_DAILYSTATUS_TRANSFERED = 2;
@@ -81,7 +76,7 @@ public class IntentServicePostData extends IntentService {
         ContentValues values = new ContentValues();
         boolean rc = false;
         Long IdSql;
-        ConnectionState NetworkState;
+        UtilsNetworkStatus.ConnectionState NetworkState;
         getLock(getApplicationContext()).acquire();
 
         char TaskDone = TABLE_APPWATCH_TRANSFERED | TABLE_DAILYSTATUS_TRANSFERED |
@@ -90,7 +85,7 @@ public class IntentServicePostData extends IntentService {
                         TABLE_NOTIFICATION_TIME_TRANSFERED;
 
         //Check if there is a data connection
-        NetworkState = hasNetworkConnection();
+        NetworkState = UtilsNetworkStatus.hasNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
 
         if (null == localdatabase) {
             localdatabase =  new UtilsLocalDataBase(this);
@@ -110,9 +105,14 @@ public class IntentServicePostData extends IntentService {
 
         // To transfer the data either we have access to a WIFI network or
         // we have are allowed to use the 3G/LTE
-        if ((ConnectionState.WIFI == NetworkState) ||
-                ((ConnectionState.LTE == NetworkState) && (ObjSettingsBetrack.GetEnableDataUsage())))
+        if ((UtilsNetworkStatus.ConnectionState.WIFI == NetworkState) ||
+                ((UtilsNetworkStatus.ConnectionState.LTE == NetworkState) && (ObjSettingsBetrack.GetEnableDataUsage())))
         {
+
+            if (SettingsStudy.EndStudyTranferState.ERROR == ObjSettingsStudy.getEndSurveyTransferred()) {
+                Log.d(TAG, "EndStudyTranferState is ready to be transfer, we switch back to IN_PROGRESS");
+                ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.IN_PROGRESS);
+            }
 
             while(true) {
                 //BLOB KEY
@@ -239,6 +239,10 @@ public class IntentServicePostData extends IntentService {
                             CreateTrackApp.StopAlarm(this);
                             Log.d(TAG, "setEndSurveyTransferred = DONE");
                             ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.DONE);
+                            Log.d(TAG, "Display the end chart");
+                            Intent intentBetrack = new Intent(this, ActivityBeTrack.class);
+                            intentBetrack.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intentBetrack);
                         } else {
                             Log.d(TAG, "setEndSurveyTransferred = ERROR");
                             ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.ERROR);
@@ -326,53 +330,23 @@ public class IntentServicePostData extends IntentService {
 
         if (rc == true) {
             ObjSettingsStudy.setTimeLastTransfer(System.currentTimeMillis());
+        } else {
+            //Check if we were trying to transfer the end study
+            values.clear();
+            values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_END_STUDY, true);
+            if (0 != values.size()) {
+                //We are trying to transfer the end survey but we don't have connectivity or we are not allowed to use it so we return an error
+                Log.d(TAG, "setEndSurveyTransferred = ERROR");
+                ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.ERROR);
+                Intent iInternetConnectivity = new Intent(this, ActivityInternetConnectivity.class);
+                iInternetConnectivity.putExtra(ActivityInternetConnectivity.STATUS_START_ACTIVITY, ActivityInternetConnectivity.END_STUDY_IN_ERROR);
+                iInternetConnectivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(iInternetConnectivity);
+            }
         }
+
         SemPostData.release();
         getLock(getApplicationContext()).release();
-    }
-
-
-    private ConnectionState hasNetworkConnection() {
-
-        ConnectionState NetworkState = ConnectionState.NONE;
-
-        try {
-
-            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
-                    // connected to wifi
-                    //Log.d(TAG, "hasNetworkConnection: WIFI");
-                    NetworkState = ConnectionState.WIFI;
-                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                    // connected to the mobile provider's data plan
-                    //Log.d(TAG, "hasNetworkConnection: LTE/3G");
-                    NetworkState = ConnectionState.LTE;
-                }
-            }else {
-                NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-                for (NetworkInfo ni : netInfo) {
-                    if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                        if (ni.isConnected()){
-                            //Log.d(TAG, "hasNetworkConnection: WIFI");
-                            NetworkState = ConnectionState.WIFI;
-                        }
-
-                    if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                        if (ni.isConnected()) {
-                            //Log.d(TAG, "hasNetworkConnection: LTE/3G");
-                            NetworkState = ConnectionState.LTE;
-                        }
-                }
-            }
-        }
-        finally {
-            if (ConnectionState.NONE == NetworkState) {
-                //Log.d(TAG, "hasNetworkConnection: nope");
-            }
-            return NetworkState;
-        }
     }
 
     public ArrayList<String> PrepareData(ContentValues values, ArrayList<String> Field, ArrayList<Boolean> Cypher, boolean Encrypt) {

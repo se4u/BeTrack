@@ -93,7 +93,7 @@ public class CreateTrackApp {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)  private static void CancelJob(int jobId) {
         if (null != mJobScheduler) {
-            mJobScheduler.cancel(jobId);
+            mJobScheduler.cancelAll();
         }
     }
 

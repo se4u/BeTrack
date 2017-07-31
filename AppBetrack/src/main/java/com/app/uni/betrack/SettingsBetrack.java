@@ -45,6 +45,7 @@ public class SettingsBetrack {
     static public int SAMPLING_RATE = 1000; //In ms
     static public int SAMPLING_RATE_SCREEN_OFF = 2 * 60 * 1000;
     static public int POSTDATA_SENDING_DELTA = 1000 * 60 * 60 * 1; //In ms (every 1 hour)
+    static public int POSTDATA_SENDING_DELTA_ENDSURVEY = 1000 * 5; //In ms (every 5s)
     static public int TRACKGPS_DELTA = 1000  * 60 * 60 * 1; //In ms (every 1 hour)
     static public int UPDATE_STATUS_STUDY_TIME = 60000;
     static public int ID_NOTIFICATION_BETRACK = 1335;
