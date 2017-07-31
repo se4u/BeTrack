@@ -35,9 +35,9 @@
     <!-- Network error -->
         <string name="network_error_title">Network connection error</string>
         <string name="network_title_in_progress">Network connection</string>
-        <string name="network_error_start_text">Please connect your phone to the internet. It is mandatory to have an internet connection to register for a new study</string>
+        <string name="network_error_start_text">Please connect your phone to the internet. It is mandatory to have an internet connection to register for a new study. By default, we only use WIFI; if you are willing to use your 3G/LTE connection, please enable this option in the settings of Betrack</string>
         <string name="network_end_text">Data transfer in progress</string>
-        <string name="network_error_end_text">Please connect your phone to the internet. It is mandatory to have an internet connection for the last day of the study</string>
+        <string name="network_error_end_text">Please connect your phone to the internet. It is mandatory to have an internet connection to finish the study. By default, we only use WIFI; if you are willing to use your 3G/LTE connection, please enable this option in the settings of Betrack</string>
         <string name="network_retry">Retry</string>
 
         <!-- Network loading -->

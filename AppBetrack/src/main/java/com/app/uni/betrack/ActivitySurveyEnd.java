@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
-import com.github.fcannizzaro.materialstepper.style.DotStepper;
 import com.github.fcannizzaro.materialstepper.style.ProgressStepper;
 
 import java.text.SimpleDateFormat;
@@ -163,15 +162,9 @@ public class ActivitySurveyEnd  extends ProgressStepper {
 
         Log.d(TAG, "setEndSurveyTransferred = IN_PROGRESS");
         ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.IN_PROGRESS);
-
-        Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
-        //Start the service for sending the data to the remote server
-        startService(msgIntent);
-
-        Intent i = new Intent(ActivitySurveyEnd.this, ActivityBeTrack.class);
-        startActivity(i);
-        finish();
         ObjSettingsStudy.setEndSurveyDone(true);
+
+        finish();
 
         System.out.println("completed");
     }
