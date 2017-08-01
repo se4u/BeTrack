@@ -36,7 +36,7 @@ public class CreateTrackApp {
             return;
         }
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             CreateJob(context, SamplingRate);
 
@@ -76,7 +76,7 @@ public class CreateTrackApp {
 
     static public void StopAlarm(Context context)
     {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             CancelJob(SettingsBetrack.ID_TRACKAPP);
         } else {
             if (alarmMgr != null) {
@@ -112,7 +112,7 @@ public class CreateTrackApp {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             builder.setMinimumLatency(SamplingRate);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 builder.setPeriodic(SamplingRate);
             }
         }
