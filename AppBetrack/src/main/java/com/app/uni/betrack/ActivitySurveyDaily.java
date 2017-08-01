@@ -92,6 +92,11 @@ public class ActivitySurveyDaily   extends DotStepper {
         //Start the service for sending the data to the remote server
         startService(msgIntent);
 
+
+        if (ObjSettingsStudy.getNbrOfNotificationToDo() == 0) {
+            ObjSettingsStudy.setLastDayStudyState(SettingsStudy.LastDayStudyState.START_SURVEY_DONE);
+        }
+
         Intent i = new Intent(ActivitySurveyDaily.this, ActivityBeTrack.class);
         startActivity(i);
         finish();

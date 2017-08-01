@@ -163,6 +163,7 @@ public class ActivitySurveyEnd  extends ProgressStepper {
         Log.d(TAG, "setEndSurveyTransferred = IN_PROGRESS");
         ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.IN_PROGRESS);
         ObjSettingsStudy.setEndSurveyDone(true);
+        ObjSettingsStudy.setLastDayStudyState(SettingsStudy.LastDayStudyState.END_SURVEY_DONE);
 
         finish();
 

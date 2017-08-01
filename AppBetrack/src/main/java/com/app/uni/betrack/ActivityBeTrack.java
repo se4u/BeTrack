@@ -99,9 +99,16 @@ public class ActivityBeTrack extends AppCompatActivity {
                     StartStudy();
 
                 } else {
-                    Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
-                    startActivity(i);
-                    finish();
+                    if (SettingsStudy.LastDayStudyState.ALL_SURVEYS_PENDING == ObjSettingsStudy.getLastDayStudyState()) {
+                        Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
+                        startActivity(i);
+                        finish();
+
+                    } else if (SettingsStudy.LastDayStudyState.START_SURVEY_DONE == ObjSettingsStudy.getLastDayStudyState()) {
+                        Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
+                        startActivity(i);
+                        finish();
+                    }
                 }
             } else {
                 SettingsStudy.EndStudyTranferState endStudyTranferState = ObjSettingsStudy.getEndSurveyTransferred();

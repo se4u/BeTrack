@@ -62,6 +62,8 @@ public class SettingsStudy {
     static private final String STUDY_BETRACK_KILLED = "BetrackKilled";
     static private final String DURATION_SCREEN_ON = "DurationScreenOn";
     static private final String START_SCREEN_ON = "StartScreenOn";
+    static private final String LAST_DAY_STUDY = "LastDayStudy";
+
     static public UtilsCryptoAES.SecretKeys SessionKey;
     static SharedPreferences.Editor editor;
     static private int AppWatchId = -1;
@@ -94,6 +96,8 @@ public class SettingsStudy {
     static private Boolean BetrackKilled;
     static private long DurationScreenOn;
     static private long StartScreenOn;
+    static private LastDayStudyState LastDayStudy;
+
     static private Context mContext = null;
     Set<String> ArrayPeriodicityHs;
     Set<String> ApplicationsToWatchHs;
@@ -185,6 +189,19 @@ public class SettingsStudy {
         } else {
             EndSurveyTransferred = EndStudyTranferState.ERROR;
         }
+
+        int ToBeConvertedLastDayStudy = prefs.getInt(LAST_DAY_STUDY, LastDayStudyState.ALL_SURVEYS_PENDING.ordinal());
+
+        if (ToBeConvertedLastDayStudy == LastDayStudyState.ALL_SURVEYS_PENDING.ordinal()) {
+            LastDayStudy = LastDayStudyState.ALL_SURVEYS_PENDING;
+        } else if (ToBeConvertedLastDayStudy == LastDayStudyState.START_SURVEY_DONE.ordinal()) {
+            LastDayStudy = LastDayStudyState.START_SURVEY_DONE;
+        } else if (ToBeConvertedLastDayStudy == LastDayStudyState.END_SURVEY_DONE.ordinal()) {
+            LastDayStudy = LastDayStudyState.END_SURVEY_DONE;
+        } else {
+            LastDayStudy = LastDayStudyState.END_SURVEY_ERROR;
+        }
+
         //Read informations about the study
         StudyId = prefs.getString(STUDY_ID, null);
         StudyName = prefs.getString(STUDY_NAME, null);
@@ -785,6 +802,34 @@ public class SettingsStudy {
         }
     }
 
+    public LastDayStudyState getLastDayStudyState()
+    {
+        LastDayStudyState ReturnEndLastDayStudyState = LastDayStudyState.END_SURVEY_ERROR;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnEndLastDayStudyState = LastDayStudy;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnEndLastDayStudyState = LastDayStudyState.END_SURVEY_ERROR;
+        } finally {
+            return ReturnEndLastDayStudyState;
+        }
+    }
+
+    public void setLastDayStudyState(LastDayStudyState status)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            LastDayStudy = status;
+            editor.putInt(LAST_DAY_STUDY, LastDayStudy.ordinal());
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+
     public EndStudyTranferState getEndSurveyTransferred()
     {
         EndStudyTranferState ReturnEndSurveyTransferred = EndStudyTranferState.ERROR;
@@ -1174,6 +1219,10 @@ public class SettingsStudy {
 
     public static enum EndStudyTranferState {
         NOT_YET, IN_PROGRESS, DONE, ERROR
+    }
+
+    public static enum LastDayStudyState {
+        ALL_SURVEYS_PENDING, START_SURVEY_DONE, END_SURVEY_DONE, END_SURVEY_ERROR
     }
 
     private static class ConfigInfoStudyHolder
