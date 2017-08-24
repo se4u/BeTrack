@@ -162,6 +162,18 @@ public class CreateNotification {
             ObjSettingsBetrack.Update(context);
         }
 
+        if (alarmMgr == null) {
+            alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        }
+
+        if (alarmIntent == null) {
+            Intent intent = new Intent(context, ReceiverAlarmNotification.class);
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+            }
+            alarmIntent = PendingIntent.getBroadcast(context, SettingsBetrack.ID_NOTIFICATION_BETRACK, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
 
         //Read the time from the preference
         SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
