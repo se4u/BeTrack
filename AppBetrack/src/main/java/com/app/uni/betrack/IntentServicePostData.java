@@ -241,7 +241,7 @@ public class IntentServicePostData extends IntentService {
                             ObjSettingsStudy.setEndSurveyTransferred(SettingsStudy.EndStudyTranferState.DONE);
                             Log.d(TAG, "Display the end chart");
                             Intent intentBetrack = new Intent(this, ActivityBeTrack.class);
-                            intentBetrack.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intentBetrack.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intentBetrack);
                         } else {
                             Log.d(TAG, "setEndSurveyTransferred = ERROR");
