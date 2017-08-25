@@ -165,9 +165,10 @@ public class ActivitySurveyEnd  extends ProgressStepper {
         ObjSettingsStudy.setEndSurveyDone(true);
         ObjSettingsStudy.setLastDayStudyState(SettingsStudy.LastDayStudyState.END_SURVEY_DONE);
 
+        Intent i = new Intent(this, ActivityBeTrack.class);
+        startActivity(i);
         finish();
-
-        System.out.println("completed");
+        System.out.println("SurveyEnd completed");
     }
 
     @Override
