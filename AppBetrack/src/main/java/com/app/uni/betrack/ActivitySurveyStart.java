@@ -281,9 +281,6 @@ public class ActivitySurveyStart extends ProgressStepper {
         ObjSettingsStudy.setStartDateSurvey(DateStudyStart);
         ObjSettingsStudy.setStartSurveyDone(true);
 
-        //We don't to trigger directly the daily survey so we fake it
-        ObjSettingsStudy.setDailySurveyDone(true);
-
         //Save the number of notification for the study (match the number of day of the study)
         ObjSettingsStudy.setNbrOfNotificationToDo(ObjSettingsStudy.getStudyDuration());
 
