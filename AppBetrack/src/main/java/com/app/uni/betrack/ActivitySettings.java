@@ -39,6 +39,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
     private static SettingsStudy ObjSettingsStudy;
     private static int cntAppearanceNotifMenu = 0;
     private String CallingActivity;
+    private static boolean PatchOreo = false;
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -101,6 +102,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+        PatchOreo = false;
         if (ObjSettingsBetrack == null)  {
             ObjSettingsBetrack = SettingsBetrack.getInstance();
         }
@@ -113,7 +115,11 @@ public class ActivitySettings extends ActivityAppCompatPreference {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-                finish();
+                if (PatchOreo == false) {
+                    finish();
+                } else {
+                    PatchOreo = true;
+                }
         }
         return (super.onOptionsItemSelected(menuItem));
     }
@@ -179,6 +185,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             addPreferencesFromResource(R.xml.pref_info);
             setHasOptionsMenu(true);
             Preference etp = findPreference("pref_info");
+            PatchOreo = true;
             etp.setSummary(ObjSettingsStudy.getStudyDescription());
         }
 
@@ -187,6 +194,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
+                PatchOreo = false;
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -207,6 +215,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
             mContext = this.getActivity();
+            PatchOreo = true;
             prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
             registerPreferenceListener();
             setHasOptionsMenu(true);
@@ -227,6 +236,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
+                PatchOreo = false;
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -240,6 +250,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_user_id);
             setHasOptionsMenu(true);
+            PatchOreo = true;
             Preference etp = findPreference("pref_user_id");
             etp.setSummary(ObjSettingsStudy.getIdUser());
         }
@@ -250,6 +261,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             if (id == android.R.id.home) {
                 cntAppearanceNotifMenu++;
                 getActivity().onBackPressed();
+                PatchOreo = false;
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -262,6 +274,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_credit);
+            PatchOreo = true;
             setHasOptionsMenu(true);
         }
 
@@ -270,6 +283,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
+                PatchOreo = false;
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -289,6 +303,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             mContext = this.getActivity();
             prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
             registerPreferenceListener();
+            PatchOreo = true;
             setHasOptionsMenu(true);
 
         }
@@ -315,6 +330,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
+                PatchOreo = false;
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -336,6 +352,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             mContext = this.getActivity();
             prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
             registerPreferenceListener();
+            PatchOreo = true;
             setHasOptionsMenu(true);
         }
 
@@ -354,6 +371,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
+                PatchOreo = false;
                 return true;
             }
             return super.onOptionsItemSelected(item);
