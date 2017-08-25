@@ -97,10 +97,10 @@ public class ActivitySurveyDaily   extends DotStepper {
             ObjSettingsStudy.setLastDayStudyState(SettingsStudy.LastDayStudyState.START_SURVEY_DONE);
         }
 
-        Intent i = new Intent(ActivitySurveyDaily.this, ActivityBeTrack.class);
+        Intent i = new Intent(this, ActivityBeTrack.class);
         startActivity(i);
         finish();
-        System.out.println("completed");
+        System.out.println("SurveyDaily completed");
     }
 
     @Override
