@@ -212,7 +212,7 @@ public class SettingsStudy {
         StudyContactEmail = prefs.getString(STUDY_CONTACTEMAIL, null);
 
         //Read information used to trigger the daily survey
-        DailySurveyDone = prefs.getBoolean(STUDY_DAILY_SURVEY_DONE, false);
+        DailySurveyDone = prefs.getBoolean(STUDY_DAILY_SURVEY_DONE, true);
         StartDateSurvey = prefs.getString(STUDY_STARTDATE_SURVEY, null);
         NbrOfNotificationToDo = prefs.getInt(STUDY_NBR_OF_NOTIFICATION_TO_DO, 0);
 
