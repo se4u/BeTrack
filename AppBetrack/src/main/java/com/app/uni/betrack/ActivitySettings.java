@@ -37,7 +37,6 @@ public class ActivitySettings extends ActivityAppCompatPreference {
 
     private static SettingsBetrack ObjSettingsBetrack;
     private static SettingsStudy ObjSettingsStudy;
-    private static int cntAppearanceNotifMenu = 0;
     private String CallingActivity;
     private static boolean PatchOreo = false;
 
@@ -152,14 +151,6 @@ public class ActivitySettings extends ActivityAppCompatPreference {
 
         loadHeadersFromResource(R.xml.pref_headers, target);
 
-        if (cntAppearanceNotifMenu == 5) {
-            Header headerNotification = new Header();
-            headerNotification.fragment = "com.app.uni.betrack.ActivitySettings$NotificationPreferenceFragment";
-            headerNotification.title = getResources().getString(R.string.pref_header_notifications);
-            headerNotification.iconRes = R.drawable.ic_notifications_black_24dp;
-            target.add(headerNotification);
-            cntAppearanceNotifMenu = 0;
-        }
     }
 
     /**
@@ -170,7 +161,6 @@ public class ActivitySettings extends ActivityAppCompatPreference {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
-                || NotificationPreferenceFragment.class.getName().equals(fragmentName)
                 || YourIdPreferenceFragment.class.getName().equals(fragmentName)
                 || InfoPreferenceFragment.class.getName().equals(fragmentName)
                 || CreditsPreferenceFragment.class.getName().equals(fragmentName);
@@ -259,7 +249,6 @@ public class ActivitySettings extends ActivityAppCompatPreference {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                cntAppearanceNotifMenu++;
                 getActivity().onBackPressed();
                 PatchOreo = false;
                 return true;
@@ -290,52 +279,6 @@ public class ActivitySettings extends ActivityAppCompatPreference {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class NotificationPreferenceFragment extends PreferenceFragment {
-        SharedPreferences prefs;
-        SharedPreferences.OnSharedPreferenceChangeListener listener;
-        private static Context mContext;
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_notification);
-            mContext = this.getActivity();
-            prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-            registerPreferenceListener();
-            PatchOreo = true;
-            setHasOptionsMenu(true);
-
-        }
-
-        private void registerPreferenceListener()
-        {
-            listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-                public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                    ObjSettingsBetrack.Update(mContext);
-                    if (key.equals(mContext.getString(R.string.pref_key_study_notification_time))) {
-                        CreateNotification.CreateAlarm(mContext,
-                                ObjSettingsBetrack.GetStudyNotification(),
-                                ObjSettingsBetrack.GetStudyNotificationTime(),
-                                true);
-                    }
-
-                }
-            };
-            prefs.registerOnSharedPreferenceChangeListener(listener);
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-            if (id == android.R.id.home) {
-                getActivity().onBackPressed();
-                PatchOreo = false;
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
-    }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class DataSyncPreferenceFragment extends PreferenceFragment {

@@ -20,13 +20,6 @@ public class UtilsTimePreference extends DialogPreference {
     private int lastMinute=0;
     private TimePicker picker=null;
 
-    private static UtilsLocalDataBase localdatabase =  null;
-
-    private UtilsLocalDataBase AccesLocalDB()
-    {
-        return localdatabase;
-    }
-
     public static int getHour(String time) {
         String[] pieces=time.split(":");
 
@@ -109,21 +102,6 @@ public class UtilsTimePreference extends DialogPreference {
             editor.putString(getContext().getString(R.string.pref_key_study_notification_time), time);
             editor.commit();
 
-            if (null == localdatabase) {
-                localdatabase =  new UtilsLocalDataBase(getContext());
-            }
-
-            values.clear();
-            //Save the date
-            ActivityStartDate = sdf.format(new Date());
-            //Save the time
-            ActivityStartTime = shf.format(new Date());
-            values.put(UtilsLocalDataBase.C_NOTIFICATION_TIME, time);
-            values.put(UtilsLocalDataBase.C_NOTIFICATION_TIME_DATE, ActivityStartDate);
-            values.put(UtilsLocalDataBase.C_NOTIFICATION_TIME_TIME, ActivityStartTime);
-            try {
-                AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_NOTIFICATION_TIME);
-            } catch (Exception f) {}
         }
     }
 

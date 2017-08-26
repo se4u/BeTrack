@@ -49,7 +49,6 @@ public class IntentServicePostData extends IntentService {
     private static final char TABLE_ENDSTUDY_TRANSFERED = 8;
     private static final char TABLE_GPS_TRANSFERED = 16;
     private static final char TABLE_PHONE_USAGE_TRANSFERED = 32;
-    private static final char TABLE_NOTIFICATION_TIME_TRANSFERED = 64;
 
     Handler mHandler;
 
@@ -81,8 +80,7 @@ public class IntentServicePostData extends IntentService {
 
         char TaskDone = TABLE_APPWATCH_TRANSFERED | TABLE_DAILYSTATUS_TRANSFERED |
                         TABLE_STARTSTUDY_TRANSFERED | TABLE_ENDSTUDY_TRANSFERED |
-                        TABLE_GPS_TRANSFERED | TABLE_PHONE_USAGE_TRANSFERED |
-                        TABLE_NOTIFICATION_TIME_TRANSFERED;
+                        TABLE_GPS_TRANSFERED | TABLE_PHONE_USAGE_TRANSFERED;
 
         //Check if there is a data connection
         NetworkState = UtilsNetworkStatus.hasNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
@@ -299,31 +297,6 @@ public class IntentServicePostData extends IntentService {
                         rc = true;
                         TaskDone &= ~TABLE_PHONE_USAGE_TRANSFERED;
                     }
-
-                    //NOTIFICATION TIME DATA
-                    values.clear();
-                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_NOTIFICATION_TIME, true);
-                    if (0 != values.size()) {
-                        ArrayList<String>  NotifData;
-
-                        IdSql = values.getAsLong(UtilsLocalDataBase.C_NOTIFICATION_TIME_ID);
-
-                        //Prepare the data
-                        NotifData = PrepareData(values, UtilsLocalDataBase.DB_NOTIFICATION_TIME, UtilsLocalDataBase.DB_NOTIFICATION_TIME_CYPHER, true);
-
-                        //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTNOTIFICATIONTIME, UtilsLocalDataBase.DB_NOTIFICATION_TIME, NotifData, UtilsLocalDataBase.DB_NOTIFICATION_TIME_CYPHER, true);
-                        if (rc == true) {
-                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_NOTIFICATION_TIME, IdSql);
-                        } else {
-                            break;
-                        }
-                    } else {
-                        rc = true;
-                        TaskDone &= ~TABLE_NOTIFICATION_TIME_TRANSFERED;
-                    }
-
-
                 }
             }
         }

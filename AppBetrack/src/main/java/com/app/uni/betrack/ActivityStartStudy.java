@@ -60,18 +60,6 @@ public class ActivityStartStudy extends DotStepper {
             i = new Intent(ActivityStartStudy.this, ActivitySurveyStart.class);
         }
 
-        values.clear();
-        //Save the date
-        ActivityStartDate = sdf.format(new Date());
-        //Save the time
-        ActivityStartTime = shf.format(new Date());
-        values.put(UtilsLocalDataBase.C_NOTIFICATION_TIME, prefs.getString(this.getString(R.string.pref_key_study_notification_time), "20:00"));
-        values.put(UtilsLocalDataBase.C_NOTIFICATION_TIME_DATE, ActivityStartDate);
-        values.put(UtilsLocalDataBase.C_NOTIFICATION_TIME_TIME, ActivityStartTime);
-        try {
-            AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_NOTIFICATION_TIME);
-        } catch (Exception f) {}
-
         startActivity(i);
         finish();
     }
@@ -98,13 +86,6 @@ public class ActivityStartStudy extends DotStepper {
         Step2 = new FragmentDisclaimers();
         Step2.setArguments(bundle2);
         addStep(Step2, true, 0, false);
-        //Step 3 NOTIFICATION TIME
-        bundle3 = new Bundle();
-        bundle3.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_TITLE, getResources().getString(R.string.study_reminder));
-        bundle3.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_DESC, getResources().getString(R.string.study_reminder_question));
-        Step3 = new FragmentSurveyTimePicker();
-        Step3.setArguments(bundle3);
-        addStep(Step3, true, 0, false);
 
         super.onCreate(savedInstanceState);
     }

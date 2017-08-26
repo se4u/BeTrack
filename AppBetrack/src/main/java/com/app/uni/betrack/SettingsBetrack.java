@@ -60,7 +60,6 @@ public class SettingsBetrack {
 
     private Boolean StudyEnable;
     private Boolean StudyNotification;
-    private String StudyNotificationTime;
     private Boolean EnableDataUsage;
 
 
@@ -105,20 +104,6 @@ public class SettingsBetrack {
         }
     }
 
-    public String GetStudyNotificationTime()
-    {
-        String ReturnStudyNotificationTime = null;
-        try {
-            SemSettingsBetrack.acquire();
-            ReturnStudyNotificationTime = StudyNotificationTime;
-            SemSettingsBetrack.release();
-        } catch (Exception e) {
-            ReturnStudyNotificationTime = null;
-        } finally {
-            return ReturnStudyNotificationTime;
-        }
-    }
-
     public Boolean GetEnableDataUsage()
     {
         Boolean ReturnEnableDataUsage = false;
@@ -140,7 +125,6 @@ public class SettingsBetrack {
             StudyEnable = prefs.getBoolean(mActivity.getString(R.string.pref_key_study_enable), true);
             EnableDataUsage = prefs.getBoolean(mActivity.getString(R.string.pref_key_data_sync_enable_usage_3g), false);
             StudyNotification = prefs.getBoolean(mActivity.getString(R.string.pref_key_study_notification), true);
-            StudyNotificationTime = prefs.getString(mActivity.getString(R.string.pref_key_study_notification_time), "20:00") + ":00";
             //Log.d(TAG, "StudyEnable: " + StudyEnable + " EnableDataUsage: " + EnableDataUsage + " StudyNotification: " + StudyNotification + " StudyNotificationTime: " + StudyNotificationTime);
             SemSettingsBetrack.release();
         } catch (Exception e) {
