@@ -29,7 +29,7 @@ public class SettingsBetrack {
     static public String BROADCAST_START_TRACKING_NAME = "com.app.uni.betrack.START_TRACKING";
     static public String BROADCAST_ARG_MANUAL_START = "com.app.uni.betrack.BROADCAST_ARG_MANUAL_START";
     static public String BROADCAST_CHECK_SCREEN_STATUS = "com.app.uni.betrack.CHECK_SCREEN_STATUS";
-    static public String STUDY_WEBSITE = "http://smartphonestudy.chenlab.psych.ubc.ca/CA001/android/";
+    static public String STUDY_WEBSITE = "http://smartphonestudy.chenlab.psych.ubc.ca/CA002/android/";
     static public String STUDY_GETSTUDIESAVAILABLE = "BeTrackGetStudiesAvailable.php";
     static public String STUDY_GETAPPTOWATCH = "BeTrackGetAppToWatch.php?table_name=BetrackApp";
     static public String STUDY_POSTAPPWATCHED = "BeTrackPostAppWatch";
@@ -38,16 +38,13 @@ public class SettingsBetrack {
     static public String STUDY_POSTENDSTUDY = "BeTrackPostEndStudy";
     static public String STUDY_POSTGPSDATA = "BeTrackPostGPSData";
     static public String STUDY_POSTPHONEUSAGEDATA = "BeTrackPostPhoneUsageData";
-    static public String STUDY_POSTNOTIFICATIONTIME = "BeTrackPostNotifTimeData";
     static public String STUDY_POSTBLOBKEY = "BeTrackPostSessionKeys";
     static public int SERVER_TIMEOUT = 20000;
     static public int DELTA_BTW_RECHECK_STUDY_STARTED = 10000;
     static public int SAMPLING_RATE = 1000; //In ms
     static public int SAMPLING_RATE_SCREEN_OFF = 2 * 60 * 1000;
     static public int POSTDATA_SENDING_DELTA = 1000 * 60 * 60 * 1; //In ms (every 1 hour)
-    static public int POSTDATA_SENDING_DELTA_ENDSURVEY = 1000 * 5; //In ms (every 5s)
     static public int TRACKGPS_DELTA = 1000  * 60 * 60 * 1; //In ms (every 1 hour)
-    static public int UPDATE_STATUS_STUDY_TIME = 60000;
     static public int ID_NOTIFICATION_BETRACK = 1335;
     static public int ID_TRACKAPP = 1336;
     static public int ID_NOTIFICATION_SERVICE = 1337;
