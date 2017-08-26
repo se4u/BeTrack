@@ -118,7 +118,7 @@ public class ActivitySettings extends ActivityAppCompatPreference {
                 if (PatchOreo == false) {
                     finish();
                 } else {
-                    PatchOreo = true;
+                    PatchOreo = false;
                 }
         }
         return (super.onOptionsItemSelected(menuItem));
