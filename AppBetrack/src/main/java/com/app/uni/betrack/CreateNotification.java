@@ -181,10 +181,16 @@ public class CreateNotification {
 
         try {
             //Parse the time from preference
-            time = shf.parse(ObjSettingsBetrack.GetStudyNotificationTime());
+            time = shf.parse(
+                    UtilsGetNotification.next(ObjSettingsStudy.getNbrOfNotificationToDo() % UtilsGetNotification.getNbrPerDay()
+                    ));
         }catch (Exception e) {
             e.printStackTrace();
         }
+
+        //Set up the state machine for the daily surveys
+        ObjSettingsStudy.setDailySurveyState(UtilsGetNotification.getNbrSurveysPerDay());
+
 
         //Prepare a new calendar
         Calendar calendarpref = new GregorianCalendar();

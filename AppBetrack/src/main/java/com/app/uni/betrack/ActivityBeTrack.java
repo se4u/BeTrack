@@ -81,16 +81,41 @@ public class ActivityBeTrack extends AppCompatActivity {
         {
             textWelcome.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
             mChart.setVisibility(View.VISIBLE);
+
             if (false == ObjSettingsStudy.getEndSurveyDone()) {
-                if (ObjSettingsStudy.getNbrOfNotificationToDo() >= 1) {
+                if (ObjSettingsStudy.getNbrOfDaysToDo() >= 1) {
                     if (false == ObjSettingsStudy.getSetupBetrackDone()) {
                         Intent i = new Intent(ActivityBeTrack.this, ActivitySetupBetrack.class);
                         startActivity(i);
                         finish();
                     } else if (ObjSettingsStudy.getDailySurveyDone() == false) {
-                        Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyDaily.class);
-                        startActivity(i);
-                        finish();
+
+                        Log.d(TAG, "Nbr of notifications to do: " + (ObjSettingsStudy.getNbrOfNotificationToDo() + 1) % UtilsGetNotification.getNbrPerDay() + " DailySurveyState: " + ObjSettingsStudy.getDailySurveyState());
+                        if (UtilsGetNotification.ListSurveys
+                                [(ObjSettingsStudy.getNbrOfNotificationToDo() + 1) % UtilsGetNotification.getNbrPerDay()]
+                                [ObjSettingsStudy.getDailySurveyState()] != null) {
+                            Intent i = new Intent(ActivityBeTrack.this,
+                                    UtilsGetNotification.ListSurveys
+                                            [(ObjSettingsStudy.getNbrOfNotificationToDo() + 1) % UtilsGetNotification.getNbrPerDay()]
+                                            [ObjSettingsStudy.getDailySurveyState()]);
+                            int DailySurveyState = ObjSettingsStudy.getDailySurveyState();
+
+                            if (DailySurveyState == 0) {
+                                Log.d(TAG, "No more surveys to trigger for this time slot");
+                                ObjSettingsStudy.setDailySurveyState(UtilsGetNotification.getNbrSurveysPerDay());
+                                ObjSettingsStudy.setDailySurveyDone(true);
+                            } else {
+                                ObjSettingsStudy.setDailySurveyState(DailySurveyState - 1);
+                            }
+
+
+                            startActivity(i);
+                            finish();
+                        } else {
+                            Log.d(TAG, "No more surveys to trigger for this time slot");
+                            ObjSettingsStudy.setDailySurveyState(UtilsGetNotification.getNbrSurveysPerDay());
+                            ObjSettingsStudy.setDailySurveyDone(true);
+                        }
                     }
                     prepareChart(false);
                     textWelcome.setText(getResources().getString(R.string.Betrack_welcome));
@@ -105,7 +130,7 @@ public class ActivityBeTrack extends AppCompatActivity {
                         finish();
 
                     } else if (SettingsStudy.LastDayStudyState.START_SURVEY_DONE == ObjSettingsStudy.getLastDayStudyState()) {
-                        Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
+                        Intent i = new Intent(ActivityBeTrack.this, ActivityStudyEnd.class);
                         startActivity(i);
                         finish();
                     }
@@ -243,7 +268,7 @@ public class ActivityBeTrack extends AppCompatActivity {
     private SpannableString generateCenterSpannableText() {
         SpannableString s;
 
-        int NbrDays = ObjSettingsStudy.getNbrOfNotificationToDo();
+        int NbrDays = ObjSettingsStudy.getNbrOfDaysToDo();
 
         if (NbrDays > 1) {
             String Desc = getResources().getString(R.string.survey_days_left);
@@ -277,7 +302,7 @@ public class ActivityBeTrack extends AppCompatActivity {
     private void setData(boolean endStudy) {
         int[] UsagePerApp = new int[ObjSettingsStudy.getApplicationsToWatch().size()];
         int Done = 0;
-        int NbrNotifications  = ObjSettingsStudy.getNbrOfNotificationToDo();
+        int NbrNotifications  = ObjSettingsStudy.getNbrOfDaysToDo();
         int NbrDays  = ObjSettingsStudy.getStudyDuration();
         float sumUsage = 0;
         float sumOthersAppUsage=0;

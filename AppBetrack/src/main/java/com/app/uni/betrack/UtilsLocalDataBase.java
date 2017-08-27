@@ -220,15 +220,6 @@ public class UtilsLocalDataBase {
     static final String TABLE_END_STUDY = "EndStudy";
     static final String C_ENDSTUDY_ID = BaseColumns._ID;
     static final String C_ENDSTUDY_PID = "ParticipantID";
-    static final String C_ENDSTUDY_RELATIONSHIP = "relationship";
-    static final String C_ENDSTUDY_CONTRACEPTION = "contraception";
-    static final String C_ENDSTUDY_TINDER = "tinder";
-    static final String C_ENDSTUDY_PHONE_USAGE = "phoneusage";
-    static final String C_ENDSTUDY_STUDY1 = "study1";
-    static final String C_ENDSTUDY_STUDY2 = "study2";
-    static final String C_ENDSTUDY_STUDY3 = "study3";
-    static final String C_ENDSTUDY_RESEARCHAPP1 = "researchapp1";
-    static final String C_ENDSTUDY_RESEARCHAPP2 = "researchapp2";
     static final String C_ENDSTUDY_AVERAGE_PERIODICITY = "averageperiodicity";
     static final String C_ENDSTUDY_STD_DEVIATION = "standarddeviation";
     static final String C_ENDSTUDY_BETRACK_KILLED = "betrackkilled";
@@ -238,15 +229,6 @@ public class UtilsLocalDataBase {
 
     public static final ArrayList<String> DB_END_STUDY = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_ENDSTUDY_PID);
-        add(UtilsLocalDataBase.C_ENDSTUDY_RELATIONSHIP);
-        add(UtilsLocalDataBase.C_ENDSTUDY_CONTRACEPTION);
-        add(UtilsLocalDataBase.C_ENDSTUDY_TINDER);
-        add(UtilsLocalDataBase.C_ENDSTUDY_PHONE_USAGE);
-        add(UtilsLocalDataBase.C_ENDSTUDY_STUDY1);
-        add(UtilsLocalDataBase.C_ENDSTUDY_STUDY2);
-        add(UtilsLocalDataBase.C_ENDSTUDY_STUDY3);
-        add(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP1);
-        add(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP2);
         add(UtilsLocalDataBase.C_ENDSTUDY_AVERAGE_PERIODICITY);
         add(UtilsLocalDataBase.C_ENDSTUDY_STD_DEVIATION);
         add(UtilsLocalDataBase.C_ENDSTUDY_BETRACK_KILLED);
@@ -257,15 +239,6 @@ public class UtilsLocalDataBase {
 
     public static final ArrayList<Boolean> DB_END_STUDY_CYPHER = new ArrayList<Boolean>() {{
         add(false); //C_ENDSTUDY_PID
-        add(true);  //C_ENDSTUDY_RELATIONSHIP
-        add(true);  //C_ENDSTUDY_CONTRACEPTION
-        add(true);  //C_ENDSTUDY_TINDER
-        add(true);  //C_ENDSTUDY_PHONE_USAGE
-        add(true);  //C_ENDSTUDY_STUDY1
-        add(true);  //C_ENDSTUDY_STUDY2
-        add(true);  //C_ENDSTUDY_STUDY3
-        add(true);  //C_ENDSTUDY_RESEARCHAPP1
-        add(true);  //C_ENDSTUDY_RESEARCHAPP2
         add(true);  //C_ENDSTUDY_AVERAGE_PERIODICITY
         add(true);  //C_ENDSTUDY_STD_DEVIATION
         add(true);  //C_ENDSTUDY_BETRACK_KILLED
@@ -369,15 +342,6 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql4);
 
             String sql6 = "create table " + TABLE_END_STUDY + " (" + C_ENDSTUDY_ID + " integer primary key autoincrement, "
-                    + C_ENDSTUDY_RELATIONSHIP + " text, "
-                    + C_ENDSTUDY_CONTRACEPTION + " text, "
-                    + C_ENDSTUDY_TINDER + " text, "
-                    + C_ENDSTUDY_PHONE_USAGE + " text, "
-                    + C_ENDSTUDY_STUDY1 + " text, "
-                    + C_ENDSTUDY_STUDY2 + " text, "
-                    + C_ENDSTUDY_STUDY3 + " text, "
-                    + C_ENDSTUDY_RESEARCHAPP1 + " text, "
-                    + C_ENDSTUDY_RESEARCHAPP2 + " text, "
                     + C_ENDSTUDY_AVERAGE_PERIODICITY + " text, "
                     + C_ENDSTUDY_STD_DEVIATION + " text, "
                     + C_ENDSTUDY_BETRACK_KILLED + " text, "

@@ -46,11 +46,22 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
 
         Log.d(TAG, "Received ");
 
-        int NbrOfNotificationDone = ObjSettingsStudy.getNbrOfNotificationToDo();
-        NbrOfNotificationDone--;
-        Log.d(TAG, "NbrOfNotificationDone = " + NbrOfNotificationDone);
-        ObjSettingsStudy.setNbrOfNotificationToDo(NbrOfNotificationDone);
+        int NbrOfNotificationToDo = ObjSettingsStudy.getNbrOfNotificationToDo();
+        NbrOfNotificationToDo--;
+        Log.d(TAG, "NbrOfNotificationDone = " + NbrOfNotificationToDo);
+        ObjSettingsStudy.setNbrOfNotificationToDo(NbrOfNotificationToDo);
 
+        //Check it's the first of the study and te first notification
+        if ( (NbrOfNotificationToDo + 1) != (ObjSettingsStudy.getNbrOfDaysToDo() * UtilsGetNotification.getNbrPerDay()) ) {
+            //It's not so we check if "getNbrPerDay" notifications were done
+            if ((NbrOfNotificationToDo % UtilsGetNotification.getNbrPerDay()) == 0) {
+                //"getNbrPerDay" notifications were done, so one day of the study is over
+                int NbrOfDaysToDo = ObjSettingsStudy.getNbrOfDaysToDo();
+                NbrOfDaysToDo--;
+                Log.d(TAG, "NbrOfDaysToDo = " + NbrOfDaysToDo);
+                ObjSettingsStudy.setNbrOfDaysToDo(NbrOfDaysToDo);
+            }
+        }
 
         if (false == ObjSettingsStudy.getEndSurveyDone()) {
             if (ObjSettingsStudy.getNbrOfNotificationToDo() > 0) {

@@ -53,6 +53,8 @@ public class SettingsStudy {
     static private final String STUDY_DAILY_SURVEY_DONE = "DailySurveyDone";
     static private final String STUDY_STARTDATE_SURVEY = "StartDateSurvey";
     static private final String STUDY_NBR_OF_NOTIFICATION_TO_DO = "NumberOfNotificationDone";
+    static private final String STUDY_DAILY_SURVEY_STATE = "DailySurveyState";
+    static private final String STUDY_NBR_OF_DAYS_TO_DO = "NbrOfDaysToDo";
     static private final String APP_WATCH_START_TIME = "AppWatchStartTime";
     static private final String APP_WATCH_ID = "AppWatchId";
     static private final String STUDY_TIME_NEXT_NOTIFICATION = "TimeNextNotification";
@@ -86,6 +88,7 @@ public class SettingsStudy {
     static private Boolean DailySurveyDone;
     static private String StartDateSurvey;
     static private int NbrOfNotificationToDo;
+    static private int  NbrOfDaysToDo;
     static private long TimeLastTransfer;
     static private long TimeLastGPS;
     static private long AppWatchStartTime;
@@ -96,6 +99,7 @@ public class SettingsStudy {
     static private Boolean BetrackKilled;
     static private long DurationScreenOn;
     static private long StartScreenOn;
+    static private int DailySurveyState;
     static private LastDayStudyState LastDayStudy;
 
     static private Context mContext = null;
@@ -190,6 +194,7 @@ public class SettingsStudy {
             EndSurveyTransferred = EndStudyTranferState.ERROR;
         }
 
+
         int ToBeConvertedLastDayStudy = prefs.getInt(LAST_DAY_STUDY, LastDayStudyState.ALL_SURVEYS_PENDING.ordinal());
 
         if (ToBeConvertedLastDayStudy == LastDayStudyState.ALL_SURVEYS_PENDING.ordinal()) {
@@ -215,6 +220,9 @@ public class SettingsStudy {
         DailySurveyDone = prefs.getBoolean(STUDY_DAILY_SURVEY_DONE, true);
         StartDateSurvey = prefs.getString(STUDY_STARTDATE_SURVEY, null);
         NbrOfNotificationToDo = prefs.getInt(STUDY_NBR_OF_NOTIFICATION_TO_DO, 0);
+        NbrOfDaysToDo = prefs.getInt(STUDY_NBR_OF_DAYS_TO_DO, 0);
+        DailySurveyState = prefs.getInt(STUDY_DAILY_SURVEY_STATE, 0);
+
 
 
         TimeLastTransfer = System.currentTimeMillis();
@@ -802,6 +810,7 @@ public class SettingsStudy {
         }
     }
 
+
     public LastDayStudyState getLastDayStudyState()
     {
         LastDayStudyState ReturnEndLastDayStudyState = LastDayStudyState.END_SURVEY_ERROR;
@@ -828,7 +837,6 @@ public class SettingsStudy {
             Log.d(TAG, "Error during acquiring SemSettingsStudy");
         }
     }
-
 
     public EndStudyTranferState getEndSurveyTransferred()
     {
@@ -1129,6 +1137,61 @@ public class SettingsStudy {
             SemSettingsStudy.acquire();
             NbrOfNotificationToDo = nbrofnotification;
             editor.putInt(STUDY_NBR_OF_NOTIFICATION_TO_DO, NbrOfNotificationToDo);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+
+    public int getNbrOfDaysToDo()
+    {
+        int ReturnNbrOfDaysToDo = 0;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnNbrOfDaysToDo = NbrOfDaysToDo;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnNbrOfDaysToDo = 0;
+        } finally {
+            return ReturnNbrOfDaysToDo;
+        }
+    }
+
+    public void setNbrOfDaysToDo(int nbrofdays)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            NbrOfDaysToDo = nbrofdays;
+            editor.putInt(STUDY_NBR_OF_DAYS_TO_DO, NbrOfDaysToDo);
+            editor.commit();
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            Log.d(TAG, "Error during acquiring SemSettingsStudy");
+        }
+    }
+
+    public int getDailySurveyState()
+    {
+        int ReturnDailySurveyState = 0;
+        try {
+            SemSettingsStudy.acquire();
+            ReturnDailySurveyState = DailySurveyState;
+            SemSettingsStudy.release();
+        } catch (Exception e) {
+            ReturnDailySurveyState = 0;
+        } finally {
+            return ReturnDailySurveyState;
+        }
+    }
+
+    public void setDailySurveyState(int dailysurveystate)
+    {
+        try {
+            SemSettingsStudy.acquire();
+            DailySurveyState = dailysurveystate;
+            editor.putInt(STUDY_DAILY_SURVEY_STATE, DailySurveyState);
             editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {
