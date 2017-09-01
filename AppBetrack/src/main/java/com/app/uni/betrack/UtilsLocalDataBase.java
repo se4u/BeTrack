@@ -49,71 +49,100 @@ public class UtilsLocalDataBase {
         add(true); //C_APPWATCH_TIMESTOP
     }};
 
-    //Table for period, libido... follow up
+    //Table for daily status
     static final String TABLE_DAILYSTATUS = "DailyStatus";
     static final String C_DAILYSTATUS_ID = BaseColumns._ID;
     static final String C_DAILYSTATUS_PID = "ParticipantID";
-    static final String C_DAILYSTATUS_PERIOD = "Period";
-    static final String C_DAILYSTATUS_SOCIAL1_LIFE = "SocialLife1";
-    static final String C_DAILYSTATUS_SOCIAL2_LIFE = "SocialLife2";
-    static final String C_DAILYSTATUS_MOOD1 = "Mood1";
-    static final String C_DAILYSTATUS_MOOD2 = "Mood2";
-    static final String C_DAILYSTATUS_MOOD3 = "Mood3";
-    static final String C_DAILYSTATUS_MOOD4 = "Mood4";
+    static final String C_DAILYSTATUS_MOOD = "Mood";
+    static final String C_DAILYSTATUS_SOCIAL = "Social";
+    static final String C_DAILYSTATUS_BORED = "Bored";
+    static final String C_DAILYSTATUS_RELAXED = "Relaxed";
+    static final String C_DAILYSTATUS_INTERACT = "Interact";
+    static final String C_DAILYSTATUS_USED_SOCIAL = "UsedSocial";
+    static final String C_DAILYSTATUS_SOCIAL_COMPUTER = "SocialComputer";
+    static final String C_DAILYSTATUS_WHICH_WEBSITES = "WhichWebsite";
+    static final String C_DAILYSTATUS_ACTIVELY = "Actively";
     static final String C_DAILYSTATUS_DATE = "Date";
     static final String C_DAILYSTATUS_TIME = "Time";
 
 
     public static final ArrayList<String> DB_DAILYSTATUS = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_DAILYSTATUS_PID);
-        add(UtilsLocalDataBase.C_DAILYSTATUS_PERIOD);
-        add(UtilsLocalDataBase.C_DAILYSTATUS_SOCIAL1_LIFE);
-        add(UtilsLocalDataBase.C_DAILYSTATUS_SOCIAL2_LIFE);
-        add(UtilsLocalDataBase.C_DAILYSTATUS_MOOD1);
-        add(UtilsLocalDataBase.C_DAILYSTATUS_MOOD2);
-        add(UtilsLocalDataBase.C_DAILYSTATUS_MOOD3);
-        add(UtilsLocalDataBase.C_DAILYSTATUS_MOOD4);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_MOOD);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_SOCIAL);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_BORED);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_RELAXED);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_INTERACT);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_USED_SOCIAL);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_SOCIAL_COMPUTER);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_WHICH_WEBSITES);
+        add(UtilsLocalDataBase.C_DAILYSTATUS_ACTIVELY);
         add(UtilsLocalDataBase.C_DAILYSTATUS_DATE);
         add(UtilsLocalDataBase.C_DAILYSTATUS_TIME);
     }};
 
     public static final ArrayList<Boolean> DB_DAILYSTATUS_CYPHER = new ArrayList<Boolean>() {{
         add(false); //C_DAILYSTATUS_PID
-        add(true);  //C_DAILYSTATUS_PERIOD
-        add(true);  //C_DAILYSTATUS_SOCIAL1_LIFE
-        add(true);  //C_DAILYSTATUS_SOCIAL2_LIFE
-        add(true);  //C_DAILYSTATUS_MOOD1
-        add(true);  //C_DAILYSTATUS_MOOD2
-        add(true);  //C_DAILYSTATUS_MOOD3
-        add(true);  //C_DAILYSTATUS_MOOD4
+        add(true);  //C_DAILYSTATUS_MOOD
+        add(true);  //C_DAILYSTATUS_SOCIAL
+        add(true);  //C_DAILYSTATUS_BORED
+        add(true);  //C_DAILYSTATUS_RELAXED
+        add(true);  //C_DAILYSTATUS_INTERACT
+        add(true);  //C_DAILYSTATUS_USED_SOCIAL
+        add(true);  //C_DAILYSTATUS_SOCIAL_COMPUTER
+        add(true);  //C_DAILYSTATUS_WHICH_WEBSITES
+        add(true);  //C_DAILYSTATUS_ACTIVELY
         add(true); //C_DAILYSTATUS_DATE
         add(true); //C_DAILYSTATUS_TIME
     }};
 
-    //Table for GPS data
-    static final String TABLE_GPS = "GpsFollowUp";
-    static final String C_GPS_ID = BaseColumns._ID;
-    static final String C_GPS_PID = "ParticipantID";
-    static final String C_GPS_LATTITUDE = "Lattitude";
-    static final String C_GPS_LONGITUDE = "Longitude";
-    static final String C_GPS_DATE = "Date";
-    static final String C_GPS_TIME = "Time";
+    //Table for daily sleep status
+    static final String TABLE_SLEEPSTATUS = "SleepStatus";
+    static final String C_SLEEPSTATUS_ID = BaseColumns._ID;
+    static final String C_SLEEPSTATUS_PID = "ParticipantID";
+    static final String C_SLEEPSTATUS_TIME_TO_BED = "TimeToBed";
+    static final String C_SLEEPSTATUS_TIME_TO_SLEEP = "TimeToSleep";
+    static final String C_SLEEPSTATUS_FALL_ASLEEP = "FallAsleep";
+    static final String C_SLEEPSTATUS_HOWM_WAKEUP = "HowManyWakeUp";
+    static final String C_SLEEPSTATUS_HOWL_WAKEUP = "HowLongWakeUp";
+    static final String C_SLEEPSTATUS_WHAT_TIME_AWAKE = "WhatTimeLastAwaking";
+    static final String C_SLEEPSTATUS_WHAT_TIME_OUT = "WhatTimeOutBed";
+    static final String C_SLEEPSTATUS_QUALITY_SLEEP = "QualitySleep";
+    static final String C_SLEEPSTATUS_COMMENTS = "Comments";
+    static final String C_SLEEPSTATUS_DATE = "Date";
+    static final String C_SLEEPSTATUS_TIME = "Time";
 
-    public static final ArrayList<String> DB_GPS = new ArrayList<String>() {{
-        add(UtilsLocalDataBase.C_GPS_PID);
-        add(UtilsLocalDataBase.C_GPS_LATTITUDE);
-        add(UtilsLocalDataBase.C_GPS_LONGITUDE);
-        add(UtilsLocalDataBase.C_GPS_DATE);
-        add(UtilsLocalDataBase.C_GPS_TIME);
+
+    public static final ArrayList<String> DB_SLEEPSTATUS = new ArrayList<String>() {{
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_PID);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_TIME_TO_BED);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_TIME_TO_SLEEP);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_FALL_ASLEEP);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_HOWM_WAKEUP);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_HOWL_WAKEUP);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_WHAT_TIME_AWAKE);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_WHAT_TIME_OUT);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_QUALITY_SLEEP);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_COMMENTS);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_DATE);
+        add(UtilsLocalDataBase.C_SLEEPSTATUS_TIME);
     }};
 
-    public static final ArrayList<Boolean> DB_GPS_CYPHER = new ArrayList<Boolean>() {{
-        add(false); //C_GPS_PID
-        add(true);  //C_GPS_LATTITUDE
-        add(true);  //C_GPS_LONGITUDE
-        add(true); //C_GPS_DATE
-        add(true); //C_GPS_TIME
+    public static final ArrayList<Boolean> DB_SLEEPSTATUS_CYPHER = new ArrayList<Boolean>() {{
+        add(false); //C_SLEEPSTATUS_PID
+        add(true);  //C_SLEEPSTATUS_TIME_TO_BED
+        add(true);  //C_SLEEPSTATUS_TIME_TO_SLEEP
+        add(true);  //C_SLEEPSTATUS_FALL_ASLEEP
+        add(true);  //C_SLEEPSTATUS_HOWM_WAKEUP
+        add(true);  //C_SLEEPSTATUS_HOWL_WAKEUP
+        add(true);  //C_SLEEPSTATUS_WHAT_TIME_AWAKE
+        add(true);  //C_SLEEPSTATUS_WHAT_TIME_OUT
+        add(true);  //C_SLEEPSTATUS_QUALITY_SLEEP
+        add(true);  //C_SLEEPSTATUS_COMMENTS
+        add(true); //C_SLEEPSTATUS_DATE
+        add(true); //C_SLEEPSTATUS_TIME
     }};
+
 
     //Table for Status study
     static final String TABLE_SESSION_KEY = "SessionKey";
@@ -295,13 +324,15 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql);
 
             String sql2 = "create table " + TABLE_DAILYSTATUS + " (" + C_DAILYSTATUS_ID + " integer primary key autoincrement, "
-                    + C_DAILYSTATUS_PERIOD + " text, "
-                    + C_DAILYSTATUS_SOCIAL1_LIFE + " text, "
-                    + C_DAILYSTATUS_SOCIAL2_LIFE + " text, "
-                    + C_DAILYSTATUS_MOOD1 + " text, "
-                    + C_DAILYSTATUS_MOOD2 + " text, "
-                    + C_DAILYSTATUS_MOOD3 + " text, "
-                    + C_DAILYSTATUS_MOOD4 + " text, "
+                    + C_DAILYSTATUS_MOOD + " text, "
+                    + C_DAILYSTATUS_SOCIAL + " text, "
+                    + C_DAILYSTATUS_BORED + " text, "
+                    + C_DAILYSTATUS_RELAXED + " text, "
+                    + C_DAILYSTATUS_INTERACT + " text, "
+                    + C_DAILYSTATUS_USED_SOCIAL + " text, "
+                    + C_DAILYSTATUS_SOCIAL_COMPUTER + " text, "
+                    + C_DAILYSTATUS_WHICH_WEBSITES + " text, "
+                    + C_DAILYSTATUS_ACTIVELY + " text, "
                     + C_DAILYSTATUS_DATE + " text, "
                     + C_DAILYSTATUS_TIME + " text)"; //
             db.execSQL(sql2);
@@ -333,11 +364,19 @@ public class UtilsLocalDataBase {
             db.execSQL(sql3);
             Log.d(TAG, "onCreated sql: " + sql3);
 
-            String sql4 = "create table " + TABLE_GPS + " (" + C_GPS_ID + " integer primary key autoincrement, "
-                    +  C_GPS_LATTITUDE + " text, "
-                    + C_GPS_LONGITUDE + " text, "
-                    + C_GPS_DATE + " text, "
-                    + C_GPS_TIME + " text)"; //
+            String sql4 = "create table " + TABLE_SLEEPSTATUS + " (" + C_SLEEPSTATUS_ID + " integer primary key autoincrement, "
+                    +  C_SLEEPSTATUS_PID + " text, "
+                    + C_SLEEPSTATUS_TIME_TO_BED + " text, "
+                    + C_SLEEPSTATUS_TIME_TO_SLEEP + " text, "
+                    + C_SLEEPSTATUS_FALL_ASLEEP + " text, "
+                    + C_SLEEPSTATUS_HOWM_WAKEUP + " text, "
+                    + C_SLEEPSTATUS_HOWL_WAKEUP + " text, "
+                    + C_SLEEPSTATUS_WHAT_TIME_AWAKE + " text, "
+                    + C_SLEEPSTATUS_WHAT_TIME_OUT + " text, "
+                    + C_SLEEPSTATUS_QUALITY_SLEEP + " text, "
+                    + C_SLEEPSTATUS_COMMENTS + " text, "
+                    + C_SLEEPSTATUS_DATE + " text, "
+                    + C_SLEEPSTATUS_TIME + " text)"; //
             db.execSQL(sql4);
             Log.d(TAG, "onCreated sql: " + sql4);
 
@@ -377,7 +416,7 @@ public class UtilsLocalDataBase {
 
             db.execSQL("drop table if exists " + TABLE_START_STUDY); // drops the old database
 
-            db.execSQL("drop table if exists " + TABLE_GPS); // drops the old database
+            db.execSQL("drop table if exists " + TABLE_SLEEPSTATUS); // drops the old database
 
             db.execSQL("drop table if exists " + TABLE_END_STUDY); // drops the old database
 

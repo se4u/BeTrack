@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <com.app.uni.betrack.UtilsHandWritingTextView
+        android:layout_width="fill_parent"
+        android:layout_height="90dp"
+        android:id="@+id/survey_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center|top"
+        android:paddingTop="30dp"
+        android:background="@color/colorLightGrey"
+        android:layout_margin="0dp"
+        android:text="Title test"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:id="@+id/survey_desc"
+        android:layout_height="wrap_content"
+        android:paddingTop="20sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:textSize="@dimen/test_description_font_size"
+        android:textColor="@color/colorGrey"
+        android:gravity="center"
+        android:text="Description test"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <CheckBox android:id="@+id/checkbox_1"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/survey_10choices_rbSize"
+            android:text="Caucasian"/>
+        <CheckBox android:id="@+id/checkbox_2"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/survey_10choices_rbSize"
+            android:text="Hispanic/Latino"/>
+        <CheckBox android:id="@+id/checkbox_3"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/survey_10choices_rbSize"
+            android:text="African"/>
+        <CheckBox android:id="@+id/checkbox_4"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/survey_10choices_rbSize"
+            android:text="East Asian (e.g., Chinese, Japanese, or Korean)"/>
+        <CheckBox android:id="@+id/checkbox_5"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/survey_10choices_rbSize"
+            android:text="Southeast Asian (e.g., Vietnamese, Filipino)"/>
+        <CheckBox android:id="@+id/checkbox_6"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/survey_10choices_rbSize"
+            android:text="South Asian (e.g., Indian)"/>
+        <CheckBox android:id="@+id/checkbox_7"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/survey_10choices_rbSize"
+            android:text="Middle Eastern (e.g., Persian)"/>
+        <CheckBox android:id="@+id/checkbox_8"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/survey_10choices_rbSize"
+            android:text="Aboriginal"/>
+        <CheckBox android:id="@+id/checkbox_9"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/survey_10choices_rbSize"
+            android:text="Other"/>
+        <CheckBox android:id="@+id/checkbox_10"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/survey_10choices_rbSize"
+            android:text="Other"/>
+    </LinearLayout>
+</LinearLayout>

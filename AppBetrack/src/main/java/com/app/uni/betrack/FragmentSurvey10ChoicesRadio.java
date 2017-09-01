@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by cevincent on 17/01/2017.
  */
 
-public class FragmentSurvey10Choices extends AbstractStep {
+public class FragmentSurvey10ChoicesRadio extends AbstractStep {
 
     //Output
     public  static final String SURVEY_STATUS = "SURVEY_STATUS";
@@ -35,13 +35,13 @@ public class FragmentSurvey10Choices extends AbstractStep {
     private TextView Title;
     private TextView Description;
     private Bundle bundle;
-    private ArrayList<Integer>  NextStep;
+    private ArrayList<Integer>  NextStep = null;
     private View v;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.survey_10choices, container, false);
+        v = inflater.inflate(R.layout.survey_10choicesradio, container, false);
         int NbrRbVisible = 0;
 
         Title = (TextView) v.findViewById(R.id.survey_title);

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
+import java.util.ArrayList;
+
 /**
  * Created by cedoctet on 12/09/2016.
  */
@@ -44,6 +46,9 @@ public class FragmentSurveyScrolling extends AbstractStep {
     public static final String SURVEY_SCROLLING_TITLE = "SURVEY_SCROLLING_TITLE";
     public static final String SURVEY_SCROLLING_DESC = "SURVEY_SCROLLING_DESC";
 
+    public static final String SURVEY_SCROLLING_ENABLE_NEXT_STEP = "SURVEY_SCROLLING_ENABLE_NEXT_STEP";
+    public static final String SURVEY_SCROLLING_ENABLE_NEXT_STEP_TRIGGER = "SURVEY_SCROLLING_ENABLE_NEXT_STEP_TRIGGER";
+
     public static final String SURVEY_SCROLLING_PRE_UNIT_1 = "SURVEY_SCROLLING_PRE_UNIT_1";
     public static final String SURVEY_SCROLLING_POST_UNIT_1 = "SURVEY_SCROLLING_POST_UNIT_1";
     public static final String SURVEY_SCROLLING_START_RANGE_1 = "SURVEY_SCROLLING_START_RANGE_1";
@@ -62,6 +67,9 @@ public class FragmentSurveyScrolling extends AbstractStep {
     public static final String SURVEY_SCROLLING_DEFAULT_VALUE_2 = "SURVEY_SCROLLING_DEFAULT_VALUE_2";
     public static final String SURVEY_SCROLLING_VAL_INC_2 = "SURVEY_SCROLLING_VAL_INC_2";
 
+    private ArrayList<Integer> NextStepTrigger = null;
+    private ArrayList<Integer> NextStep = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.survey_scrolling, container, false);
@@ -69,6 +77,9 @@ public class FragmentSurveyScrolling extends AbstractStep {
         bundle = this.getArguments();
         String SurveyTitle = bundle.getString(SURVEY_SCROLLING_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_SCROLLING_DESC, null);
+
+        NextStep = bundle.getIntegerArrayList(SURVEY_SCROLLING_ENABLE_NEXT_STEP);
+        NextStepTrigger = bundle.getIntegerArrayList(SURVEY_SCROLLING_ENABLE_NEXT_STEP_TRIGGER);
 
         SurveyPreUnit1 = bundle.getString(SURVEY_SCROLLING_PRE_UNIT_1, "");
         SurveyPostUnit1 = bundle.getString(SURVEY_SCROLLING_POST_UNIT_1, "");
@@ -97,6 +108,8 @@ public class FragmentSurveyScrolling extends AbstractStep {
         if (SurveyMinTxt2 != null) {AdditionnalSpace2++;}
         if (SurveyMaxTxt2 != null) {AdditionnalSpace2++;}
 
+        counterValue = SurveyStartRange1;
+        SurveyStartRange1 = (int)Math.ceil((double)SurveyStartRange1 / ValInc1);
         SurveyEndRange1 = (int)Math.ceil((double)SurveyEndRange1 / ValInc1);
 
         String[] arrayPicker1= new String[SurveyEndRange1-SurveyStartRange1 + AdditionnalSpace1];
@@ -105,7 +118,7 @@ public class FragmentSurveyScrolling extends AbstractStep {
             OffsetSurveyMin1 = 1;
             arrayPicker1[0] = SurveyMinTxt1;
         }
-        counterValue = SurveyStartRange1;
+
         for(int i=SurveyStartRange1;i<SurveyEndRange1;i++) {
             arrayPicker1[i-SurveyStartRange1+OffsetSurveyMin1] = SurveyPreUnit1 + counterValue + SurveyPostUnit1;
             counterValue += ValInc1;
@@ -115,10 +128,11 @@ public class FragmentSurveyScrolling extends AbstractStep {
             arrayPicker1[SurveyEndRange1-SurveyStartRange1+OffsetSurveyMin1] = SurveyMaxTxt1;
         }
 
+        counterValue = SurveyStartRange2;
+        SurveyStartRange2 = (int)Math.ceil((double)SurveyStartRange2 / ValInc2);
         SurveyEndRange2 = (int)Math.ceil((double)SurveyEndRange2 / ValInc2);
 
         String[] arrayPicker2= new String[SurveyEndRange2-SurveyStartRange2 + AdditionnalSpace2];
-        counterValue = SurveyStartRange2;
         if (SurveyEndRange2 != SurveyStartRange2) {
             if (SurveyMinTxt2 != null) {
                 OffsetSurveyMin2 = 1;
@@ -153,7 +167,13 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
         pickers1.setWrapSelectorWheel(false);
         if (SurveyStatus1 == -1) {
-            pickers1.setValue(SurveyDefaultValue1 + OffsetSurveyMin1);
+
+            if (SurveyDefaultValue1 == 0) {
+                pickers1.setValue(0);
+            } else {
+                pickers1.setValue(SurveyDefaultValue1 + OffsetSurveyMin1);
+            }
+
             SurveyStatus1 = SurveyStartRange1 + SurveyDefaultValue1 + OffsetSurveyMin1;
             mStepper.getExtras().putInt(SURVEY_STATUS1, SurveyStatus1);
             bundle.putInt(SURVEY_STATUS1, SurveyStatus1);
@@ -175,7 +195,13 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
             pickers2.setWrapSelectorWheel(false);
             if (SurveyStatus2 == -1) {
-                pickers2.setValue(SurveyDefaultValue2 + OffsetSurveyMin2);
+
+                if (SurveyDefaultValue2 == 0) {
+                    pickers2.setValue(0);
+                } else {
+                    pickers2.setValue(SurveyDefaultValue2 + OffsetSurveyMin2);
+                }
+
                 SurveyStatus2 = SurveyStartRange2 + SurveyDefaultValue2 + OffsetSurveyMin2;
                 mStepper.getExtras().putInt(SURVEY_STATUS2, SurveyStatus2);
                 bundle.putInt(SURVEY_STATUS2, SurveyStatus2);
@@ -218,18 +244,33 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
     @Override
     public void onNext() {
-        int pos = pickers1.getValue();
-        SurveyStatus1 = SurveyStartRange1 + pos - OffsetSurveyMin1;
+        int pos1 = pickers1.getValue();
+        int pos2 = pickers2.getValue();
+        SurveyStatus1 = SurveyStartRange1 + pos1 - OffsetSurveyMin1;
         mStepper.getExtras().putInt(SURVEY_STATUS1, SurveyStatus1);
         bundle.putInt(SURVEY_STATUS1, SurveyStatus1);
         if (SurveyEndRange2 != SurveyStartRange2) {
-            pos = pickers2.getValue();
-            SurveyStatus2 = SurveyStartRange2 + pos - OffsetSurveyMin2;
+            SurveyStatus2 = SurveyStartRange2 + pos2 - OffsetSurveyMin2;
             mStepper.getExtras().putInt(SURVEY_STATUS2, SurveyStatus2);
             bundle.putInt(SURVEY_STATUS2, SurveyStatus2);
         }
         System.out.println("onNext");
-        setVisibilityNextStep(true, 1);
+        if (NextStep != null) {
+            if ((pos1 > NextStepTrigger.get(0)) &&
+                    (pos2 > NextStepTrigger.get(1)))
+            {
+                //Make it visible
+                setVisibilityNextStep(true, NextStep.get(0));
+            } else {
+                //Check if the next step is visible
+                if (getVisibilityNextStep(NextStep.get(0)) == true) {
+                    //Make it invisible
+                    setVisibilityNextStep(false, 1);
+                }
+            }
+        } else {
+            setVisibilityNextStep(true, 1);
+        }
     }
 
     @Override

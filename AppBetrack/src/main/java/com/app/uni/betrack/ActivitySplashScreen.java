@@ -22,6 +22,10 @@ public class ActivitySplashScreen extends AppCompatActivity {
     private SettingsBetrack ObjSettingsBetrack = null;
 
     @Override
+    public void onBackPressed() {
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         StartBetrack();

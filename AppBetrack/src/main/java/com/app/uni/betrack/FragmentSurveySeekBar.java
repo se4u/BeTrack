@@ -34,8 +34,14 @@ public class FragmentSurveySeekBar extends AbstractStep {
     public static final String SURVEY_SEEKBAR_CHOICES_DESC = "SURVEY_SEEKBAR_CHOICES_DESC";
     public static final String SURVEY_SEEKBAR_ANSWERS_RIGHT = "SURVEY_SEEKBAR_ANSWERS_RIGHT";
     public static final String SURVEY_SEEKBAR_ANSWERS_LEFT = "SURVEY_SEEKBAR_ANSWERS_LEFT";
+    public static final String SURVEY_SEEKBAR_ENABLE_NEXT_STEP = "SURVEY_SEEKBAR_ENABLE_NEXT_STEP";
+    public static final String SURVEY_SEEKBAR_ENABLE_NEXT_STEP_TRIGGER = "SURVEY_SEEKBAR_ENABLE_NEXT_STEP_TRIGGER";
 
     private static final int SURVEY_SEEKBAR_MAX = 4;
+    private static final int SURVEY_SEEKBAR_DEFAULT_VALUE = 50;
+
+    private ArrayList<Integer> NextStepTrigger = null;
+    private ArrayList<Integer> NextStep = null;
 
     private TextView Title;
     private TextView Description;
@@ -47,6 +53,7 @@ public class FragmentSurveySeekBar extends AbstractStep {
     private Bundle bundle;
     TextView[] seekBarTextRight = new TextView[SURVEY_SEEKBAR_MAX];
     TextView[] seekBarTextLeft = new TextView[SURVEY_SEEKBAR_MAX];
+    TextView[] seekBarPercentage = new TextView[SURVEY_SEEKBAR_MAX];
     View[] seekBarView = new View[SURVEY_SEEKBAR_MAX];
 
 
@@ -76,6 +83,11 @@ public class FragmentSurveySeekBar extends AbstractStep {
         seekBar3 = (SeekBar) v.findViewById(R.id.volume_bar3);
         seekBar4 = (SeekBar) v.findViewById(R.id.volume_bar4);
 
+        seekBarPercentage[0] = (TextView) v.findViewById(R.id.survey_percentage1);
+        seekBarPercentage[1] = (TextView) v.findViewById(R.id.survey_percentage2);
+        seekBarPercentage[2] = (TextView) v.findViewById(R.id.survey_percentage3);
+        seekBarPercentage[3] = (TextView) v.findViewById(R.id.survey_percentage4);
+
         seekBarTextRight[0] = (TextView) v.findViewById(R.id.TextInfoRight1);
         seekBarTextRight[1] = (TextView) v.findViewById(R.id.TextInfoRight2);
         seekBarTextRight[2] = (TextView) v.findViewById(R.id.TextInfoRight3);
@@ -96,6 +108,8 @@ public class FragmentSurveySeekBar extends AbstractStep {
         String SurveyDescription = bundle.getString(SURVEY_SEEKBAR_CHOICES_DESC, null);
         ArrayList<String> SeekBarTextRight = bundle.getStringArrayList(SURVEY_SEEKBAR_ANSWERS_RIGHT);
         ArrayList<String> SeekBarTextLeft = bundle.getStringArrayList(SURVEY_SEEKBAR_ANSWERS_LEFT);
+        NextStep = bundle.getIntegerArrayList(SURVEY_SEEKBAR_ENABLE_NEXT_STEP);
+        NextStepTrigger = bundle.getIntegerArrayList(SURVEY_SEEKBAR_ENABLE_NEXT_STEP_TRIGGER);
 
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
@@ -114,42 +128,47 @@ public class FragmentSurveySeekBar extends AbstractStep {
         while (NbrTextVisible < SURVEY_SEEKBAR_MAX)
         {
             seekBarView[NbrTextVisible].setVisibility(View.INVISIBLE);
+            seekBarPercentage[NbrTextVisible].setVisibility(View.INVISIBLE);
             NbrTextVisible++;
         }
 
 
         if (SurveyStatus1 != -1) {
             seekBar1.setProgress(SurveyStatus1);
+            seekBarPercentage[0].setText(Integer.toString(SurveyStatus1));
         } else {
-            seekBar1.setProgress(50);
-            SurveyStatus1 = 50;
+            seekBar1.setProgress(SURVEY_SEEKBAR_DEFAULT_VALUE);
+            SurveyStatus1 = SURVEY_SEEKBAR_DEFAULT_VALUE;
             mStepper.getExtras().putInt(SURVEY_STATUS1, SurveyStatus1);
             bundle.putInt(SURVEY_STATUS1, SurveyStatus1);
         }
 
         if (SurveyStatus2 != -1) {
             seekBar2.setProgress(SurveyStatus2);
+            seekBarPercentage[1].setText(Integer.toString(SurveyStatus2));
         } else {
-            seekBar2.setProgress(50);
-            SurveyStatus2 = 50;
+            seekBar2.setProgress(SURVEY_SEEKBAR_DEFAULT_VALUE);
+            SurveyStatus2 = SURVEY_SEEKBAR_DEFAULT_VALUE;
             mStepper.getExtras().putInt(SURVEY_STATUS2, SurveyStatus2);
             bundle.putInt(SURVEY_STATUS2, SurveyStatus2);
         }
 
         if (SurveyStatus3 != -1) {
             seekBar3.setProgress(SurveyStatus3);
+            seekBarPercentage[2].setText(Integer.toString(SurveyStatus3));
         } else {
-            seekBar3.setProgress(50);
-            SurveyStatus3 = 50;
+            seekBar3.setProgress(SURVEY_SEEKBAR_DEFAULT_VALUE);
+            SurveyStatus3 = SURVEY_SEEKBAR_DEFAULT_VALUE;
             mStepper.getExtras().putInt(SURVEY_STATUS3, SurveyStatus3);
             bundle.putInt(SURVEY_STATUS3, SurveyStatus3);
         }
 
         if (SurveyStatus4 != -1) {
             seekBar4.setProgress(SurveyStatus4);
+            seekBarPercentage[3].setText(Integer.toString(SurveyStatus4));
         } else {
-            seekBar4.setProgress(50);
-            SurveyStatus4 = 50;
+            seekBar4.setProgress(SURVEY_SEEKBAR_DEFAULT_VALUE);
+            SurveyStatus4 = SURVEY_SEEKBAR_DEFAULT_VALUE;
             mStepper.getExtras().putInt(SURVEY_STATUS4, SurveyStatus4);
             bundle.putInt(SURVEY_STATUS4, SurveyStatus4);
         }
@@ -170,6 +189,7 @@ public class FragmentSurveySeekBar extends AbstractStep {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 SurveyStatus1 = progress;
                 mStepper.getExtras().putInt(SURVEY_STATUS1, SurveyStatus1);
+                seekBarPercentage[0].setText(Integer.toString(progress));
                 bundle.putInt(SURVEY_STATUS1, SurveyStatus1);
             }
         });
@@ -190,6 +210,7 @@ public class FragmentSurveySeekBar extends AbstractStep {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 SurveyStatus2 = progress;
                 mStepper.getExtras().putInt(SURVEY_STATUS2, SurveyStatus2);
+                seekBarPercentage[1].setText(Integer.toString(progress));
                 bundle.putInt(SURVEY_STATUS2, SurveyStatus2);
             }
         });
@@ -210,6 +231,7 @@ public class FragmentSurveySeekBar extends AbstractStep {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 SurveyStatus3 = progress;
                 mStepper.getExtras().putInt(SURVEY_STATUS3, SurveyStatus3);
+                seekBarPercentage[2].setText(Integer.toString(progress));
                 bundle.putInt(SURVEY_STATUS3, SurveyStatus3);
             }
         });
@@ -230,6 +252,7 @@ public class FragmentSurveySeekBar extends AbstractStep {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 SurveyStatus4 = progress;
                 mStepper.getExtras().putInt(SURVEY_STATUS4, SurveyStatus4);
+                seekBarPercentage[3].setText(Integer.toString(progress));
                 bundle.putInt(SURVEY_STATUS4, SurveyStatus4);
             }
         });
@@ -264,7 +287,25 @@ public class FragmentSurveySeekBar extends AbstractStep {
     @Override
     public void onNext() {
         System.out.println("onNext");
-        setVisibilityNextStep(true, 1);
+        if (NextStep != null) {
+            if ((SurveyStatus1 > NextStepTrigger.get(0)) &&
+                (SurveyStatus2 > NextStepTrigger.get(1)) &&
+                (SurveyStatus3 > NextStepTrigger.get(2)) &&
+                (SurveyStatus4 > NextStepTrigger.get(3)))
+            {
+                //Make it visible
+                setVisibilityNextStep(true, NextStep.get(0));
+            } else {
+                //Check if the next step is visible
+                if (getVisibilityNextStep(NextStep.get(0)) == true) {
+                    //Make it invisible
+                    setVisibilityNextStep(false, 1);
+                }
+            }
+        } else {
+            setVisibilityNextStep(true, 1);
+        }
+
     }
 
     @Override

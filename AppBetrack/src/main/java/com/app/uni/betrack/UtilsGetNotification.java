@@ -20,7 +20,7 @@ public class UtilsGetNotification {
 
     public static Class<?>[][]  ListSurveys = new Class<?>[][] {
             //"09:30:00","13:00:00"
-            {ActivitySurveyDaily.class,ActivitySurveySleep.class}, //First time period: 3 mod 3 =0
+            {ActivitySurveySleep.class, ActivitySurveyDaily.class}, //First time period: 3 mod 3 =0
             //"17:30:00","21:00:00"
             {null, ActivitySurveyDaily.class}, //Third time period: 1 mod 3 = 1
             //"13:30:00","17:00:00"

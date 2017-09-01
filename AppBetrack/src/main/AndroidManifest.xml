@@ -73,9 +73,10 @@
         <activity android:name=".ActivitySettings" android:screenOrientation="portrait"/>
         <activity android:name=".ActivitySurveyStart" android:screenOrientation="portrait"/>
         <activity android:name=".ActivitySurveyDaily" android:screenOrientation="portrait"/>
-        <activity android:name=".ActivitySurveyEnd" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityStudyEnd" android:screenOrientation="portrait"/>
         <activity android:name=".ActivityStartStudy" android:screenOrientation="portrait"/>
         <activity android:name=".ActivitySetupBetrack" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivitySurveySleep" android:screenOrientation="portrait"/>
         <activity android:name=".ActivityInternetConnectivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".ActivityDummy"

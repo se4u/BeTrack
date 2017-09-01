@@ -27,11 +27,6 @@
     </string>
     <string name="study_agree">I agree to participate in this research.</string>
 
-    <!-- reminder study -->
-    <string name="study_reminder">REMINDER</string>
-    <string name="study_reminder_question">From tomorrow on you will be notified every day to fill in a survey </string>
-
-
     <!-- Network error -->
         <string name="network_error_title">Network connection error</string>
         <string name="network_title_in_progress">Network connection</string>
@@ -59,7 +54,7 @@
     <string name="welcome_wait">Please wait...</string>
 
     <!-- Study main screen -->
-    <string name="Betrack_welcome">Thank you for participating and see you again tomorrow!</string>
+    <string name="Betrack_welcome">Thank you for participating and see you soon!</string>
     <string name="Betrack_info_start">Days remaining:</string>
     <string name="Betrack_start">Thank you for setting up the app! The daily surveys will start tomorrow.</string>
     <string name="Betrack_end">Thank you for your participation in the study. Please contact us at: smartphonestudy@psych.ubc.ca </string>
@@ -126,7 +121,7 @@
 
     <!-- notification -->
     <string name="notification_title">BeTrack</string>
-    <string name="notification_desc">Please fill in our little daily survey</string>
+    <string name="notification_desc">Please fill in our little survey</string>
     <string name="notification_running">Betrack is running</string>
 
     <!-- Huawei protected app -->
@@ -151,6 +146,7 @@
     <string name="survey_days">\u0020days</string>
     <string name="survey_hours">\u0020hour(s)</string>
     <string name="survey_minutes">\u0020minute(s)</string>
+    <string name="survey_times">\u0020time(s)</string>
     <string name="survey_days_left">days left</string>
     <string name="survey_day_left">day left</string>
 
@@ -257,93 +253,99 @@
     <string name="question_ss_screen20">When do you expect your next period to start? Please provide an exact date if possible:</string>
 
     <!-- Daily survey -->
-    <!-- Screen 1 (Period) -->
-    <string name="title_sd_screen1">Period</string>
-    <string name="question_sd_screen1">Are you on your period today?</string>
+    <!-- Screen 1 (Daily Survey) -->
+    <string name="title_sd_screen1">Daily Survey</string>
+    <string name="question_sd_screen1">How do you feel right now?</string>
+    <string name="option1_sd_screen1">very positive</string>
+    <string name="option2_sd_screen1">very negative</string>
 
-    <!-- Screen 2 (Clothes) -->
-    <string name="title_sd_screen2">Clothes</string>
-    <string name="question_sd_screen2">Which are the dominant colors of the shirt/ dress you are wearing (max. 3)?</string>
+    <!-- Screen 2 (Daily Survey) -->
+    <string name="title_sd_screen2">Daily Survey</string>
+    <string name="question_sd_screen2">How socially connected do you feel right now?</string>
+    <string name="option1_sd_screen2">not at all</string>
+    <string name="option2_sd_screen2">a lot</string>
 
-    <!-- Screen 3 (ACTIVITIES) -->
-    <string name="title_sd_screen3">Activities (1/2)</string>
-    <string name="question_sd_screen3">Which of the following activities did you engage in yesterday?</string>
-    <string name="answer1_sd_screen3">working</string>
-    <string name="answer2_sd_screen3">studying</string>
-    <string name="answer3_sd_screen3">reading</string>
-    <string name="answer4_sd_screen3">watching tv</string>
-    <string name="answer5_sd_screen3">sports</string>
-    <string name="answer6_sd_screen3">shopping</string>
+    <!-- Screen 3 (Daily Survey) -->
+    <string name="title_sd_screen3">Daily Survey</string>
+    <string name="question_sd_screen3">How bored do you feel right now?</string>
+    <string name="option1_sd_screen3">not at all</string>
+    <string name="option2_sd_screen3">a lot</string>
 
-    <!-- Screen 4 (ACTIVITIES 2/2) -->
-    <string name="title_sd_screen4">Activities (2/2)</string>
-    <string name="question_sd_screen4">Which of the following activities did you engage in yesterday?</string>
-    <string name="answer1_sd_screen4">meeting friends</string>
-    <string name="answer2_sd_screen4">having drinks</string>
-    <string name="answer3_sd_screen4">clubbing</string>
-    <string name="answer4_sd_screen4">dating</string>
-    <string name="answer5_sd_screen4">sex</string>
-    <string name="answer6_sd_screen4">kissing</string>
+    <!-- Screen 4 (Daily Survey) -->
+    <string name="title_sd_screen4">Daily Survey</string>
+    <string name="question_sd_screen4">How relaxed do you feel right now?</string>
+    <string name="option1_sd_screen4">not at all</string>
+    <string name="option2_sd_screen4">a lot</string>
 
-    <!-- Screen 5 (Mood) -->
-    <string name="title_sd_screen5">Mood</string>
-    <string name="question_sd_screen5">How are you feeling right now?</string>
-    <string name="answer1_sd_screen5">Good</string>
-    <string name="answer2_sd_screen5">Relaxed</string>
-    <string name="answer3_sd_screen5">Active</string>
+    <!-- Screen 5 (Daily Survey) -->
+    <string name="title_sd_screen5">Daily Survey</string>
+    <string name="question_sd_screen5">How much have you interacted with other people “directly” (face-to- face or via phone call) since the last time we asked?</string>
+    <string name="option1_sd_screen5">not at all</string>
+    <string name="option2_sd_screen5">a lot</string>
 
-    <!-- End survey -->
-    <!-- Screen 1 -->
-    <string name="title_se_screen1">Relationship</string>
-    <string name="question_se_screen1">Has your relationship status changed throughout the study?</string>
-    <string name="option1_se_screen1">Yes, I am now in an exclusive romantic/sexual relationship</string>
-    <string name="option2_se_screen1">Yes, I am now in a non-exclusive romantic/sexual relationship</string>
-    <string name="option3_se_screen1">Yes, I am no longer in a romantic/sexual relationship</string>
-    <string name="option4_se_screen1">No</string>
+    <!-- Screen 6 (Daily Survey) -->
+    <string name="title_sd_screen6">Daily Survey</string>
+    <string name="question_sd_screen6">How much have you used social networking sites/apps since the last time we asked?</string>
+    <string name="option1_sd_screen6">not at all</string>
+    <string name="option2_sd_screen6">a lot</string>
 
-    <!-- Screen 2 -->
-    <string name="title_se_screen2">Contraception</string>
-    <string name="question_se_screen2">Have you started being on any form of hormonal birth control throughout the study?</string>
+    <!-- Screen 7 (Daily Survey) -->
+    <string name="title_sd_screen7">Daily Survey</string>
+    <string name="question_sd_screen7">Have you used social networking sites on a device other than your smartphone since the last time we asked?</string>
 
-    <!-- Screen 3 -->
-    <string name="title_se_screen3">Tinder</string>
-    <string name="question_se_screen3">How often do you think you used Tinder throughout the study?</string>
-    <string name="option1_se_screen3">Every day</string>
-    <string name="option2_se_screen3">Several days a week</string>
-    <string name="option3_se_screen3">At least once a week</string>
-    <string name="option4_se_screen3">Less than once a week</string>
-    <string name="option5_se_screen3">Not at all</string>
+    <!-- Screen 8 (Daily Survey) -->
+    <string name="title_sd_screen8">Daily Survey</string>
+    <string name="question_sd_screen8">Which social networking sites did you use?</string>
+    <string name="option1_sd_screen8">Facebook</string>
+    <string name="option2_sd_screen8">Messenger</string>
+    <string name="option3_sd_screen8">Other(s)</string>
 
-    <!-- Screen 4 -->
-    <string name="title_se_screen4">Phone Usage</string>
-    <string name="question_se_screen4">On average, how many hours/minutes per day do you think you spent using your phone in general throughout the study?</string>
+    <!-- Screen 9 (Daily Survey) -->
+    <string name="title_sd_screen9">Daily Survey</string>
+    <string name="question_sd_screen9">Have you primarily used social networking sites / apps actively (e.g., send messages or post pictures) or passively (e.g., browse though profiles) since the last time we asked?</string>
+    <string name="option1_sd_screen9">only actively</string>
+    <string name="option2_sd_screen9">only passively</string>
 
-    <!-- Screen 5 -->
-    <string name="title_se_screen5">Study</string>
-    <string name="question_se_screen5">How interesting and engaging was it for you to participate in this study?</string>
-    <string name="option1_se_screen5">not at all</string>
-    <string name="option2_se_screen5">extremely</string>
+    <!-- Sleep daily survey -->
+    <!-- Screen 1 (Sleep survey) -->
+    <string name="title_sds_screen1">Sleep Survey</string>
+    <string name="question_sds_screen1">What time did you get into bed?</string>
 
-    <!-- Screen 6 -->
-    <string name="title_se_screen6">Study</string>
-    <string name="question_se_screen6">How much did the daily survey interfere with your activities at the time of the alarm?</string>
-    <string name="option1_se_screen6">not at all</string>
-    <string name="option2_se_screen6">extremely</string>
+    <!-- Screen 2 (Sleep survey) -->
+    <string name="title_sds_screen2">Sleep Survey</string>
+    <string name="question_sds_screen2">What time did you try to go to sleep?</string>
 
-    <!-- Screen 7 -->
-    <string name="title_se_screen7">Study</string>
-    <string name="question_se_screen7">Would you have minded if the study period had been longer than 35 days (e.g., two full months)?</string>
-    <string name="option1_se_screen7">not at all</string>
-    <string name="option2_se_screen7">very much so</string>
+    <!-- Screen 3 (Sleep survey) -->
+    <string name="title_sds_screen3">Sleep Survey</string>
+    <string name="question_sds_screen3">How long did it take you to fall asleep?</string>
 
-    <!-- Screen 8 -->
-    <string name="title_se_screen8">Research App</string>
-    <string name="question_se_screen8">How easy/difficult was it for you to use the research app?</string>
-    <string name="option1_se_screen8">very easy</string>
-    <string name="option2_se_screen8">very difficult</string>
+    <!-- Screen 4 (Sleep survey) -->
+    <string name="title_sds_screen4">Sleep Survey</string>
+    <string name="question_sds_screen4">How many times did you wake up, not counting your final awakening?</string>
 
-    <!-- Screen 9 -->
-    <string name="title_se_screen9">Research App</string>
-    <string name="question_se_screen9">Is there anything in particular you would change about the research app?</string>
+    <!-- Screen 5 (Sleep survey) -->
+    <string name="title_sds_screen5">Sleep Survey</string>
+    <string name="question_sds_screen5">In total, how long did these awakenings last?</string>
+
+    <!-- Screen 6 (Sleep survey) -->
+    <string name="title_sds_screen6">Sleep Survey</string>
+    <string name="question_sds_screen6">What time was your final awakening?</string>
+
+    <!-- Screen 7 (Sleep survey) -->
+    <string name="title_sds_screen7">Sleep Survey</string>
+    <string name="question_sds_screen7">What time did you get out of bed for the day?</string>
+
+    <!-- Screen 8 (Sleep survey) -->
+    <string name="title_sds_screen8">Sleep Survey</string>
+    <string name="question_sds_screen8">How would you rate the quality of your sleep?</string>
+    <string name="option1_sds_screen8">very poor</string>
+    <string name="option2_sds_screen8">poor</string>
+    <string name="option3_sds_screen8">fair</string>
+    <string name="option4_sds_screen8">good</string>
+    <string name="option5_sds_screen8">very good</string>
+
+    <!-- Screen 9 (Sleep survey) -->
+    <string name="title_sds_screen9">Sleep Survey</string>
+    <string name="question_sds_screen9">Comments (if applicable):</string>
 
 </resources>

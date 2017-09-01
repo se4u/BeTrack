@@ -21,20 +21,21 @@ public class FragmentSurveyTimePicker extends AbstractStep {
 
     //Output
     public  static final String SURVEY_STATUS = "SURVEY_STATUS";
-    public int SurveyStatus = -1;
+    public String SurveyStatus = null;
     private TimePicker picker=null;
 
     //Input
     public static final String SURVEY_TIMEPICKER_CHOICES_TITLE = "SURVEY_TIMEPICKER_CHOICES_TITLE";
     public static final String SURVEY_TIMEPICKER_CHOICES_DESC = "SURVEY_TIMEPICKER_CHOICES_DESC";
+    public static final String SURVEY_TIMEPICKER_DEFAULT_VALUE = "SURVEY_TIMEPICKER_DEFAULT_VALUE";
 
     private TextView Title;
     private TextView Description;
 
+    private String SurveyTime = null;
+
     private int lastHour=0;
     private int lastMinute=0;
-
-    private static SettingsBetrack ObjSettingsBetrack;
 
     private static int getHour(String time) {
         String[] pieces=time.split(":");
@@ -48,9 +49,12 @@ public class FragmentSurveyTimePicker extends AbstractStep {
         return(Integer.parseInt(pieces[1]));
     }
 
+    private Bundle bundle;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        bundle = this.getArguments();
         String time = null;
         View v = inflater.inflate(R.layout.survey_timepicker, container, false);
 
@@ -62,11 +66,21 @@ public class FragmentSurveyTimePicker extends AbstractStep {
             picker.setIs24HourView(true);
         }
 
-        time=prefs.getString(getContext().getString(R.string.pref_key_study_notification_time), "20:00");
+
+        Title = (TextView) v.findViewById(R.id.survey_title);
+        Description = (TextView) v.findViewById(R.id.survey_desc);
+
+        final Bundle bundle = this.getArguments();
+        String SurveyTitle = bundle.getString(SURVEY_TIMEPICKER_CHOICES_TITLE, null);
+        String SurveyDescription = bundle.getString(SURVEY_TIMEPICKER_CHOICES_DESC, null);
+        if (null == SurveyTime) {
+            SurveyTime = bundle.getString(SURVEY_TIMEPICKER_DEFAULT_VALUE, "20:00");
+        }
+
         picker.setDescendantFocusability(TimePicker.FOCUS_BLOCK_DESCENDANTS);
 
-        lastHour=getHour(time);
-        lastMinute=getMinute(time);
+        lastHour=getHour(SurveyTime);
+        lastMinute=getMinute(SurveyTime);
 
         if (Build.VERSION.SDK_INT >= 23 )  {
             picker.setHour(lastHour);
@@ -77,17 +91,11 @@ public class FragmentSurveyTimePicker extends AbstractStep {
             picker.setCurrentMinute(lastMinute);
         }
 
-        Title = (TextView) v.findViewById(R.id.survey_title);
-        Description = (TextView) v.findViewById(R.id.survey_desc);
-
-        final Bundle bundle = this.getArguments();
-        String SurveyTitle = bundle.getString(SURVEY_TIMEPICKER_CHOICES_TITLE, null);
-        String SurveyDescription = bundle.getString(SURVEY_TIMEPICKER_CHOICES_DESC, null);
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
 
         if (savedInstanceState != null)
-            SurveyStatus = savedInstanceState.getInt(SURVEY_STATUS, -1);
+            SurveyStatus = savedInstanceState.getString(SURVEY_STATUS, null);
 
         return v;
     }
@@ -95,7 +103,7 @@ public class FragmentSurveyTimePicker extends AbstractStep {
     @Override
     public void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
-        state.putInt(SURVEY_STATUS, SurveyStatus);
+        state.putString(SURVEY_STATUS, SurveyStatus);
     }
 
     @Override
@@ -128,10 +136,6 @@ public class FragmentSurveyTimePicker extends AbstractStep {
     private void UpdateNotificationTime() {
         String time = null;
 
-        if (ObjSettingsBetrack == null)  {
-            ObjSettingsBetrack = SettingsBetrack.getInstance();
-        }
-
         if (Build.VERSION.SDK_INT >= 23 )
             lastHour=picker.getHour();
         else
@@ -144,11 +148,10 @@ public class FragmentSurveyTimePicker extends AbstractStep {
 
         time = String.valueOf(lastHour) + ":" + String.valueOf(lastMinute);
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getContext().getString(R.string.pref_key_study_notification_time), time);
-        editor.commit();
-        ObjSettingsBetrack.Update(getContext());
+        mStepper.getExtras().putString(SURVEY_STATUS, time);
+        bundle.putString(SURVEY_STATUS, time);
+        SurveyTime = time;
+
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(picker.getWindowToken(), 0);
     }
@@ -160,7 +163,7 @@ public class FragmentSurveyTimePicker extends AbstractStep {
 
     @Override
     public boolean nextIf() {
-        return SurveyStatus > -1;
+        return SurveyStatus != null;
     }
 
     @Override

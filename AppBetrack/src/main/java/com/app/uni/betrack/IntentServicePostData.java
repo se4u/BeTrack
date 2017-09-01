@@ -252,29 +252,6 @@ public class IntentServicePostData extends IntentService {
                         TaskDone &= ~TABLE_ENDSTUDY_TRANSFERED;
                     }
 
-                    //GPS DATA
-                    values.clear();
-                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_GPS, true);
-                    if (0 != values.size()) {
-                        ArrayList<String>  GpsData;
-
-                        IdSql = values.getAsLong(UtilsLocalDataBase.C_GPS_ID);
-
-                        //Prepare the data
-                        GpsData = PrepareData(values, UtilsLocalDataBase.DB_GPS, UtilsLocalDataBase.DB_GPS_CYPHER, true);
-
-                        //Post the data
-                        rc = PostData(SettingsBetrack.STUDY_POSTGPSDATA, UtilsLocalDataBase.DB_GPS, GpsData, UtilsLocalDataBase.DB_GPS_CYPHER, true);
-                        if (rc == true) {
-                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_GPS, IdSql);
-                        } else {
-                            break;
-                        }
-                    } else {
-                        rc = true;
-                        TaskDone &= ~TABLE_GPS_TRANSFERED;
-                    }
-
                     //PHONE USAGE DATA
                     values.clear();
                     values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_PHONE_USAGE, true);

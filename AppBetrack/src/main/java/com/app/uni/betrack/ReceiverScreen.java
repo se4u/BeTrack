@@ -127,10 +127,6 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                     Log.d(TAG, "Nothing to update in the database");
                 }
 
-                DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastGPS();
-                if ((DeltaLastTransfer >= SettingsBetrack.TRACKGPS_DELTA) || (DeltaLastTransfer < 0))  {
-                    ReceiverGPSChange.StartGPS(context);
-                }
             }
 
             if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
