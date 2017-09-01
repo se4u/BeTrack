@@ -168,6 +168,11 @@ public class BaseStyle extends AppCompatActivity implements Stepable {
     }
 
     @Override
+    public void onBackPressed() {
+        onPrevious();
+    }
+
+    @Override
     public void onNext() {
 
         int nextStepInc = 1;
