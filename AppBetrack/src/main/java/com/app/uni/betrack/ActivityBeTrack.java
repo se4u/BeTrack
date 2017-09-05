@@ -134,7 +134,7 @@ public class ActivityBeTrack extends AppCompatActivity {
                         finish();
 
                     } else if (SettingsStudy.LastDayStudyState.START_SURVEY_DONE == ObjSettingsStudy.getLastDayStudyState()) {
-                        Intent i = new Intent(ActivityBeTrack.this, ActivityStudyEnd.class);
+                        Intent i = new Intent(ActivityBeTrack.this, ActivitySurveyEnd.class);
                         startActivity(i);
                         finish();
                     }

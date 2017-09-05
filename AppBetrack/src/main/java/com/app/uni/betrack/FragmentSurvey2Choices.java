@@ -31,6 +31,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
     public static final String SURVEY_2_CHOICES_TITLE = "SURVEY_2_CHOICES_TITLE";
     public static final String SURVEY_2_CHOICES_DESC = "SURVEY_2_CHOICES_DESC";
     public static final String SURVEY_2_CHOICES_ENABLE_NEXT_STEP = "SURVEY_2_CHOICES_ENABLE_NEXT_STEP";
+    public static final String SURVEY_2_CHOICES_ENABLE_AUTOMOVE = "SURVEY_2_CHOICES_ENABLE_AUTOMOVE";
 
     private Bundle bundle;
     private Button button1;
@@ -40,6 +41,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
     private TextView Title;
     private TextView Description;
     private ArrayList<Integer> NextStep;
+    boolean AutoMove=true;
 
     private static Drawable BackgroundNoSelection;
     private static Drawable BackgroundSelected;
@@ -74,6 +76,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
         String SurveyTitle = bundle.getString(SURVEY_2_CHOICES_TITLE, null);
         String SurveyDescription = bundle.getString(SURVEY_2_CHOICES_DESC, null);
         NextStep = bundle.getIntegerArrayList(SURVEY_2_CHOICES_ENABLE_NEXT_STEP);
+        AutoMove = bundle.getBoolean(SURVEY_2_CHOICES_ENABLE_AUTOMOVE, true);
 
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
@@ -111,7 +114,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 imgbutton1.setColorFilter(tintPrimary, mode);
                 imgbutton2.setColorFilter(tintGray, mode);
 
-                if (SurveyStatus == -1) {
+                if ((SurveyStatus == -1) && (AutoMove == true)) {
                     SurveyStatus = 1;
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -139,7 +142,7 @@ public class FragmentSurvey2Choices extends AbstractStep {
                 imgbutton1.setColorFilter(tintGray, mode);
                 imgbutton2.setColorFilter(tintPrimary, mode);
 
-                if (SurveyStatus == -1) {
+                if ((SurveyStatus == -1) && (AutoMove == true)) {
                     SurveyStatus = 0;
                     new Handler().postDelayed(new Runnable() {
                         @Override

@@ -171,6 +171,7 @@ public class UtilsLocalDataBase {
     static final String C_STARTSTUDY_ID = BaseColumns._ID;
     static final String C_STARTSTUDY_PID = "ParticipantID";
     static final String C_STARTSTUDY_AGE = "age";
+    static final String C_STARTSTUDY_SEX = "sex";
     static final String C_STARTSTUDY_ETHNICITY1 = "ethnicity1";
     static final String C_STARTSTUDY_ETHNICITY2 = "ethnicity2";
     static final String C_STARTSTUDY_STUDENT = "student";
@@ -183,19 +184,13 @@ public class UtilsLocalDataBase {
     static final String C_STARTSTUDY_UNIVERSITY1 = "university1";
     static final String C_STARTSTUDY_UNIVERSITY2 = "university2";
     static final String C_STARTSTUDY_UNIVERSITY3 = "university3";
-    static final String C_STARTSTUDY_RELATIONSHIP = "relationship";
-    static final String C_STARTSTUDY_CONTRACEPTION = "contraception";
-    static final String C_STARTSTUDY_MATERNITY = "maternity";
-    static final String C_STARTSTUDY_PERIOD1 = "period1";
-    static final String C_STARTSTUDY_PERIOD2 = "period2";
-    static final String C_STARTSTUDY_PERIOD3 = "period3";
-    static final String C_STARTSTUDY_PERIOD4 = "period4";
     static final String C_STARTSTUDY_DATE = "Date";
     static final String C_STARTSTUDY_TIME = "Time";
 
     public static final ArrayList<String> DB_START_STUDY = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_STARTSTUDY_PID);
         add(UtilsLocalDataBase.C_STARTSTUDY_AGE);
+        add(UtilsLocalDataBase.C_STARTSTUDY_SEX);
         add(UtilsLocalDataBase.C_STARTSTUDY_ETHNICITY1);
         add(UtilsLocalDataBase.C_STARTSTUDY_ETHNICITY2);
         add(UtilsLocalDataBase.C_STARTSTUDY_STUDENT);
@@ -208,13 +203,6 @@ public class UtilsLocalDataBase {
         add(UtilsLocalDataBase.C_STARTSTUDY_UNIVERSITY1);
         add(UtilsLocalDataBase.C_STARTSTUDY_UNIVERSITY2);
         add(UtilsLocalDataBase.C_STARTSTUDY_UNIVERSITY3);
-        add(UtilsLocalDataBase.C_STARTSTUDY_RELATIONSHIP);
-        add(UtilsLocalDataBase.C_STARTSTUDY_CONTRACEPTION);
-        add(UtilsLocalDataBase.C_STARTSTUDY_MATERNITY);
-        add(UtilsLocalDataBase.C_STARTSTUDY_PERIOD1);
-        add(UtilsLocalDataBase.C_STARTSTUDY_PERIOD2);
-        add(UtilsLocalDataBase.C_STARTSTUDY_PERIOD3);
-        add(UtilsLocalDataBase.C_STARTSTUDY_PERIOD4);
         add(UtilsLocalDataBase.C_STARTSTUDY_DATE);
         add(UtilsLocalDataBase.C_STARTSTUDY_TIME);
     }};
@@ -222,6 +210,7 @@ public class UtilsLocalDataBase {
     public static final ArrayList<Boolean> DB_START_STUDY_CYPHER = new ArrayList<Boolean>() {{
         add(false); //C_STARTSTUDY_PID
         add(true);  //C_STARTSTUDY_AGE
+        add(true);  //C_STARTSTUDY_SEX
         add(true);  //C_STARTSTUDY_ETHNICITY1
         add(true);  //C_STARTSTUDY_ETHNICITY2
         add(true);  //C_STARTSTUDY_STUDENT
@@ -234,13 +223,6 @@ public class UtilsLocalDataBase {
         add(true);  //C_STARTSTUDY_UNIVERSITY1
         add(true);  //C_STARTSTUDY_UNIVERSITY2
         add(true);  //C_STARTSTUDY_UNIVERSITY3
-        add(true);  //C_STARTSTUDY_RELATIONSHIP
-        add(true);  //C_STARTSTUDY_CONTRACEPTION
-        add(true);  //C_STARTSTUDY_MATERNITY
-        add(true);  //C_STARTSTUDY_PERIOD1
-        add(true);  //C_STARTSTUDY_PERIOD2
-        add(true);  //C_STARTSTUDY_PERIOD3
-        add(true);  //C_STARTSTUDY_PERIOD4
         add(true);  //C_STARTSTUDY_DATE
         add(true);  //C_STARTSTUDY_TIME
     }};
@@ -249,6 +231,23 @@ public class UtilsLocalDataBase {
     static final String TABLE_END_STUDY = "EndStudy";
     static final String C_ENDSTUDY_ID = BaseColumns._ID;
     static final String C_ENDSTUDY_PID = "ParticipantID";
+    static final String C_ENDSTUDY_PHONE_USAGE = "phoneusage";
+    static final String C_ENDSTUDY_FACEBOOK = "facebook";
+    static final String C_ENDSTUDY_MESSENGER = "messenger";
+    static final String C_ENDSTUDY_INSTAGRAM = "instagram";
+    static final String C_ENDSTUDY_HANGOUTS = "hangouts";
+    static final String C_ENDSTUDY_GOOGLEPLUS = "googleplus";
+    static final String C_ENDSTUDY_TWITTER = "twitter";
+    static final String C_ENDSTUDY_PINTEREST = "pinterest";
+    static final String C_ENDSTUDY_SNAPCHAT = "snapchat";
+    static final String C_ENDSTUDY_WHATSAPP = "whatsapp";
+    static final String C_ENDSTUDY_SKYPE = "skype";
+    static final String C_ENDSTUDY_STUDY1 = "study1";
+    static final String C_ENDSTUDY_STUDY2 = "study2";
+    static final String C_ENDSTUDY_STUDY3 = "study3";
+    static final String C_ENDSTUDY_RESEARCHAPP1 = "researchapp1";
+    static final String C_ENDSTUDY_RESEARCHAPP2 = "researchapp2";
+    static final String C_ENDSTUDY_RESEARCHAPP3 = "researchapp3";
     static final String C_ENDSTUDY_AVERAGE_PERIODICITY = "averageperiodicity";
     static final String C_ENDSTUDY_STD_DEVIATION = "standarddeviation";
     static final String C_ENDSTUDY_BETRACK_KILLED = "betrackkilled";
@@ -258,6 +257,23 @@ public class UtilsLocalDataBase {
 
     public static final ArrayList<String> DB_END_STUDY = new ArrayList<String>() {{
         add(UtilsLocalDataBase.C_ENDSTUDY_PID);
+        add(UtilsLocalDataBase.C_ENDSTUDY_PHONE_USAGE);
+        add(UtilsLocalDataBase.C_ENDSTUDY_FACEBOOK);
+        add(UtilsLocalDataBase.C_ENDSTUDY_MESSENGER);
+        add(UtilsLocalDataBase.C_ENDSTUDY_INSTAGRAM);
+        add(UtilsLocalDataBase.C_ENDSTUDY_HANGOUTS);
+        add(UtilsLocalDataBase.C_ENDSTUDY_GOOGLEPLUS);
+        add(UtilsLocalDataBase.C_ENDSTUDY_TWITTER);
+        add(UtilsLocalDataBase.C_ENDSTUDY_PINTEREST);
+        add(UtilsLocalDataBase.C_ENDSTUDY_SNAPCHAT);
+        add(UtilsLocalDataBase.C_ENDSTUDY_WHATSAPP);
+        add(UtilsLocalDataBase.C_ENDSTUDY_SKYPE);
+        add(UtilsLocalDataBase.C_ENDSTUDY_STUDY1);
+        add(UtilsLocalDataBase.C_ENDSTUDY_STUDY2);
+        add(UtilsLocalDataBase.C_ENDSTUDY_STUDY3);
+        add(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP1);
+        add(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP2);
+        add(UtilsLocalDataBase.C_ENDSTUDY_RESEARCHAPP3);
         add(UtilsLocalDataBase.C_ENDSTUDY_AVERAGE_PERIODICITY);
         add(UtilsLocalDataBase.C_ENDSTUDY_STD_DEVIATION);
         add(UtilsLocalDataBase.C_ENDSTUDY_BETRACK_KILLED);
@@ -268,12 +284,29 @@ public class UtilsLocalDataBase {
 
     public static final ArrayList<Boolean> DB_END_STUDY_CYPHER = new ArrayList<Boolean>() {{
         add(false); //C_ENDSTUDY_PID
+        add(true);  //C_ENDSTUDY_PHONE_USAGE
+        add(true);  //C_ENDSTUDY_FACEBOOK
+        add(true);  //C_ENDSTUDY_MESSENGER
+        add(true);  //C_ENDSTUDY_INSTAGRAM
+        add(true);  //C_ENDSTUDY_HANGOUTS
+        add(true);  //C_ENDSTUDY_GOOGLEPLUS
+        add(true);  //C_ENDSTUDY_TWITTER
+        add(true);  //C_ENDSTUDY_PINTEREST
+        add(true);  //C_ENDSTUDY_SNAPCHAT
+        add(true);  //C_ENDSTUDY_WHATSAPP
+        add(true);  //C_ENDSTUDY_SKYPE
+        add(true);  //C_ENDSTUDY_STUDY1
+        add(true);  //C_ENDSTUDY_STUDY2
+        add(true);  //C_ENDSTUDY_STUDY3
+        add(true);  //C_ENDSTUDY_RESEARCHAPP1
+        add(true);  //C_ENDSTUDY_RESEARCHAPP2
+        add(true);  //C_ENDSTUDY_RESEARCHAPP3
         add(true);  //C_ENDSTUDY_AVERAGE_PERIODICITY
         add(true);  //C_ENDSTUDY_STD_DEVIATION
         add(true);  //C_ENDSTUDY_BETRACK_KILLED
         add(true);  //C_ENDSTUDY_BETRACK_POLLING
-        add(true); //C_ENDSTUDY_DATE
-        add(true); //C_ENDSTUDY_TIME
+        add(true);  //C_ENDSTUDY_DATE
+        add(true);  //C_ENDSTUDY_TIME
     }};
 
     //Table for phone usage follow up
@@ -340,6 +373,7 @@ public class UtilsLocalDataBase {
 
             String sql3 = "create table " + TABLE_START_STUDY + " (" + C_STARTSTUDY_ID + " integer primary key autoincrement, "
                     +  C_STARTSTUDY_AGE + " text, "
+                    +  C_STARTSTUDY_SEX + " text, "
                     + C_STARTSTUDY_ETHNICITY1 + " text, "
                     + C_STARTSTUDY_ETHNICITY2 + " text, "
                     + C_STARTSTUDY_STUDENT + " text, "
@@ -352,13 +386,6 @@ public class UtilsLocalDataBase {
                     + C_STARTSTUDY_UNIVERSITY1 + " text, "
                     + C_STARTSTUDY_UNIVERSITY2 + " text, "
                     + C_STARTSTUDY_UNIVERSITY3 + " text, "
-                    + C_STARTSTUDY_RELATIONSHIP + " text, "
-                    + C_STARTSTUDY_CONTRACEPTION + " text, "
-                    + C_STARTSTUDY_MATERNITY + " text, "
-                    + C_STARTSTUDY_PERIOD1 + " text, "
-                    + C_STARTSTUDY_PERIOD2 + " text, "
-                    + C_STARTSTUDY_PERIOD3 + " text, "
-                    + C_STARTSTUDY_PERIOD4 + " text, "
                     + C_STARTSTUDY_DATE + " text, "
                     + C_STARTSTUDY_TIME + " text)"; //
             db.execSQL(sql3);
@@ -381,6 +408,23 @@ public class UtilsLocalDataBase {
             Log.d(TAG, "onCreated sql: " + sql4);
 
             String sql6 = "create table " + TABLE_END_STUDY + " (" + C_ENDSTUDY_ID + " integer primary key autoincrement, "
+                    + C_ENDSTUDY_PHONE_USAGE + " text, "
+                    + C_ENDSTUDY_FACEBOOK + " text, "
+                    + C_ENDSTUDY_MESSENGER + " text, "
+                    + C_ENDSTUDY_INSTAGRAM + " text, "
+                    + C_ENDSTUDY_HANGOUTS + " text, "
+                    + C_ENDSTUDY_GOOGLEPLUS + " text, "
+                    + C_ENDSTUDY_TWITTER + " text, "
+                    + C_ENDSTUDY_PINTEREST + " text, "
+                    + C_ENDSTUDY_SNAPCHAT + " text, "
+                    + C_ENDSTUDY_WHATSAPP + " text, "
+                    + C_ENDSTUDY_SKYPE + " text, "
+                    + C_ENDSTUDY_STUDY1 + " text, "
+                    + C_ENDSTUDY_STUDY2 + " text, "
+                    + C_ENDSTUDY_STUDY3 + " text, "
+                    + C_ENDSTUDY_RESEARCHAPP1 + " text, "
+                    + C_ENDSTUDY_RESEARCHAPP2 + " text, "
+                    + C_ENDSTUDY_RESEARCHAPP3 + " text, "
                     + C_ENDSTUDY_AVERAGE_PERIODICITY + " text, "
                     + C_ENDSTUDY_STD_DEVIATION + " text, "
                     + C_ENDSTUDY_BETRACK_KILLED + " text, "

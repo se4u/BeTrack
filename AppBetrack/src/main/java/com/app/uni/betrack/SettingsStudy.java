@@ -90,7 +90,6 @@ public class SettingsStudy {
     static private int NbrOfNotificationToDo;
     static private int  NbrOfDaysToDo;
     static private long TimeLastTransfer;
-    static private long TimeLastGPS;
     static private long AppWatchStartTime;
     static private long TimeNextNotification;
     static private Boolean AccuracyComputed;
@@ -226,7 +225,6 @@ public class SettingsStudy {
 
 
         TimeLastTransfer = System.currentTimeMillis();
-        TimeLastGPS = System.currentTimeMillis() + SettingsBetrack.TRACKGPS_DELTA;
 
         TimeNextNotification = prefs.getLong(STUDY_TIME_NEXT_NOTIFICATION, 0);
 
@@ -562,32 +560,6 @@ public class SettingsStudy {
             StartDateSurvey = startdatesurvey;
             editor.putString(STUDY_STARTDATE_SURVEY, StartDateSurvey);
             editor.commit();
-            SemSettingsStudy.release();
-        } catch (Exception e) {
-            Log.d(TAG, "Error during acquiring SemSettingsStudy");
-        }
-    }
-
-    public long getTimeLastGPS()
-    {
-
-        long ReturnTimeLastGPS = 0;
-        try {
-            SemSettingsStudy.acquire();
-            ReturnTimeLastGPS = TimeLastGPS;
-            SemSettingsStudy.release();
-        } catch (Exception e) {
-            ReturnTimeLastGPS = 0;
-        } finally {
-            return ReturnTimeLastGPS;
-        }
-    }
-
-    public void setTimeLastGPS(long timelastgps)
-    {
-        try {
-            SemSettingsStudy.acquire();
-            TimeLastGPS = timelastgps;
             SemSettingsStudy.release();
         } catch (Exception e) {
             Log.d(TAG, "Error during acquiring SemSettingsStudy");

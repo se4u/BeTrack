@@ -3,13 +3,14 @@ package com.app.uni.betrack;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.ProgressStepper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
 /**
  * Created by cevincent on 16/09/2016.
  */
@@ -71,15 +72,15 @@ public class ActivitySurveyDaily   extends ProgressStepper {
     @Override
     public void onComplete() {
         super.onComplete();
-/*
+
         Mood = Step1.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
-        Social = Step2.getArguments().getInt(FragmentSurvey6Choices.SURVEY_STATUS, 0);
-        Bored = Step3.getArguments().getInt(FragmentSurvey6Choices.SURVEY_STATUS, 0);
+        Social = Step2.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
+        Bored = Step3.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
         Relaxed = Step4.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
         Interact = Step5.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
         UsedSocial = Step6.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
         SocialComputer = Step7.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
-        WhichWebsite = Step8.getArguments().getInt(FragmentSurvey10ChoicesRadio.SURVEY_STATUS, 0);
+        WhichWebsite = Step8.getArguments().getInt(FragmentSurvey10ChoicesCheckBox.SURVEY_STATUS, 0);
         Actively = Step9.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
 
         values.clear();
@@ -105,11 +106,11 @@ public class ActivitySurveyDaily   extends ProgressStepper {
                 + " Relaxed: " + Relaxed
                 + " Interact: " + Interact
                 + " UsedSocial: " + UsedSocial
-                + " UsedSocial: " + SocialComputer
-                + " UsedSocial: " + WhichWebsite
-                + " UsedSocial: " + Actively
+                + " SocialComputer: " + SocialComputer
+                + " WhichWebsite: " + WhichWebsite
+                + " Actively: " + Actively
                 + " Date: " + DateDaily
-                + " Time: " + TimeDaily);*/
+                + " Time: " + TimeDaily);
 
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
         //Start the service for sending the data to the remote server

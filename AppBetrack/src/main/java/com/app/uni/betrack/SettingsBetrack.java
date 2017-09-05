@@ -36,7 +36,7 @@ public class SettingsBetrack {
     static public String STUDY_POSTDAILYSTATUS = "BeTrackPostDailyStatus";
     static public String STUDY_POSTSTARTSTUDY = "BeTrackPostStartStudy";
     static public String STUDY_POSTENDSTUDY = "BeTrackPostEndStudy";
-    static public String STUDY_POSTGPSDATA = "BeTrackPostGPSData";
+    static public String STUDY_POSTSLEEPSTATUS = "BeTrackPostSleepStatus";
     static public String STUDY_POSTPHONEUSAGEDATA = "BeTrackPostPhoneUsageData";
     static public String STUDY_POSTBLOBKEY = "BeTrackPostSessionKeys";
     static public int SERVER_TIMEOUT = 20000;
@@ -44,13 +44,9 @@ public class SettingsBetrack {
     static public int SAMPLING_RATE = 1000; //In ms
     static public int SAMPLING_RATE_SCREEN_OFF = 2 * 60 * 1000;
     static public int POSTDATA_SENDING_DELTA = 1000 * 60 * 60 * 1; //In ms (every 1 hour)
-    static public int TRACKGPS_DELTA = 1000  * 60 * 60 * 1; //In ms (every 1 hour)
     static public int ID_NOTIFICATION_BETRACK = 1335;
     static public int ID_TRACKAPP = 1336;
     static public int ID_NOTIFICATION_SERVICE = 1337;
-    static public int GPSMAXTIMEOUT = 30000;
-    static public int GPSDECTIMEOUT = 5000;
-    static public int GPSMINTIMEOUT = 5000;
     static public String STUDY_PUBLIC_KEY = "public.pem";
     static public boolean STUDY_ENABLE_GPS = false;
     static public boolean STUDY_JUST_STARTED = false;

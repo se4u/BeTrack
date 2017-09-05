@@ -67,13 +67,14 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
             if (ObjSettingsStudy.getNbrOfNotificationToDo() > 0) {
                 //We enable the daily survey
                 ObjSettingsStudy.setDailySurveyDone(false);
-                //Restart for a new notification in 24 hours
+                //Restart for a new notification
                 CreateNotification.ResetAlarm(context);
             }
-        }
 
-        //Trigger a notification
-        CreateNotification.Create(context);
+            //Trigger a notification
+            CreateNotification.Create(context);
+
+        }
 
         //onResume Betrack activity
         if ((ActivityBeTrack.OnForeground) && (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState)) {

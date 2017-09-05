@@ -28,7 +28,6 @@ public class FragmentSurveySeekBar extends AbstractStep {
     public  static final String SURVEY_STATUS4 = "SURVEY_STATUS4";
     public int SurveyStatus4 = -1;
 
-
     //Input
     public static final String SURVEY_SEEKBAR_CHOICES_TITLE = "SURVEY_SEEKBAR_CHOICES_TITLE";
     public static final String SURVEY_SEEKBAR_CHOICES_DESC = "SURVEY_SEEKBAR_CHOICES_DESC";
@@ -187,9 +186,9 @@ public class FragmentSurveySeekBar extends AbstractStep {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SurveyStatus1 = progress;
+                SurveyStatus1 = formatValueProgress(progress);
                 mStepper.getExtras().putInt(SURVEY_STATUS1, SurveyStatus1);
-                seekBarPercentage[0].setText(Integer.toString(progress));
+                seekBarPercentage[0].setText(Integer.toString(formatValueProgress(progress)));
                 bundle.putInt(SURVEY_STATUS1, SurveyStatus1);
             }
         });
@@ -208,9 +207,9 @@ public class FragmentSurveySeekBar extends AbstractStep {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SurveyStatus2 = progress;
+                SurveyStatus2 = formatValueProgress(progress);
                 mStepper.getExtras().putInt(SURVEY_STATUS2, SurveyStatus2);
-                seekBarPercentage[1].setText(Integer.toString(progress));
+                seekBarPercentage[1].setText(Integer.toString(formatValueProgress(progress)));
                 bundle.putInt(SURVEY_STATUS2, SurveyStatus2);
             }
         });
@@ -229,9 +228,9 @@ public class FragmentSurveySeekBar extends AbstractStep {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SurveyStatus3 = progress;
+                SurveyStatus3 = formatValueProgress(progress);
                 mStepper.getExtras().putInt(SURVEY_STATUS3, SurveyStatus3);
-                seekBarPercentage[2].setText(Integer.toString(progress));
+                seekBarPercentage[2].setText(Integer.toString(formatValueProgress(progress)));
                 bundle.putInt(SURVEY_STATUS3, SurveyStatus3);
             }
         });
@@ -250,9 +249,9 @@ public class FragmentSurveySeekBar extends AbstractStep {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SurveyStatus4 = progress;
+                SurveyStatus4 = formatValueProgress(progress);
                 mStepper.getExtras().putInt(SURVEY_STATUS4, SurveyStatus4);
-                seekBarPercentage[3].setText(Integer.toString(progress));
+                seekBarPercentage[3].setText(Integer.toString(formatValueProgress(progress)));
                 bundle.putInt(SURVEY_STATUS4, SurveyStatus4);
             }
         });
@@ -260,6 +259,36 @@ public class FragmentSurveySeekBar extends AbstractStep {
         return v;
     }
 
+
+    private int formatValueProgress(int value)
+    {
+        int newValue = 0;
+        if ((value >= 0) && (value <= 5)) {
+            newValue = 0;
+        } else if ((value > 5) && (value <= 15)) {
+            newValue = 10;
+        } else if ((value > 15) && (value <= 25)) {
+            newValue = 20;
+        } else if ((value > 25) && (value <= 35)) {
+            newValue = 30;
+        } else if ((value > 35) && (value <= 45)) {
+            newValue = 40;
+        } else if ((value > 45) && (value <= 55)) {
+            newValue = 50;
+        } else if ((value > 55) && (value <= 65)) {
+            newValue = 60;
+        } else if ((value > 65) && (value <= 75)) {
+            newValue = 70;
+        } else if ((value > 75) && (value <= 85)) {
+            newValue = 80;
+        } else if ((value > 85) && (value <= 95)) {
+            newValue = 90;
+        } else if ((value > 95) && (value <= 100)) {
+            newValue = 100;
+        }
+
+        return newValue;
+    }
     @Override
     public void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);

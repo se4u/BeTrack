@@ -47,7 +47,7 @@ public class IntentServicePostData extends IntentService {
     private static final char TABLE_DAILYSTATUS_TRANSFERED = 2;
     private static final char TABLE_STARTSTUDY_TRANSFERED = 4;
     private static final char TABLE_ENDSTUDY_TRANSFERED = 8;
-    private static final char TABLE_GPS_TRANSFERED = 16;
+    private static final char TABLE_SLEEPSTATUS_TRANSFERED = 16;
     private static final char TABLE_PHONE_USAGE_TRANSFERED = 32;
 
     Handler mHandler;
@@ -80,7 +80,7 @@ public class IntentServicePostData extends IntentService {
 
         char TaskDone = TABLE_APPWATCH_TRANSFERED | TABLE_DAILYSTATUS_TRANSFERED |
                         TABLE_STARTSTUDY_TRANSFERED | TABLE_ENDSTUDY_TRANSFERED |
-                        TABLE_GPS_TRANSFERED | TABLE_PHONE_USAGE_TRANSFERED;
+                        TABLE_SLEEPSTATUS_TRANSFERED | TABLE_PHONE_USAGE_TRANSFERED;
 
         //Check if there is a data connection
         NetworkState = UtilsNetworkStatus.hasNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
@@ -193,6 +193,29 @@ public class IntentServicePostData extends IntentService {
                     } else {
                         rc = true;
                         TaskDone &= ~TABLE_DAILYSTATUS_TRANSFERED;
+                    }
+
+                    //SLEEP STATUS
+                    values.clear();
+                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_SLEEPSTATUS, true);
+                    if (0 != values.size()) {
+                        ArrayList<String>  SleepStatusData;
+
+                        IdSql = values.getAsLong(UtilsLocalDataBase.C_SLEEPSTATUS_ID);
+
+                        //Prepare the data
+                        SleepStatusData = PrepareData(values, UtilsLocalDataBase.DB_SLEEPSTATUS, UtilsLocalDataBase.DB_SLEEPSTATUS_CYPHER, true);
+
+                        //Post the data
+                        rc = PostData(SettingsBetrack.STUDY_POSTSLEEPSTATUS, UtilsLocalDataBase.DB_SLEEPSTATUS, SleepStatusData, UtilsLocalDataBase.DB_SLEEPSTATUS_CYPHER, true);
+                        if (rc == true) {
+                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_SLEEPSTATUS, IdSql);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        rc = true;
+                        TaskDone &= ~TABLE_SLEEPSTATUS_TRANSFERED;
                     }
 
                     //START STUDY

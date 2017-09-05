@@ -222,42 +222,19 @@
     <string name="question_ss_screen13">Please specify?</string>
 
     <!-- Screen 14 -->
-    <string name="title_ss_screen14">Relationship</string>
-    <string name="question_ss_screen14">Are you currently in a romantic/sexual relationship?</string>
-    <string name="option1_ss_screen14">Yes, I am in an exclusive romantic/sexual relationship</string>
-    <string name="option2_ss_screen14">Yes, I am in a non-exclusive romantic/sexual relationship</string>
-    <string name="option3_ss_screen14">No</string>
+    <string name="title_ss_screen14">Gender</string>
+    <string name="question_ss_screen14">What is your sex?</string>
+    <string name="option1_ss_screen14">Male</string>
+    <string name="option2_ss_screen14">Female</string>
+    <string name="option3_ss_screen14">Other</string>
 
-    <!-- Screen 15 -->
-    <string name="title_ss_screen15">Contraception</string>
-    <string name="question_ss_screen15">Are you currently on any form of hormonal birth control (or do you intend on going on hormonal birth control within the next six weeks)?</string>
-
-    <!-- Screen 16 -->
-    <string name="title_ss_screen16">Maternity</string>
-    <string name="question_ss_screen16">Are you currently pregnant or breastfeeding?</string>
-
-    <!-- Screen 17 -->
-    <string name="title_ss_screen17">Period</string>
-    <string name="question_ss_screen17">How long does your menstrual cycle (i.e., the number of days between the first day of your period until the last day before the onset of your next period) last on average?</string>
-
-    <!-- Screen 18 -->
-    <string name="title_ss_screen18">Period</string>
-    <string name="question_ss_screen18">How long did your last menstrual cycle (i.e., the number of days between the first day of your period until the last day before the onset of your next period) last?</string>
-
-    <!-- Screen 19 -->
-    <string name="title_ss_screen19">Period</string>
-    <string name="question_ss_screen19">When did your current/last period start? Please provide an exact date if possible:</string>
-
-    <!-- Screen 20 -->
-    <string name="title_ss_screen20">Period</string>
-    <string name="question_ss_screen20">When do you expect your next period to start? Please provide an exact date if possible:</string>
 
     <!-- Daily survey -->
     <!-- Screen 1 (Daily Survey) -->
     <string name="title_sd_screen1">Daily Survey</string>
     <string name="question_sd_screen1">How do you feel right now?</string>
-    <string name="option1_sd_screen1">very positive</string>
-    <string name="option2_sd_screen1">very negative</string>
+    <string name="option1_sd_screen1">very negative</string>
+    <string name="option2_sd_screen1">very positive</string>
 
     <!-- Screen 2 (Daily Survey) -->
     <string name="title_sd_screen2">Daily Survey</string>
@@ -347,5 +324,85 @@
     <!-- Screen 9 (Sleep survey) -->
     <string name="title_sds_screen9">Sleep Survey</string>
     <string name="question_sds_screen9">Comments (if applicable):</string>
+
+    <!-- End survey -->
+
+    <!-- Screen 1 -->
+    <string name="title_se_screen1">Phone Usage</string>
+    <string name="question_se_screen1">On average, how many hours/minutes per day do you think you spent using your phone in general throughout the study?</string>
+
+    <!-- Screen 2 -->
+    <string name="title_se_screen2">Facebook</string>
+    <string name="question_se_screen2">On average, how many hours / minutes per day do you think you spent using Facebook on your phone throughout the study?</string>
+
+    <!-- Screen 3 -->
+    <string name="title_se_screen3">Facebook Messenger</string>
+    <string name="question_se_screen3">On average, how many hours / minutes per day do you think you spent using Facebook Messenger on your phone throughout the study?</string>
+
+    <!-- Screen 4 -->
+    <string name="title_se_screen4">Instagram</string>
+    <string name="question_se_screen4">On average, how many hours / minutes per day do you think you spent using Instagram on your phone throughout the study?</string>
+
+    <!-- Screen 5 -->
+    <string name="title_se_screen5">Google Hangouts</string>
+    <string name="question_se_screen5">On average, how many hours / minutes per day do you think you spent using Google Hangouts on your phone throughout the study?</string>
+
+    <!-- Screen 6 -->
+    <string name="title_se_screen6">Google+</string>
+    <string name="question_se_screen6">On average, how many hours / minutes per day do you think you spent using Google+ on your phone throughout the study?</string>
+
+    <!-- Screen 7 -->
+    <string name="title_se_screen7">Twitter</string>
+    <string name="question_se_screen7">On average, how many hours / minutes per day do you think you spent using Twitter on your phone throughout the study?</string>
+
+    <!-- Screen 8 -->
+    <string name="title_se_screen8">Pinterest</string>
+    <string name="question_se_screen8">On average, how many hours / minutes per day do you think you spent using Pinterest on your phone throughout the study?</string>
+
+    <!-- Screen 9 -->
+    <string name="title_se_screen9">Snapchat</string>
+    <string name="question_se_screen9">On average, how many hours / minutes per day do you think you spent using Snapchat on your phone throughout the study?</string>
+
+    <!-- Screen 10 -->
+    <string name="title_se_screen10">WhatsApp</string>
+    <string name="question_se_screen10">On average, how many hours / minutes per day do you think you spent using WhatsApp on your phone throughout the study?</string>
+
+    <!-- Screen 11 -->
+    <string name="title_se_screen11">Skype</string>
+    <string name="question_se_screen11">On average, how many hours / minutes per day do you think you spent using Skype on your phone throughout the study?</string>
+
+    <!-- Screen 5 -->
+    <string name="title_se_screen12">Study</string>
+    <string name="question_se_screen12">How interesting and engaging was it for you to participate in this study?</string>
+    <string name="option1_se_screen12">not at all</string>
+    <string name="option2_se_screen12">extremely</string>
+
+    <!-- Screen 6 -->
+    <string name="title_se_screen13">Study</string>
+    <string name="question_se_screen13">How much did the daily survey interfere with your activities at the time of the alarm?</string>
+    <string name="option1_se_screen13">not at all</string>
+    <string name="option2_se_screen13">extremely</string>
+
+    <!-- Screen 7 -->
+    <string name="title_se_screen14">Study</string>
+    <string name="question_se_screen14">Would you have minded if the study period had been longer than 10 days?</string>
+    <string name="option1_se_screen14">not at all</string>
+    <string name="option2_se_screen14">very much so</string>
+
+    <!-- Screen 8 -->
+    <string name="title_se_screen15">Research App</string>
+    <string name="question_se_screen15">How easy/difficult was it for you to use the research app?</string>
+    <string name="option1_se_screen15">very easy</string>
+    <string name="option2_se_screen15">very difficult</string>
+
+    <!-- Screen 8 -->
+    <string name="title_se_screen16">Research App</string>
+    <string name="question_se_screen16">Would you recommend this study to a friend?</string>
+    <string name="option1_se_screen16">very much so</string>
+    <string name="option2_se_screen16">not at all</string>
+
+    <!-- Screen 9 -->
+    <string name="title_se_screen17">Research App</string>
+    <string name="question_se_screen17">Is there anything in particular you would change about the research app?</string>
 
 </resources>

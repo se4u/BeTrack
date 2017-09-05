@@ -4,13 +4,14 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.ProgressStepper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
 /**
  * Created by cvincent on 27/08/17.
  */
@@ -123,7 +124,7 @@ public class ActivitySurveySleep extends ProgressStepper {
         WhatTimeOutBed = Step7.getArguments().getString(FragmentSurveyTimePicker.SURVEY_STATUS, null);
         QualitySleep = Step8.getArguments().getInt(FragmentSurvey10ChoicesRadio.SURVEY_STATUS, 0);
         Comments = Step9.getArguments().getString(FragmentSurveyText.SURVEY_STATUS, null);
-/*
+
         values.clear();
         values.put(UtilsLocalDataBase.C_SLEEPSTATUS_TIME_TO_BED, TimeToBed);
         values.put(UtilsLocalDataBase.C_SLEEPSTATUS_TIME_TO_SLEEP, TimeToSleep);
@@ -139,7 +140,7 @@ public class ActivitySurveySleep extends ProgressStepper {
         TimeDaily = shf.format(new Date());
         values.put(UtilsLocalDataBase.C_SLEEPSTATUS_TIME, TimeDaily);
 
-        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_DAILYSTATUS);
+        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_SLEEPSTATUS);
         Log.d(TAG, "idUser: " + ObjSettingsStudy.getIdUser()
                 + " TimeToBed: " + TimeToBed
                 + " TimeToSleep: " + TimeToSleep
@@ -151,7 +152,8 @@ public class ActivitySurveySleep extends ProgressStepper {
                 + " QualitySleep: " + QualitySleep
                 + " Comments: " + Comments
                 + " Date: " + DateDaily
-                + " Time: " + TimeDaily);*/
+                + " Time: " + TimeDaily);
+
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
         //Start the service for sending the data to the remote server
         startService(msgIntent);
