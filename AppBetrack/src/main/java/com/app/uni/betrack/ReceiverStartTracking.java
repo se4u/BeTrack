@@ -72,54 +72,59 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
                 //We check if the time is consistent if the counter
                 //We adjust the NbrOfNotificationToDo counter depending of the time we are switched on
                 // "09:30:00","13:00:00" NbrOfNotificationToDo mod 3 should be equal to 0 we trigger the notification in a time between 0s and 10 minutes
-                // "13:00:00","13:30:00" NbrOfNotificationToDo mod 3 should be equal to 0 we trigger the next notification (btw 13:30 and 17h00)
-                // "17:30:00","21:00:00" NbrOfNotificationToDo mod 3 should be equal to 1 we trigger the notification in a time between 0s and 10 minutes
-                // "21:00:00","09:30:00" NbrOfNotificationToDo mod 3 should be equal to 1 we trigger the next notification (btw 09:30 and 13h00)
+                // "13:00:00","13:30:00" NbrOfNotificationToDo mod 3 should be equal to 2 we trigger the next notification (btw 13:30 and 17h00)
                 // "13:30:00","17:00:00" NbrOfNotificationToDo mod 3 should be equal to 2 we trigger the notification in a time between 0s and 10 minutes
-                // "17:00:00","17:30:00" NbrOfNotificationToDo mod 3 should be equal to we trigger the next notification (btw 17:30 and 21h00)
+                // "17:00:00","17:30:00" NbrOfNotificationToDo mod 3 should be equal to 1 we trigger the next notification (btw 17:30 and 21h00)
+                // "17:30:00","21:00:00" NbrOfNotificationToDo mod 3 should be equal to 1 we trigger the notification in a time between 0s and 10 minutes
+                // "21:00:00","09:30:00" NbrOfNotificationToDo mod 3 should be equal to 0 we trigger the next notification (btw 09:30 and 13h00)
 
                 int TimeWindowWanted = UtilsGetNotification.returnIndex(currentTime);
+
+                //Check if we are btw 2 notifications?
+                if (UtilsGetNotification.CheckInBtwNotifications(currentTime) == true) {
+                    TimeWindowWanted--;
+                    if (TimeWindowWanted < 0) {
+                        TimeWindowWanted = (UtilsGetNotification.getNbrPerDay() - 1) % UtilsGetNotification.getNbrPerDay();
+                    }
+                }
+
                 if (TimeWindowWanted != ObjSettingsStudy.getNbrOfNotificationToDo() % UtilsGetNotification.getNbrPerDay()) {
                     //We are not consistent, we adjust the number of notification
                     int NbrOfNotificationToDo = ObjSettingsStudy.getNbrOfNotificationToDo();
                     int TimeWindowSaved = NbrOfNotificationToDo % UtilsGetNotification.getNbrPerDay();
                     int AdjustTimeWindow = 0;
 
-                    AdjustTimeWindow = adjustTimeWindow(TimeWindowWanted, TimeWindowSaved);
+                    AdjustTimeWindow = UtilsGetNotification.adjustTimeWindow(TimeWindowWanted, TimeWindowSaved);
 
-                    ObjSettingsStudy.setNbrOfNotificationToDo(ObjSettingsStudy.getNbrOfNotificationToDo() + AdjustTimeWindow);
+                    if ((ObjSettingsStudy.getNbrOfNotificationToDo() - AdjustTimeWindow) > 0) {
+                        ObjSettingsStudy.setNbrOfNotificationToDo(ObjSettingsStudy.getNbrOfNotificationToDo() - AdjustTimeWindow);
+                    } else
+                    {
+                        //We trigger one last notification in 10 minutes
+                        ObjSettingsStudy.setNbrOfNotificationToDo(1);
+
+                        CreateNotification.CreateAlarm(context,
+                                ObjSettingsBetrack.GetStudyNotification(),
+                                UtilsGetNotification.next10minutes(currentTime),
+                                false);
+                        next10MinutesTriggered = true;
+                    }
+
 
                 }
 
                 //Check if we are btw 2 notifications?
                 if (UtilsGetNotification.CheckInBtwNotifications(currentTime) == false) {
-                    //Nope we trigger the next notification in the next 10 minutes
+                    //We are not btw 2 notifications, we trigger the next notification in the next 10 minutes
                     CreateNotification.CreateAlarm(context,
                             ObjSettingsBetrack.GetStudyNotification(),
                             UtilsGetNotification.next10minutes(currentTime),
                             false);
                     next10MinutesTriggered = true;
                 }
-                else {
-                    //We missed that notification
-                    ObjSettingsStudy.setNbrOfNotificationToDo(ObjSettingsStudy.getNbrOfNotificationToDo() - 1);
-                    //The next notification will be triggered in a couple of lines
-                }
 
             } else {
                 Log.d(TAG, "notification was not missed we go on with the startup");
-                int TimeWindowWanted = UtilsGetNotification.returnIndex(currentTime);
-                if (TimeWindowWanted != ObjSettingsStudy.getNbrOfNotificationToDo() % UtilsGetNotification.getNbrPerDay()) {
-                    //We are not consistent, we adjust the number of notification
-                    int NbrOfNotificationToDo = ObjSettingsStudy.getNbrOfNotificationToDo();
-                    int TimeWindowSaved = NbrOfNotificationToDo % UtilsGetNotification.getNbrPerDay();
-                    int AdjustTimeWindow = 0;
-
-                    AdjustTimeWindow = adjustTimeWindow(TimeWindowWanted, TimeWindowSaved);
-
-                    ObjSettingsStudy.setNbrOfNotificationToDo(ObjSettingsStudy.getNbrOfNotificationToDo() + AdjustTimeWindow);
-
-                }
             }
         }
 
@@ -131,12 +136,25 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
             }
 
             if (next10MinutesTriggered == false) {
-                CreateNotification.CreateAlarm(context,
-                        ObjSettingsBetrack.GetStudyNotification(),
-                        UtilsGetNotification.next(
-                                ObjSettingsStudy.getNbrOfNotificationToDo() % UtilsGetNotification.getNbrPerDay()
-                        ),
-                        false);
+
+                if (UtilsGetNotification.CheckTimeWindow(currentTime, context))
+                {
+
+                    //The phone has been restarted when we are in the time window when we should trigger the notification
+                    //the next notification is triggered in the next 10 minutes
+                    CreateNotification.CreateAlarm(context,
+                            ObjSettingsBetrack.GetStudyNotification(),
+                            UtilsGetNotification.next10minutes(currentTime),
+                            false);
+
+                } else {
+                    CreateNotification.CreateAlarm(context,
+                            ObjSettingsBetrack.GetStudyNotification(),
+                            UtilsGetNotification.next(
+                                    ObjSettingsStudy.getNbrOfNotificationToDo() % UtilsGetNotification.getNbrPerDay()
+                            ),
+                            false);
+                }
             }
 
             CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
@@ -149,40 +167,6 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
                 }
             }
         }
-    }
-
-    private int adjustTimeWindow(int TimeWindowWanted, int TimeWindowSaved) {
-        int AdjustTimeWindow = 0;
-
-        //0 Morning
-        //1 Evening
-        //2 Afternoon
-
-        //We are in the morning (TimeWindowWanted = 0) but we should be in the afternoon (TimeWindowSaved = 2) we adjust the window location
-        if ((TimeWindowWanted == 0) && (TimeWindowSaved == 2)) {
-            AdjustTimeWindow = 1;
-        }
-        //We are in the evening (TimeWindowWanted = 1) but we should be in the morning (TimeWindowSaved = 0) we adjust the window location
-        else if ((TimeWindowWanted == 1) && (TimeWindowSaved == 0)) {
-            AdjustTimeWindow = 1;
-        }
-        //We are in the afternoon (TimeWindowWanted = 2) but we should be in the evening (TimeWindowSaved = 1) we adjust the window location
-        else if ((TimeWindowWanted == 2) && (TimeWindowSaved == 1)) {
-            AdjustTimeWindow = 1;
-        }
-        //We are in the morning (TimeWindowWanted = 0) but we should be in the evening (TimeWindowSaved = 1) we adjust the window location
-        else if ((TimeWindowWanted == 0) && (TimeWindowSaved == 1)) {
-            AdjustTimeWindow = 2;
-        }
-        //We are in the evening (TimeWindowWanted = 1) but we should be in the afternoon (TimeWindowSaved = 2) we adjust the window location
-        else if ((TimeWindowWanted == 1) && (TimeWindowSaved == 2)) {
-            AdjustTimeWindow = 2;
-        }
-        //We are in the afternoon (TimeWindowWanted = 2) but we should be in the morning (TimeWindowSaved = 0) we adjust the window location
-        else if ((TimeWindowWanted == 2) && (TimeWindowSaved == 0)) {
-            AdjustTimeWindow = 2;
-        }
-        return AdjustTimeWindow;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP) private boolean hasPermission(Context context) {

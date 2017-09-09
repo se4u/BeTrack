@@ -18,6 +18,8 @@ import java.util.Random;
 public class UtilsGetNotification {
     static final String TAG = "UtilsGetNotification";
 
+
+
     public static Class<?>[][]  ListSurveys = new Class<?>[][] {
             //"09:30:00","13:00:00"
             {ActivitySurveySleep.class, ActivitySurveyDaily.class}, //First time period: 3 mod 3 =0
@@ -53,6 +55,7 @@ public class UtilsGetNotification {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         //Prepare a new calendar for the start time
         Calendar calendarpref = new GregorianCalendar();
@@ -113,6 +116,30 @@ public class UtilsGetNotification {
         Log.d(TAG, "Next notification " + shf.format(timeNextNotification));
 
         return shf.format(timeNextNotification);
+    }
+
+    public static boolean CheckTimeWindow(long time, Context context) {
+
+        boolean rc = false;
+
+        SettingsStudy ObjSettingsStudy = SettingsStudy.getInstance(context);
+
+        //Check if the time is on the day of the notification
+        //Prepare a new calendar for the time we wan to check
+        Calendar calTimeToCheck = Calendar.getInstance();
+        calTimeToCheck.setTimeInMillis(time);
+
+        Calendar calTimeOfNotification = Calendar.getInstance();
+        calTimeOfNotification.setTimeInMillis(ObjSettingsStudy.getTimeNextNotification());
+        if (calTimeToCheck.get(Calendar.DAY_OF_WEEK) == calTimeOfNotification.get(Calendar.DAY_OF_WEEK)) {
+            //Check if the time is within the window of the notification
+            if (returnIndex(time) == ObjSettingsStudy.getNbrOfNotificationToDo() % UtilsGetNotification.getNbrPerDay())
+            {
+                rc = true;
+            }
+        }
+
+        return rc;
     }
 
     public static boolean CheckInBtwNotifications(long time) {
@@ -223,6 +250,40 @@ public class UtilsGetNotification {
         Log.d(TAG, "timeFound: " + timeFound);
 
         return counter;
+    }
+
+    public static int adjustTimeWindow(int TimeWindowWanted, int TimeWindowSaved) {
+        int AdjustTimeWindow = 0;
+
+        //0 Morning
+        //1 Evening
+        //2 Afternoon
+
+        //We are in the morning (TimeWindowWanted = 0) but we should be in the afternoon (TimeWindowSaved = 2) we adjust the window location
+        if ((TimeWindowWanted == 0) && (TimeWindowSaved == 2)) {
+            AdjustTimeWindow = 2;
+        }
+        //We are in the evening (TimeWindowWanted = 1) but we should be in the morning (TimeWindowSaved = 0) we adjust the window location
+        else if ((TimeWindowWanted == 1) && (TimeWindowSaved == 0)) {
+            AdjustTimeWindow = 2;
+        }
+        //We are in the afternoon (TimeWindowWanted = 2) but we should be in the evening (TimeWindowSaved = 1) we adjust the window location
+        else if ((TimeWindowWanted == 2) && (TimeWindowSaved == 1)) {
+            AdjustTimeWindow = 2;
+        }
+        //We are in the morning (TimeWindowWanted = 0) but we should be in the evening (TimeWindowSaved = 1) we adjust the window location
+        else if ((TimeWindowWanted == 0) && (TimeWindowSaved == 1)) {
+            AdjustTimeWindow = 1;
+        }
+        //We are in the evening (TimeWindowWanted = 1) but we should be in the afternoon (TimeWindowSaved = 2) we adjust the window location
+        else if ((TimeWindowWanted == 1) && (TimeWindowSaved == 2)) {
+            AdjustTimeWindow = 1;
+        }
+        //We are in the afternoon (TimeWindowWanted = 2) but we should be in the morning (TimeWindowSaved = 0) we adjust the window location
+        else if ((TimeWindowWanted == 2) && (TimeWindowSaved == 0)) {
+            AdjustTimeWindow = 1;
+        }
+        return AdjustTimeWindow;
     }
 
     public static int getNbrPerDay() {

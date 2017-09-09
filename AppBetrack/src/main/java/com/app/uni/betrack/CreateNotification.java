@@ -96,8 +96,6 @@ public class CreateNotification {
         cal.set(Calendar.HOUR_OF_DAY, calendarpref.get(calendarpref.HOUR_OF_DAY));
         cal.set(Calendar.MINUTE, calendarpref.get(calendarpref.MINUTE));
 
-        Log.d(TAG, "Time to set " + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.YEAR)
-                + " " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND));
 
         if ( (fromPreference == false) && ((ObjSettingsStudy.getStudyDuration() - UtilsTimeManager.ComputeTimeRemaing(context)) < 0) ) {
             //if it has been set up with the start survey the notification is set for the next day
@@ -107,10 +105,19 @@ public class CreateNotification {
             cal.add(Calendar.DATE, 1);
         }
 
+
+        Log.d(TAG, "Time to set " + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.YEAR)
+                + " " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND));
+
         TimeToSet = cal.getTimeInMillis();
 
         ObjSettingsStudy.setTimeNextNotification(TimeToSet);
 
+        Intent intent = new Intent(context, ReceiverAlarmNotification.class);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        }
+        alarmIntent = PendingIntent.getBroadcast(context, SettingsBetrack.ID_NOTIFICATION_BETRACK, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (alarmMgr!= null) {
             alarmMgr.cancel(alarmIntent);
@@ -118,11 +125,6 @@ public class CreateNotification {
 
         if (true == StudyNotification)  {
             alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(context, ReceiverAlarmNotification.class);
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-            }
-            alarmIntent = PendingIntent.getBroadcast(context, SettingsBetrack.ID_NOTIFICATION_BETRACK, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             try {
                 Log.d(TAG, "Time to set in ms: " + TimeToSet + " Time today in ms: " + System.currentTimeMillis() + " Result: " + (cal.getTimeInMillis() - System.currentTimeMillis()));
@@ -201,6 +203,17 @@ public class CreateNotification {
         cal.set(Calendar.SECOND, calendarpref.get(calendarpref.SECOND));
         cal.set(Calendar.HOUR_OF_DAY, calendarpref.get(calendarpref.HOUR_OF_DAY));
         cal.set(Calendar.MINUTE, calendarpref.get(calendarpref.MINUTE));
+
+
+        //Check if it's not the first day
+        if ((ObjSettingsStudy.getStudyDuration() * UtilsGetNotification.getNbrPerDay()) != ObjSettingsStudy.getNbrOfNotificationToDo()) {
+            //Check if it's a transition evening to morning
+            if (ObjSettingsStudy.getNbrOfNotificationToDo() % UtilsGetNotification.getNbrPerDay() == 0)
+            {
+                cal.add(Calendar.DATE, 1);
+            }
+        }
+
 
         TimeToSet = cal.getTimeInMillis();
 
