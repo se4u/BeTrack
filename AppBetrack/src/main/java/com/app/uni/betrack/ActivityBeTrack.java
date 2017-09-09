@@ -36,10 +36,16 @@ public class ActivityBeTrack extends AppCompatActivity {
     };
     static final String TAG = "ActivityBeTrack";
     public static boolean OnForeground = false;
+
     final String FB_MESSENGER = "orca";
     final String FB_MESSENGER_COMMON_NAME = "messenger";
     final String FB_FACEBOOK = "katana";
     final String FB_FACEBOOK_COMMON_NAME = "facebook";
+    final String GOOGLEPLUS = "plus";
+    final String GOOGLEPLUS_COMMON_NAME = "google+";
+    final String HANGOUT = "talk";
+    final String HANGOUT_COMMON_NAME = "hangout";
+
     private Menu SaveMenuRef = null;
     private PieChart mChart;
     private ContentValues values = new ContentValues();
@@ -333,7 +339,11 @@ public class ActivityBeTrack extends AppCompatActivity {
                         entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), FB_MESSENGER_COMMON_NAME));
                     } else if (ObjSettingsStudy.getApplicationsToWatch().get(i).equals(FB_FACEBOOK)) {
                         entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), FB_FACEBOOK_COMMON_NAME));
-                    } else {
+                    } else if (ObjSettingsStudy.getApplicationsToWatch().get(i).equals(GOOGLEPLUS)) {
+                    entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), GOOGLEPLUS_COMMON_NAME));
+                    } else if (ObjSettingsStudy.getApplicationsToWatch().get(i).equals(HANGOUT)) {
+                        entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), HANGOUT_COMMON_NAME));
+                    }  else {
                         entries.add(new PieEntry((float) ((UsagePerApp[i] * mult) / sumUsage), ObjSettingsStudy.getApplicationsToWatch().get(i)));
                     }
                 }
