@@ -315,6 +315,7 @@ public class ActivitySurveySleep extends ProgressStepper {
         bundle9.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle9.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, true);
         bundle9.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_LINE, 10);
+        bundle9.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_CHAR, 1024); //Should be inferior or equal to the max size value in the database!
         Step9 = new FragmentSurveyText();
         Step9.setArguments(bundle9);
         addStep(Step9, true, 0, false);

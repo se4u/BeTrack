@@ -317,6 +317,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle3.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen3));
         bundle3.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle3.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        bundle3.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_CHAR, 255); //Should be inferior or equal to the max size value in the database!
         Step3 = new FragmentSurveyText();
         Step3.setArguments(bundle3);
         addStep(Step3, false, 1, false);
@@ -354,6 +355,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle6.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle6.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
         bundle6.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_NUMBER_INPUT, true);
+        bundle6.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_CHAR, 2); //Should be inferior or equal to the max size value in the database!
         Step6 = new FragmentSurveyText();
         Step6.setArguments(bundle6);
         addStep(Step6, false, 1, false);
@@ -400,6 +402,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle9.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen9));
         bundle9.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle9.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        bundle9.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_CHAR, 255); //Should be inferior or equal to the max size value in the database!
         Step9 = new FragmentSurveyText();
         Step9.setArguments(bundle9);
         addStep(Step9, false, 2, false);
@@ -411,6 +414,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle10.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle10.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
         bundle10.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_NUMBER_INPUT, true);
+        bundle10.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_CHAR, 4); //Should be inferior or equal to the max size value in the database!
         Step10 = new FragmentSurveyText();
         Step10.setArguments(bundle10);
         addStep(Step10, false, 3, false);
@@ -448,6 +452,7 @@ public class ActivitySurveyStart extends ProgressStepper {
         bundle13.putString(FragmentSurveyText.SURVEY_TEXT_DESC, getResources().getString(R.string.question_ss_screen13));
         bundle13.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle13.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, false);
+        bundle13.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_CHAR, 255); //Should be inferior or equal to the max size value in the database!
         Step13 = new FragmentSurveyText();
         Step13.setArguments(bundle13);
         addStep(Step13, false, 1, false);

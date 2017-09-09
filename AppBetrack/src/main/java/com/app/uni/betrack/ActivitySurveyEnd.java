@@ -620,6 +620,7 @@ public class ActivitySurveyEnd  extends ProgressStepper {
         bundle17.putString(FragmentSurveyText.SURVEY_TEXT_COMMENT, null);
         bundle17.putBoolean(FragmentSurveyText.SURVEY_TEXT_IS_OPTIONAL, true);
         bundle17.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_LINE, 10);
+        bundle17.putInt(FragmentSurveyText.SURVEY_TEXT_MAX_NBR_CHAR, 1024); //Should be inferior or equal to the max size value in the database!
         Step17 = new FragmentSurveyText();
         Step17.setArguments(bundle17);
         addStep(Step17, true, 0, false);
