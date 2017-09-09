@@ -8,6 +8,7 @@ import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -40,6 +41,7 @@ public class FragmentSurveyText extends AbstractStep {
     public static final String SURVEY_TEXT_IS_OPTIONAL = "SURVEY_TEXT_IS_OPTIONAL";
     public static final String SURVEY_TEXT_IS_NUMBER_INPUT = "SURVEY_TEXT_IS_NUMBER_INPUT";
     public static final String SURVEY_TEXT_MAX_NBR_LINE = "SURVEY_TEXT_MAX_NBR_LINE";
+    public static final String SURVEY_TEXT_MAX_NBR_CHAR = "SURVEY_TEXT_MAX_NBR_CHAR";
 
     private TextView Title;
     private TextView Description;
@@ -48,6 +50,7 @@ public class FragmentSurveyText extends AbstractStep {
     private boolean isOptional = true;
     private boolean isNumberInput = false;
     private int maxNbrLines = 2;
+    private int maxNbrChar = -1;
 
     private static void InternalSetBackground(Drawable Background, EditText eText)
     {
@@ -72,12 +75,18 @@ public class FragmentSurveyText extends AbstractStep {
         isOptional = bundle.getBoolean(SURVEY_TEXT_IS_OPTIONAL, true);
         isNumberInput = bundle.getBoolean(SURVEY_TEXT_IS_NUMBER_INPUT, false);
         maxNbrLines = bundle.getInt(SURVEY_TEXT_MAX_NBR_LINE, 1);
+        maxNbrChar = bundle.getInt(SURVEY_TEXT_MAX_NBR_CHAR, -1);
 
         Comment = (EditText) v.findViewById(R.id.survey_comment);
         Comment.setHint(SurveyComment);
         if (isNumberInput == true) {
             Comment.setInputType(InputType.TYPE_CLASS_NUMBER);
         }
+
+        if (maxNbrChar != -1) {
+            Comment.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxNbrChar)});
+        }
+
         if (maxNbrLines > 1) {
             Comment.setSingleLine(false);
             Comment.setImeOptions(EditorInfo.IME_ACTION_DONE);
