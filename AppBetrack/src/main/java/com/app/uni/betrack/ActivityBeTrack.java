@@ -62,6 +62,10 @@ public class ActivityBeTrack extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         OnForeground = false;
