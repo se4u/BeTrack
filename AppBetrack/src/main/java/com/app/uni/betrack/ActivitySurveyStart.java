@@ -48,13 +48,13 @@ public class ActivitySurveyStart extends ProgressStepper {
     private static final int SURVEY_DEFAULT_AGE = SurveyAge - SURVEY_AGE_START;
 
     private static final String SURVEY_PERIOD1_OUT_MIN = "< 18";
-    private static final String SURVEY_PERIOD1_OUT_MAX = "> 52";
+    private static final String SURVEY_PERIOD1_OUT_MAX = "> 51";
     private static final int SURVEY_PERIOD1_MIN = 18;
     private static final int SURVEY_PERIOD1_MAX = 52;
     private static final int SURVEY_DEFAULT_PERIOD1 = SurveyPeriod1 - SURVEY_PERIOD1_MIN;
 
     private static final String SURVEY_PERIOD2_OUT_MIN = "< 18";
-    private static final String SURVEY_PERIOD2_OUT_MAX = "> 52";
+    private static final String SURVEY_PERIOD2_OUT_MAX = "> 51";
     private static final int SURVEY_PERIOD2_MIN = 18;
     private static final int SURVEY_PERIOD2_MAX = 52;
     private static final int SURVEY_DEFAULT_PERIOD2 = SurveyPeriod2 - SURVEY_PERIOD2_MIN;
