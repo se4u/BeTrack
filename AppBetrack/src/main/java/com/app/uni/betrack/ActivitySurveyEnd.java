@@ -92,13 +92,12 @@ public class ActivitySurveyEnd  extends ProgressStepper {
         }
 
         //Step 4 PHONE USAGE
+        resultInt = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS2, 0);
+
+        SurveyPhoneUsage = resultInt * SURVEY_PHONE_USAGE_MINUTES_VAL_INC;
         resultInt = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS1, 0);
         if (resultInt != 0) {
-            SurveyPhoneUsage = resultInt * 60;
-            resultInt = Step4.getArguments().getInt(FragmentSurveyScrolling.SURVEY_STATUS2, 0);
-            if (resultInt != 0) {
-                SurveyPhoneUsage += resultInt;
-            }
+            SurveyPhoneUsage += (resultInt * 60);
         }
 
         //Step 5 STUDY 1
