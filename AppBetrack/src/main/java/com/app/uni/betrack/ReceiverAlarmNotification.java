@@ -59,10 +59,11 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
                 //Restart for a new notification in 24 hours
                 CreateNotification.ResetAlarm(context);
             }
-        }
 
-        //Trigger a notification
-        CreateNotification.Create(context);
+            //Trigger a notification
+            CreateNotification.Create(context);
+
+        }
 
         //onResume Betrack activity
         if ((ActivityBeTrack.OnForeground) && (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState)) {
