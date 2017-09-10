@@ -377,7 +377,11 @@ public class IntentServicePostData extends IntentService {
                 }
             } else {
                 if ((true == Encrypt) && (true == Cypher.get(i))) {
-                    valueToEncrypt += String.valueOf(Character.toChars(30)) + null;
+                    if (i!=1) {
+                        valueToEncrypt += String.valueOf(Character.toChars(30)) + null;
+                    }  else {
+                        valueToEncrypt = null;
+                    }
                 }
                 rc.add(null);
             }
