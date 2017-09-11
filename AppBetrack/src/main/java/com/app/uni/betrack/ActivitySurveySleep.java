@@ -154,6 +154,8 @@ public class ActivitySurveySleep extends ProgressStepper {
                 + " Date: " + DateDaily
                 + " Time: " + TimeDaily);
 
+        ObjSettingsStudy.setDailySurveyState(ObjSettingsStudy.getDailySurveyState() - 1);
+
         Intent msgIntent = new Intent(getApplicationContext(), IntentServicePostData.class);
         //Start the service for sending the data to the remote server
         startService(msgIntent);

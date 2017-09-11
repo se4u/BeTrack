@@ -101,26 +101,23 @@ public class ActivityBeTrack extends AppCompatActivity {
                     } else if (ObjSettingsStudy.getDailySurveyDone() == false) {
 
                         Log.d(TAG, "Nbr of notifications to do: " + (ObjSettingsStudy.getNbrOfNotificationToDo() + 1) % UtilsGetNotification.getNbrPerDay() + " DailySurveyState: " + ObjSettingsStudy.getDailySurveyState());
-                        if (UtilsGetNotification.ListSurveys
-                                [(ObjSettingsStudy.getNbrOfNotificationToDo() + 1) % UtilsGetNotification.getNbrPerDay()]
-                                [ObjSettingsStudy.getDailySurveyState()] != null) {
-                            Intent i = new Intent(ActivityBeTrack.this,
-                                    UtilsGetNotification.ListSurveys
-                                            [(ObjSettingsStudy.getNbrOfNotificationToDo() + 1) % UtilsGetNotification.getNbrPerDay()]
-                                            [ObjSettingsStudy.getDailySurveyState()]);
-                            int DailySurveyState = ObjSettingsStudy.getDailySurveyState();
+                        if (ObjSettingsStudy.getDailySurveyState() >= 0) {
+                                if (UtilsGetNotification.ListSurveys
+                                        [(ObjSettingsStudy.getNbrOfNotificationToDo() + 1) % UtilsGetNotification.getNbrPerDay()]
+                                        [ObjSettingsStudy.getDailySurveyState()] == null) {
+                                    Log.d(TAG, "No more surveys to trigger for this time slot");
+                                    ObjSettingsStudy.setDailySurveyState(UtilsGetNotification.getNbrSurveysPerDay());
+                                    ObjSettingsStudy.setDailySurveyDone(true);
+                                } else {
 
-                            if (DailySurveyState == 0) {
-                                Log.d(TAG, "No more surveys to trigger for this time slot");
-                                ObjSettingsStudy.setDailySurveyState(UtilsGetNotification.getNbrSurveysPerDay());
-                                ObjSettingsStudy.setDailySurveyDone(true);
-                            } else {
-                                ObjSettingsStudy.setDailySurveyState(DailySurveyState - 1);
-                            }
+                                    Intent i = new Intent(ActivityBeTrack.this,
+                                            UtilsGetNotification.ListSurveys
+                                                    [(ObjSettingsStudy.getNbrOfNotificationToDo() + 1) % UtilsGetNotification.getNbrPerDay()]
+                                                    [ObjSettingsStudy.getDailySurveyState()]);
+                                    startActivity(i);
+                                    finish();
+                                }
 
-
-                            startActivity(i);
-                            finish();
                         } else {
                             Log.d(TAG, "No more surveys to trigger for this time slot");
                             ObjSettingsStudy.setDailySurveyState(UtilsGetNotification.getNbrSurveysPerDay());
