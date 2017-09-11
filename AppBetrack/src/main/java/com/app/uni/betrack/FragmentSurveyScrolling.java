@@ -170,11 +170,12 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
             if (SurveyDefaultValue1 == 0) {
                 pickers1.setValue(0);
+                SurveyStatus1 = SurveyStartRange1 + SurveyDefaultValue1 - OffsetSurveyMin1;
             } else {
                 pickers1.setValue(SurveyDefaultValue1 + OffsetSurveyMin1);
+                SurveyStatus1 = SurveyStartRange1 + SurveyDefaultValue1 + OffsetSurveyMin1;
             }
 
-            SurveyStatus1 = SurveyStartRange1 + SurveyDefaultValue1 + OffsetSurveyMin1;
             mStepper.getExtras().putInt(SURVEY_STATUS1, SurveyStatus1);
             bundle.putInt(SURVEY_STATUS1, SurveyStatus1);
         } else {
@@ -198,11 +199,12 @@ public class FragmentSurveyScrolling extends AbstractStep {
 
                 if (SurveyDefaultValue2 == 0) {
                     pickers2.setValue(0);
+                    SurveyStatus2 = SurveyStartRange2 + SurveyDefaultValue2 - OffsetSurveyMin2;
                 } else {
                     pickers2.setValue(SurveyDefaultValue2 + OffsetSurveyMin2);
+                    SurveyStatus2 = SurveyStartRange2 + SurveyDefaultValue2 + OffsetSurveyMin2;
                 }
 
-                SurveyStatus2 = SurveyStartRange2 + SurveyDefaultValue2 + OffsetSurveyMin2;
                 mStepper.getExtras().putInt(SURVEY_STATUS2, SurveyStatus2);
                 bundle.putInt(SURVEY_STATUS2, SurveyStatus2);
             } else {
