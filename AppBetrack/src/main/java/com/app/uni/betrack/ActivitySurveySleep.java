@@ -83,7 +83,7 @@ public class ActivitySurveySleep extends ProgressStepper {
     private static final int SURVEY_WAKE_UP_MIN = 1;
     private static final int SURVEY_WAKE_UP_MAX = 10;
     private static int SurveyWakeUpDefault = 0;
-    private static final int SURVEY_WAKE_UP_PERIOD1 = SurveyWakeUpDefault - SURVEY_WAKE_UP_MIN;
+    private static final int SURVEY_WAKE_UP_PERIOD1 = SurveyWakeUpDefault;
 
     private static final String SURVEY_TIME_AWAKING_OUT_MIN = "0";
     private static final String SURVEY_TIME_AWAKING_OUT_MAX = "> 180";
@@ -91,7 +91,7 @@ public class ActivitySurveySleep extends ProgressStepper {
     private static final int SURVEY_TIME_AWAKING_ASLEEP_INCREMENT = 5;
     private static final int SURVEY_TIME_AWAKING_MAX = 180;
     private static int SurveyTimeAwakingDefault = 0;
-    private static final int SURVEY_TIME_AWAKING_PERIOD1 = SurveyTimeAwakingDefault - SURVEY_TIME_AWAKING_MIN;
+    private static final int SURVEY_TIME_AWAKING_PERIOD1 = SurveyTimeAwakingDefault;
 
     //Table for daily sleep status
     static final String TABLE_SLEEPSTATUS = "SleepStatus";
