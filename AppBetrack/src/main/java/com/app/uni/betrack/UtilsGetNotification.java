@@ -98,7 +98,7 @@ public class UtilsGetNotification {
         SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
 
         //Compute the time range when we should trigger a notification
-        long timeRange = 10 * 60 * 1000;
+        long timeRange = 9 * 60 * 1000;
 
         //Pickup a random number between 0 and timeRange
         Random r = new Random();
@@ -108,7 +108,7 @@ public class UtilsGetNotification {
         calStart.setTimeInMillis(currentTime);
 
         //Add this time to calStart
-        calStart.setTimeInMillis(calStart.getTimeInMillis() + timeOffset);
+        calStart.setTimeInMillis(calStart.getTimeInMillis() + timeOffset + 60000); //We never trigger the notification during the first minute
 
         //Return the time for the next notification
         Date timeNextNotification = calStart.getTime();
@@ -150,7 +150,7 @@ public class UtilsGetNotification {
 
         int counter = 0;
 
-        while ( (counter < UtilsGetNotification.ListSurveys[0].length) && (timeInBtwNotification == true)) {
+        while ( (counter <= UtilsGetNotification.ListSurveys[0].length) && (timeInBtwNotification == true)) {
 
             try {
                 //Parse the time
