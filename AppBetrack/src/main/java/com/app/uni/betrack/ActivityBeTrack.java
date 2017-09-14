@@ -114,7 +114,7 @@ public class ActivityBeTrack extends AppCompatActivity {
                 SettingsStudy.EndStudyTranferState endStudyTranferState = ObjSettingsStudy.getEndSurveyTransferred();
                 if (endStudyTranferState == SettingsStudy.EndStudyTranferState.DONE) {
                     Log.d(TAG, "getEndSurveyTransferred = DONE");
-                    prepareChart(true);
+                    prepareChart(false);
                     textWelcome.setText(getResources().getString(R.string.Betrack_end));
                 } else {
                     if (endStudyTranferState == SettingsStudy.EndStudyTranferState.IN_PROGRESS) {

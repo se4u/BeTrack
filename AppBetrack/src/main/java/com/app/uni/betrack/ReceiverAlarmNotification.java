@@ -61,9 +61,6 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
             }
         }
 
-        //Trigger a notification
-        CreateNotification.Create(context);
-
         //onResume Betrack activity
         if ((ActivityBeTrack.OnForeground) && (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState)) {
             Intent i=new Intent(context,ActivityBeTrack.class);

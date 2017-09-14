@@ -59,7 +59,7 @@
     <string name="welcome_wait">Please wait...</string>
 
     <!-- Study main screen -->
-    <string name="Betrack_welcome">Thank you for participating and see you again tomorrow!</string>
+    <string name="Betrack_welcome">Thank you for participating!</string>
     <string name="Betrack_info_start">Days remaining:</string>
     <string name="Betrack_start">Thank you for setting up the app! The daily surveys will start tomorrow.</string>
     <string name="Betrack_end">Thank you for your participation in the study. Please contact us at: smartphonestudy@psych.ubc.ca </string>

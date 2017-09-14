@@ -16,7 +16,7 @@ import com.github.fcannizzaro.materialstepper.style.DotStepper;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ActivityStartStudy extends DotStepper {
+public class ActivityStartStudy extends AppCompatActivity {
 
     private AbstractStep Step1;
     private Bundle bundle1;
@@ -37,8 +37,7 @@ public class ActivityStartStudy extends DotStepper {
     }
 
     @Override
-    public void onComplete() {
-        super.onComplete();
+    protected void onCreate(Bundle savedInstanceState) {
         Intent i;
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String ActivityStartDate = "";
@@ -51,6 +50,11 @@ public class ActivityStartStudy extends DotStepper {
         if (null == localdatabase) {
             localdatabase =  new UtilsLocalDataBase(this);
         }
+
+        if (null == ObjSettingsStudy) {
+            ObjSettingsStudy = SettingsStudy.getInstance(this);
+        }
+
 
         //We have all the information to start the study
         ObjSettingsStudy.setStudyStarted(true);
@@ -65,7 +69,7 @@ public class ActivityStartStudy extends DotStepper {
         ActivityStartDate = sdf.format(new Date());
         //Save the time
         ActivityStartTime = shf.format(new Date());
-        values.put(UtilsLocalDataBase.C_NOTIFICATION_TIME, prefs.getString(this.getString(R.string.pref_key_study_notification_time), "20:00"));
+        values.put(UtilsLocalDataBase.C_NOTIFICATION_TIME, "20:00");
         values.put(UtilsLocalDataBase.C_NOTIFICATION_TIME_DATE, ActivityStartDate);
         values.put(UtilsLocalDataBase.C_NOTIFICATION_TIME_TIME, ActivityStartTime);
         try {
@@ -74,38 +78,6 @@ public class ActivityStartStudy extends DotStepper {
 
         startActivity(i);
         finish();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        ObjSettingsStudy = SettingsStudy.getInstance(this);
-
-        //We manage to read the study available we display the disclaimer
-        //Step 1 Disclaimer
-        /*bundle1 = new Bundle();
-        bundle1.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_TITLE, getResources().getString(R.string.disclaimer_title));
-        bundle1.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_DESC, getResources().getString(R.string.disclaimer));
-        bundle1.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_AGREE, getResources().getString(R.string.disclaimer_agree));
-        Step1 = new FragmentDisclaimers();
-        Step1.setArguments(bundle1);
-        addStep(Step1, true, false);*/
-        //Step 2 Study details
-        bundle2 = new Bundle();
-        bundle2.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_TITLE, ObjSettingsStudy.getStudyName());
-        bundle2.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_DESC, ObjSettingsStudy.getStudyDescription());
-        bundle2.putString(FragmentDisclaimers.ACTIVITY_DISCLAIMER_AGREE, getResources().getString(R.string.study_agree));
-        Step2 = new FragmentDisclaimers();
-        Step2.setArguments(bundle2);
-        addStep(Step2, true, 0, false);
-        //Step 3 NOTIFICATION TIME
-        bundle3 = new Bundle();
-        bundle3.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_TITLE, getResources().getString(R.string.study_reminder));
-        bundle3.putString(FragmentSurveyTimePicker.SURVEY_TIMEPICKER_CHOICES_DESC, getResources().getString(R.string.study_reminder_question));
-        Step3 = new FragmentSurveyTimePicker();
-        Step3.setArguments(bundle3);
-        addStep(Step3, true, 0, false);
-
         super.onCreate(savedInstanceState);
     }
 }

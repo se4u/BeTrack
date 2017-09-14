@@ -51,7 +51,7 @@ public class ActivitySplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         splashVersion = (TextView) findViewById(R.id.splash_version);
-        splashVersion.setText("V" + version);
+        splashVersion.setText("MH001 V" + version);
 
         ObjSettingsStudy = SettingsStudy.getInstance(this);
 
