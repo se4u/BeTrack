@@ -412,7 +412,7 @@ public class IntentServiceTrackApp extends IntentService {
                         //Log.d(TAG, "Check app foreground: " + topActivity + " app to monitor: " + ObjSettingsStudy.getApplicationsToWatch().get(i) + " Screen state: " + ReceiverScreen.ScreenState);
 
                         if ((null != topActivity) && (null != ObjSettingsStudy.getApplicationsToWatch().get(i))) {
-                            if (topActivity.toLowerCase().contains(ObjSettingsStudy.getApplicationsToWatch().get(i).toLowerCase())) {
+                            if (true) { // We monitor everything
 
                                 //Log.d(TAG, "Status ActivityOnGoing: " + ActivityOnGoing);
 
