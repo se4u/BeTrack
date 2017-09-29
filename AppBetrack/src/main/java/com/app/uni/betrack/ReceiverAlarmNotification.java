@@ -61,6 +61,11 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
             }
         }
 
+        //Try to transfer the data
+        Intent msgIntent = new Intent(context, IntentServicePostData.class);
+        //Start the service for sending the data to the remote server
+        context.startService(msgIntent);
+
         //onResume Betrack activity
         if ((ActivityBeTrack.OnForeground) && (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState)) {
             Intent i=new Intent(context,ActivityBeTrack.class);
