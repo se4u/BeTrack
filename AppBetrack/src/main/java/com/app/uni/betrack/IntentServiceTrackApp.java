@@ -191,11 +191,9 @@ public class IntentServiceTrackApp extends IntentService {
                                 Log.d(TAG, "Screen ON saved in database " + ActivityStartDate + " " + ActivityStartTime);
                                 long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
                                 if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {
-                                    if (IntentServicePostData.SemPostData.tryAcquire()) {
-                                        Intent msgIntent = new Intent(this, IntentServicePostData.class);
-                                        //Start the service for sending the data to the remote server
-                                        this.startService(msgIntent);
-                                    }
+                                    Intent msgIntent = new Intent(this, IntentServicePostData.class);
+                                    //Start the service for sending the data to the remote server
+                                    this.startService(msgIntent);
                                 }
 
                                 values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
