@@ -31,7 +31,6 @@ public class IntentServicePostData extends IntentService {
     static final String TAG = "IntentServicePostData";
     private static final String LOCK_NAME_STATIC = "com.app.uni.betrack.wakelock.postdata";
 
-    public static final Semaphore SemPostData = new Semaphore(1, true);
     private SettingsBetrack ObjSettingsBetrack = null;
     private SettingsStudy ObjSettingsStudy = null;
 
@@ -345,7 +344,6 @@ public class IntentServicePostData extends IntentService {
             }
         }
 
-        SemPostData.release();
         getLock(getApplicationContext()).release();
     }
 
