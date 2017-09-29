@@ -31,8 +31,7 @@ public class ReceiverNetworkChange  extends WakefulBroadcastReceiver {
 
             if (true == isConnected) {
                 if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA) {
-                    if (IntentServicePostData.SemPostData.tryAcquire() &&
-                            ((ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.NOT_YET) ||
+                    if (((ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.NOT_YET) ||
                                     (ObjSettingsStudy.getEndSurveyTransferred() == SettingsStudy.EndStudyTranferState.ERROR))) {
                         Intent msgIntent = new Intent(context, IntentServicePostData.class);
                         //Start the service for sending the data to the remote server

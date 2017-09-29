@@ -263,11 +263,9 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
                 long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
                 if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {
-                    if (IntentServicePostData.SemPostData.tryAcquire()) {
-                        Intent msgIntent = new Intent(context, IntentServicePostData.class);
-                        //Start the service for sending the data to the remote server
-                        context.startService(msgIntent);
-                    }
+                    Intent msgIntent = new Intent(context, IntentServicePostData.class);
+                    //Start the service for sending the data to the remote server
+                    context.startService(msgIntent);
                 }
             }
         }
