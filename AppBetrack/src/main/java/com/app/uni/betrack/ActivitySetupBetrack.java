@@ -28,11 +28,13 @@ public class ActivitySetupBetrack extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1001;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1002;
+    private static final int MY_PERMISSIONS_REQUEST_DISABLE_BATTERY_OPTIMIZATION = 1003;
     private SettingsStudy ObjSettingsStudy;
     private boolean EnableUsageStat = false;
     private boolean EnableHuaweiProtMode = false;
     private boolean EnableHuaweiProtModeClicked = false;
     private boolean EnableGPS = false;
+    private boolean DisableBatteryOptimization = true;
 
     @Override
     public void onBackPressed() {
@@ -93,12 +95,39 @@ public class ActivitySetupBetrack extends AppCompatActivity {
             EnableGPS = true;
         }
 
-        if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS) {
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+            if (!hasBatteryOptimizationPermission()) {
+                findViewById(R.id.DisableBatteryOptimization).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.DisableBatteryOptimization).setVisibility(View.GONE);
+                DisableBatteryOptimization = true;
+            }
+        } else {
+            findViewById(R.id.DisableBatteryOptimization).setVisibility(View.GONE);
+            DisableBatteryOptimization = true;
+        }
+
+
+        if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && DisableBatteryOptimization) {
             ObjSettingsStudy.setSetupBetrackDone(true);
             i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
             startActivity(i);
             finish();
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M) private boolean hasBatteryOptimizationPermission() {
+        final String packageName = getPackageName();
+        boolean permissionGranted = false;
+        // Here, thisActivity is the current activity
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+            permissionGranted = false;
+        } else {
+            permissionGranted = true;
+        }
+
+        return permissionGranted;
     }
 
     @Override
@@ -113,7 +142,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
             else  {
                 findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
                 EnableUsageStat = true;
-                if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS ) {
+                if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && DisableBatteryOptimization) {
                     ObjSettingsStudy.setSetupBetrackDone(true);
                     i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
                     startActivity(i);
@@ -126,13 +155,30 @@ public class ActivitySetupBetrack extends AppCompatActivity {
         else  {
             findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
             EnableUsageStat = true;
-            if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS ) {
+            if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && DisableBatteryOptimization) {
                 ObjSettingsStudy.setSetupBetrackDone(true);
                 i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
                 startActivity(i);
                 finish();
             } else {
                 ObjSettingsStudy.setSetupBetrackDone(false);
+            }
+        }
+
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+            if (!hasBatteryOptimizationPermission()) {
+                findViewById(R.id.DisableBatteryOptimization).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.DisableBatteryOptimization).setVisibility(View.GONE);
+                DisableBatteryOptimization = true;
+                if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && DisableBatteryOptimization) {
+                    ObjSettingsStudy.setSetupBetrackDone(true);
+                    i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    ObjSettingsStudy.setSetupBetrackDone(false);
+                }
             }
         }
 
@@ -169,6 +215,18 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                     }
                 }
                 break;
+            case  R.id.DisableBatteryOptimizationBetrack:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    final String packageName = getPackageName();
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                    intent.setData(Uri.parse("package:" + packageName));
+                    this.startActivityForResult(
+                            intent,
+                            MY_PERMISSIONS_REQUEST_DISABLE_BATTERY_OPTIMIZATION);
+
+                }
+                break;
         }
     }
 
@@ -182,7 +240,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 } else {
                     EnableHuaweiProtMode = false;
                 }
-                if (EnableHuaweiProtMode && EnableUsageStat  && EnableGPS ) {
+                if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && DisableBatteryOptimization) {
                     ObjSettingsStudy.setSetupBetrackDone(true);
                 } else {
                     ObjSettingsStudy.setSetupBetrackDone(false);
@@ -216,7 +274,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     EnableGPS = true;
-                    if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS) {
+                    if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && DisableBatteryOptimization) {
                         ObjSettingsStudy.setSetupBetrackDone(true);
                         i = new Intent(ActivitySetupBetrack.this, ActivitySurveyStart.class);
                         startActivity(i);
