@@ -233,6 +233,65 @@
                 />
 
             </RelativeLayout>
+
+            <View
+                android:id="@+id/ViewDisableBatteryOptimization"
+                android:layout_below="@+id/EnableGPS"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:id="@+id/DisableBatteryOptimization"
+                android:layout_below="@+id/ViewEnableHuawei"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="10dp"
+                android:background="@color/colorLightGrey">
+                <TextView
+                    android:id="@+id/DisableBatteryOptimizationTitle"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textColor="#000"
+                    android:text="@string/battery_enable_title"
+                    />
+
+                <TextView
+                    android:id="@+id/DisableBatteryOptimizationDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_below="@+id/DisableBatteryOptimizationTitle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:textColor="#000"
+                    android:text="@string/battery_enable_desc"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_below="@+id/DisableBatteryOptimizationDesc"
+                    android:layout_alignRight="@+id/DisableBatteryOptimizationDesc"
+                    android:text="@string/battery_enable_positive_button"
+                    android:onClick="onButtonClicked"
+                    android:textColor="@color/colorPrimary"
+                    android:background="@color/colorLightGrey"
+                    android:textStyle="bold"
+                    android:id="@+id/DisableBatteryOptimizationBetrack"
+                    />
+
+            </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
