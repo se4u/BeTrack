@@ -144,7 +144,7 @@
     <!-- Battery white list Enable -->
     <string name="battery_enable_title">Battery Optimizations</string>
     <string name="battery_enable_desc">We need to have to be whitelisted to be able to be exempt from battery optimization</string>
-    <string name="battery_enable_positive_button">Whitelist betrack</string>
+    <string name="battery_enable_positive_button">WHITELIST BETRACK</string>
 
     <!-- Surveys -->
     <string name="question_error">You need to answer that question</string>
