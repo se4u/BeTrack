@@ -28,10 +28,12 @@ public class ServiceBetrack extends Service {
 
         Log.d(TAG, "onCreated");
 
-        IntentFilter filterScreen = new IntentFilter(Intent.ACTION_SCREEN_ON);
-        filterScreen.addAction(Intent.ACTION_USER_PRESENT);
-        filterScreen.addAction(Intent.ACTION_SCREEN_OFF);
-        filterScreen.addAction(Intent.ACTION_SHUTDOWN);
+        IntentFilter filterScreen = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+
+        if (SettingsBetrack.STUDY_ENABLE_CONTINUOUS_TRACKING == true) {
+            filterScreen.addAction(Intent.ACTION_SCREEN_ON);
+        }
+
         filterScreen.addAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
 
         mReceiverScreen = new ReceiverScreen();
