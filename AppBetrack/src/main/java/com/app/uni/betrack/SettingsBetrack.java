@@ -11,6 +11,18 @@ import java.util.concurrent.Semaphore;
  */
 public class SettingsBetrack {
 
+
+    //Start Configuration of optional modules in Betrack
+
+    //If set to yes enable the support for GPS tracking
+    static public boolean STUDY_ENABLE_GPS = false;
+
+    //If set to yes then the tracking is running even when the screen is off. If used drain the battery! But that's as well the only way to track screen on and screen off...
+    static public boolean STUDY_ENABLE_CONTINUOUS_TRACKING = false;
+
+    //End Configuration of Betrack
+
+
     //Colors should match the colors.xml file !!!
     /*<color name="colorPrimary">#26A69A</color>
     <color name="colorPrimaryDark">#303F9F</color>
@@ -42,13 +54,11 @@ public class SettingsBetrack {
     static public int SERVER_TIMEOUT = 20000;
     static public int DELTA_BTW_RECHECK_STUDY_STARTED = 10000;
     static public int SAMPLING_RATE = 1000; //In ms
-    static public int SAMPLING_RATE_SCREEN_OFF = 2 * 60 * 1000;
     static public int POSTDATA_SENDING_DELTA = 1000 * 60 * 60 * 1; //In ms (every 1 hour)
     static public int ID_NOTIFICATION_BETRACK = 1335;
     static public int ID_TRACKAPP = 1336;
     static public int ID_NOTIFICATION_SERVICE = 1337;
     static public String STUDY_PUBLIC_KEY = "public.pem";
-    static public boolean STUDY_ENABLE_GPS = false;
     static public boolean STUDY_JUST_STARTED = false;
 
     private Boolean StudyEnable;

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+import java.util.Date;
+
 /**
  * Created by cevincent on 6/24/16.
  */
@@ -16,6 +18,7 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
     static final String TAG = "ReceiverStartTracking";
 
     public static boolean startTrackingRunning = false;
+    public static boolean screenJustStarted = true;
 
     private SettingsStudy ObjSettingsStudy;
     private SettingsBetrack ObjSettingsBetrack;
@@ -29,13 +32,14 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
 
         ObjSettingsStudy = SettingsStudy.getInstance(context);
 
-        ReceiverScreen.ScreenState = ReceiverScreen.StateScreen.ON;
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            ReceiverScreen.ScreenState = ReceiverScreen.StateScreen.ON;
 
         try {
             SettingsStudy.SemScreenOn.acquire();
             if (SettingsStudy.getStartScreenOn() == 0) {
-                SettingsStudy.setStartScreenOn(currentTime);
-                Log.d(TAG, "Screen ON saved " + currentTime);
+                SettingsStudy.setStartScreenOn(System.currentTimeMillis());
+                Log.d(TAG, "Screen ON saved " + System.currentTimeMillis());
             }
 
         } catch (Exception eScreenOn) {
