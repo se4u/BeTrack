@@ -34,7 +34,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
     private boolean EnableHuaweiProtMode = false;
     private boolean EnableHuaweiProtModeClicked = false;
     private boolean EnableGPS = false;
-    private boolean DisableBatteryOptimization = true;
+    private boolean DisableBatteryOptimization = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
