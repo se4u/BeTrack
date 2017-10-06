@@ -285,6 +285,10 @@ public class IntentServiceTrackApp extends IntentService {
                                         Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
                                     }
                                 }
+
+                                if (SettingsBetrack.STUDY_ENABLE_CONTINUOUS_TRACKING == false) {
+                                    CreateTrackApp.StopAlarm(getBaseContext());
+                                }
                             }
                         }
                     } else {
