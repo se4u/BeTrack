@@ -54,7 +54,7 @@ public class ActivitySurveyStart extends AppCompatActivity {
             ObjSettingsBetrack.Update(this);
         }
 
-
+        DateStudyStart = sdf.format(new Date());
         ObjSettingsStudy.setStartDateSurvey(DateStudyStart);
         ObjSettingsStudy.setStartSurveyDone(true);
 
