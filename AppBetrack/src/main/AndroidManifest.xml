@@ -32,6 +32,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".ReceiverScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".ReceiverStopTracking">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />

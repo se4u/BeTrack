@@ -92,9 +92,34 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 }
             }
 
-            if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-                long DeltaLastTransfer;
-                Log.d(TAG, "ACTION_SCREEN_ON");
+            if ((intent.getAction().equals(Intent.ACTION_SCREEN_ON)) || (intent.getAction().equals(Intent.ACTION_USER_PRESENT))) {
+
+                if ((intent.getAction().equals(Intent.ACTION_SCREEN_ON))) {
+                    Log.d(TAG, "ACTION_SCREEN_ON");
+                } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
+                    Log.d(TAG, "ACTION_USER_PRESENT");
+                    if (ReceiverStartTracking.screenJustStarted  == true) {
+                        //Screen is on and not locked we save this status in the databse
+                        //Save when the screen was switched off
+                        values.clear();
+                        //Save the date
+                        ActivityStartDate = sdf.format(new Date());
+                        //Save the time
+                        ActivityStartTime = shf.format(new Date());
+                        values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 1);
+                        values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
+                        values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
+                        try {
+                            AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
+                            Log.d(TAG, "Screen On saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                        } catch (Exception f) {
+                            Log.d(TAG, "Nothing to update in the database");
+                        }
+                        ReceiverStartTracking.screenJustStarted = false;
+                    }
+                } else {
+                    Log.d(TAG, "ACTION_UNKNOWN, should never happen!!!");
+                }
 
                 try {
                     SettingsStudy.SemScreenOn.acquire();
@@ -110,7 +135,12 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 }
 
                 ScreenState = StateScreen.ON;
-                //Screen is on and not locked we save this status in the databse
+
+            }
+
+            if ((ScreenState == StateScreen.ON) && ((android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) )) {
+                long DeltaLastTransfer;
+                //Screen is on we save this status in the databse
                 //Save when the screen was switched off
                 values.clear();
                 //Save the date
@@ -128,37 +158,16 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 }
 
                 DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastGPS();
-                if ((DeltaLastTransfer >= SettingsBetrack.TRACKGPS_DELTA) || (DeltaLastTransfer < 0))  {
+                if ((DeltaLastTransfer >= SettingsBetrack.TRACKGPS_DELTA) || (DeltaLastTransfer < 0)) {
                     ReceiverGPSChange.StartGPS(context);
                 }
-            }
+                if ((intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) ||
+                        (intent.getAction().equals(Intent.ACTION_SHUTDOWN))) {
 
-            if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
-                Log.d(TAG, "ACTION_USER_PRESENT");
+                    Log.d(TAG, "ACTION_SCREEN_OFF or ACTION_SHUTDOWN");
+                    ScreenState = StateScreen.OFF;
 
-                try {
-                    SettingsStudy.SemScreenOn.acquire();
-                    if (SettingsStudy.getStartScreenOn() == 0) {
-                        SettingsStudy.setStartScreenOn(System.currentTimeMillis());
-                        Log.d(TAG, "Screen ON saved " + System.currentTimeMillis());
-                    }
-
-                } catch (Exception eScreenOn) {
                 }
-                finally {
-                    SettingsStudy.SemScreenOn.release();
-                }
-
-                ScreenState = StateScreen.ON;
-
-            }
-
-            if ((intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) ||
-                    (intent.getAction().equals(Intent.ACTION_SHUTDOWN))){
-
-                Log.d(TAG, "ACTION_SCREEN_OFF or ACTION_SHUTDOWN");
-                ScreenState = StateScreen.OFF;
-
             }
 
             if (ScreenState == StateScreen.OFF) {
@@ -166,11 +175,9 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 Log.d(TAG, "Screen is off we save the data to the local database");
                 //Save the end time
 
-                // We should never stop the alarm or from marshallow at some point the whole service goes into a kind of sleep mode
-                //CreateTrackApp.StopAlarm(context);
-
-                //Instead we decrease the frequency
-                CreateTrackApp.CreateAlarm(context,SettingsBetrack.SAMPLING_RATE_SCREEN_OFF);
+                if (SettingsBetrack.STUDY_ENABLE_CONTINUOUS_TRACKING == false) {
+                    CreateTrackApp.StopAlarm(context);
+                }
 
                 //Clear the base time used for the average computation
                 IntentServiceTrackApp.baseTime = 0;

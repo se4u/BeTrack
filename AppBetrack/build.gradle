@@ -8,7 +8,11 @@ android {
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
+<<<<<<< HEAD
         versionName "0.99"
+=======
+        versionName "1.01"
+>>>>>>> We use USER_PRESENT event to detect screen on. BEtrack is stopped when the screen is off to avoid to drain the battery
     }
     buildTypes {
         release {
