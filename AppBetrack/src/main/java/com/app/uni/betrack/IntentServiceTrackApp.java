@@ -40,8 +40,13 @@ public class IntentServiceTrackApp extends IntentService {
     private SettingsBetrack ObjSettingsBetrack = null;
     private SettingsStudy ObjSettingsStudy = null;
     private UtilsLocalDataBase localdatabase = null;
+    private UtilsLocalDataBase AccesLocalDB()
+    {
+        return localdatabase;
+    }
 
-
+    private UtilsScreenState screenstate = null;
+    private UtilsScreenState AccessScreenState() {return screenstate; }
 
     public IntentServiceTrackApp() {
 
@@ -58,14 +63,9 @@ public class IntentServiceTrackApp extends IntentService {
         }
     }
 
-    private UtilsLocalDataBase AccesLocalDB()
-    {
-        return localdatabase;
-    }
+
 
     protected void onHandleIntent(Intent intent) {
-        KeyguardManager km = (KeyguardManager) getBaseContext().getSystemService(Context.KEYGUARD_SERVICE);
-        boolean locked = km.inKeyguardRestrictedInputMode();
         String topActivity;
         boolean StudyOnGoing;
 
@@ -75,6 +75,10 @@ public class IntentServiceTrackApp extends IntentService {
 
         if (null == localdatabase) {
             localdatabase =  new UtilsLocalDataBase(this);
+        }
+
+        if (null == screenstate) {
+            screenstate =  new UtilsScreenState(this);
         }
 
         if (null == ObjSettingsBetrack) {
@@ -91,7 +95,9 @@ public class IntentServiceTrackApp extends IntentService {
 
             //Compute what's the average refresh frequency of the service and the standard deviation
             if ((!ObjSettingsStudy.getAccuracyComputed())
-                    && (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState))
+                    && ((UtilsScreenState.StateScreen.ON == AccessScreenState().UtilsGetSavedScreenState())
+                        || (UtilsScreenState.StateScreen.UNLOCKED == AccessScreenState().UtilsGetSavedScreenState()))
+                    )
             {
 
                 Log.d(TAG, "Compute accuracy periodicity basetime: " + baseTime);
@@ -162,17 +168,19 @@ public class IntentServiceTrackApp extends IntentService {
 
                     Log.d(TAG, "Foreground App " + topActivity + " ActivityOnGoing " + ActivityOnGoing);
                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        ReceiverScreen.CheckScreenStatusFromLollipop(this);
+                        AccessScreenState().UtilsUpdateScreenStateFromHardware(this);
 
                         //Save the date
                         ActivityStartDate = sdf.format(new Date());
                         //Save the start time
                         ActivityStartTime = shf.format(new Date());
 
-                        if (ObjSettingsStudy.getBetrackScreenState() != ReceiverScreen.ScreenState) {
-                            ObjSettingsStudy.setBetrackScreenState(ReceiverScreen.ScreenState);
+
+                        if (ObjSettingsStudy.getBetrackScreenState() != AccessScreenState().UtilsGetSavedScreenState()) {
+                            ObjSettingsStudy.setBetrackScreenState(AccessScreenState().UtilsGetSavedScreenState());
                             values.clear();
-                            if (ObjSettingsStudy.getBetrackScreenState() == ReceiverScreen.StateScreen.ON ) {
+                            if ((AccessScreenState().UtilsGetSavedScreenState() == UtilsScreenState.StateScreen.ON)
+                                    || (AccessScreenState().UtilsGetSavedScreenState() == UtilsScreenState.StateScreen.UNLOCKED)) {
 
                                 try {
                                     SettingsStudy.SemScreenOn.acquire();
@@ -187,10 +195,20 @@ public class IntentServiceTrackApp extends IntentService {
                                     SettingsStudy.SemScreenOn.release();
                                 }
 
-                                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 1);
-                                Log.d(TAG, "Screen ON saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                                if (ObjSettingsStudy.getBetrackScreenState() == UtilsScreenState.StateScreen.UNLOCKED) {
+                                    Log.d(TAG, "SCREEN_USER_PRESENT saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                                    values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, SettingsBetrack.SCREEN_USER_PRESENT);
+                                } else {
+                                    Log.d(TAG, "SCREEN_SWITCHED_ON saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                                    values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, SettingsBetrack.SCREEN_SWITCHED_ON);
+                                }
+
+
+
                                 long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
+
                                 if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {
+                                    Log.d(TAG, "More than one hour without transfering any data");
                                     Intent msgIntent = new Intent(this, IntentServicePostData.class);
                                     //Start the service for sending the data to the remote server
                                     this.startService(msgIntent);
@@ -208,8 +226,8 @@ public class IntentServiceTrackApp extends IntentService {
                             else
                             {
                                 baseTime = 0;
-                                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 0);
-                                Log.d(TAG, "Screen OFF saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, SettingsBetrack.SCREEN_SWITCHED_OFF);
+                                Log.d(TAG, "SCREEN_SWITCHED_OFF saved in database " + ActivityStartDate + " " + ActivityStartTime);
 
                                 values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
                                 values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
@@ -286,15 +304,15 @@ public class IntentServiceTrackApp extends IntentService {
                                     }
                                 }
 
-                                if (SettingsBetrack.STUDY_ENABLE_CONTINUOUS_TRACKING == false) {
+                                if ((SettingsBetrack.STUDY_ENABLE_CONTINUOUS_TRACKING == false) || (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)) {
                                     CreateTrackApp.StopAlarm(getBaseContext());
                                 }
                             }
                         }
                     } else {
-                        if (ReceiverScreen.StateScreen.UNKNOWN == ReceiverScreen.ScreenState) {
-                            intentCheckScreenStatus.setAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
-                            this.sendBroadcast(intentCheckScreenStatus);
+                        if (UtilsScreenState.StateScreen.UNKNOWN == AccessScreenState().UtilsGetSavedScreenState()) {
+                            AccessScreenState().UtilsUpdateScreenStateFromHardware(this);
+                            ObjSettingsStudy.setBetrackScreenState(AccessScreenState().UtilsGetSavedScreenState());
                         }
                     }
                     //Check the status of the screen
@@ -308,7 +326,8 @@ public class IntentServiceTrackApp extends IntentService {
                         if (null != ActivityOnGoing) {
                             //An activity was watched and should not be watched anymore
                             if ((null != topActivity) && (!topActivity.equals("android")) && (!topActivity.equals("com.android.systemui")) && (!ActivityOnGoing.equals(topActivity))) {
-                                if (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState) {
+                                if ((AccessScreenState().UtilsGetSavedScreenState() == UtilsScreenState.StateScreen.ON)
+                                        || (AccessScreenState().UtilsGetSavedScreenState() == UtilsScreenState.StateScreen.UNLOCKED)) {
 
                                     //We save in the local database the information about the study
                                     values.clear();
@@ -344,7 +363,7 @@ public class IntentServiceTrackApp extends IntentService {
 
 
                                         this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
-                                        mHandler.post(new UtilsDisplayToast(this, "Betrack: Stop 1 monitoring date: " + ActivityStopDate + " time: " + ActivityStopTime));
+                                        //mHandler.post(new UtilsDisplayToast(this, "Betrack: Stop 1 monitoring date: " + ActivityStopDate + " time: " + ActivityStopTime));
 
                                         Log.d(TAG, "End monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
 
@@ -397,7 +416,7 @@ public class IntentServiceTrackApp extends IntentService {
                                     }
 
                                     this.AccesLocalDB().Update(values, values.getAsLong(UtilsLocalDataBase.C_APPWATCH_ID), UtilsLocalDataBase.TABLE_APPWATCH);
-                                    mHandler.post(new UtilsDisplayToast(this, "Betrack: Stop 2 monitoring date: " + ActivityStopDate + " time: " + ActivityStopTime));
+                                    //mHandler.post(new UtilsDisplayToast(this, "Betrack: Stop 2 monitoring date: " + ActivityStopDate + " time: " + ActivityStopTime));
 
                                     Log.d(TAG, "Finish last entry end monitoring date:" + ActivityStopDate + " time:" + ActivityStopTime);
                                     //Reinitialize activity watched infos
@@ -420,70 +439,69 @@ public class IntentServiceTrackApp extends IntentService {
 
                                 //A new activity to be watch
                                 if (null == ActivityOnGoing) {
-
                                     //Check the status of the screen
-                                    if (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState) {
+                                    if (ObjSettingsStudy.getBetrackScreenState() == UtilsScreenState.StateScreen.UNLOCKED) {
+                                        values.clear();
+                                        values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
+                                        try {
+                                            if (0 != values.size()) {
+                                                ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
+                                                Log.d(TAG, "Last entry is not null we can start a new monitoring");
+                                            }
+                                            else {
+                                                Log.d(TAG, "New monitoring started");
+                                            }
 
-                                        if (!locked) {
+
+                                            ActivityOnGoing = topActivity;
+                                            Log.d(TAG, "Sem4 try acquire");
+                                            SettingsStudy.SemAppWatchMonitor.acquire();
+                                            Log.d(TAG, "Sem4 acquired");
+                                            SettingsStudy.setAppWatchStartTime(System.currentTimeMillis());
+                                            SettingsStudy.setAppWatchId(i);
+                                            SettingsStudy.SemAppWatchMonitor.release();
+                                            Log.d(TAG, "Sem4 try released");
+                                            //Save the date
+                                            ActivityStartDate = sdf.format(new Date());
+                                            //Save the start time
+                                            ActivityStartTime = shf.format(new Date());
+
+                                            ActivityStopDate = null;
+                                            ActivityStopTime = null;
+
                                             values.clear();
-                                            values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_APPWATCH, false);
-                                            try {
-                                                if (0 != values.size()) {
-                                                    ActivityStopDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTOP).toString();
-                                                    Log.d(TAG, "Last entry is not null we can start a new monitoring");
-                                                }
-                                                else {
-                                                    Log.d(TAG, "New monitoring started");
-                                                }
+                                            values.put(UtilsLocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
+                                            values.put(UtilsLocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
+                                            values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
+                                            values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTART, ActivityStartTime);
+                                            values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
+                                            this.AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_APPWATCH);
 
+                                            Log.d(TAG, "IdUser: " + ObjSettingsStudy.getIdUser() + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
+                                            //mHandler.post(new UtilsDisplayToast(this, "Betrack: Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime));
 
-                                                ActivityOnGoing = topActivity;
-                                                Log.d(TAG, "Sem4 try acquire");
-                                                SettingsStudy.SemAppWatchMonitor.acquire();
-                                                Log.d(TAG, "Sem4 acquired");
-                                                SettingsStudy.setAppWatchStartTime(System.currentTimeMillis());
-                                                SettingsStudy.setAppWatchId(i);
-                                                SettingsStudy.SemAppWatchMonitor.release();
-                                                Log.d(TAG, "Sem4 try released");
-                                                //Save the date
-                                                ActivityStartDate = sdf.format(new Date());
-                                                //Save the start time
-                                                ActivityStartTime = shf.format(new Date());
+                                        } catch (Exception e) {
 
-                                                ActivityStopDate = null;
-                                                ActivityStopTime = null;
-
-                                                values.clear();
-                                                values.put(UtilsLocalDataBase.C_APPWATCH_APPLICATION, ActivityOnGoing);
-                                                values.put(UtilsLocalDataBase.C_APPWATCH_DATESTART, ActivityStartDate);
-                                                values.put(UtilsLocalDataBase.C_APPWATCH_DATESTOP, ActivityStopDate);
-                                                values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTART, ActivityStartTime);
-                                                values.put(UtilsLocalDataBase.C_APPWATCH_TIMESTOP, ActivityStopTime);
-                                                this.AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_APPWATCH);
-
-                                                Log.d(TAG, "IdUser: " + ObjSettingsStudy.getIdUser() + "Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime);
-                                                mHandler.post(new UtilsDisplayToast(this, "Betrack: Start monitoring: " + topActivity + " date:" + ActivityStartDate + " time:" + ActivityStartTime));
-
-                                            } catch (Exception e) {
-
-                                                ActivityOnGoing = values.get(UtilsLocalDataBase.C_APPWATCH_APPLICATION).toString();
-                                                ActivityStartDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTART).toString();
-                                                ActivityStartTime = values.get(UtilsLocalDataBase.C_APPWATCH_TIMESTART).toString();
-                                                Log.d(TAG, "Last entry is null we should not start a new monitoring");
-                                            }
-                                            finally {
-                                                break;
-                                            }
+                                            ActivityOnGoing = values.get(UtilsLocalDataBase.C_APPWATCH_APPLICATION).toString();
+                                            ActivityStartDate = values.get(UtilsLocalDataBase.C_APPWATCH_DATESTART).toString();
+                                            ActivityStartTime = values.get(UtilsLocalDataBase.C_APPWATCH_TIMESTART).toString();
+                                            Log.d(TAG, "Last entry is null we should not start a new monitoring");
                                         }
-                                        else
-                                        {
-                                            Log.d(TAG, "Screen is still locked we don't start a new monitoring yet");
+                                        finally {
+                                            break;
                                         }
-
                                     }
-
+                                    else
+                                    {
+                                        if (ObjSettingsStudy.getBetrackScreenState() == UtilsScreenState.StateScreen.ON) {
+                                            Log.d(TAG, "Screen is still locked we don't start a new monitoring yet");
+                                        } else if (ObjSettingsStudy.getBetrackScreenState() == UtilsScreenState.StateScreen.OFF) {
+                                            Log.d(TAG, "Screen is off we don't start a new monitoring yet");
+                                        } else {
+                                            Log.d(TAG, "Screen is in an unknown state, that should never happen");
+                                        }
+                                    }
                                 }
-
                             }
                         }
                     }
@@ -531,6 +549,7 @@ public class IntentServiceTrackApp extends IntentService {
             SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
             for (UsageStats usageStats : stats) {
                 mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
+                //Log.d(TAG, "App " + usageStats.getPackageName() + " Time " + usageStats.getLastTimeUsed() );
                 //Log.d(TAG, "App" + usageStats.getPackageName() + "Time in foreground " + usageStats.getTotalTimeInForeground());
             }
             if (mySortedMap != null && !mySortedMap.isEmpty()) {
