@@ -21,46 +21,15 @@ import java.util.Date;
 public class ReceiverScreen extends WakefulBroadcastReceiver {
 
     static final String TAG = "ReceiverScreen";
-    public static StateScreen ScreenState = StateScreen.UNKNOWN;
     private static UtilsLocalDataBase localdatabase =  null;
     Handler mHandler;
     private SettingsStudy ObjSettingsStudy;
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)  public static void CheckScreenStatusFromLollipop(Context context) {
-        DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
-        for (Display display : dm.getDisplays()) {
-            if (display.getState() != Display.STATE_OFF) {
-                //Log.d(TAG, "MANUAL CHECK SCREEN IS ON");
-                ScreenState = StateScreen.ON;
-                break;
-            }
-            else
-            {
-                //Log.d(TAG, "MANUAL CHECK SCREEN IS OFF");
-                ScreenState = StateScreen.OFF;
-                break;
-            }
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)  private static void CheckScreenStatusFromIceCream(Context context) {
-        PowerManager powerManager = (PowerManager) context.getSystemService(context.POWER_SERVICE);
-        if  (powerManager.isScreenOn()) {
-            //Log.d(TAG, "MANUAL CHECK SCREEN IS ON");
-            ScreenState = StateScreen.ON;
-        }
-        else
-        {
-            //Log.d(TAG, "MANUAL CHECK SCREEN IS OFF");
-            ScreenState = StateScreen.OFF;
-
-        }
-    }
-
     private UtilsLocalDataBase AccesLocalDB()
     {
         return localdatabase;
     }
+    private UtilsScreenState screenstate = null;
+    private UtilsScreenState AccessScreenState() {return screenstate; }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -70,6 +39,7 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
         String ActivityStopTime = "";
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+        long DeltaLastTransfer;
 
         ContentValues values = new ContentValues();
         ObjSettingsStudy = SettingsStudy.getInstance(context);
@@ -78,49 +48,25 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
             mHandler = new Handler();
         }
 
+        if (null == screenstate) {
+            screenstate =  new UtilsScreenState(context);
+        }
+
+
         if ((ObjSettingsStudy.getStartSurveyDone() == true) && (ObjSettingsStudy.getEndSurveyDone() == false)) {
             if (null == localdatabase) {
                 localdatabase =  new UtilsLocalDataBase(context);
             }
 
             Log.d(TAG, "Check screen state");
-            if (intent.getAction().equals(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS)) {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    CheckScreenStatusFromLollipop(context);
-                } else {
-                    CheckScreenStatusFromIceCream(context);
-                }
-            }
-
             if ((intent.getAction().equals(Intent.ACTION_SCREEN_ON)) || (intent.getAction().equals(Intent.ACTION_USER_PRESENT))) {
-
                 if ((intent.getAction().equals(Intent.ACTION_SCREEN_ON))) {
                     Log.d(TAG, "ACTION_SCREEN_ON");
                 } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
                     Log.d(TAG, "ACTION_USER_PRESENT");
-                    if (ReceiverStartTracking.screenJustStarted  == true) {
-                        //Screen is on and not locked we save this status in the databse
-                        //Save when the screen was switched off
-                        values.clear();
-                        //Save the date
-                        ActivityStartDate = sdf.format(new Date());
-                        //Save the time
-                        ActivityStartTime = shf.format(new Date());
-                        values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 1);
-                        values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
-                        values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
-                        try {
-                            AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
-                            Log.d(TAG, "Screen On saved in database " + ActivityStartDate + " " + ActivityStartTime);
-                        } catch (Exception f) {
-                            Log.d(TAG, "Nothing to update in the database");
-                        }
-                        ReceiverStartTracking.screenJustStarted = false;
-                    }
                 } else {
                     Log.d(TAG, "ACTION_UNKNOWN, should never happen!!!");
                 }
-
                 try {
                     SettingsStudy.SemScreenOn.acquire();
                     if (SettingsStudy.getStartScreenOn() == 0) {
@@ -134,48 +80,67 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                     SettingsStudy.SemScreenOn.release();
                 }
 
-                ScreenState = StateScreen.ON;
+                if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
 
-            }
+                    //Screen is on we save this status in the databse
+                    //Save when the screen was switched off
+                    values.clear();
+                    //Save the date
+                    ActivityStartDate = sdf.format(new Date());
+                    //Save the time
+                    ActivityStartTime = shf.format(new Date());
 
-            if ((ScreenState == StateScreen.ON) && ((android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) )) {
-                long DeltaLastTransfer;
-                //Screen is on we save this status in the databse
-                //Save when the screen was switched off
-                values.clear();
-                //Save the date
-                ActivityStartDate = sdf.format(new Date());
-                //Save the time
-                ActivityStartTime = shf.format(new Date());
-                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 1);
-                values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
-                values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
-                try {
-                    AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
-                    Log.d(TAG, "Screen On saved in database " + ActivityStartDate + " " + ActivityStartTime);
-                } catch (Exception f) {
-                    Log.d(TAG, "Nothing to update in the database");
+                    if ((intent.getAction().equals(Intent.ACTION_SCREEN_ON))) {
+                        Log.d(TAG, "SCREEN_SWITCHED_ON saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                        values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, SettingsBetrack.SCREEN_SWITCHED_ON);
+                        AccessScreenState().UtilsSetSavedScreenState(UtilsScreenState.StateScreen.ON);
+                    } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
+                        Log.d(TAG, "SCREEN_USER_PRESENT saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                        values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, SettingsBetrack.SCREEN_USER_PRESENT);
+                        AccessScreenState().UtilsSetSavedScreenState(UtilsScreenState.StateScreen.UNLOCKED);
+                    } else {
+                        Log.d(TAG, "SCREEN_BETRACK_ERROR saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                        values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, SettingsBetrack.SCREEN_BETRACK_ERROR);
+                    }
+
+                    values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
+                    values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
+                    try {
+                        AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
+                    } catch (Exception f) {
+                        Log.d(TAG, "Nothing to update in the database");
+                    }
+
+                    DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
+
+                    if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {
+                        Intent msgIntent = new Intent(context, IntentServicePostData.class);
+                        //Start the service for sending the data to the remote server
+                        context.startService(msgIntent);
+                        Log.d(TAG, "More than one hour without transfering any data");
+                    }
                 }
+
 
                 DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastGPS();
                 if ((DeltaLastTransfer >= SettingsBetrack.TRACKGPS_DELTA) || (DeltaLastTransfer < 0)) {
                     ReceiverGPSChange.StartGPS(context);
                 }
-                if ((intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) ||
-                        (intent.getAction().equals(Intent.ACTION_SHUTDOWN))) {
 
-                    Log.d(TAG, "ACTION_SCREEN_OFF or ACTION_SHUTDOWN");
-                    ScreenState = StateScreen.OFF;
+                CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
 
-                }
+
             }
 
-            if (ScreenState == StateScreen.OFF) {
+            if ((intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) ||
+                    (intent.getAction().equals(Intent.ACTION_SHUTDOWN))) {
+
+                AccessScreenState().UtilsSetSavedScreenState(UtilsScreenState.StateScreen.OFF);
 
                 Log.d(TAG, "Screen is off we save the data to the local database");
                 //Save the end time
 
-                if (SettingsBetrack.STUDY_ENABLE_CONTINUOUS_TRACKING == false) {
+                if ((SettingsBetrack.STUDY_ENABLE_CONTINUOUS_TRACKING == false) || (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)) {
                     CreateTrackApp.StopAlarm(context);
                 }
 
@@ -190,12 +155,12 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                 //Save the time
                 ActivityStopTime = shf.format(new Date());
 
-                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 0);
+                values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, SettingsBetrack.SCREEN_SWITCHED_OFF);
                 values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStopDate);
                 values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStopTime);
                 try {
                     AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
-                    Log.d(TAG, "Screen Off saved in database " + ActivityStopDate + " " + ActivityStopTime);
+                    Log.d(TAG, "SCREEN_SWITCHED_OFF saved in database " + ActivityStopDate + " " + ActivityStopTime);
                 } catch (Exception f) {
                     Log.d(TAG, "Nothing to update in the database");
                 }
@@ -265,20 +230,7 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                     }
                 }
             }
-            else
-            {
-                CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
-                long DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastTransfer();
-                if (DeltaLastTransfer >= SettingsBetrack.POSTDATA_SENDING_DELTA)  {
-                    Intent msgIntent = new Intent(context, IntentServicePostData.class);
-                    //Start the service for sending the data to the remote server
-                    context.startService(msgIntent);
-                }
-            }
         }
     }
 
-    public enum StateScreen {
-        UNKNOWN, OFF, ON
-    }
 }
