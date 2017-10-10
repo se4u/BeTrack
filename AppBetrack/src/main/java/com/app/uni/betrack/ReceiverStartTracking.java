@@ -22,6 +22,12 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
 
     private SettingsStudy ObjSettingsStudy;
     private SettingsBetrack ObjSettingsBetrack;
+    private static UtilsLocalDataBase localdatabase =  null;
+
+    private UtilsLocalDataBase AccesLocalDB()
+    {
+        return localdatabase;
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) { //
@@ -35,32 +41,52 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             ReceiverScreen.ScreenState = ReceiverScreen.StateScreen.ON;
 
-        try {
-            SettingsStudy.SemScreenOn.acquire();
-            if (SettingsStudy.getStartScreenOn() == 0) {
-                SettingsStudy.setStartScreenOn(System.currentTimeMillis());
-                Log.d(TAG, "Screen ON saved " + System.currentTimeMillis());
-            }
+            try {
+                SettingsStudy.SemScreenOn.acquire();
+                if (SettingsStudy.getStartScreenOn() == 0) {
+                    SettingsStudy.setStartScreenOn(System.currentTimeMillis());
+                    Log.d(TAG, "Screen ON saved " + System.currentTimeMillis());
+                }
 
-        } catch (Exception eScreenOn) {
-        }
-        finally {
-            SettingsStudy.SemScreenOn.release();
+            } catch (Exception eScreenOn) {
+            }
+            finally {
+                SettingsStudy.SemScreenOn.release();
+            }
+        } else {
+
         }
 
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(context);
         }
 
-        //Read the preferences
         if (ObjSettingsBetrack == null) {
             ObjSettingsBetrack = SettingsBetrack.getInstance();
             ObjSettingsBetrack.Update(context);
         }
 
+        if (null == localdatabase) {
+            localdatabase =  new UtilsLocalDataBase(context);
+        }
+
+        if (null == screenstate) {
+            screenstate =  new UtilsScreenState(context);
+        }
+
         Bundle results = getResultExtras(true);
 
         String id = intent.getStringExtra(SettingsBetrack.BROADCAST_ARG_MANUAL_START);
+
+
+        //Screen is on we save this status in the databse
+        //Save when the screen was switched off
+        values.clear();
+        //Save the date
+        ActivityStartDate = sdf.format(new Date());
+        //Save the time
+        ActivityStartTime = shf.format(new Date());
+
         //The system is just started
         if(id == null) {
             Log.d(TAG, "The system is just started");
@@ -130,8 +156,22 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
             } else {
                 Log.d(TAG, "notification was not missed we go on with the startup");
             }
+        } else {
+            values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, SettingsBetrack.SCREEN_BETRACK_STARTED_MANUALY);
         }
 
+        values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStartDate);
+        values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStartTime);
+        try {
+            if (((id != null) && (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)) || (id == null)) {
+                Log.d(TAG, "SCREEN_BETRACK_STARTED_MANUALY saved in database " + ActivityStartDate + " " + ActivityStartTime);
+                AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
+            } else {
+                values.clear();
+            }
+        } catch (Exception f) {
+            Log.d(TAG, "Nothing to update in the database");
+        }
 
         if (ObjSettingsStudy.getStartSurveyDone() == true) {
 

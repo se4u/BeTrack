@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -29,12 +30,7 @@ public class ServiceBetrack extends Service {
         Log.d(TAG, "onCreated");
 
         IntentFilter filterScreen = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-
-        if (SettingsBetrack.STUDY_ENABLE_CONTINUOUS_TRACKING == true) {
-            filterScreen.addAction(Intent.ACTION_SCREEN_ON);
-        }
-
-        filterScreen.addAction(SettingsBetrack.BROADCAST_CHECK_SCREEN_STATUS);
+        filterScreen.addAction(Intent.ACTION_SCREEN_ON);
 
         mReceiverScreen = new ReceiverScreen();
         registerReceiver(mReceiverScreen, filterScreen);

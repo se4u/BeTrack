@@ -26,6 +26,8 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
     {
         return localdatabase;
     }
+    private UtilsScreenState screenstate = null;
+    private UtilsScreenState AccessScreenState() {return screenstate; }
 
     @Override
     public void onReceive(Context context, Intent intent)
@@ -42,6 +44,10 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
 
         if (null == localdatabase) {
             localdatabase =  new UtilsLocalDataBase(context);
+        }
+
+        if (null == screenstate) {
+            screenstate =  new UtilsScreenState(context);
         }
 
         Log.d(TAG, "Received ");
@@ -77,7 +83,9 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
         }
 
         //onResume Betrack activity
-        if ((ActivityBeTrack.OnForeground) && (ReceiverScreen.StateScreen.ON == ReceiverScreen.ScreenState)) {
+        if ((ActivityBeTrack.OnForeground) &&
+                ((UtilsScreenState.StateScreen.ON == ObjSettingsStudy.getBetrackScreenState() )
+                || (UtilsScreenState.StateScreen.UNLOCKED == ObjSettingsStudy.getBetrackScreenState()))) {
             Intent i=new Intent(context,ActivityBeTrack.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -57,12 +57,12 @@ public class ReceiverStopTracking  extends WakefulBroadcastReceiver {
         //Save the time
         ActivityStopTime = shf.format(new Date());
 
-        values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, 0);
+        values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, SettingsBetrack.SCREEN_PHONE_SWITCHED_OFF);
         values.put(UtilsLocalDataBase.C_PHONE_USAGE_DATE, ActivityStopDate);
         values.put(UtilsLocalDataBase.C_PHONE_USAGE_TIME, ActivityStopTime);
         try {
             AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_PHONE_USAGE);
-            Log.d(TAG, "Screen Off saved in database " + ActivityStopDate + " " + ActivityStopTime);
+            Log.d(TAG, "SCREEN_PHONE_SWITCHED_OFF saved in database " + ActivityStopDate + " " + ActivityStopTime);
         } catch (Exception f)
         {
             Log.d(TAG, "Nothing to update in the database");

@@ -18,10 +18,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.Semaphore;
 
-import static com.app.uni.betrack.ReceiverScreen.StateScreen.OFF;
-import static com.app.uni.betrack.ReceiverScreen.StateScreen.ON;
-import static com.app.uni.betrack.ReceiverScreen.StateScreen.UNKNOWN;
-
 /**
  * Created by cevincent on 4/24/16.
  */
@@ -69,7 +65,7 @@ public class SettingsStudy {
     static public UtilsCryptoAES.SecretKeys SessionKey;
     static SharedPreferences.Editor editor;
     static private int AppWatchId = -1;
-    static private ReceiverScreen.StateScreen ScreenState = ReceiverScreen.StateScreen.UNKNOWN;
+    static private UtilsScreenState.StateScreen ScreenState = UtilsScreenState.StateScreen.UNKNOWN;
     static private Boolean StudyStarted; //A study is started
     static private Boolean SetupBetrackDone; //The phone has be set up to be used by Betrack
     static private Boolean StartSurveyDone; //Survey for starting the study has been filled up
@@ -144,11 +140,14 @@ public class SettingsStudy {
         }
 
         //Read the state of the screen
-         if (prefs.getBoolean(STUDY_BETRACK_SCREENSTATE, false) == false) {
-             ScreenState = OFF;
-         } else
-         {
-             ScreenState = ON;
+         if (prefs.getInt(STUDY_BETRACK_SCREENSTATE, SettingsBetrack.SCREEN_SWITCHED_OFF) == SettingsBetrack.SCREEN_SWITCHED_OFF) {
+             ScreenState = UtilsScreenState.StateScreen.OFF;
+         } else if (prefs.getInt(STUDY_BETRACK_SCREENSTATE, SettingsBetrack.SCREEN_SWITCHED_OFF) == SettingsBetrack.SCREEN_SWITCHED_ON) {
+             ScreenState = UtilsScreenState.StateScreen.ON;
+         }  else if (prefs.getInt(STUDY_BETRACK_SCREENSTATE, SettingsBetrack.SCREEN_SWITCHED_OFF) == SettingsBetrack.SCREEN_USER_PRESENT) {
+             ScreenState = UtilsScreenState.StateScreen.UNLOCKED;
+         } else {
+             ScreenState = UtilsScreenState.StateScreen.UNKNOWN;
          }
 
         DurationScreenOn = prefs.getLong(DURATION_SCREEN_ON, 0);
@@ -193,7 +192,6 @@ public class SettingsStudy {
             EndSurveyTransferred = EndStudyTranferState.ERROR;
         }
 
-
         int ToBeConvertedLastDayStudy = prefs.getInt(LAST_DAY_STUDY, LastDayStudyState.ALL_SURVEYS_PENDING.ordinal());
 
         if (ToBeConvertedLastDayStudy == LastDayStudyState.ALL_SURVEYS_PENDING.ordinal()) {
@@ -219,12 +217,9 @@ public class SettingsStudy {
         DailySurveyDone = prefs.getBoolean(STUDY_DAILY_SURVEY_DONE, true);
         StartDateSurvey = prefs.getString(STUDY_STARTDATE_SURVEY, null);
         NbrOfNotificationToDo = prefs.getInt(STUDY_NBR_OF_NOTIFICATION_TO_DO, 0);
-        NbrOfDaysToDo = prefs.getInt(STUDY_NBR_OF_DAYS_TO_DO, 0);
-        DailySurveyState = prefs.getInt(STUDY_DAILY_SURVEY_STATE, 0);
 
 
-
-        TimeLastTransfer = System.currentTimeMillis();
+        TimeLastTransfer = prefs.getLong(STUDY_TIME_LAST_TRANSFER, System.currentTimeMillis());
 
         TimeNextNotification = prefs.getLong(STUDY_TIME_NEXT_NOTIFICATION, 0);
 
@@ -476,34 +471,33 @@ public class SettingsStudy {
         }
     }
 
-    public ReceiverScreen.StateScreen getBetrackScreenState()
+    public UtilsScreenState.StateScreen getBetrackScreenState()
     {
-        ReceiverScreen.StateScreen ReturnBetrackScreenState = UNKNOWN;
+        UtilsScreenState.StateScreen ReturnBetrackScreenState = UtilsScreenState.StateScreen.UNKNOWN;
         try {
             SemSettingsStudy.acquire();
-            if (prefs.getBoolean(STUDY_BETRACK_SCREENSTATE, false) == false) {
-                ReturnBetrackScreenState = OFF;
-            } else
-            {
-                ReturnBetrackScreenState = ON;
-            }
+            ReturnBetrackScreenState = ScreenState;
             SemSettingsStudy.release();
         } catch (Exception e) {
-            ReturnBetrackScreenState = UNKNOWN;
+            ReturnBetrackScreenState = UtilsScreenState.StateScreen.UNKNOWN;
         } finally {
             return ReturnBetrackScreenState;
         }
     }
 
-    public void setBetrackScreenState(ReceiverScreen.StateScreen BetrackScreenState)
+    public void setBetrackScreenState(UtilsScreenState.StateScreen BetrackScreenState)
     {
         try {
             SemSettingsStudy.acquire();
-            if (BetrackScreenState == OFF) {
-                editor.putBoolean(STUDY_BETRACK_SCREENSTATE, false);
-            } else
-            {
-                editor.putBoolean(STUDY_BETRACK_SCREENSTATE, true);
+            ScreenState = BetrackScreenState;
+            if (ScreenState == UtilsScreenState.StateScreen.OFF) {
+                editor.putInt(STUDY_BETRACK_SCREENSTATE, SettingsBetrack.SCREEN_SWITCHED_OFF);
+            } else if (ScreenState == UtilsScreenState.StateScreen.ON) {
+                editor.putInt(STUDY_BETRACK_SCREENSTATE, SettingsBetrack.SCREEN_SWITCHED_ON);
+            }  else if (ScreenState == UtilsScreenState.StateScreen.UNLOCKED) {
+                editor.putInt(STUDY_BETRACK_SCREENSTATE, SettingsBetrack.SCREEN_USER_PRESENT);
+            } else {
+                editor.putInt(STUDY_BETRACK_SCREENSTATE, SettingsBetrack.SCREEN_BETRACK_ERROR);
             }
             editor.commit();
             SemSettingsStudy.release();
@@ -566,6 +560,7 @@ public class SettingsStudy {
         }
     }
 
+
     public long getTimeNextNotification()
     {
 
@@ -613,6 +608,8 @@ public class SettingsStudy {
         try {
             SemSettingsStudy.acquire();
             TimeLastTransfer = timelasttransfer;
+            editor.putLong(STUDY_TIME_LAST_TRANSFER, TimeLastTransfer);
+            editor.commit();
             SemSettingsStudy.release();
         } catch (Exception e) {
             Log.d(TAG, "Error during acquiring SemSettingsStudy");
@@ -782,7 +779,6 @@ public class SettingsStudy {
         }
     }
 
-
     public LastDayStudyState getLastDayStudyState()
     {
         LastDayStudyState ReturnEndLastDayStudyState = LastDayStudyState.END_SURVEY_ERROR;
@@ -809,6 +805,7 @@ public class SettingsStudy {
             Log.d(TAG, "Error during acquiring SemSettingsStudy");
         }
     }
+
 
     public EndStudyTranferState getEndSurveyTransferred()
     {
