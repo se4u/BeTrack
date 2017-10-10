@@ -17,6 +17,7 @@ public class SettingsBetrack {
     //If set to yes enable the support for GPS tracking
     static public boolean STUDY_ENABLE_GPS = false;
 
+    //The flag below is only valid only from Android Nougat
     //If set to yes then the tracking is running even when the screen is off. If used drain the battery! But that's as well the only way to track screen on and screen off...
     static public boolean STUDY_ENABLE_CONTINUOUS_TRACKING = false;
 
@@ -40,7 +41,6 @@ public class SettingsBetrack {
     static public String BROADCAST_TRIGGER_NOTIFICATION = "com.app.uni.betrack.TRIGGER_NOTIFICATION";
     static public String BROADCAST_START_TRACKING_NAME = "com.app.uni.betrack.START_TRACKING";
     static public String BROADCAST_ARG_MANUAL_START = "com.app.uni.betrack.BROADCAST_ARG_MANUAL_START";
-    static public String BROADCAST_CHECK_SCREEN_STATUS = "com.app.uni.betrack.CHECK_SCREEN_STATUS";
     static public String STUDY_WEBSITE = "http://smartphonestudy.chenlab.psych.ubc.ca/CA001/android/";
     static public String STUDY_GETSTUDIESAVAILABLE = "BeTrackGetStudiesAvailable.php";
     static public String STUDY_GETAPPTOWATCH = "BeTrackGetAppToWatch.php?table_name=BetrackApp";
@@ -67,6 +67,14 @@ public class SettingsBetrack {
     static public int GPSMINTIMEOUT = 5000;
     static public String STUDY_PUBLIC_KEY = "public.pem";
     static public boolean STUDY_JUST_STARTED = false;
+
+    static public int SCREEN_SWITCHED_OFF = 0;
+    static public int SCREEN_SWITCHED_ON = 1;
+    static public int SCREEN_USER_PRESENT = 2;
+    static public int SCREEN_PHONE_SWITCHED_ON = 3;
+    static public int SCREEN_PHONE_SWITCHED_OFF = 4;
+    static public int SCREEN_BETRACK_STARTED_MANUALY = 5;
+    static public int SCREEN_BETRACK_ERROR = 6;
 
     private Boolean StudyEnable;
     private Boolean StudyNotification;
