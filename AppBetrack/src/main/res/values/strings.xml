@@ -61,9 +61,9 @@
     <!-- Study main screen -->
     <string name="Betrack_welcome">Thank you for participating!</string>
     <string name="Betrack_info_start">Days remaining:</string>
-    <string name="Betrack_start">Thank you for setting up the app! The daily surveys will start tomorrow.</string>
-    <string name="Betrack_end">Thank you for your participation in the study. Please contact us at: smartphonestudy@psych.ubc.ca </string>
-    <string name="Betrack_battery_manager">You seem to use a battery manager, please whitelist BeTrack or contact the Social Health Lab at: smartphonestudy@psych.ubc.ca </string>
+    <string name="Betrack_start">Thank you for setting up the app! The study will start tomorrow.</string>
+    <string name="Betrack_end"> </string>
+    <string name="Betrack_battery_manager">You seem to use a battery manager, please whitelist BeTrack or contact the Social Health Lab </string>
     <string name="Betrack_info_end">Your phone usage:</string>
     <string name="Betrack_screen_on">others</string>
     <string name="Betrack_settings">Settings</string>
@@ -79,12 +79,10 @@
     </string>
     <string name="pref_consent_title">Consent form URL
     </string>
-    <string name="pref_consent_description"> https://osf.io/em83w
-    </string>
+    <string name="pref_consent_description"> </string>
     <string name="pref_contact_title">Contact
     </string>
-    <string name="pref_contact_description">smartphonestudy@psych.ubc.ca
-    </string>
+    <string name="pref_contact_description"> </string>
 
     <!-- Settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
