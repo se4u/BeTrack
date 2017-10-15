@@ -48,20 +48,20 @@ public class ActivitySetupBetrack extends AppCompatActivity {
         Intent i;
 
         ObjSettingsStudy = SettingsStudy.getInstance(this);
-/*
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if(!hasPermission()) {
                 findViewById(R.id.EnableUsageStat).setVisibility(View.VISIBLE);
             }
-            else {*/
+            else {
                 findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
                 EnableUsageStat = true;
-            /*}
+            }
         }
         else {
             EnableUsageStat = true;
         }
-*/
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             Intent intent = new Intent();
@@ -131,7 +131,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
         Intent i;
         super.onResume();
 
-        /*if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if(!hasPermission()) {
                 findViewById(R.id.EnableUsageStat).setVisibility(View.VISIBLE);
             }
@@ -148,7 +148,7 @@ public class ActivitySetupBetrack extends AppCompatActivity {
                 }
             }
         }
-        else */ {
+        else  {
             findViewById(R.id.EnableUsageStat).setVisibility(View.GONE);
             EnableUsageStat = true;
             if (EnableHuaweiProtMode && EnableUsageStat && EnableGPS && DisableBatteryOptimization) {
