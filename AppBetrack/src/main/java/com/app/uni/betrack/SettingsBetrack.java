@@ -19,7 +19,7 @@ public class SettingsBetrack {
 
     //The flag below is only valid only from Android Nougat
     //If set to yes then the tracking is running even when the screen is off. If used drain the battery! But that's as well the only way to track screen on and screen off...
-    static public boolean STUDY_ENABLE_CONTINUOUS_TRACKING = false;
+    static public boolean STUDY_ENABLE_CONTINUOUS_TRACKING = true;
 
     //End Configuration of Betrack
 
