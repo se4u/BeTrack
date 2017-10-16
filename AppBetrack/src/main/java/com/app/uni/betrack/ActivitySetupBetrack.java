@@ -37,6 +37,10 @@ public class ActivitySetupBetrack extends AppCompatActivity {
     private boolean DisableBatteryOptimization = false;
 
     @Override
+    public void onBackPressed() {
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

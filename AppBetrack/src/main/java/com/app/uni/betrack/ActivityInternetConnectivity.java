@@ -40,6 +40,11 @@ public class ActivityInternetConnectivity extends AppCompatActivity {
             ActivityInternetConnectivity.this.receivedBroadcast(intent);
         }
     };
+
+    @Override
+    public void onBackPressed() {
+    }
+
     @Override
     public void onResume() {
         super.onResume();
