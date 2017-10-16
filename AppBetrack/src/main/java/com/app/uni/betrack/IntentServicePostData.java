@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -49,6 +50,7 @@ public class IntentServicePostData extends IntentService {
     private static final char TABLE_GPS_TRANSFERED = 16;
     private static final char TABLE_PHONE_USAGE_TRANSFERED = 32;
     private static final char TABLE_NOTIFICATION_TIME_TRANSFERED = 64;
+    private static final char TABLE_NOTIFICATION_RCV_TRANSFERED = 128;
 
     Handler mHandler;
 
@@ -81,7 +83,7 @@ public class IntentServicePostData extends IntentService {
         char TaskDone = TABLE_APPWATCH_TRANSFERED | TABLE_DAILYSTATUS_TRANSFERED |
                         TABLE_STARTSTUDY_TRANSFERED | TABLE_ENDSTUDY_TRANSFERED |
                         TABLE_GPS_TRANSFERED | TABLE_PHONE_USAGE_TRANSFERED |
-                        TABLE_NOTIFICATION_TIME_TRANSFERED;
+                        TABLE_NOTIFICATION_TIME_TRANSFERED | TABLE_NOTIFICATION_RCV_TRANSFERED;
 
         //Check if there is a data connection
         NetworkState = UtilsNetworkStatus.hasNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
@@ -322,6 +324,28 @@ public class IntentServicePostData extends IntentService {
                         TaskDone &= ~TABLE_NOTIFICATION_TIME_TRANSFERED;
                     }
 
+                    //NOTIFICATION TIME RECEIVED DATA
+                    values.clear();
+                    values = AccesLocalDB().getElementDb(UtilsLocalDataBase.TABLE_NOTIFICATION_RCV, true);
+                    if (0 != values.size()) {
+                        ArrayList<String>  NotifRcvData;
+
+                        IdSql = values.getAsLong(UtilsLocalDataBase.C_NOTIFICATION_RCV_ID);
+
+                        //Prepare the data
+                        NotifRcvData = PrepareData(values, UtilsLocalDataBase.DB_NOTIFICATION_RECEIVED, UtilsLocalDataBase.DB_NOTIFICATION_RECEIVED_CYPHER, true);
+
+                        //Post the data
+                        rc = PostData(SettingsBetrack.STUDY_POSTNOTIFICATIONRCVTIME, UtilsLocalDataBase.DB_NOTIFICATION_RECEIVED, NotifRcvData, UtilsLocalDataBase.DB_NOTIFICATION_RECEIVED_CYPHER, true);
+                        if (rc == true) {
+                            AccesLocalDB().deleteELement(UtilsLocalDataBase.TABLE_NOTIFICATION_RCV, IdSql);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        rc = true;
+                        TaskDone &= ~TABLE_NOTIFICATION_RCV_TRANSFERED;
+                    }
 
                 }
             }
