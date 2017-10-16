@@ -82,10 +82,6 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
             try {
                 AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_NOTIFICATION_RCV);
             } catch (Exception f) {}
-
-            //Trigger a notification
-            CreateNotification.Create(context);
-
         }
 
         //Try to transfer the data
