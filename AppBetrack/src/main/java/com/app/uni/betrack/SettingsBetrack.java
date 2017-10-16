@@ -50,6 +50,7 @@ public class SettingsBetrack {
     static public String STUDY_POSTENDSTUDY = "BeTrackPostEndStudy";
     static public String STUDY_POSTSLEEPSTATUS = "BeTrackPostSleepStatus";
     static public String STUDY_POSTPHONEUSAGEDATA = "BeTrackPostPhoneUsageData";
+    static public String STUDY_POSTNOTIFICATIONRCVTIME = "BeTrackPostNotifRcv";
     static public String STUDY_POSTBLOBKEY = "BeTrackPostSessionKeys";
     static public int SERVER_TIMEOUT = 20000;
     static public int DELTA_BTW_RECHECK_STUDY_STARTED = 10000;
@@ -136,7 +137,7 @@ public class SettingsBetrack {
             StudyEnable = prefs.getBoolean(mActivity.getString(R.string.pref_key_study_enable), true);
             EnableDataUsage = prefs.getBoolean(mActivity.getString(R.string.pref_key_data_sync_enable_usage_3g), false);
             StudyNotification = prefs.getBoolean(mActivity.getString(R.string.pref_key_study_notification), true);
-            //Log.d(TAG, "StudyEnable: " + StudyEnable + " EnableDataUsage: " + EnableDataUsage + " StudyNotification: " + StudyNotification + " StudyNotificationTime: " + StudyNotificationTime);
+	    //Log.d(TAG, "StudyEnable: " + StudyEnable + " EnableDataUsage: " + EnableDataUsage + " StudyNotification: " + StudyNotification + " StudyNotificationTime: " + StudyNotificationTime);
             SemSettingsBetrack.release();
         } catch (Exception e) {
 

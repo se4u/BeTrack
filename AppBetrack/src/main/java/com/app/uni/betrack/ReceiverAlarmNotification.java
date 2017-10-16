@@ -7,6 +7,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by cedoctet on 21/08/2016.
@@ -76,6 +77,22 @@ public class ReceiverAlarmNotification extends WakefulBroadcastReceiver {
                 //Restart for a new notification
                 CreateNotification.ResetAlarm(context);
             }
+
+            //Save when the notification was received in the database
+            String ActivityStartDate = "";
+            String ActivityStartTime = "";
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+            SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
+            values.clear();
+            //Save the date
+            ActivityStartDate = sdf.format(new Date());
+            //Save the time
+            ActivityStartTime = shf.format(new Date());
+            values.put(UtilsLocalDataBase.C_NOTIFICATION_RCV_DATE, ActivityStartDate);
+            values.put(UtilsLocalDataBase.C_NOTIFICATION_RCV_TIME, ActivityStartTime);
+            try {
+                AccesLocalDB().insertOrIgnore(values, UtilsLocalDataBase.TABLE_NOTIFICATION_RCV);
+            } catch (Exception f) {}
 
             //Trigger a notification
             CreateNotification.Create(context);

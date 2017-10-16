@@ -143,6 +143,24 @@ public class UtilsLocalDataBase {
         add(true); //C_SLEEPSTATUS_TIME
     }};
 
+    //Table for Daily Notification data, we log when we received the notification
+    static final String TABLE_NOTIFICATION_RCV = "NotificationReceived";
+    static final String C_NOTIFICATION_RCV_ID = BaseColumns._ID;
+    static final String C_NOTIFICATION_RCV_PID = "ParticipantID";
+    static final String C_NOTIFICATION_RCV_DATE = "Date";
+    static final String C_NOTIFICATION_RCV_TIME = "Time";
+
+    public static final ArrayList<String> DB_NOTIFICATION_RECEIVED = new ArrayList<String>() {{
+        add(UtilsLocalDataBase.C_NOTIFICATION_RCV_PID);
+        add(UtilsLocalDataBase.C_NOTIFICATION_RCV_DATE);
+        add(UtilsLocalDataBase.C_NOTIFICATION_RCV_TIME);
+    }};
+
+    public static final ArrayList<Boolean> DB_NOTIFICATION_RECEIVED_CYPHER = new ArrayList<Boolean>() {{
+        add(false); //C_NOTIFICATION_RCV_PID
+        add(true);  //C_NOTIFICATION_RCV_DATE
+        add(true);  //C_NOTIFICATION_RCV_TIME
+    }};
 
     //Table for Status study
     static final String TABLE_SESSION_KEY = "SessionKey";
@@ -448,6 +466,11 @@ public class UtilsLocalDataBase {
             db.execSQL(sql8);
             Log.d(TAG, "onCreated sql: " + sql8);
 
+            String sql10 = "create table " + TABLE_NOTIFICATION_RCV + " (" + C_NOTIFICATION_RCV_ID + " integer primary key autoincrement, "
+                    + C_NOTIFICATION_RCV_DATE +  " text, "
+                    + C_NOTIFICATION_RCV_TIME + " text)"; //
+            db.execSQL(sql10);
+            Log.d(TAG, "onCreated sql: " + sql10);
         }
 
         // Called whenever newVersion != oldVersion
@@ -467,6 +490,8 @@ public class UtilsLocalDataBase {
             db.execSQL("drop table if exists " + TABLE_SESSION_KEY); // drops the old database
 
             db.execSQL("drop table if exists " + TABLE_PHONE_USAGE); // drops the old database
+
+            db.execSQL("drop table if exists " + TABLE_NOTIFICATION_RCV); // drops the old database
 
             Log.d(TAG, "onUpdated");
             onCreate(db); // run onCreate to get new database
