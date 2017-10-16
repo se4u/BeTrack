@@ -51,6 +51,7 @@ public class SettingsBetrack {
     static public String STUDY_POSTGPSDATA = "BeTrackPostGPSData";
     static public String STUDY_POSTPHONEUSAGEDATA = "BeTrackPostPhoneUsageData";
     static public String STUDY_POSTNOTIFICATIONTIME = "BeTrackPostNotifTimeData";
+    static public String STUDY_POSTNOTIFICATIONRCVTIME = "BeTrackPostNotifRcv";
     static public String STUDY_POSTBLOBKEY = "BeTrackPostSessionKeys";
     static public int SERVER_TIMEOUT = 20000;
     static public int DELTA_BTW_RECHECK_STUDY_STARTED = 10000;
