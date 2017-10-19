@@ -121,12 +121,6 @@ public class ReceiverScreen extends WakefulBroadcastReceiver {
                     }
                 }
 
-
-                DeltaLastTransfer = System.currentTimeMillis() - ObjSettingsStudy.getTimeLastGPS();
-                if ((DeltaLastTransfer >= SettingsBetrack.TRACKGPS_DELTA) || (DeltaLastTransfer < 0)) {
-                    ReceiverGPSChange.StartGPS(context);
-                }
-
                 CreateTrackApp.CreateAlarm(context, SettingsBetrack.SAMPLING_RATE);
 
 

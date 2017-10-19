@@ -49,7 +49,7 @@ public class IntentServicePostData extends IntentService {
     private static final char TABLE_ENDSTUDY_TRANSFERED = 8;
     private static final char TABLE_SLEEPSTATUS_TRANSFERED = 16;
     private static final char TABLE_PHONE_USAGE_TRANSFERED = 32;
-    private static final char TABLE_NOTIFICATION_TIME_TRANSFERED = 64;
+    private static final char TABLE_NOTIFICATION_RCV_TRANSFERED = 64;
 
     Handler mHandler;
 
@@ -82,7 +82,7 @@ public class IntentServicePostData extends IntentService {
         char TaskDone = TABLE_APPWATCH_TRANSFERED | TABLE_DAILYSTATUS_TRANSFERED |
                         TABLE_STARTSTUDY_TRANSFERED | TABLE_ENDSTUDY_TRANSFERED |
                         TABLE_SLEEPSTATUS_TRANSFERED | TABLE_PHONE_USAGE_TRANSFERED |
-			TABLE_NOTIFICATION_RCV_TRANSFERED;
+			            TABLE_NOTIFICATION_RCV_TRANSFERED;
 
         //Check if there is a data connection
         NetworkState = UtilsNetworkStatus.hasNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
@@ -276,7 +276,6 @@ public class IntentServicePostData extends IntentService {
                         rc = true;
                         TaskDone &= ~TABLE_ENDSTUDY_TRANSFERED;
                     }
-
 
                     //PHONE USAGE DATA
                     values.clear();

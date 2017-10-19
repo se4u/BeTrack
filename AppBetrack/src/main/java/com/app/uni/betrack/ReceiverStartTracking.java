@@ -2,6 +2,7 @@ package com.app.uni.betrack;
 
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -18,7 +20,6 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
     static final String TAG = "ReceiverStartTracking";
 
     public static boolean startTrackingRunning = false;
-    public static boolean screenJustStarted = true;
 
     private SettingsStudy ObjSettingsStudy;
     private SettingsBetrack ObjSettingsBetrack;
@@ -29,33 +30,16 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
         return localdatabase;
     }
 
+    private UtilsScreenState screenstate = null;
+    private UtilsScreenState AccessScreenState() {return screenstate; }
+
     @Override
     public void onReceive(Context context, Intent intent) { //
 
-        Log.d(TAG, "onReceived");
-        boolean next10MinutesTriggered = false;
-        long currentTime =System.currentTimeMillis();
-
-        ObjSettingsStudy = SettingsStudy.getInstance(context);
-
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            ReceiverScreen.ScreenState = ReceiverScreen.StateScreen.ON;
-
-            try {
-                SettingsStudy.SemScreenOn.acquire();
-                if (SettingsStudy.getStartScreenOn() == 0) {
-                    SettingsStudy.setStartScreenOn(System.currentTimeMillis());
-                    Log.d(TAG, "Screen ON saved " + System.currentTimeMillis());
-                }
-
-            } catch (Exception eScreenOn) {
-            }
-            finally {
-                SettingsStudy.SemScreenOn.release();
-            }
-        } else {
-
-        }
+        String ActivityStartDate = "";
+        String ActivityStartTime = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+        SimpleDateFormat shf = new SimpleDateFormat("HH:mm:ss");
 
         if (null == ObjSettingsStudy)  {
             ObjSettingsStudy = SettingsStudy.getInstance(context);
@@ -74,6 +58,28 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
             screenstate =  new UtilsScreenState(context);
         }
 
+        ContentValues values = new ContentValues();
+        Log.d(TAG, "onReceived");
+        boolean next10MinutesTriggered = false;
+        long currentTime =System.currentTimeMillis();
+
+        ObjSettingsStudy = SettingsStudy.getInstance(context);
+
+        AccessScreenState().UtilsSetSavedScreenState(UtilsScreenState.StateScreen.ON);
+
+        try {
+            SettingsStudy.SemScreenOn.acquire();
+            if (SettingsStudy.getStartScreenOn() == 0) {
+                SettingsStudy.setStartScreenOn(System.currentTimeMillis());
+                Log.d(TAG, "Screen ON saved " + System.currentTimeMillis());
+            }
+
+        } catch (Exception eScreenOn) {
+        }
+        finally {
+            SettingsStudy.SemScreenOn.release();
+        }
+
         Bundle results = getResultExtras(true);
 
         String id = intent.getStringExtra(SettingsBetrack.BROADCAST_ARG_MANUAL_START);
@@ -90,7 +96,8 @@ public class ReceiverStartTracking extends WakefulBroadcastReceiver {
         //The system is just started
         if(id == null) {
             Log.d(TAG, "The system is just started");
-
+            Log.d(TAG, "SCREEN_PHONE_SWITCHED_ON saved in database " + ActivityStartDate + " " + ActivityStartTime);
+            values.put(UtilsLocalDataBase.C_PHONE_USAGE_STATE, SettingsBetrack.SCREEN_PHONE_SWITCHED_ON);
             //Since we were off we check if we didn't miss the last notification NbrOfNotificationToDo
 
             if ( (true == ObjSettingsBetrack.GetStudyNotification())

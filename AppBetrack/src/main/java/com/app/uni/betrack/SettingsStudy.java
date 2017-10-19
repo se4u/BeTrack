@@ -49,6 +49,7 @@ public class SettingsStudy {
     static private final String STUDY_DAILY_SURVEY_DONE = "DailySurveyDone";
     static private final String STUDY_STARTDATE_SURVEY = "StartDateSurvey";
     static private final String STUDY_NBR_OF_NOTIFICATION_TO_DO = "NumberOfNotificationDone";
+    static private final String STUDY_TIME_LAST_TRANSFER = "TimeLastTransfer";
     static private final String STUDY_DAILY_SURVEY_STATE = "DailySurveyState";
     static private final String STUDY_NBR_OF_DAYS_TO_DO = "NbrOfDaysToDo";
     static private final String APP_WATCH_START_TIME = "AppWatchStartTime";
