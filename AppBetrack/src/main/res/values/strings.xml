@@ -234,13 +234,13 @@
     <string name="title_sd_screen1">Daily Survey</string>
     <string name="question_sd_screen1">How do you feel at this moment?</string>
     <string name="option1_sd_screen1">not at all happy</string>
-    <string name="option2_sd_screen1">to very happy</string>
+    <string name="option2_sd_screen1">very happy</string>
     <string name="option3_sd_screen1">not at all tired</string>
-    <string name="option4_sd_screen1">to very tired</string>
+    <string name="option4_sd_screen1">very tired</string>
     <string name="option5_sd_screen1">not at all lonely</string>
-    <string name="option6_sd_screen1">to very lonely</string>
+    <string name="option6_sd_screen1">very lonely</string>
     <string name="option7_sd_screen1">not at all tense</string>
-    <string name="option8_sd_screen1">to very tense</string>
+    <string name="option8_sd_screen1">very tense</string>
 
     <!-- Screen 5 (Daily Survey) -->
     <string name="title_sd_screen5">Daily Survey</string>

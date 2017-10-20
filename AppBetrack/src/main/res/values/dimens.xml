@@ -26,4 +26,7 @@
 
     <!-- 10 choices specific dimensions -->
     <dimen name="survey_10choices_rbSize">15dp</dimen>
+
+    <!-- 7 choices radio specific dimensions -->
+    <dimen name="survey_7choices_radio_textsize">14sp</dimen>
 </resources>

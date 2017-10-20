@@ -520,8 +520,8 @@ public class ActivitySurveyEnd  extends ProgressStepper {
 
         //Step 12 STUDY 1
         bundle12 = new Bundle();
-        bundle12.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_se_screen12));
-        bundle12.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_se_screen12));
+        bundle12.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_TITLE, getResources().getString(R.string.title_se_screen12));
+        bundle12.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_DESC, getResources().getString(R.string.question_se_screen12));
 
         ArrayList<String> ChoiceTextRightStep12 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option2_se_screen12));
@@ -530,17 +530,17 @@ public class ActivitySurveyEnd  extends ProgressStepper {
             add(getResources().getString(R.string.option1_se_screen12));
         }};
 
-        bundle12.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, ChoiceTextRightStep12);
-        bundle12.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_LEFT, ChoiceTextLeftStep12);
+        bundle12.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep12);
+        bundle12.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep12);
 
-        Step12 = new FragmentSurveySeekBar();
+        Step12 = new FragmentSurvey7ChoicesRadio();
         Step12.setArguments(bundle12);
         addStep(Step12, true, 0, false);
 
         //Step 13 STUDY 2
         bundle13 = new Bundle();
-        bundle13.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_se_screen13));
-        bundle13.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_se_screen13));
+        bundle13.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_TITLE, getResources().getString(R.string.title_se_screen13));
+        bundle13.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_DESC, getResources().getString(R.string.question_se_screen13));
 
         ArrayList<String> ChoiceTextRightStep13 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option2_se_screen13));
@@ -549,17 +549,17 @@ public class ActivitySurveyEnd  extends ProgressStepper {
             add(getResources().getString(R.string.option1_se_screen13));
         }};
 
-        bundle13.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, ChoiceTextRightStep13);
-        bundle13.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_LEFT, ChoiceTextLeftStep13);
+        bundle13.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep13);
+        bundle13.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep13);
 
-        Step13 = new FragmentSurveySeekBar();
+        Step13 = new FragmentSurvey7ChoicesRadio();
         Step13.setArguments(bundle13);
         addStep(Step13, true, 0, false);
 
         //Step 14 STUDY 3
         bundle14 = new Bundle();
-        bundle14.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_se_screen14));
-        bundle14.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_se_screen14));
+        bundle14.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_TITLE, getResources().getString(R.string.title_se_screen14));
+        bundle14.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_DESC, getResources().getString(R.string.question_se_screen14));
 
         ArrayList<String> ChoiceTextRightStep14 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option2_se_screen14));
@@ -568,17 +568,17 @@ public class ActivitySurveyEnd  extends ProgressStepper {
             add(getResources().getString(R.string.option1_se_screen14));
         }};
 
-        bundle14.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, ChoiceTextRightStep14);
-        bundle14.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_LEFT, ChoiceTextLeftStep14);
+        bundle14.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep14);
+        bundle14.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep14);
 
-        Step14 = new FragmentSurveySeekBar();
+        Step14 = new FragmentSurvey7ChoicesRadio();
         Step14.setArguments(bundle14);
         addStep(Step14, true, 0, false);
 
         //Step 15 STUDY 3
         bundle15 = new Bundle();
-        bundle15.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_se_screen15));
-        bundle15.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_se_screen15));
+        bundle15.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_TITLE, getResources().getString(R.string.title_se_screen15));
+        bundle15.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_DESC, getResources().getString(R.string.question_se_screen15));
 
         ArrayList<String> ChoiceTextRightStep15 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option2_se_screen15));
@@ -587,17 +587,17 @@ public class ActivitySurveyEnd  extends ProgressStepper {
             add(getResources().getString(R.string.option1_se_screen15));
         }};
 
-        bundle15.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, ChoiceTextRightStep15);
-        bundle15.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_LEFT, ChoiceTextLeftStep15);
+        bundle15.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep15);
+        bundle15.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep15);
 
-        Step15 = new FragmentSurveySeekBar();
+        Step15 = new FragmentSurvey7ChoicesRadio();
         Step15.setArguments(bundle15);
         addStep(Step15, true, 0, false);
 
         //Step 16 RESEARCH APP 1
         bundle16 = new Bundle();
-        bundle16.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_TITLE, getResources().getString(R.string.title_se_screen16));
-        bundle16.putString(FragmentSurveySeekBar.SURVEY_SEEKBAR_CHOICES_DESC, getResources().getString(R.string.question_se_screen16));
+        bundle16.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_TITLE, getResources().getString(R.string.title_se_screen16));
+        bundle16.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_DESC, getResources().getString(R.string.question_se_screen16));
 
         ArrayList<String> ChoiceTextRightStep16 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option2_se_screen16));
@@ -606,10 +606,10 @@ public class ActivitySurveyEnd  extends ProgressStepper {
             add(getResources().getString(R.string.option1_se_screen16));
         }};
 
-        bundle16.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_RIGHT, ChoiceTextRightStep16);
-        bundle16.putStringArrayList(FragmentSurveySeekBar.SURVEY_SEEKBAR_ANSWERS_LEFT, ChoiceTextLeftStep16);
+        bundle16.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep16);
+        bundle16.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep16);
 
-        Step16 = new FragmentSurveySeekBar();
+        Step16 = new FragmentSurvey7ChoicesRadio();
         Step16.setArguments(bundle16);
         addStep(Step16, true, 0, false);
 

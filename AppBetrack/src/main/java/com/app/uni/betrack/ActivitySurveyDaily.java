@@ -65,10 +65,10 @@ public class ActivitySurveyDaily   extends ProgressStepper {
     public void onComplete() {
         super.onComplete();
 
-        Mood = Step1.getArguments().getInt(FragmentSurvey5ChoicesRadio.SURVEY_STATUS1, 0);
-        Bored = Step1.getArguments().getInt(FragmentSurvey5ChoicesRadio.SURVEY_STATUS2, 0);
-        Social = Step1.getArguments().getInt(FragmentSurvey5ChoicesRadio.SURVEY_STATUS3, 0);
-        Relaxed = Step1.getArguments().getInt(FragmentSurvey5ChoicesRadio.SURVEY_STATUS4, 0);
+        Mood = Step1.getArguments().getInt(FragmentSurvey7ChoicesRadio.SURVEY_STATUS1, 0);
+        Bored = Step1.getArguments().getInt(FragmentSurvey7ChoicesRadio.SURVEY_STATUS2, 0);
+        Social = Step1.getArguments().getInt(FragmentSurvey7ChoicesRadio.SURVEY_STATUS3, 0);
+        Relaxed = Step1.getArguments().getInt(FragmentSurvey7ChoicesRadio.SURVEY_STATUS4, 0);
 
         UsedSocial = Step6.getArguments().getInt(FragmentSurveySeekBar.SURVEY_STATUS1, 0);
         SocialComputer = Step7.getArguments().getInt(FragmentSurvey2Choices.SURVEY_STATUS, 0);
@@ -138,8 +138,8 @@ public class ActivitySurveyDaily   extends ProgressStepper {
 
         //Step 1 Daily Surveys: How do you feel right now?
         bundle1 = new Bundle();
-        bundle1.putString(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen1));
-        bundle1.putString(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_DESC, getResources().getString(R.string.question_sd_screen1));
+        bundle1.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen1));
+        bundle1.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_DESC, getResources().getString(R.string.question_sd_screen1));
 
         ArrayList<String> ChoiceTextRightStep1 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option2_sd_screen1));
@@ -155,17 +155,17 @@ public class ActivitySurveyDaily   extends ProgressStepper {
             add(getResources().getString(R.string.option7_sd_screen1));
         }};
 
-        bundle1.putStringArrayList(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep1);
-        bundle1.putStringArrayList(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep1);
+        bundle1.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep1);
+        bundle1.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep1);
 
-        Step1 = new FragmentSurvey5ChoicesRadio();
+        Step1 = new FragmentSurvey7ChoicesRadio();
         Step1.setArguments(bundle1);
         addStep(Step1, true, 0, false);
 
         //Step 6 Daily Surveys: How much have you used social networking sites/apps since the last time we asked?
         bundle6 = new Bundle();
-        bundle6.putString(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen6));
-        bundle6.putString(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_DESC, getResources().getString(R.string.question_sd_screen6));
+        bundle6.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen6));
+        bundle6.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_DESC, getResources().getString(R.string.question_sd_screen6));
 
         ArrayList<String> ChoiceTextRightStep6 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option2_sd_screen6));
@@ -174,8 +174,8 @@ public class ActivitySurveyDaily   extends ProgressStepper {
             add(getResources().getString(R.string.option1_sd_screen6));
         }};
 
-        bundle6.putStringArrayList(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep6);
-        bundle6.putStringArrayList(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep6);
+        bundle6.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep6);
+        bundle6.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep6);
 
         ArrayList<Integer> NextStep6 = new ArrayList<Integer>() {{
             add(1); //Optional step visible
@@ -191,10 +191,10 @@ public class ActivitySurveyDaily   extends ProgressStepper {
             add(-2); //Not used
         }};
 
-        bundle6.putIntegerArrayList(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_ENABLE_NEXT_STEP, NextStep6);
-        bundle6.putIntegerArrayList(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_ENABLE_NEXT_STEP_TRIGGER, NextStepTrigger6);
+        bundle6.putIntegerArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_ENABLE_NEXT_STEP, NextStep6);
+        bundle6.putIntegerArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_ENABLE_NEXT_STEP_TRIGGER, NextStepTrigger6);
 
-        Step6 = new FragmentSurvey5ChoicesRadio();
+        Step6 = new FragmentSurvey7ChoicesRadio();
         Step6.setArguments(bundle6);
         addStep(Step6, true, 0, true);
 
@@ -237,8 +237,8 @@ public class ActivitySurveyDaily   extends ProgressStepper {
 
         //Step 9 Daily Surveys: Which social networking sites did you use?
         bundle9 = new Bundle();
-        bundle9.putString(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen9));
-        bundle9.putString(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_DESC, getResources().getString(R.string.question_sd_screen9));
+        bundle9.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen9));
+        bundle9.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_DESC, getResources().getString(R.string.question_sd_screen9));
 
         ArrayList<String> ChoiceTextRightStep9 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option2_sd_screen9));
@@ -247,18 +247,18 @@ public class ActivitySurveyDaily   extends ProgressStepper {
             add(getResources().getString(R.string.option1_sd_screen9));
         }};
 
-        bundle9.putStringArrayList(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep9);
-        bundle9.putStringArrayList(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep9);
+        bundle9.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep9);
+        bundle9.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep9);
 
-        Step9 = new FragmentSurvey5ChoicesRadio();
+        Step9 = new FragmentSurvey7ChoicesRadio();
         Step9.setArguments(bundle9);
         addStep(Step9, false, 3, false);
 
 
         //Step 3 Daily Surveys: How much have you interacted with other people “directly” (face-to- face or via phone call) since the last time we asked?
         bundle3 = new Bundle();
-        bundle3.putString(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen5));
-        bundle3.putString(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_DESC, getResources().getString(R.string.question_sd_screen5));
+        bundle3.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_TITLE, getResources().getString(R.string.title_sd_screen5));
+        bundle3.putString(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_DESC, getResources().getString(R.string.question_sd_screen5));
 
         ArrayList<String> ChoiceTextRightStep3 = new ArrayList<String>() {{
             add(getResources().getString(R.string.option2_sd_screen5));
@@ -268,10 +268,10 @@ public class ActivitySurveyDaily   extends ProgressStepper {
             add(getResources().getString(R.string.option1_sd_screen5));
         }};
 
-        bundle3.putStringArrayList(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep3);
-        bundle3.putStringArrayList(FragmentSurvey5ChoicesRadio.SURVEY_5_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep3);
+        bundle3.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_RIGHT, ChoiceTextRightStep3);
+        bundle3.putStringArrayList(FragmentSurvey7ChoicesRadio.SURVEY_7_CHOICES_RB_ANSWERS_LEFT, ChoiceTextLeftStep3);
 
-        Step3 = new FragmentSurvey5ChoicesRadio();
+        Step3 = new FragmentSurvey7ChoicesRadio();
         Step3.setArguments(bundle3);
         addStep(Step3, true, 0, false);
 
