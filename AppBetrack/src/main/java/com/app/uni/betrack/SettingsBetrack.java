@@ -41,7 +41,7 @@ public class SettingsBetrack {
     static public String BROADCAST_TRIGGER_NOTIFICATION = "com.app.uni.betrack.TRIGGER_NOTIFICATION";
     static public String BROADCAST_START_TRACKING_NAME = "com.app.uni.betrack.START_TRACKING";
     static public String BROADCAST_ARG_MANUAL_START = "com.app.uni.betrack.BROADCAST_ARG_MANUAL_START";
-    static public String STUDY_WEBSITE = "http://smartphonestudy.chenlab.psych.ubc.ca/TEST/android/";
+    static public String STUDY_WEBSITE = "http://smartphonestudy.chenlab.psych.ubc.ca/CA002/android/";
     static public String STUDY_GETSTUDIESAVAILABLE = "BeTrackGetStudiesAvailable.php";
     static public String STUDY_GETAPPTOWATCH = "BeTrackGetAppToWatch.php?table_name=BetrackApp";
     static public String STUDY_POSTAPPWATCHED = "BeTrackPostAppWatch";
