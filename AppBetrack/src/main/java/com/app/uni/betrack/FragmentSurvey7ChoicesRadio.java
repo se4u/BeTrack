@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by cvincent on 18/10/17.
  */
 
-public class FragmentSurvey5ChoicesRadio extends AbstractStep {
+public class FragmentSurvey7ChoicesRadio extends AbstractStep {
     //Output
     public  static final String SURVEY_STATUS1 = "SURVEY_STATUS1";
     public int SurveyStatus1 = -1;
@@ -28,18 +28,17 @@ public class FragmentSurvey5ChoicesRadio extends AbstractStep {
     public int SurveyStatus4 = -1;
 
     //Input
-    public static final String SURVEY_5_CHOICES_TITLE = "SURVEY_5_CHOICES_TITLE";
-    public static final String SURVEY_5_CHOICES_DESC = "SURVEY_5_CHOICES_DESC";
+    public static final String SURVEY_7_CHOICES_TITLE = "SURVEY_7_CHOICES_TITLE";
+    public static final String SURVEY_7_CHOICES_DESC = "SURVEY_7_CHOICES_DESC";
 
-    public static final String SURVEY_5_CHOICES_RB_ANSWERS_RIGHT = "SURVEY_5_CHOICES_RB_ANSWERS_RIGHT";
-    public static final String SURVEY_5_CHOICES_RB_ANSWERS_LEFT = "SURVEY_5_CHOICES_RB_ANSWERS_LEFT";
+    public static final String SURVEY_7_CHOICES_RB_ANSWERS_RIGHT = "SURVEY_7_CHOICES_RB_ANSWERS_RIGHT";
+    public static final String SURVEY_7_CHOICES_RB_ANSWERS_LEFT = "SURVEY_7_CHOICES_RB_ANSWERS_LEFT";
 
-    public static final String SURVEY_5_CHOICES_ENABLE_NEXT_STEP = "SURVEY_5_CHOICES_ENABLE_NEXT_STEP";
-    public static final String SURVEY_5_CHOICES_ENABLE_NEXT_STEP_TRIGGER = "SURVEY_5_CHOICES_ENABLE_NEXT_STEP_TRIGGER";
+    public static final String SURVEY_7_CHOICES_ENABLE_NEXT_STEP = "SURVEY_7_CHOICES_ENABLE_NEXT_STEP";
+    public static final String SURVEY_7_CHOICES_ENABLE_NEXT_STEP_TRIGGER = "SURVEY_7_CHOICES_ENABLE_NEXT_STEP_TRIGGER";
 
-    private static final int SURVEY_5_CHOICES_MAX = 4;
-    private static final int SURVEY_RB_MAX = 5;
-
+    private static final int SURVEY_7_CHOICES_MAX = 4;
+    private static final int SURVEY_RB_MAX = 7;
 
     private ArrayList<Integer> NextStepTrigger = null;
     private ArrayList<Integer> NextStep = null;
@@ -52,14 +51,14 @@ public class FragmentSurvey5ChoicesRadio extends AbstractStep {
     private RadioButton[] radioButton4 = new RadioButton[SURVEY_RB_MAX];
 
     private Bundle bundle;
-    TextView[] radioButtonTextRight = new TextView[SURVEY_5_CHOICES_MAX];
-    TextView[] radioButtonTextLeft = new TextView[SURVEY_5_CHOICES_MAX];
-    View[] radioButtonView = new View[SURVEY_5_CHOICES_MAX];
+    TextView[] radioButtonTextRight = new TextView[SURVEY_7_CHOICES_MAX];
+    TextView[] radioButtonTextLeft = new TextView[SURVEY_7_CHOICES_MAX];
+    View[] radioButtonView = new View[SURVEY_7_CHOICES_MAX];
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.survey_5choicesradio, container, false);
+        View v = inflater.inflate(R.layout.survey_7choicesradio, container, false);
         int NbrTextVisible = 0;
 
         Title = (TextView) v.findViewById(R.id.survey_title);
@@ -69,24 +68,32 @@ public class FragmentSurvey5ChoicesRadio extends AbstractStep {
         radioButton1[2] = (RadioButton) v.findViewById(R.id.radio1_3);
         radioButton1[3] = (RadioButton) v.findViewById(R.id.radio1_4);
         radioButton1[4] = (RadioButton) v.findViewById(R.id.radio1_5);
+        radioButton1[5] = (RadioButton) v.findViewById(R.id.radio1_6);
+        radioButton1[6] = (RadioButton) v.findViewById(R.id.radio1_7);
 
         radioButton2[0] = (RadioButton) v.findViewById(R.id.radio2_1);
         radioButton2[1] = (RadioButton) v.findViewById(R.id.radio2_2);
         radioButton2[2] = (RadioButton) v.findViewById(R.id.radio2_3);
         radioButton2[3] = (RadioButton) v.findViewById(R.id.radio2_4);
         radioButton2[4] = (RadioButton) v.findViewById(R.id.radio2_5);
+        radioButton2[5] = (RadioButton) v.findViewById(R.id.radio2_6);
+        radioButton2[6] = (RadioButton) v.findViewById(R.id.radio2_7);
 
         radioButton3[0] = (RadioButton) v.findViewById(R.id.radio3_1);
         radioButton3[1] = (RadioButton) v.findViewById(R.id.radio3_2);
         radioButton3[2] = (RadioButton) v.findViewById(R.id.radio3_3);
         radioButton3[3] = (RadioButton) v.findViewById(R.id.radio3_4);
         radioButton3[4] = (RadioButton) v.findViewById(R.id.radio3_5);
+        radioButton3[5] = (RadioButton) v.findViewById(R.id.radio3_6);
+        radioButton3[6] = (RadioButton) v.findViewById(R.id.radio3_7);
 
         radioButton4[0] = (RadioButton) v.findViewById(R.id.radio4_1);
         radioButton4[1] = (RadioButton) v.findViewById(R.id.radio4_2);
         radioButton4[2] = (RadioButton) v.findViewById(R.id.radio4_3);
         radioButton4[3] = (RadioButton) v.findViewById(R.id.radio4_4);
         radioButton4[4] = (RadioButton) v.findViewById(R.id.radio4_5);
+        radioButton4[5] = (RadioButton) v.findViewById(R.id.radio4_6);
+        radioButton4[6] = (RadioButton) v.findViewById(R.id.radio4_7);
 
         radioButtonTextRight[0] = (TextView) v.findViewById(R.id.TextInfoRight1);
         radioButtonTextRight[1] = (TextView) v.findViewById(R.id.TextInfoRight2);
@@ -104,12 +111,12 @@ public class FragmentSurvey5ChoicesRadio extends AbstractStep {
         radioButtonView[3] = (View) v.findViewById(R.id.ChoicesRadio4);
 
         bundle = this.getArguments();
-        String SurveyTitle = bundle.getString(SURVEY_5_CHOICES_TITLE, null);
-        String SurveyDescription = bundle.getString(SURVEY_5_CHOICES_DESC, null);
-        ArrayList<String> RadioBtn7TextRight = bundle.getStringArrayList(SURVEY_5_CHOICES_RB_ANSWERS_RIGHT);
-        ArrayList<String> RadioBtn7TextLeft = bundle.getStringArrayList(SURVEY_5_CHOICES_RB_ANSWERS_LEFT);
-        NextStep = bundle.getIntegerArrayList(SURVEY_5_CHOICES_ENABLE_NEXT_STEP);
-        NextStepTrigger = bundle.getIntegerArrayList(SURVEY_5_CHOICES_ENABLE_NEXT_STEP_TRIGGER);
+        String SurveyTitle = bundle.getString(SURVEY_7_CHOICES_TITLE, null);
+        String SurveyDescription = bundle.getString(SURVEY_7_CHOICES_DESC, null);
+        ArrayList<String> RadioBtn7TextRight = bundle.getStringArrayList(SURVEY_7_CHOICES_RB_ANSWERS_RIGHT);
+        ArrayList<String> RadioBtn7TextLeft = bundle.getStringArrayList(SURVEY_7_CHOICES_RB_ANSWERS_LEFT);
+        NextStep = bundle.getIntegerArrayList(SURVEY_7_CHOICES_ENABLE_NEXT_STEP);
+        NextStepTrigger = bundle.getIntegerArrayList(SURVEY_7_CHOICES_ENABLE_NEXT_STEP_TRIGGER);
 
         Title.setText(SurveyTitle);
         Description.setText(SurveyDescription);
@@ -125,7 +132,7 @@ public class FragmentSurvey5ChoicesRadio extends AbstractStep {
 
         }
 
-        while (NbrTextVisible < SURVEY_5_CHOICES_MAX)
+        while (NbrTextVisible < SURVEY_7_CHOICES_MAX)
         {
             radioButtonView[NbrTextVisible].setVisibility(View.INVISIBLE);
             NbrTextVisible++;
@@ -172,6 +179,12 @@ public class FragmentSurvey5ChoicesRadio extends AbstractStep {
                     case R.id.radio1_5:
                         SurveyStatus1 = 5;
                         break;
+                    case R.id.radio1_6:
+                        SurveyStatus1 = 6;
+                        break;
+                    case R.id.radio1_7:
+                        SurveyStatus1 = 7;
+                        break;
                 }
 
                 bundle.putInt(SURVEY_STATUS1, SurveyStatus1);
@@ -201,6 +214,12 @@ public class FragmentSurvey5ChoicesRadio extends AbstractStep {
                         break;
                     case R.id.radio2_5:
                         SurveyStatus2 = 5;
+                        break;
+                    case R.id.radio2_6:
+                        SurveyStatus2 = 6;
+                        break;
+                    case R.id.radio2_7:
+                        SurveyStatus2 = 7;
                         break;
                 }
 
@@ -232,6 +251,12 @@ public class FragmentSurvey5ChoicesRadio extends AbstractStep {
                     case R.id.radio3_5:
                         SurveyStatus3 = 5;
                         break;
+                    case R.id.radio3_6:
+                        SurveyStatus3 = 6;
+                        break;
+                    case R.id.radio3_7:
+                        SurveyStatus3 = 7;
+                        break;
                 }
 
                 bundle.putInt(SURVEY_STATUS3, SurveyStatus3);
@@ -261,6 +286,12 @@ public class FragmentSurvey5ChoicesRadio extends AbstractStep {
                         break;
                     case R.id.radio4_5:
                         SurveyStatus4 = 5;
+                        break;
+                    case R.id.radio4_6:
+                        SurveyStatus4 = 6;
+                        break;
+                    case R.id.radio4_7:
+                        SurveyStatus4 = 7;
                         break;
                 }
 
