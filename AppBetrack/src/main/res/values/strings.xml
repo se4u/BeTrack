@@ -386,11 +386,11 @@
     <!-- Screen 8 -->
     <string name="title_se_screen16">Research App</string>
     <string name="question_se_screen16">Would you recommend this study to a friend?</string>
-    <string name="option1_se_screen16">very much so</string>
-    <string name="option2_se_screen16">not at all</string>
+    <string name="option1_se_screen16">not at all</string>
+    <string name="option2_se_screen16">very much so</string>
 
     <!-- Screen 9 -->
     <string name="title_se_screen17">Research App</string>
-    <string name="question_se_screen17">Is there anything in particular you would change about the research app?</string>
+    <string name="question_se_screen17">Is there anything in particular you would change about the research app or do you have any comments on the study?</string>
 
 </resources>
