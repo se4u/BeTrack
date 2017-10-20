@@ -218,6 +218,8 @@ public class SettingsStudy {
         DailySurveyDone = prefs.getBoolean(STUDY_DAILY_SURVEY_DONE, true);
         StartDateSurvey = prefs.getString(STUDY_STARTDATE_SURVEY, null);
         NbrOfNotificationToDo = prefs.getInt(STUDY_NBR_OF_NOTIFICATION_TO_DO, 0);
+        NbrOfDaysToDo = prefs.getInt(STUDY_NBR_OF_DAYS_TO_DO, 0);
+        DailySurveyState = prefs.getInt(STUDY_DAILY_SURVEY_STATE, 0);
 
 
         TimeLastTransfer = prefs.getLong(STUDY_TIME_LAST_TRANSFER, System.currentTimeMillis());
