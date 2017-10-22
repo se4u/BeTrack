@@ -92,7 +92,9 @@ public class IntentServiceTrackApp extends IntentService {
         }
 
         if (intent != null) {
-
+            if (UtilsScreenState.StateScreen.UNKNOWN == AccessScreenState().UtilsGetSavedScreenState()) {
+                AccessScreenState().UtilsUpdateScreenStateFromHardware(this);
+            }
             //Compute what's the average refresh frequency of the service and the standard deviation
             if ((!ObjSettingsStudy.getAccuracyComputed())
                     && ((UtilsScreenState.StateScreen.ON == AccessScreenState().UtilsGetSavedScreenState())
